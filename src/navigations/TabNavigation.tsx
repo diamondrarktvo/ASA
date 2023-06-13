@@ -37,7 +37,7 @@ const TabNavigation = () => {
                 ""
               ),*/
             tabBarIcon: ({ focused, color }) => (
-              <Icon name={route.icon} color={color} size={focused ? 30 : 20} />
+              <Icon name={route.icon} color={color} size={focused ? 32 : 22} />
             ),
           }}
         />
