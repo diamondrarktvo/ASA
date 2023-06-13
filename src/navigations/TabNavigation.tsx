@@ -15,7 +15,7 @@ const Tab = createBottomTabNavigator<TabParamList>();
 const TabNavigation = () => {
   return (
     <Tab.Navigator
-      initialRouteName="home_screen"
+      initialRouteName="search_screen"
       screenOptions={{
         headerShown: false,
         tabBarHideOnKeyboard: true,
@@ -37,7 +37,7 @@ const TabNavigation = () => {
                 ""
               ),*/
             tabBarIcon: ({ focused, color }) => (
-              <Icon name={route.icon} color={color} size={focused ? 30 : 25} />
+              <Icon name={route.icon} color={color} size={focused ? 30 : 20} />
             ),
           }}
         />

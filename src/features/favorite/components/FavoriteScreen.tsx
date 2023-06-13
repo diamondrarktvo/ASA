@@ -4,7 +4,7 @@ import { detailScreenNavigationType } from "../types/navigationTypes";
 import { Icon } from "_shared";
 
 
-export default function HomeScreen() {
+export default function FavoriteScreen() {
 
   const navigation = useNavigation<detailScreenNavigationType>();
 
