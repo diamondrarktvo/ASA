@@ -1,18 +1,9 @@
-import { View, Text, StyleSheet } from "react-native";
+import { Box, Text } from "_shared";
 
 export default function SearchScreen() {
   return (
-    <View style={styles.container}>
-      <Text>Commencer à chercher</Text>
-    </View>
+    <Box flex={1} backgroundColor="primary" paddingHorizontal="m">
+      <Text variant="bigTitle">Recherche</Text>
+    </Box>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

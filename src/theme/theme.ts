@@ -1,51 +1,85 @@
-import { DefaultTheme } from "@react-navigation/native";
-import { theme } from "./Types";
+import { createTheme } from "@shopify/restyle";
 
 //PALETTE
-const paletteLight = {
-  primaryOrange: "#FF8323",
-  whiteGrey: "#7E7E7E",
-  white: "#FFF",
-  black: "#37463D",
-  background: "#FFF",
-  navigation: "#F0F0F0",
-  text: "#333533",
+const palette = {
+  orangeLight: "#F8AC71",
+  orangePrimary: "#FF8323",
+  orangeDark: "#C66316",
+
+  redBordeaux: "#9B0409",
+
+  white: "#F0F2F3",
+  offWhite: "#DDD",
+  black: "#0B0B0B",
+  offBlack: "#252525",
 };
 
-const paletteDark = {
-  primaryOrange: "#FF8323",
-  whiteGrey: "#7E7E7E",
-  white: "#FFF",
-  black: "#37463D",
-  background: "#37463D",
-  navigation: "#37463D",
-  text: "#FFF",
-};
+const theme = createTheme({
+  colors: {
+    mainBackground: palette.white,
+    mainForeground: palette.black,
+    primary: palette.orangePrimary,
+    white: palette.white,
+    black: palette.black,
+    error: palette.redBordeaux,
+    offWhite: palette.offWhite,
+    offBlack: palette.offBlack,
+    buttonPrimaryBackground: palette.orangePrimary,
+    cardPrimaryBackground: palette.orangePrimary,
+    cardLightBackground: palette.orangeLight,
+    textPrimaryColor: palette.orangePrimary,
+    textBlackColor: palette.offBlack,
+  },
+  spacing: {
+    s: 8,
+    m: 16,
+    l: 24,
+    xl: 40,
+  },
+  breakpoints: {
+    phone: 0,
+    longPhone: {
+      width: 0,
+      height: 812,
+    },
+    tablet: 768,
+    largeTablet: 1024,
+  },
+  textVariants: {
+    bigTitle: {
+      fontWeight: "bold",
+      fontiSize: 34,
+    },
+    title: {
+      fontWeight: "bold",
+      fontiSize: 24,
+    },
+    subtitle: {
+      fontSize: 16,
+      lineHeight: 24,
+    },
+    text: {
+      fontSize: 12,
+      lineHeight: 16,
+    },
+    smallText: {
+      fontSize: 8,
+      lineHeight: 12,
+    },
+  },
+  cardVariants: {
+    primary: {
+      backgroundColor: "cardPrimaryBackground",
+      borderRadius: 16,
+      padding: "s",
+    },
+    light: {
+      backgroundColor: "cardLightBackground",
+      borderRadius: 16,
+      padding: "s",
+    },
+  },
+});
 
-//NAVIGATION THEME
-export const lightTheme: theme = {
-  dark: false,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: paletteLight.primaryOrange,
-    background: paletteLight.background,
-    text: paletteLight.text,
-    black: paletteLight.black,
-    navigation: paletteLight.navigation,
-    white: paletteLight.white,
-    whiteGrey: paletteLight.whiteGrey,
-  },
-};
-export const darkTheme: theme = {
-  dark: true,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: paletteDark.primaryOrange,
-    background: paletteDark.background,
-    text: paletteDark.text,
-    navigation: paletteDark.navigation,
-    black: paletteDark.black,
-    white: paletteDark.white,
-    whiteGrey: paletteDark.whiteGrey,
-  },
-};
+export type Theme = typeof theme;
+export default theme;

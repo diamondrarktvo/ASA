@@ -1,6 +1,5 @@
 //IMPORT FROM NODE_MODULES
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { lightTheme } from "_theme";
 import { styles } from "./styles";
 //import { Text } from "react-native";
 
@@ -30,8 +29,8 @@ const TabNavigation = () => {
           name={route.name}
           component={route.component}
           options={{
-            tabBarActiveTintColor: lightTheme.colors.primary,
-            tabBarInactiveTintColor: lightTheme.colors.whiteGrey,
+            tabBarActiveTintColor: "#FF8323",
+            tabBarInactiveTintColor: "#000",
             /*tabBarLabel: ({ focused }) =>
               focused ? (
                 <Text style={{ color: "white" }}>{route.tabLabel}</Text>
