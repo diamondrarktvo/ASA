@@ -1,6 +1,7 @@
 //IMPORT FROM NODE_MODULES
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { lightTheme } from "_theme";
+import { styles } from "./styles";
 //import { Text } from "react-native";
 
 //LOCAL IMPORT
@@ -19,7 +20,8 @@ const TabNavigation = () => {
       screenOptions={{
         headerShown: false,
         tabBarHideOnKeyboard: true,
-        tabBarShowLabel: false
+        tabBarShowLabel: false,
+        tabBarStyle: styles.barNavigation,
       }}
     >
       {TABROUTES.map((route) => (
@@ -29,7 +31,7 @@ const TabNavigation = () => {
           component={route.component}
           options={{
             tabBarActiveTintColor: lightTheme.colors.primary,
-            tabBarInactiveTintColor: lightTheme.colors.black,
+            tabBarInactiveTintColor: lightTheme.colors.whiteGrey,
             /*tabBarLabel: ({ focused }) =>
               focused ? (
                 <Text style={{ color: "white" }}>{route.tabLabel}</Text>
