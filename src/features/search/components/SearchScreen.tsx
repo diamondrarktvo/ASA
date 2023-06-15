@@ -2,7 +2,7 @@ import { Box, Text } from "_shared";
 
 export default function SearchScreen() {
   return (
-    <Box flex={1} backgroundColor="primary" paddingHorizontal="m">
+    <Box variant="screen">
       <Text variant="bigTitle">test</Text>
     </Box>
   );

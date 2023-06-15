@@ -1,4 +1,6 @@
 import { createTheme } from "@shopify/restyle";
+import {Typography} from "./typography";
+import { BoxVariant } from "./box";
 
 //PALETTE
 const palette = {
@@ -44,33 +46,21 @@ const theme = createTheme({
     largeTablet: 1024,
   },
   textVariants: {
+    ...Typography,
     defaults: {
       fontSize: 12,
       lineHeight: 16,
     },
-    bigTitle: {
-      fontWeight: "bold",
-      fontSize: 34,
-    },
-    title: {
-      fontWeight: "bold",
-      fontSize: 24,
-    },
-    subtitle: {
-      fontSize: 16,
-      lineHeight: 24,
-    },
-    text: {
-      fontSize: 12,
-      lineHeight: 16,
-    },
-    smallText: {
-      fontSize: 8,
-      lineHeight: 12,
-    },
+  },
+  boxVariants: {
+    ...BoxVariant,
+    defaults: {
+      flex: 1,
+        backgroundColor: "cardPrimaryBackground",
+        paddingHorizontal: "m"
+    }
   },
   cardVariants: {
-    defaults: {},
     primary: {
       backgroundColor: "cardPrimaryBackground",
       borderRadius: 16,
@@ -81,6 +71,9 @@ const theme = createTheme({
       borderRadius: 16,
       padding: "s",
     },
+    defaults: {
+      backgroundColor: "cardPrimaryBackground",
+    }
   },
 });
 
