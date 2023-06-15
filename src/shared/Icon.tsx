@@ -1,10 +1,4 @@
-import React from 'react';
 import { Icon as RNEIcon, IconProps } from "@rneui/themed";
 
-//BOTTOM TAB
-const Icon = ({name, size, color}: IconProps) => {
-  return (
-      <RNEIcon name={name} size={size} color={color} />
-  );
-};
+const Icon = ({ ...props }: IconProps) => <RNEIcon {...props} />;
 export default Icon;

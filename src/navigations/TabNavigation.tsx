@@ -7,12 +7,16 @@ import { styles } from "./styles";
 import { TabParamList } from "./Types";
 import { Icon } from "_shared";
 import { TABROUTES } from "_utils";
+import { useTheme } from "@shopify/restyle";
+import { Theme } from "_theme";
 
 //IMPORT SCREEN
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
 const TabNavigation = () => {
+  const theme = useTheme<Theme>();
+  const { secondary, primary, mainForeground } = theme.colors;
   return (
     <Tab.Navigator
       initialRouteName="search_screen"
@@ -20,7 +24,7 @@ const TabNavigation = () => {
         headerShown: false,
         tabBarHideOnKeyboard: true,
         tabBarShowLabel: false,
-        tabBarStyle: styles.barNavigation,
+        tabBarStyle: [styles.barNavigation, { backgroundColor: secondary }],
       }}
     >
       {TABROUTES.map((route) => (
@@ -29,8 +33,8 @@ const TabNavigation = () => {
           name={route.name}
           component={route.component}
           options={{
-            tabBarActiveTintColor: "#FF8323",
-            tabBarInactiveTintColor: "#000",
+            tabBarActiveTintColor: primary,
+            tabBarInactiveTintColor: mainForeground,
             /*tabBarLabel: ({ focused }) =>
               focused ? (
                 <Text style={{ color: "white" }}>{route.tabLabel}</Text>

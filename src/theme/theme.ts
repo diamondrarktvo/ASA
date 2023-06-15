@@ -1,6 +1,5 @@
 import { createTheme } from "@shopify/restyle";
-import {Typography} from "./typography";
-import { BoxVariant } from "./box";
+import { Typography } from "./typography";
 
 //PALETTE
 const palette = {
@@ -24,6 +23,7 @@ const theme = createTheme({
     error: palette.redBordeaux,
     white: palette.white,
     black: palette.black,
+    secondary: palette.offWhite, //grey
     buttonPrimaryBackground: palette.orangePrimary,
     cardPrimaryBackground: palette.orangePrimary,
     cardLightBackground: palette.orangeLight,
@@ -34,7 +34,15 @@ const theme = createTheme({
     s: 8,
     m: 16,
     l: 24,
-    xl: 40,
+    xl: 32,
+    xxl: 40,
+  },
+  sizes: {
+    s: 8,
+    m: 16,
+    l: 24,
+    xl: 32,
+    xxl: 40,
   },
   breakpoints: {
     phone: 0,
@@ -49,31 +57,7 @@ const theme = createTheme({
     ...Typography,
     defaults: {
       fontSize: 12,
-      lineHeight: 16,
     },
-  },
-  boxVariants: {
-    ...BoxVariant,
-    defaults: {
-      flex: 1,
-        backgroundColor: "cardPrimaryBackground",
-        paddingHorizontal: "m"
-    }
-  },
-  cardVariants: {
-    primary: {
-      backgroundColor: "cardPrimaryBackground",
-      borderRadius: 16,
-      padding: "s",
-    },
-    light: {
-      backgroundColor: "cardLightBackground",
-      borderRadius: 16,
-      padding: "s",
-    },
-    defaults: {
-      backgroundColor: "cardPrimaryBackground",
-    }
   },
 });
 
@@ -84,6 +68,7 @@ const darkTheme = createTheme({
     mainBackground: palette.black,
     mainForeground: palette.white,
     primary: palette.orangePrimary,
+    secondary: palette.black, //grey
     error: palette.redBordeaux,
     white: palette.offWhite,
     black: palette.offBlack,

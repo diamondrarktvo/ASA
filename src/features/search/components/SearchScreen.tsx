@@ -1,9 +1,9 @@
-import { Box, Text } from "_shared";
+import { Box, MainScreen, Text } from "_shared";
 
 export default function SearchScreen() {
   return (
-    <Box variant="screen">
+    <MainScreen>
       <Text variant="bigTitle">test</Text>
-    </Box>
+    </MainScreen>
   );
 }

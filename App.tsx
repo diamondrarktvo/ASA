@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useState } from "react";
 import { ThemeProvider } from "@shopify/restyle";
 import "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
