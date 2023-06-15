@@ -19,16 +19,14 @@ const theme = createTheme({
     mainBackground: palette.white,
     mainForeground: palette.black,
     primary: palette.orangePrimary,
+    error: palette.redBordeaux,
     white: palette.white,
     black: palette.black,
-    error: palette.redBordeaux,
-    offWhite: palette.offWhite,
-    offBlack: palette.offBlack,
     buttonPrimaryBackground: palette.orangePrimary,
     cardPrimaryBackground: palette.orangePrimary,
     cardLightBackground: palette.orangeLight,
+    text: palette.black,
     textPrimaryColor: palette.orangePrimary,
-    textBlackColor: palette.offBlack,
   },
   spacing: {
     s: 8,
@@ -46,13 +44,17 @@ const theme = createTheme({
     largeTablet: 1024,
   },
   textVariants: {
+    defaults: {
+      fontSize: 12,
+      lineHeight: 16,
+    },
     bigTitle: {
       fontWeight: "bold",
-      fontiSize: 34,
+      fontSize: 34,
     },
     title: {
       fontWeight: "bold",
-      fontiSize: 24,
+      fontSize: 24,
     },
     subtitle: {
       fontSize: 16,
@@ -68,6 +70,7 @@ const theme = createTheme({
     },
   },
   cardVariants: {
+    defaults: {},
     primary: {
       backgroundColor: "cardPrimaryBackground",
       borderRadius: 16,
@@ -81,5 +84,19 @@ const theme = createTheme({
   },
 });
 
+const darkTheme = createTheme({
+  ...theme,
+  colors: {
+    ...theme.colors,
+    mainBackground: palette.black,
+    mainForeground: palette.white,
+    primary: palette.orangePrimary,
+    error: palette.redBordeaux,
+    white: palette.offWhite,
+    black: palette.offBlack,
+    text: palette.white,
+  },
+});
+
 export type Theme = typeof theme;
-export default theme;
+export { theme, darkTheme };

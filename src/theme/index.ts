@@ -1,3 +1,3 @@
-import theme, { Theme } from "./theme";
+import {theme, darkTheme, Theme } from "./theme";
 
-export { theme, Theme };
+export { theme, darkTheme, Theme };
