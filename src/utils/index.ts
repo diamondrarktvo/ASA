@@ -1,3 +1,4 @@
 import { TABROUTES } from "./Constantes";
+import * as LayoutUtils from "./layout";
 
-export { TABROUTES };
+export { TABROUTES , LayoutUtils};

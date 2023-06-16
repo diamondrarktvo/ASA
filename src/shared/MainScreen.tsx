@@ -1,5 +1,4 @@
 import Box from "./Box";
-import { View } from "react-native";
 import React from "react";
 
 type Props = {

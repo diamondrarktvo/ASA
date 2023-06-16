@@ -15,7 +15,7 @@ export default function FavoriteScreen() {
           navigation.navigate("details_book");
         }}
       >
-        <Icon name="list" size={24} color="red" />
+        <Icon name="list" size={24} color="red" raised />
         <Text>Show detail book</Text>
       </TouchableOpacity>
     </View>

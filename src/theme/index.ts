@@ -1,3 +1,5 @@
 import {theme, darkTheme, Theme } from "./theme";
 
-export { theme, darkTheme, Theme };
+import * as size from "./size"
+
+export { theme, darkTheme, Theme, size };

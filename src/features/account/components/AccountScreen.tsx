@@ -1,6 +1,8 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import { Icon } from "_shared";
+import { Image, MainScreen, Row, Text } from "_shared";
+import { size } from "_theme";
+
 
 
 export default function AccountScreen() {
@@ -8,18 +10,15 @@ export default function AccountScreen() {
   //const navigation = useNavigation<>();
 
   return (
-    <View style={styles.container}>
-        <Text>Account </Text>
-        <Text>Show account book</Text>
-    </View>
+    <MainScreen>
+      <Row>
+        <Text variant="bigTitle">Profil</Text>
+        <Image source={require('_images/logoASA.jpeg')} />
+      </Row>
+      
+    </MainScreen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
 });

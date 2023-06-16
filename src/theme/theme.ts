@@ -53,8 +53,21 @@ const theme = createTheme({
     tablet: 768,
     largeTablet: 1024,
   },
+  borderRadii: {
+    none: 0,
+    xs: 4,
+    sm: 16,
+    md: 24,
+    lg: 64,
+    hg: 128,
+  },
   textVariants: {
     ...Typography,
+    button: {
+      ...Typography.button,
+      color: "white",
+      textAlign: 'center'
+    },
     defaults: {
       fontSize: 12,
     },
