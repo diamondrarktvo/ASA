@@ -34,7 +34,7 @@ const IMAGE_MEDIUM = scale(100);
 const IMAGE_LARGE = scale(150);
 
 const TYPO = {
-  veryBig: 32,
+  veryBig: 40,
   big: 24,
   primary: 18,
   secondary: 16,

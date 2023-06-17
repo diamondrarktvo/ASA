@@ -7,7 +7,7 @@ export default function AccountScreen() {
   //const navigation = useNavigation<>();
 
   return (
-    <MainScreen>
+    <MainScreen typeOfScreen="tab" titleTabScreen="Menu">
       <Row>
         <Image
           source={require("_images/logoASA.jpeg")}
