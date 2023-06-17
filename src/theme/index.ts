@@ -1,5 +1,7 @@
-import {theme, darkTheme, Theme } from "./theme";
+import { theme, darkTheme, Theme } from "./theme";
 
-import * as size from "./size"
+import { Size } from "./size";
 
-export { theme, darkTheme, Theme, size };
+import { Typography, TypoSize } from "./typography";
+
+export { theme, darkTheme, Theme, Size, Typography, TypoSize };

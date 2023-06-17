@@ -1,7 +1,6 @@
 //IMPORT FROM NODE_MODULES
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { styles } from "./styles";
-//import { Text } from "react-native";
 
 //LOCAL IMPORT
 import { TabParamList } from "./Types";
@@ -16,7 +15,7 @@ const Tab = createBottomTabNavigator<TabParamList>();
 
 const TabNavigation = () => {
   const theme = useTheme<Theme>();
-  const { secondary, primary, mainForeground } = theme.colors;
+  const { primary, mainForeground, mainBackground } = theme.colors;
   return (
     <Tab.Navigator
       initialRouteName="search_screen"
@@ -24,7 +23,7 @@ const TabNavigation = () => {
         headerShown: false,
         tabBarHideOnKeyboard: true,
         tabBarShowLabel: false,
-        tabBarStyle: [styles.barNavigation, { backgroundColor: secondary }],
+        tabBarStyle: [{ backgroundColor: mainBackground }],
       }}
     >
       {TABROUTES.map((route) => (
@@ -33,6 +32,7 @@ const TabNavigation = () => {
           name={route.name}
           component={route.component}
           options={{
+            title: route.tabLabel,
             tabBarActiveTintColor: primary,
             tabBarInactiveTintColor: mainForeground,
             /*tabBarLabel: ({ focused }) =>

@@ -1,18 +1,31 @@
+export const TypoSize = {
+  veryBig: 32,
+  big: 24,
+  primary: 18,
+  secondary: 16,
+  tertiary: 14,
+  verySmall: 12,
+};
+
 export const Typography = {
+  headerNavigation: {
+    fontWeight: "bold",
+    fontSize: TypoSize.veryBig,
+  },
   bigTitle: {
     fontWeight: "bold",
-    fontSize: 14,
+    fontSize: TypoSize.big, //14,
   },
   primary: {
-    fontSize: 13,
+    fontSize: TypoSize.primary, //13,
   },
   secondary: {
-    fontSize: 12,
+    fontSize: TypoSize.secondary, //12
   },
   tertiary: {
-    fontSize: 8,
+    fontSize: TypoSize.tertiary, //8
   },
   button: {
-    fontSize: 16,
-  }
+    fontSize: TypoSize.primary,
+  },
 };

@@ -18,8 +18,8 @@ export const TABROUTES: RouteTypes[] = [
   {
     name: "favorite_screen",
     component: FavoriteScreen,
-    tabLabel: "Favorite",
-    icon: "favorite",
+    tabLabel: "Favoris",
+    icon: "favorite-border",
   },
   {
     name: "publish_screen",
@@ -30,13 +30,13 @@ export const TABROUTES: RouteTypes[] = [
   {
     name: "message_and_notification_screen",
     component: MainScreenMessAndNotif,
-    tabLabel: "MessageNotif",
-    icon: "chat-bubble",
+    tabLabel: "Boite de réception",
+    icon: "chat-bubble-outline",
   },
   {
     name: "account_screen",
     component: AccountScreen,
-    tabLabel: "Compte",
-    icon: "person",
+    tabLabel: "Menu",
+    icon: "person-outline",
   },
 ];

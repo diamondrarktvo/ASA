@@ -3,36 +3,62 @@ import Text from "./Text";
 import Box from "./Box";
 import { Theme } from "_theme";
 import React from "react";
-import { BoxProps, TextProps } from "@shopify/restyle";
+import {
+  border,
+  BorderProps,
+  BoxProps,
+  createRestyleComponent,
+  createVariant,
+  spacing,
+  SpacingProps,
+  VariantProps,
+} from "@shopify/restyle";
 
 type ButtonProps = {
-    onPress?: () => void;
-    loading?: boolean
-    children: React.ReactNode,
-    disabled?: boolean,
-    textProps?: TextProps<Theme> 
-} & Partial<BoxProps<Theme>>
+  onPress?: () => void;
+  loading?: boolean;
+  label: React.ReactNode;
+  disabled?: boolean;
+} & Partial<BoxProps<Theme>>;
 
-const Button: React.FC<ButtonProps> = ({ onPress, loading, children, disabled, textProps, ...rest }) => {
-    return (
-        <TouchableHighlight onPress={onPress} underlayColor="transparent" disabled={disabled}>
-            <Box
-                backgroundColor="primary"
-                paddingVertical="s"
-                paddingHorizontal="m"
-                borderRadius="sm"
-                {...rest}
-            >
-                {loading ? (
-                    <ActivityIndicator color="white" />
-                ) : (
-                    <Text variant="button" {...textProps}>
-                        {children}
-                    </Text>
-                )}
-            </Box>
-        </TouchableHighlight>
-    );
-}
+type BoxButtonProps = SpacingProps<Theme> &
+  BorderProps<Theme> &
+  VariantProps<Theme, "buttonVariants"> &
+  React.ComponentProps<typeof Box>;
+
+const BoxButton = createRestyleComponent<BoxButtonProps, Theme>(
+  [spacing, border, createVariant({ themeKey: "buttonVariants" })],
+  Box,
+);
+
+const Button: React.FC<ButtonProps> = ({
+  onPress,
+  loading,
+  label,
+  disabled,
+  ...rest
+}) => {
+  return (
+    <TouchableHighlight
+      onPress={onPress}
+      underlayColor="transparent"
+      disabled={disabled}
+    >
+      <BoxButton
+        variant="primary"
+        paddingVertical="s"
+        paddingHorizontal="m"
+        borderRadius={"sm"}
+        {...rest}
+      >
+        {loading ? (
+          <ActivityIndicator color="white" />
+        ) : (
+          <Text variant="button">{label}</Text>
+        )}
+      </BoxButton>
+    </TouchableHighlight>
+  );
+};
 
 export default Button;

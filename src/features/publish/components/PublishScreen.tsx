@@ -1,16 +1,13 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 import { Icon } from "_shared";
 
-
 export default function PublishScreen() {
-
   //const navigation = useNavigation<>();
 
   return (
     <View style={styles.container}>
-        <Text>Publish </Text>
-        <Text>Show detail book</Text>
+      <Text>Si vous voulez publier, alors c'est ici... </Text>
     </View>
   );
 }

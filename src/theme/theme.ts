@@ -13,6 +13,7 @@ const palette = {
   offWhite: "#DDD",
   black: "#0B0B0B",
   offBlack: "#252525",
+  blue: "#06668C",
 };
 
 const theme = createTheme({
@@ -20,24 +21,19 @@ const theme = createTheme({
     mainBackground: palette.white,
     mainForeground: palette.black,
     primary: palette.orangePrimary,
+    orangeDark: palette.orangeDark,
     error: palette.redBordeaux,
     white: palette.white,
     black: palette.black,
     secondary: palette.offWhite, //grey
     buttonPrimaryBackground: palette.orangePrimary,
+    buttonSecondaryBackground: palette.blue,
     cardPrimaryBackground: palette.orangePrimary,
     cardLightBackground: palette.orangeLight,
     text: palette.black,
     textPrimaryColor: palette.orangePrimary,
   },
   spacing: {
-    s: 8,
-    m: 16,
-    l: 24,
-    xl: 32,
-    xxl: 40,
-  },
-  sizes: {
     s: 8,
     m: 16,
     l: 24,
@@ -66,10 +62,25 @@ const theme = createTheme({
     button: {
       ...Typography.button,
       color: "white",
-      textAlign: 'center'
+      textAlign: "center",
     },
     defaults: {
       fontSize: 12,
+    },
+  },
+  buttonVariants: {
+    primary: {
+      backgroundColor: "primary",
+      color: "white",
+    },
+    secondary: {
+      backgroundColor: "buttonSecondaryBackground",
+      color: "white",
+    },
+    tertiary: {
+      backgroundColor: "white",
+      color: "black",
+      borderColor: "buttonSecondaryBackground",
     },
   },
 });

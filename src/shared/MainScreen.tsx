@@ -10,7 +10,7 @@ const MainScreen = ({ children }: Props) => {
     <Box
       flex={1}
       paddingHorizontal="s"
-      paddingVertical="xl"
+      paddingVertical="m"
       backgroundColor="mainBackground"
     >
       {children}

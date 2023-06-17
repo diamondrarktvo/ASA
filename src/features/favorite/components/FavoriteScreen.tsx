@@ -8,15 +8,14 @@ export default function FavoriteScreen() {
 
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+      <Text>Tous vos favoris seront ici</Text>
       <TouchableOpacity
         style={{ display: "flex", flexDirection: "row" }}
         onPress={() => {
           navigation.navigate("details_book");
         }}
       >
-        <Icon name="list" size={24} color="red" raised />
-        <Text>Show detail book</Text>
+        <Icon name="favorite" size={24} color="red" raised />
       </TouchableOpacity>
     </View>
   );
