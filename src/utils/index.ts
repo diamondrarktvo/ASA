@@ -1,3 +1,3 @@
-import { TABROUTES } from "./Constantes";
+import { TABROUTES, TOPROUTES } from "./Constantes";
 
-export { TABROUTES };
+export { TABROUTES, TOPROUTES };

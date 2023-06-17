@@ -1,6 +1,5 @@
 //IMPORT FROM NODE_MODULES
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { styles } from "./styles";
 
 //LOCAL IMPORT
 import { TabParamList } from "./Types";
@@ -8,8 +7,6 @@ import { Icon } from "_shared";
 import { TABROUTES } from "_utils";
 import { useTheme } from "@shopify/restyle";
 import { Theme } from "_theme";
-
-//IMPORT SCREEN
 
 const Tab = createBottomTabNavigator<TabParamList>();
 

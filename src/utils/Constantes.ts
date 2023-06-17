@@ -1,14 +1,17 @@
 //ROUTE FOR NAVIGATION
-import { RouteTypes } from "./Types";
+import { TabRouteTypes, TopTabRouteTypes } from "./Types";
 import {
   AccountScreen,
   FavoriteScreen,
   MainScreenMessAndNotif,
+  MessageScreen,
+  NotificationScreen,
   PublishScreen,
   SearchScreen,
 } from "_features";
+import { TopNavigation } from "_navigations";
 
-export const TABROUTES: RouteTypes[] = [
+export const TABROUTES: TabRouteTypes[] = [
   {
     name: "search_screen",
     component: SearchScreen,
@@ -28,8 +31,8 @@ export const TABROUTES: RouteTypes[] = [
     icon: "public",
   },
   {
-    name: "message_and_notification_screen",
-    component: MainScreenMessAndNotif,
+    name: "inbox_screen",
+    component: TopNavigation,
     tabLabel: "Boite de réception",
     icon: "chat-bubble-outline",
   },
@@ -38,5 +41,18 @@ export const TABROUTES: RouteTypes[] = [
     component: AccountScreen,
     tabLabel: "Menu",
     icon: "person-outline",
+  },
+];
+
+export const TOPROUTES: TopTabRouteTypes[] = [
+  {
+    name: "message_screen",
+    topLabel: "Messages",
+    component: MessageScreen,
+  },
+  {
+    name: "notification_screen",
+    topLabel: "Notifications",
+    component: NotificationScreen,
   },
 ];
