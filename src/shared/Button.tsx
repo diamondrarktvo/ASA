@@ -47,7 +47,7 @@ const Button: React.FC<ButtonProps> = ({
       <BoxButton
         variant="primary"
         paddingVertical="s"
-        paddingHorizontal="m"
+        paddingHorizontal="s"
         borderRadius={"sm"}
         {...rest}
       >

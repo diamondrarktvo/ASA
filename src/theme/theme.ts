@@ -34,11 +34,11 @@ const theme = createTheme({
     textPrimaryColor: palette.orangePrimary,
   },
   spacing: {
-    s: 8,
-    m: 16,
-    l: 24,
-    xl: 32,
-    xxl: 40,
+    s: "4%",
+    m: "8%",
+    l: "16%",
+    xl: "32%",
+    xxl: "40%",
   },
   breakpoints: {
     phone: 0,

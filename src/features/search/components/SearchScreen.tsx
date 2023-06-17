@@ -1,8 +1,8 @@
-import { Box, Button, MainScreen, Text } from "_shared";
+import { Button, MainScreen, Text } from "_shared";
 
 export default function SearchScreen() {
   return (
-    <MainScreen>
+    <MainScreen typeOfScreen="tab">
       <Button label="Search" />
     </MainScreen>
   );

@@ -1,22 +1,17 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Icon } from "_shared";
+import { Icon, MainScreen, Text } from "_shared";
 
 export default function PublishScreen() {
   //const navigation = useNavigation<>();
 
   return (
-    <View style={styles.container}>
-      <Text>Si vous voulez publier, alors c'est ici... </Text>
-    </View>
+    <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
+      <Text variant="secondary">
+        Si vous voulez publier, alors c'est ici...{" "}
+      </Text>
+    </MainScreen>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+const styles = StyleSheet.create({});

@@ -1,14 +1,14 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { detailScreenNavigationType } from "../types/navigationTypes";
-import { Icon } from "_shared";
+import { Icon, MainScreen, Text } from "_shared";
 
 export default function FavoriteScreen() {
   const navigation = useNavigation<detailScreenNavigationType>();
 
   return (
-    <View style={styles.container}>
-      <Text>Tous vos favoris seront ici</Text>
+    <MainScreen typeOfScreen="tab" titleTabScreen="Favoris">
+      <Text variant="secondary">Tous vos favoris seront ici</Text>
       <TouchableOpacity
         style={{ display: "flex", flexDirection: "row" }}
         onPress={() => {
@@ -17,15 +17,8 @@ export default function FavoriteScreen() {
       >
         <Icon name="favorite" size={24} color="red" raised />
       </TouchableOpacity>
-    </View>
+    </MainScreen>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+const styles = StyleSheet.create({});

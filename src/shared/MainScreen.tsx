@@ -14,7 +14,7 @@ type HeaderProps = {
 
 const HeaderTabTitle = ({ title }: HeaderProps) => {
   return title ? (
-    <Box paddingVertical="xl" backgroundColor="white">
+    <Box paddingVertical="m" backgroundColor="white">
       <Text variant="headerNavigation">{title}</Text>
     </Box>
   ) : null;
@@ -24,7 +24,7 @@ const MainScreen = ({ children, typeOfScreen, titleTabScreen }: Props) => {
   return (
     <Box
       flex={1}
-      paddingHorizontal="m"
+      paddingHorizontal="s"
       paddingVertical="m"
       backgroundColor="mainBackground"
     >
