@@ -5,7 +5,7 @@ import { useTheme } from "@shopify/restyle";
 
 //IMPORT LOCAL
 import { MainScreen, Text } from "_shared";
-import { Theme } from "_theme";
+import { Size, Theme } from "_theme";
 import { TopParamList } from "_navigations";
 import MessageScreen from "./MessageScreen";
 import NotificationScreen from "./NotificationScreen";
@@ -36,7 +36,7 @@ const Top = createMaterialTopTabNavigator<TopParamList>();
 
 const TopNavigation = () => {
   const theme = useTheme<Theme>();
-  const { primary, mainBackground } = theme.colors;
+  const { primary, mainBackground, mainForeground } = theme.colors;
   return (
     <Top.Navigator
       initialRouteName="message_screen"
@@ -46,6 +46,11 @@ const TopNavigation = () => {
         },
         tabBarStyle: {
           backgroundColor: mainBackground,
+        },
+        tabBarLabelStyle: {
+          color: mainForeground,
+          textTransform: "capitalize",
+          fontSize: Size.TYPO.secondary,
         },
       }}
     >
