@@ -1,4 +1,4 @@
 import StackNavigation from "./StackNavigation";
-import TopNavigation from "./TopTabsNavigator";
+import { TopParamList } from "./Types";
 
-export { StackNavigation, TopNavigation };
+export { StackNavigation, TopParamList };
