@@ -1,4 +1,5 @@
 import { createTheme } from "@shopify/restyle";
+import { Size } from "./size";
 import { Typography } from "./typography";
 
 //PALETTE
@@ -40,6 +41,9 @@ const theme = createTheme({
     l: "16%",
     xl: "32%",
     xxl: "40%",
+  },
+  sizes: {
+    ...Size.DIMENSIONS,
   },
   breakpoints: {
     phone: 0,

@@ -36,7 +36,7 @@ const Top = createMaterialTopTabNavigator<TopParamList>();
 
 const TopNavigation = () => {
   const theme = useTheme<Theme>();
-  const { primary } = theme.colors;
+  const { primary, mainBackground } = theme.colors;
   return (
     <Top.Navigator
       initialRouteName="message_screen"
@@ -44,7 +44,9 @@ const TopNavigation = () => {
         tabBarIndicatorStyle: {
           backgroundColor: primary,
         },
-        tabBarGap: 0,
+        tabBarStyle: {
+          backgroundColor: mainBackground,
+        },
       }}
     >
       {TOPROUTES.map((route) => (
@@ -65,11 +67,7 @@ export default function InboxScreen() {
   //const navigation = useNavigation<>();
 
   return (
-    <MainScreen
-      typeOfScreen="tab"
-      titleTabScreen="Boite de réception"
-      paddingHorizontal="none"
-    >
+    <MainScreen typeOfScreen="tab" titleTabScreen="Boite de réception">
       <TopNavigation />
     </MainScreen>
   );
