@@ -1,12 +1,16 @@
-//IMPORT FROM NODE
+import { StyleSheet } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { useTheme } from "@shopify/restyle";
 
 //IMPORT LOCAL
-import { TopParamList } from "./Types";
-import { useTheme } from "@shopify/restyle";
+import { MainScreen, Text } from "_shared";
 import { Theme } from "_theme";
-import { MessageScreen, NotificationScreen } from "_features";
+import { TopParamList } from "_navigations";
+import MessageScreen from "./MessageScreen";
+import NotificationScreen from "./NotificationScreen";
 
+//top navigation is here because we only need it here
 //types
 interface TopTabRouteTypes {
   name: keyof TopParamList;
@@ -40,6 +44,7 @@ const TopNavigation = () => {
         tabBarIndicatorStyle: {
           backgroundColor: primary,
         },
+        tabBarGap: 0,
       }}
     >
       {TOPROUTES.map((route) => (
@@ -56,4 +61,18 @@ const TopNavigation = () => {
   );
 };
 
-export default TopNavigation;
+export default function InboxScreen() {
+  //const navigation = useNavigation<>();
+
+  return (
+    <MainScreen
+      typeOfScreen="tab"
+      titleTabScreen="Boite de réception"
+      paddingHorizontal="none"
+    >
+      <TopNavigation />
+    </MainScreen>
+  );
+}
+
+const styles = StyleSheet.create({});

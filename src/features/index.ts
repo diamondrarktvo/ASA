@@ -4,7 +4,7 @@ import SearchScreen from "./search/components/SearchScreen";
 import PublishScreen from "./publish/components/PublishScreen";
 import MessageScreen from "./inbox/components/MessageScreen";
 import NotificationScreen from "./inbox/components/NotificationScreen";
-import MainScreenMessAndNotif from "./inbox/components/MainScreenMessAndNotif";
+import InboxScreen from "./inbox/components/InboxScreen";
 import AccountScreen from "./account/components/AccountScreen";
 
 //COMPONENTS REUSABLE
@@ -15,7 +15,7 @@ export {
   FavoriteScreen,
   SearchScreen,
   PublishScreen,
-  MainScreenMessAndNotif,
+  InboxScreen,
   NotificationScreen,
   MessageScreen,
   AccountScreen,
