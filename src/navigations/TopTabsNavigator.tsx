@@ -3,9 +3,30 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 
 //IMPORT LOCAL
 import { TopParamList } from "./Types";
-import { TOPROUTES } from "_utils";
 import { useTheme } from "@shopify/restyle";
 import { Theme } from "_theme";
+import { MessageScreen, NotificationScreen } from "_features";
+
+//types
+interface TopTabRouteTypes {
+  name: keyof TopParamList;
+  topLabel: string;
+  component: React.FC<unknown>;
+}
+
+//routes
+const TOPROUTES: TopTabRouteTypes[] = [
+  {
+    name: "message_screen",
+    topLabel: "Messages",
+    component: MessageScreen,
+  },
+  {
+    name: "notification_screen",
+    topLabel: "Notifications",
+    component: NotificationScreen,
+  },
+];
 
 const Top = createMaterialTopTabNavigator<TopParamList>();
 

@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 //LOCAL IMPORT
 import { TabParamList } from "./Types";
 import { Icon } from "_shared";
-import { TABROUTES } from "_utils";
+import { TABROUTES } from "./routes";
 import { useTheme } from "@shopify/restyle";
 import { Theme } from "_theme";
 
