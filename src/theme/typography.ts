@@ -9,6 +9,10 @@ export const Typography = {
     fontWeight: "bold",
     fontSize: Size.TYPO.big, //24,
   },
+  title: {
+    fontWeight: "400",
+    fontSize: Size.TYPO.big, //24,
+  },
   primary: {
     fontSize: Size.TYPO.primary, //18,
   },

@@ -4,7 +4,7 @@ import Text from "./Text";
 
 type Props = {
   children: React.ReactNode;
-  typeOfScreen: string;
+  typeOfScreen: "tab" | "stack" | "component" | "top";
   titleTabScreen?: string;
 } & Partial<BoxProps>;
 
