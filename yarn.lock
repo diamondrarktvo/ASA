@@ -1894,6 +1894,14 @@
   resolved "https://registry.yarnpkg.com/@react-navigation/elements/-/elements-1.3.17.tgz#9cb95765940f2841916fc71686598c22a3e4067e"
   integrity sha512-sui8AzHm6TxeEvWT/NEXlz3egYvCUog4tlXA4Xlb2Vxvy3purVXDq/XsM56lJl344U5Aj/jDzkVanOTMWyk4UA==
 
+"@react-navigation/material-top-tabs@^6.6.2":
+  version "6.6.2"
+  resolved "https://registry.yarnpkg.com/@react-navigation/material-top-tabs/-/material-top-tabs-6.6.2.tgz#ff68e597451a86d26421d5f516a1aa7e1fb30048"
+  integrity sha512-qq0iyMzWApeSvhxovurhk5hluAH2VYbSObTZIKt4KbVXZ0KP8ir1tRQ+IAwkMea+hCnd26glpXRVQI+YqXH0Gw==
+  dependencies:
+    color "^4.2.3"
+    warn-once "^0.1.0"
+
 "@react-navigation/native@^6.1.6":
   version "6.1.6"
   resolved "https://registry.yarnpkg.com/@react-navigation/native/-/native-6.1.6.tgz#84ff5cf85b91f660470fa9407c06c8ee393d5792"
@@ -1944,6 +1952,11 @@
   dependencies:
     component-type "^1.2.1"
     join-component "^1.1.0"
+
+"@shopify/restyle@^2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@shopify/restyle/-/restyle-2.4.2.tgz#bffb5cec619d6ea61e1fab1ec40dec9482946460"
+  integrity sha512-r01j9bbXkhZZkGkLnE6jsJvSCkcjwXBySfe8bQCB7duEfQn36mU6WumNc2pndzXpZhPSevppyXzFZ2jY3XUakw==
 
 "@sideway/address@^4.1.3":
   version "4.1.4"
@@ -2706,9 +2719,9 @@ camelcase@^6.0.0:
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
 caniuse-lite@^1.0.30001502:
-  version "1.0.30001502"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001502.tgz#f7e4a76eb1d2d585340f773767be1fefc118dca8"
-  integrity sha512-AZ+9tFXw1sS0o0jcpJQIXvFTOB/xGiQ4OQ2t98QX3NDn2EZTSRBC801gxrsGgViuq2ak/NLkNgSNEPtCr5lfKg==
+  version "1.0.30001503"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001503.tgz#88b6ff1b2cf735f1f3361dc1a15b59f0561aa398"
+  integrity sha512-Sf9NiF+wZxPfzv8Z3iS0rXM1Do+iOy2Lxvib38glFX+08TCYYYGR5fRJXk4d77C4AYwhUjgYgMsMudbh2TqCKw==
 
 chalk@^2.0.0, chalk@^2.0.1, chalk@^2.4.2:
   version "2.4.2"
@@ -3233,9 +3246,9 @@ ee-first@1.1.1:
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
 
 electron-to-chromium@^1.4.428:
-  version "1.4.428"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.428.tgz#c31fc88e854f49d8305cdabf6ec934ff1588a902"
-  integrity sha512-L7uUknyY286of0AYC8CKfgWstD0Smk2DvHDi9F0GWQhSH90Bzi7iDrmCbZKz75tYJxeGSAc7TYeKpmbjMDoh1w==
+  version "1.4.431"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.431.tgz#47990d6e43465d69aa1fbd0abdec43114946edd0"
+  integrity sha512-m232JTVmCawA2vG+1azVxhKZ9Sv1Q//xxNv5PkP5rWxGgQE8c3CiZFrh8Xnp+d1NmNxlu3QQrGIfdeW5TtXX5w==
 
 emoji-regex@^8.0.0:
   version "8.0.0"
@@ -3656,9 +3669,9 @@ find-yarn-workspace-root@~2.0.0:
     micromatch "^4.0.2"
 
 flow-parser@0.*:
-  version "0.208.0"
-  resolved "https://registry.yarnpkg.com/flow-parser/-/flow-parser-0.208.0.tgz#65d3d34e03674535f9cc4d5b0f02dcb0d50be683"
-  integrity sha512-nuoC/kw8BH0gw7ykHNlKJVvtQWh/j5+CE3P/54RBMy63IoGlj9ScTQOC1ntLzwnnfzm9gT5OOukWG0TKrgKyug==
+  version "0.208.1"
+  resolved "https://registry.yarnpkg.com/flow-parser/-/flow-parser-0.208.1.tgz#eb45ba0abb95af0f1042ccb13f1975c051381bf7"
+  integrity sha512-VfWzg5/5W6/sO/Zk69ByKWGHOI1aXLRZ0wznxbOfFiOYMtAtP8CePGkGkkZaI5vXkUt7HJzVZ1+0Rxat0k7rgw==
 
 flow-parser@^0.185.0:
   version "0.185.2"
@@ -5957,6 +5970,11 @@ react-native-gradle-plugin@^0.71.18:
   resolved "https://registry.yarnpkg.com/react-native-gradle-plugin/-/react-native-gradle-plugin-0.71.19.tgz#3379e28341fcd189bc1f4691cefc84c1a4d7d232"
   integrity sha512-1dVk9NwhoyKHCSxcrM6vY6cxmojeATsBobDicX0ZKr7DgUF2cBQRTKsimQFvzH8XhOVXyH8p4HyDSZNIFI8OlQ==
 
+react-native-pager-view@6.1.2:
+  version "6.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-6.1.2.tgz#3522079b9a9d6634ca5e8d153bc0b4d660254552"
+  integrity sha512-qs2KSFc+7N7B+UZ6SG2sTvCkppagm5fVyRclv1KFKc7lDtrhXLzN59tXJw575LDP/dRJoXsNwqUAhZJdws6ABQ==
+
 react-native-paper@^5.8.0:
   version "5.8.0"
   resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-5.8.0.tgz#ac6b98a9d8fe96d959d2a6a92454e10626177970"
@@ -6003,6 +6021,13 @@ react-native-size-matters@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/react-native-size-matters/-/react-native-size-matters-0.4.0.tgz#01bfd0d59454318f4e0b13fe9c1eb0523d70f2e0"
   integrity sha512-8/C0htHrFWeUm9N8JegmadovUfgTWkGBkDPZ1N3YkXtDWb+98Ya2gThiKcu445r8c7YhcrBfnHz/mYsXIusaOQ==
+
+react-native-tab-view@^3.5.1:
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-3.5.1.tgz#2ad454afc0e186b43ea8b89053f39180d480d48b"
+  integrity sha512-qdrS5t+AEhfuKQyuCXkwHu4IVppkuTvzWWlkSZKrPaSkjjIa32xrsGxt1UW9YDdro2w4AMw5hKn1hFmg/5mvzA==
+  dependencies:
+    use-latest-callback "^0.1.5"
 
 react-native-vector-icons@^9.2.0:
   version "9.2.0"
