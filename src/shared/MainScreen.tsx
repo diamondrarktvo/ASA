@@ -30,7 +30,7 @@ const MainScreen: React.FC<Props> = ({
     <Box
       flex={1}
       paddingHorizontal="s"
-      paddingVertical="m"
+      paddingVertical="s"
       backgroundColor="mainBackground"
       {...props}
     >

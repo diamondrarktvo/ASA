@@ -5,13 +5,11 @@ import { Alert } from "react-native";
 import { useTheme } from "@shopify/restyle";
 
 type Props = {
-  isUserConnected: boolean;
-  loggedIn?: () => void;
   loggedOut?: () => void;
 };
 
-export const AllMenu = ({ isUserConnected, loggedIn, loggedOut }: Props) => {
-  return isUserConnected ? (
+export const AllMenu = ({ loggedOut }: Props) => {
+  return (
     <>
       {/**Actions */}
       <Row marginVertical="s">
@@ -77,16 +75,6 @@ export const AllMenu = ({ isUserConnected, loggedIn, loggedOut }: Props) => {
       <Row marginTop="l">
         <TouchableOpacity onPress={loggedOut}>
           <Text variant="link">Deconnexion</Text>
-        </TouchableOpacity>
-      </Row>
-    </>
-  ) : (
-    <>
-      <Button label="Connexion" onPress={loggedIn} />
-      <Row marginVertical="s">
-        <Text variant="tertiary">Vous n'avez pas de compte ?</Text>
-        <TouchableOpacity>
-          <Text variant="link">Inscription</Text>
         </TouchableOpacity>
       </Row>
     </>

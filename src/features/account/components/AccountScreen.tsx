@@ -9,9 +9,9 @@ import {
   Column,
   Icon,
   TouchableOpacity,
+  CheckUserConnected,
 } from "_shared";
 import { Size, Theme } from "_theme";
-import { UnitItemSectionLink } from "./UnitItemSectionLink";
 import VersionCheck from "../../version/VersionCheck";
 import { AllMenu } from "./AllMenu";
 import { useState } from "react";
@@ -28,8 +28,12 @@ export default function AccountScreen() {
         typeOfScreen="tab"
         titleTabScreen={isUserConnected ? "Menu" : "Votre profil"}
       >
-        {/**Profil */}
-        {isUserConnected ? (
+        <CheckUserConnected
+          loggedIn={() => setIsUserConnected(true)}
+          isUserLogged={isUserConnected}
+          subTitleIfNotConnected="Connectez-vous pour explorer notre produit"
+        >
+          {/**Profil */}
           <TouchableOpacity onPress={() => Alert.alert("Affichage du profile")}>
             <Row
               borderBottomWidth={2}
@@ -57,21 +61,10 @@ export default function AccountScreen() {
               />
             </Row>
           </TouchableOpacity>
-        ) : (
-          <Row marginBottom="s">
-            <Text variant="title" color="secondary">
-              Connectez-vous pour commencer à exploiter notre produit
-            </Text>
-          </Row>
-        )}
 
-        <AllMenu
-          isUserConnected={isUserConnected}
-          loggedIn={() => setIsUserConnected(true)}
-          loggedOut={() => setIsUserConnected(false)}
-        />
-
-        <VersionCheck />
+          <AllMenu loggedOut={() => setIsUserConnected(false)} />
+          <VersionCheck />
+        </CheckUserConnected>
       </MainScreen>
     </ScrollView>
   );

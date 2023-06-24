@@ -7,6 +7,7 @@ import Image from "./Image";
 import Row from "./Row";
 import Column from "./Column";
 import TouchableOpacity from "./TouchableOpacity";
+import CheckUserConnected from "./CheckUserConnected";
 
 export {
   Icon,
@@ -18,4 +19,5 @@ export {
   Row,
   Column,
   TouchableOpacity,
+  CheckUserConnected,
 };
