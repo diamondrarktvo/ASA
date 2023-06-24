@@ -24,35 +24,46 @@ export default function AccountScreen() {
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <MainScreen typeOfScreen="tab" titleTabScreen="Menu">
+      <MainScreen
+        typeOfScreen="tab"
+        titleTabScreen={isUserConnected ? "Menu" : "Votre profil"}
+      >
         {/**Profil */}
-        <TouchableOpacity onPress={() => Alert.alert("Affichage du profile")}>
-          <Row
-            borderBottomWidth={2}
-            paddingBottom="s"
-            marginTop="s"
-            borderColor="secondary"
-            marginBottom="m"
-          >
-            <Image
-              source={require("_images/logoASA.jpeg")}
-              style={{
-                width: Size.IMAGE_SMALL,
-                height: Size.IMAGE_SMALL,
-                borderRadius: borderRadii.lg,
-              }}
-            />
-            <Column paddingHorizontal="s" flex={2}>
-              <Text variant="title">Mety Amiko</Text>
-              <Text variant="secondary">Afficher le profil</Text>
-            </Column>
-            <Icon
-              name="chevron-right"
-              size={Size.ICON_LARGE}
-              color={colors.black}
-            />
+        {isUserConnected ? (
+          <TouchableOpacity onPress={() => Alert.alert("Affichage du profile")}>
+            <Row
+              borderBottomWidth={2}
+              paddingBottom="s"
+              marginTop="s"
+              borderColor="offWhite"
+              marginBottom="m"
+            >
+              <Image
+                source={require("_images/logoASA.jpeg")}
+                style={{
+                  width: Size.IMAGE_SMALL,
+                  height: Size.IMAGE_SMALL,
+                  borderRadius: borderRadii.lg,
+                }}
+              />
+              <Column paddingHorizontal="s" flex={2}>
+                <Text variant="title">Mety Amiko</Text>
+                <Text variant="secondary">Afficher le profil</Text>
+              </Column>
+              <Icon
+                name="chevron-right"
+                size={Size.ICON_LARGE}
+                color={colors.black}
+              />
+            </Row>
+          </TouchableOpacity>
+        ) : (
+          <Row marginBottom="s">
+            <Text variant="title" color="secondary">
+              Connectez-vous pour commencer à exploiter notre produit
+            </Text>
           </Row>
-        </TouchableOpacity>
+        )}
 
         <AllMenu
           isUserConnected={isUserConnected}

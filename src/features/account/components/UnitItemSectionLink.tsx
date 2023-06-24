@@ -25,7 +25,7 @@ export const UnitItemSectionLink = ({ iconLeft, label, onPress }: Props) => {
         borderBottomWidth={1}
         paddingBottom="s"
         marginTop="s"
-        borderColor="secondary"
+        borderColor="offWhite"
       >
         <Icon name={iconLeft} size={Size.ICON_MEDIUM} color={colors.black} />
         <Column paddingHorizontal="s" flex={2}>

@@ -11,6 +11,7 @@ const palette = {
   redBordeaux: "#9B0409",
 
   white: "#F0F2F3",
+  grey: "#939597",
   offWhite: "#DDD",
   black: "#0B0B0B",
   offBlack: "#252525",
@@ -26,7 +27,8 @@ const theme = createTheme({
     error: palette.redBordeaux,
     white: palette.white,
     black: palette.black,
-    secondary: palette.offWhite, //grey
+    secondary: palette.grey, //grey
+    offWhite: palette.offWhite,
     buttonPrimaryBackground: palette.orangePrimary,
     buttonSecondaryBackground: palette.blue,
     cardPrimaryBackground: palette.orangePrimary,
