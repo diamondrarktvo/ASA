@@ -1,6 +1,13 @@
-import { TouchableOpacity } from "react-native";
 import { useTheme } from "@shopify/restyle";
-import { Image, MainScreen, Row, Text, Column, Icon } from "_shared";
+import {
+  Image,
+  MainScreen,
+  Row,
+  Text,
+  Column,
+  Icon,
+  TouchableOpacity,
+} from "_shared";
 import { Size, Theme } from "_theme";
 
 type Props = {
@@ -13,7 +20,7 @@ export const UnitItemSectionLink = ({ iconLeft, label, onPress }: Props) => {
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
   return (
-    <TouchableOpacity activeOpacity={0.4} onPress={onPress}>
+    <TouchableOpacity onPress={onPress}>
       <Row
         borderBottomWidth={1}
         paddingBottom="s"

@@ -25,4 +25,9 @@ export const Typography = {
   button: {
     fontSize: Size.TYPO.primary,
   },
+  link: {
+    fontSize: Size.TYPO.secondary,
+    textDecorationLine: "underline",
+    fontWeight: "600",
+  },
 };

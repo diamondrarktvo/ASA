@@ -6,5 +6,16 @@ import Button from "./Button";
 import Image from "./Image";
 import Row from "./Row";
 import Column from "./Column";
+import TouchableOpacity from "./TouchableOpacity";
 
-export { Icon, Box, Text, MainScreen, Button, Image, Row, Column };
+export {
+  Icon,
+  Box,
+  Text,
+  MainScreen,
+  Button,
+  Image,
+  Row,
+  Column,
+  TouchableOpacity,
+};
