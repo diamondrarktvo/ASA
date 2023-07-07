@@ -8,7 +8,7 @@ export default function MessageScreen() {
   return (
     <MainScreen typeOfScreen="stack">
       <Text variant="secondary">Message </Text>
-      <Text variant="tertiary">Show message book</Text>
+      <Text variant="tertiary">Show message</Text>
     </MainScreen>
   );
 }

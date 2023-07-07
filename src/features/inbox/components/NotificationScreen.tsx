@@ -6,9 +6,9 @@ export default function NotificationScreen() {
   //const navigation = useNavigation<>();
 
   return (
-    <MainScreen typeOfScreen="topTab">
+    <MainScreen typeOfScreen="top">
       <Text variant="primary">Notification </Text>
-      <Text variant="secondary">Show notification book</Text>
+      <Text variant="secondary">Show notification</Text>
     </MainScreen>
   );
 }

@@ -1,9 +1,9 @@
 import { View, Text, StyleSheet } from "react-native";
 
-export default function DetailBook() {
+export default function ManageProfil() {
   return (
     <View style={styles.container}>
-      <Text>Detail de ce livre</Text>
+      <Text>Modification du Profil</Text>
     </View>
   );
 }

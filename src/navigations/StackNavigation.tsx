@@ -10,25 +10,24 @@ import { StackParamList } from "./Types";
 import TabNavigation from "./TabNavigation";
 
 //IMPORT SCREEN
-import { DetailBook } from "_features";
+import { ManageProfil } from "_features";
 
 const Stack = createStackNavigator<StackParamList>();
 
 const StackNavigation = () => {
-
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={"main_tabs"}>
-
-        <Stack.Group screenOptions={stackNavigationConfig.screenOptionsForHiddenHeader}>
-          <Stack.Screen name={"main_tabs"} component={TabNavigation} />
-        </Stack.Group>
-
         <Stack.Group
-          screenOptions={stackNavigationConfig.screenOptionsForDisplayedHeader}
+          screenOptions={stackNavigationConfig.screenOptionsForHiddenHeader}
         >
-          <Stack.Screen name={"details_book"} component={DetailBook} options={{title: "Details"}} />
+          <Stack.Screen name={"main_tabs"} component={TabNavigation} />
+          <Stack.Screen name={"manage_profil"} component={ManageProfil} />
         </Stack.Group>
+
+        {/*<Stack.Group
+          screenOptions={stackNavigationConfig.screenOptionsForDisplayedHeader}
+  ></Stack.Group>*/}
       </Stack.Navigator>
     </NavigationContainer>
   );
