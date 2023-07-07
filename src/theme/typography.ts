@@ -16,6 +16,10 @@ export const Typography = {
   primary: {
     fontSize: Size.TYPO.primary, //18,
   },
+  primaryBold: {
+    fontSize: Size.TYPO.primary, //18,
+    fontWeight: "bold",
+  },
   secondary: {
     fontSize: Size.TYPO.secondary, //16
   },

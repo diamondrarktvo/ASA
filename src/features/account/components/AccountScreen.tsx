@@ -31,7 +31,7 @@ export default function AccountScreen() {
         <CheckUserConnected
           loggedIn={() => setIsUserConnected(true)}
           isUserLogged={isUserConnected}
-          subTitleIfNotConnected="Connectez-vous pour explorer notre produit"
+          subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
         >
           {/**Profil */}
           <TouchableOpacity onPress={() => Alert.alert("Affichage du profile")}>

@@ -38,6 +38,7 @@ const theme = createTheme({
   },
   spacing: {
     none: "0%",
+    xs: "2%",
     s: "4%",
     m: "8%",
     l: "16%",
@@ -70,6 +71,7 @@ const theme = createTheme({
       ...Typography.button,
       color: "white",
       textAlign: "center",
+      fontWeight: "bold",
     },
     defaults: {
       fontSize: 12,

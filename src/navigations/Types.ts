@@ -18,7 +18,12 @@ export type TabParamList = {
   account_screen: undefined;
 };
 
-export type TopParamList = {
+export type TopParamListInbox = {
   message_screen: undefined;
   notification_screen: undefined;
+};
+
+export type TopParamListFavourite = {
+  announcement_screen: undefined;
+  announcer_screen: undefined;
 };

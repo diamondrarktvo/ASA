@@ -6,14 +6,14 @@ import { useTheme } from "@shopify/restyle";
 //IMPORT LOCAL
 import { MainScreen, Text } from "_shared";
 import { Size, Theme } from "_theme";
-import { TopParamList } from "_navigations";
+import { TopParamListInbox } from "_navigations";
 import MessageScreen from "./MessageScreen";
 import NotificationScreen from "./NotificationScreen";
 
 //top navigation is here because we only need it here
 //types
 interface TopTabRouteTypes {
-  name: keyof TopParamList;
+  name: keyof TopParamListInbox;
   topLabel: string;
   component: React.FC<unknown>;
 }
@@ -32,7 +32,7 @@ const TOPROUTES: TopTabRouteTypes[] = [
   },
 ];
 
-const Top = createMaterialTopTabNavigator<TopParamList>();
+const Top = createMaterialTopTabNavigator<TopParamListInbox>();
 
 const TopNavigation = () => {
   const theme = useTheme<Theme>();

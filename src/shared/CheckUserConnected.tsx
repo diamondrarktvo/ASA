@@ -1,10 +1,14 @@
 import Box, { BoxProps } from "./Box";
-import React from "react";
+import React, { useState } from "react";
 import Text from "./Text";
 import TouchableOpacity from "./TouchableOpacity";
-import { Alert } from "react-native";
 import Button from "./Button";
 import Row from "./Row";
+import Column from "./Column";
+import Input from "./Input";
+import { useTheme } from "@shopify/restyle";
+import { Theme, Size } from "_theme";
+import Icon from "./Icon";
 
 type Props = {
   children: React.ReactNode;
@@ -25,19 +29,52 @@ const ComponentUserNotLogged = ({
   subTitle,
   loggedIn,
 }: ComponentUserNotLoggedProps) => {
+  const theme = useTheme<Theme>();
+  const { primary, secondary, white } = theme.colors;
+  const [hidePassword, setHidePassword] = useState(true);
+
   return (
     <Box paddingVertical="m" backgroundColor="mainBackground">
-      {title && <Text variant="bigTitle">{title}</Text>}
-      <Row marginBottom="s">
-        <Text variant="title" color="secondary">
-          {subTitle}
-        </Text>
-      </Row>
-      <Button label="Connexion" onPress={loggedIn} />
-      <Row marginVertical="s">
-        <Text variant="tertiary">Vous n'avez pas de compte ?</Text>
-        <TouchableOpacity>
-          <Text variant="link">Inscription</Text>
+      <Box>
+        {title ? <Text variant="bigTitle">{title}</Text> : null}
+        <Row marginBottom="s">
+          <Text variant="title" color="secondary">
+            {subTitle}
+          </Text>
+        </Row>
+        <Column>
+          <Input placeholder="Email*" />
+          <Input
+            placeholder="Mot de passe*"
+            iconRight={{
+              name: hidePassword ? "visibility" : "visibility-off",
+              size: 32,
+              color: secondary,
+              onPress: () => setHidePassword(!hidePassword),
+            }}
+          />
+        </Column>
+        <Row marginVertical="m">
+          <Text variant="primaryBold" textDecorationLine="underline">
+            Mot de passe oublié
+          </Text>
+        </Row>
+        <Button label="Se connecter" onPress={loggedIn} />
+      </Box>
+      <Row
+        alignItems="center"
+        padding="s"
+        backgroundColor="offWhite"
+        justifyContent="space-between"
+        borderRadius="xs"
+        marginTop="xs"
+      >
+        <Text variant="primaryBold">Creer un compte</Text>
+        <TouchableOpacity
+          onPress={() => console.log("creer compte")}
+          backgroundColor={white}
+        >
+          <Icon name="arrow-forward" size={Size.ICON_MEDIUM} color={primary} />
         </TouchableOpacity>
       </Row>
     </Box>
