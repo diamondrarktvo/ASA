@@ -9,6 +9,7 @@ import Column from "./Column";
 import TouchableOpacity from "./TouchableOpacity";
 import CheckUserConnected from "./CheckUserConnected";
 import HeaderStackNav from "./HeaderStackNav";
+import Input from "./Input";
 
 export {
   Icon,
@@ -22,4 +23,5 @@ export {
   TouchableOpacity,
   CheckUserConnected,
   HeaderStackNav,
+  Input,
 };

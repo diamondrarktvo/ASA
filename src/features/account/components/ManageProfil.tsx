@@ -1,4 +1,12 @@
-import { Box, Image, MainScreen, Text, HeaderStackNav, Column } from "_shared";
+import {
+  Box,
+  Image,
+  MainScreen,
+  Text,
+  HeaderStackNav,
+  Column,
+  Input,
+} from "_shared";
 import { Theme, Size } from "_theme";
 import { useTheme } from "@shopify/restyle";
 import { StyleSheet } from "react-native";
@@ -35,7 +43,43 @@ export default function ManageProfil() {
           Utilisateur client
         </Text>
       </Box>
-      <Column></Column>
+      <Column>
+        <Text variant="title" color="text">
+          Votre profile
+        </Text>
+        <Text variant="secondary" color="secondary" marginBottom="s">
+          Les informations que vous partagez seront utilisées dans l'application
+          Mety Amiko pour aider les autres utilisateurs et administrateurs à
+          vous connaitre.
+        </Text>
+        <Input
+          placeholder="Nom"
+          value="Mety Amiko"
+          iconLeft={{
+            name: "person",
+            size: Size.ICON_SMALL,
+            color: colors.text,
+          }}
+        />
+        <Input
+          placeholder="Prenom"
+          value="Mety Amiko be"
+          iconLeft={{
+            name: "person",
+            size: Size.ICON_SMALL,
+            color: colors.text,
+          }}
+        />
+        <Input
+          placeholder="Age"
+          value="22"
+          iconLeft={{
+            name: "person",
+            size: Size.ICON_SMALL,
+            color: colors.text,
+          }}
+        />
+      </Column>
     </MainScreen>
   );
 }

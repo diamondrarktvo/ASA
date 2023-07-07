@@ -3,6 +3,8 @@ import React from "react";
 import Row from "./Row";
 import Icon from "./Icon";
 import TouchableOpacity from "./TouchableOpacity";
+import { Theme } from "_theme";
+import { useTheme } from "@shopify/restyle";
 
 type InputProps = TextInputProps & {
   iconRight?: {
@@ -19,6 +21,9 @@ type InputProps = TextInputProps & {
 };
 
 const Input = ({ iconRight, iconLeft, ...props }: InputProps) => {
+  const theme = useTheme<Theme>();
+  const { spacing } = theme;
+
   return (
     <Row
       borderWidth={1}
@@ -38,7 +43,13 @@ const Input = ({ iconRight, iconLeft, ...props }: InputProps) => {
         />
       )}
       <Row flex={1} justifyContent="space-between">
-        <TextInput {...props} style={{ width: iconRight ? "90%" : "100%" }} />
+        <TextInput
+          {...props}
+          style={{
+            width: iconRight ? "90%" : "100%",
+            marginLeft: iconLeft ? spacing.s : 0,
+          }}
+        />
         {iconRight && (
           <TouchableOpacity onPress={iconRight.onPress}>
             <Icon
