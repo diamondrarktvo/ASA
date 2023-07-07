@@ -7,8 +7,12 @@ export default function NotificationScreen() {
 
   return (
     <MainScreen typeOfScreen="top">
-      <Text variant="primary">Notification </Text>
-      <Text variant="secondary">Show notification</Text>
+      <Text variant="primary" color="text">
+        Notification{" "}
+      </Text>
+      <Text variant="secondary" color="text">
+        Show notification
+      </Text>
     </MainScreen>
   );
 }

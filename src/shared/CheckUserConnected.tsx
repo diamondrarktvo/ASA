@@ -36,7 +36,11 @@ const ComponentUserNotLogged = ({
   return (
     <Box paddingVertical="m" backgroundColor="mainBackground">
       <Box>
-        {title ? <Text variant="bigTitle">{title}</Text> : null}
+        {title ? (
+          <Text variant="bigTitle" color="text">
+            {title}
+          </Text>
+        ) : null}
         <Row marginBottom="s">
           <Text variant="title" color="secondary">
             {subTitle}
@@ -55,7 +59,11 @@ const ComponentUserNotLogged = ({
           />
         </Column>
         <Row marginVertical="m">
-          <Text variant="primaryBold" textDecorationLine="underline">
+          <Text
+            variant="primaryBold"
+            textDecorationLine="underline"
+            color="text"
+          >
             Mot de passe oublié
           </Text>
         </Row>
@@ -69,7 +77,9 @@ const ComponentUserNotLogged = ({
         borderRadius="xs"
         marginTop="xs"
       >
-        <Text variant="primaryBold">Creer un compte</Text>
+        <Text variant="primaryBold" color="text">
+          Creer un compte
+        </Text>
         <TouchableOpacity
           onPress={() => console.log("creer compte")}
           backgroundColor={white}

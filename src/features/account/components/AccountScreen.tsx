@@ -27,7 +27,7 @@ export default function AccountScreen() {
     <ScrollView showsVerticalScrollIndicator={false}>
       <MainScreen
         typeOfScreen="tab"
-        titleTabScreen={isUserConnected ? "Menu" : "Votre profil"}
+        titleTabScreen={isUserConnected ? "Menu" : "Bonjour"}
       >
         <CheckUserConnected
           loggedIn={() => setIsUserConnected(true)}
@@ -54,8 +54,12 @@ export default function AccountScreen() {
                 }}
               />
               <Column paddingHorizontal="s" flex={2}>
-                <Text variant="title">Mety Amiko</Text>
-                <Text variant="secondary">Afficher le profil</Text>
+                <Text variant="title" color="text">
+                  Mety Amiko
+                </Text>
+                <Text variant="secondary" color="text">
+                  Afficher le profil
+                </Text>
               </Column>
               <Icon
                 name="chevron-right"

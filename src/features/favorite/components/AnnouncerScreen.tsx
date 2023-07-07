@@ -7,8 +7,12 @@ export default function AnnouncerScreen() {
 
   return (
     <MainScreen typeOfScreen="stack">
-      <Text variant="secondary">Les annonceurs favoris </Text>
-      <Text variant="tertiary">Show your announcer favorite</Text>
+      <Text variant="secondary" color="text">
+        Les annonceurs favoris{" "}
+      </Text>
+      <Text variant="tertiary" color="text">
+        Show your announcer favorite
+      </Text>
     </MainScreen>
   );
 }

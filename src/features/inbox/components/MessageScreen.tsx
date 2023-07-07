@@ -7,8 +7,12 @@ export default function MessageScreen() {
 
   return (
     <MainScreen typeOfScreen="stack">
-      <Text variant="secondary">Message </Text>
-      <Text variant="tertiary">Show message</Text>
+      <Text variant="secondary" color="text">
+        Message{" "}
+      </Text>
+      <Text variant="tertiary" color="text">
+        Show message
+      </Text>
     </MainScreen>
   );
 }

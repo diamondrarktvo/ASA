@@ -7,7 +7,7 @@ export default function PublishScreen() {
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
-      <Text variant="secondary">
+      <Text variant="secondary" color="text">
         Si vous voulez publier, alors c'est ici...{" "}
       </Text>
     </MainScreen>

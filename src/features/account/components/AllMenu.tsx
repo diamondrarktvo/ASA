@@ -13,7 +13,9 @@ export const AllMenu = ({ loggedOut }: Props) => {
     <>
       {/**Actions */}
       <Row marginVertical="s">
-        <Text variant="bigTitle">Actions</Text>
+        <Text variant="bigTitle" color="text">
+          Actions
+        </Text>
       </Row>
       <UnitItemSectionLink
         iconLeft="campaign"
@@ -43,7 +45,9 @@ export const AllMenu = ({ loggedOut }: Props) => {
 
       {/**Parametre */}
       <Row marginTop="m">
-        <Text variant="bigTitle">Paramètre</Text>
+        <Text variant="bigTitle" color="text">
+          Paramètre
+        </Text>
       </Row>
 
       <UnitItemSectionLink
@@ -59,7 +63,9 @@ export const AllMenu = ({ loggedOut }: Props) => {
 
       {/**Assistance */}
       <Row marginTop="m">
-        <Text variant="bigTitle">Assistance</Text>
+        <Text variant="bigTitle" color="text">
+          Assistance
+        </Text>
       </Row>
 
       <UnitItemSectionLink
@@ -74,7 +80,9 @@ export const AllMenu = ({ loggedOut }: Props) => {
       />
       <Row marginTop="l">
         <TouchableOpacity onPress={loggedOut}>
-          <Text variant="link">Deconnexion</Text>
+          <Text variant="link" color="text">
+            Deconnexion
+          </Text>
         </TouchableOpacity>
       </Row>
     </>

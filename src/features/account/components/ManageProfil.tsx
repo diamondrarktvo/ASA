@@ -1,4 +1,4 @@
-import { Box, Image, MainScreen, Text, HeaderStackNav } from "_shared";
+import { Box, Image, MainScreen, Text, HeaderStackNav, Column } from "_shared";
 import { Theme, Size } from "_theme";
 import { useTheme } from "@shopify/restyle";
 import { StyleSheet } from "react-native";
@@ -10,6 +10,7 @@ export default function ManageProfil() {
   return (
     <MainScreen typeOfScreen="stack">
       <HeaderStackNav titleLeft="Modifier" />
+      {/**Banniere image profile */}
       <Box
         alignItems="center"
         padding="m"
@@ -27,9 +28,14 @@ export default function ManageProfil() {
             marginBottom: spacing.s,
           }}
         />
-        <Text variant="bigTitle">Mety Amiko</Text>
-        <Text variant="secondary">Utilisateur client</Text>
+        <Text variant="bigTitle" color="text">
+          Mety Amiko
+        </Text>
+        <Text variant="secondary" color="text">
+          Utilisateur client
+        </Text>
       </Box>
+      <Column></Column>
     </MainScreen>
   );
 }
