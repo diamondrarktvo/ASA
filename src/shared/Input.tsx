@@ -38,7 +38,7 @@ const Input = ({ iconRight, iconLeft, ...props }: InputProps) => {
         />
       )}
       <Row flex={1} justifyContent="space-between">
-        <TextInput {...props} />
+        <TextInput {...props} style={{ width: iconRight ? "90%" : "100%" }} />
         {iconRight && (
           <TouchableOpacity onPress={iconRight.onPress}>
             <Icon
