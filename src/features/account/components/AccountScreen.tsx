@@ -14,10 +14,11 @@ import {
 import { Size, Theme } from "_theme";
 import VersionCheck from "../../version/VersionCheck";
 import { AllMenu } from "./AllMenu";
+import { manageProfilNavigationTypes } from "../types";
 import { useState } from "react";
 
 export default function AccountScreen() {
-  //const navigation = useNavigation<>();
+  const navigation = useNavigation<manageProfilNavigationTypes>();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
   const [isUserConnected, setIsUserConnected] = useState(true);
@@ -34,7 +35,9 @@ export default function AccountScreen() {
           subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
         >
           {/**Profil */}
-          <TouchableOpacity onPress={() => Alert.alert("Affichage du profile")}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("manage_profil")}
+          >
             <Row
               borderBottomWidth={2}
               paddingBottom="s"
