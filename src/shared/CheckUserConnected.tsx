@@ -80,11 +80,8 @@ const ComponentUserNotLogged = ({
         <Text variant="primaryBold" color="text">
           Creer un compte
         </Text>
-        <TouchableOpacity
-          onPress={() => console.log("creer compte")}
-          backgroundColor={white}
-        >
-          <Icon name="arrow-forward" size={Size.ICON_MEDIUM} color={primary} />
+        <TouchableOpacity onPress={() => console.log("creer compte")}>
+          <Icon name="arrow-forward" size={Size.ICON_LARGE} color={primary} />
         </TouchableOpacity>
       </Row>
     </Box>

@@ -1,4 +1,4 @@
-import { Button, Row, Text, TouchableOpacity } from "_shared";
+import { Row, Text, TouchableOpacity } from "_shared";
 import { Size, Theme } from "_theme";
 import { UnitItemSectionLink } from "./UnitItemSectionLink";
 import { Alert } from "react-native";
