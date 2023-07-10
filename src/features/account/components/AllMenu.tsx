@@ -1,14 +1,15 @@
 import { Row, Text, TouchableOpacity } from "_shared";
-import { Size, Theme } from "_theme";
 import { UnitItemSectionLink } from "./UnitItemSectionLink";
 import { Alert } from "react-native";
-import { useTheme } from "@shopify/restyle";
+import { useNavigation } from "@react-navigation/native";
+import { favoriteNavigationTypes } from "../types";
 
 type Props = {
   loggedOut?: () => void;
 };
 
 export const AllMenu = ({ loggedOut }: Props) => {
+  const navigation = useNavigation<favoriteNavigationTypes>();
   return (
     <>
       {/**Actions */}
@@ -25,7 +26,7 @@ export const AllMenu = ({ loggedOut }: Props) => {
       <UnitItemSectionLink
         iconLeft="favorite"
         label="Favoris"
-        onPress={() => Alert.alert("Menu cliqué!")}
+        onPress={() => navigation.navigate("favorite_screen")}
       />
       <UnitItemSectionLink
         iconLeft="redeem"
