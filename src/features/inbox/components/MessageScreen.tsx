@@ -10,12 +10,14 @@ const allMessages: messageTypes[] = [
   {
     id: 1,
     emetteur: "Rakoto",
+    read: false,
     message: "Votre commande a été livré.",
     date: "12 juil.",
   },
   {
     id: 2,
     emetteur: "Mety Amiko",
+    read: false,
     message: "Votre commande a été livré.",
     date: "17 Sept 2022",
   },
@@ -28,7 +30,7 @@ export default function MessageScreen() {
 
   const renderItemMessage: ListRenderItem<messageTypes> = ({ item }) => {
     return (
-      <Row alignItems="center" marginVertical="xs">
+      <Row alignItems="center" paddingVertical="xs">
         <Image
           source={require("_images/logoASA.jpeg")}
           style={{
@@ -42,18 +44,20 @@ export default function MessageScreen() {
             <Text variant="primaryBold" color="text">
               {item.emetteur}
             </Text>
-            <Text
-              variant="tertiary"
-              style={{
-                backgroundColor: colors.primary,
-                paddingVertical: 4,
-                paddingHorizontal: 8,
-                borderRadius: borderRadii.lg,
-              }}
-              color="white"
-            >
-              1
-            </Text>
+            {!item.read && (
+              <Text
+                variant="tertiary"
+                style={{
+                  backgroundColor: colors.primary,
+                  paddingVertical: 4,
+                  paddingHorizontal: 8,
+                  borderRadius: borderRadii.lg,
+                }}
+                color="white"
+              >
+                1
+              </Text>
+            )}
           </Row>
           <Row justifyContent="space-between" width="100%">
             <Text
