@@ -33,11 +33,11 @@ const allMessages: messageTypes[] = [
 ];
 
 export default function MessageScreen() {
-  console.log("allMessages : ", allMessages);
   const navigation = useNavigation<manageMessageNavigationTypes>();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
 
+  //components
   const renderItemMessage: ListRenderItem<messageTypes> = ({ item }) => {
     return (
       <TouchableOpacity
