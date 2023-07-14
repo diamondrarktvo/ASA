@@ -8,7 +8,7 @@ import { Theme, Size } from "_theme";
 import Column from "./Column";
 
 type Props = {
-  title: string;
+  title?: string;
   subTitle?: string;
   iconRight?: string;
   iconRightOnPress?: () => void;
@@ -30,9 +30,11 @@ const HeaderStackNavNormal: React.FC<Props> = ({
         <Icon name="arrow-back" color={black} size={Size.ICON_MEDIUM} />
       </TouchableOpacity>
       <Column flex={2} marginLeft="s">
-        <Text variant="primaryBold" color="text">
-          {title}
-        </Text>
+        {title ? (
+          <Text variant="primaryBold" color="text">
+            {title}
+          </Text>
+        ) : null}
         {subTitle ? (
           <Text variant="tertiary" color="text">
             {subTitle}
