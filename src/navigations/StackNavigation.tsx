@@ -10,7 +10,7 @@ import { StackParamList } from "./Types";
 import TabNavigation from "./TabNavigation";
 
 //IMPORT SCREEN
-import { ManageProfil } from "_features";
+import { ManageProfil, ManageMessageScreen } from "_features";
 
 const Stack = createStackNavigator<StackParamList>();
 
@@ -22,7 +22,13 @@ const StackNavigation = () => {
           screenOptions={stackNavigationConfig.screenOptionsForHiddenHeader}
         >
           <Stack.Screen name={"main_tabs"} component={TabNavigation} />
+          {/**Account screen */}
           <Stack.Screen name={"manage_profil"} component={ManageProfil} />
+          {/**Inbox screen */}
+          <Stack.Screen
+            name={"manage_message"}
+            component={ManageMessageScreen}
+          />
         </Stack.Group>
 
         {/*<Stack.Group

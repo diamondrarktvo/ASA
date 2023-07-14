@@ -6,6 +6,7 @@ import MessageScreen from "./inbox/components/MessageScreen";
 import NotificationScreen from "./inbox/components/NotificationScreen";
 import InboxScreen from "./inbox/components/InboxScreen";
 import AccountScreen from "./account/components/AccountScreen";
+import ManageMessageScreen from "./inbox/components/ManageMessageScreen";
 
 //COMPONENTS REUSABLE
 import ManageProfil from "./account/components/ManageProfil";
@@ -21,4 +22,5 @@ export {
   AccountScreen,
   //COMPONENT REUSABLE
   ManageProfil,
+  ManageMessageScreen,
 };

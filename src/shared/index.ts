@@ -8,7 +8,8 @@ import Row from "./Row";
 import Column from "./Column";
 import TouchableOpacity from "./TouchableOpacity";
 import CheckUserConnected from "./CheckUserConnected";
-import HeaderStackNav from "./HeaderStackNav";
+import HeaderStackNavStyled from "./HeaderStackNavStyled";
+import HeaderStackNavNormal from "./HeaderStackNavNormal";
 import Input from "./Input";
 
 export {
@@ -22,6 +23,7 @@ export {
   Column,
   TouchableOpacity,
   CheckUserConnected,
-  HeaderStackNav,
+  HeaderStackNavStyled,
+  HeaderStackNavNormal,
   Input,
 };

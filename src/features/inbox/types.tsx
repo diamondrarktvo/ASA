@@ -1,3 +1,6 @@
+import { StackParamList, TabParamList } from "src/navigations/Types";
+import { StackNavigationProp } from "@react-navigation/stack";
+
 export type messageTypes = {
   id: number;
   emetteur: string;
@@ -13,3 +16,10 @@ export type notificationTypes = {
   read: boolean;
   date: string;
 };
+
+//navigation stack types
+
+export type manageMessageNavigationTypes = StackNavigationProp<
+  StackParamList,
+  "manage_message"
+>;

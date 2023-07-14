@@ -1,10 +1,19 @@
 import { StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Icon, MainScreen, Text, Box, Row, Image, Column } from "_shared";
+import {
+  Icon,
+  MainScreen,
+  Text,
+  Box,
+  Row,
+  Image,
+  Column,
+  TouchableOpacity,
+} from "_shared";
 import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import { useTheme } from "@shopify/restyle";
 import { Size, Theme } from "_theme";
-import { messageTypes } from "../types";
+import { messageTypes, manageMessageNavigationTypes } from "../types";
 
 const allMessages: messageTypes[] = [
   {
@@ -24,56 +33,58 @@ const allMessages: messageTypes[] = [
 ];
 
 export default function MessageScreen() {
-  //const navigation = useNavigation<>();
+  const navigation = useNavigation<manageMessageNavigationTypes>();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
 
   const renderItemMessage: ListRenderItem<messageTypes> = ({ item }) => {
     return (
-      <Row alignItems="center" paddingVertical="xs">
-        <Image
-          source={require("_images/logoASA.jpeg")}
-          style={{
-            width: Size.IMAGE_SMALL,
-            height: Size.IMAGE_SMALL,
-            borderRadius: borderRadii.lg,
-          }}
-        />
-        <Column marginLeft="xs" width="75%">
-          <Row justifyContent="space-between" width="100%">
-            <Text variant="primaryBold" color="text">
-              {item.emetteur}
-            </Text>
-            {!item.read && (
-              <Text
-                variant="tertiary"
-                style={{
-                  backgroundColor: colors.primary,
-                  paddingVertical: 4,
-                  paddingHorizontal: 8,
-                  borderRadius: borderRadii.lg,
-                }}
-                color="white"
-              >
-                1
+      <TouchableOpacity onPress={() => navigation.navigate("manage_message")}>
+        <Row alignItems="center" paddingVertical="xs">
+          <Image
+            source={require("_images/logoASA.jpeg")}
+            style={{
+              width: Size.IMAGE_SMALL,
+              height: Size.IMAGE_SMALL,
+              borderRadius: borderRadii.lg,
+            }}
+          />
+          <Column marginLeft="xs" width="75%">
+            <Row justifyContent="space-between" width="100%">
+              <Text variant="primaryBold" color="text">
+                {item.emetteur}
               </Text>
-            )}
-          </Row>
-          <Row justifyContent="space-between" width="100%">
-            <Text
-              variant="secondary"
-              color="text"
-              numberOfLines={1}
-              style={{ width: "65%" }}
-            >
-              {item.message}
-            </Text>
-            <Text variant="secondary" color="secondary">
-              {item.date}
-            </Text>
-          </Row>
-        </Column>
-      </Row>
+              {!item.read && (
+                <Text
+                  variant="tertiary"
+                  style={{
+                    backgroundColor: colors.primary,
+                    paddingVertical: 4,
+                    paddingHorizontal: 8,
+                    borderRadius: borderRadii.lg,
+                  }}
+                  color="white"
+                >
+                  1
+                </Text>
+              )}
+            </Row>
+            <Row justifyContent="space-between" width="100%">
+              <Text
+                variant="secondary"
+                color="text"
+                numberOfLines={1}
+                style={{ width: "65%" }}
+              >
+                {item.message}
+              </Text>
+              <Text variant="secondary" color="secondary">
+                {item.date}
+              </Text>
+            </Row>
+          </Column>
+        </Row>
+      </TouchableOpacity>
     );
   };
 

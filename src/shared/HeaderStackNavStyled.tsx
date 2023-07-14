@@ -7,11 +7,14 @@ import { useNavigation } from "@react-navigation/native";
 import { Theme, Size } from "_theme";
 
 type Props = {
-  titleLeft: string;
+  titleRight: string;
   onPressTitle?: () => void;
 };
 
-const HeaderStackNav: React.FC<Props> = ({ titleLeft, onPressTitle }) => {
+const HeaderStackNavStyled: React.FC<Props> = ({
+  titleRight,
+  onPressTitle,
+}) => {
   const theme = useTheme<Theme>();
   const { black } = theme.colors;
   const navigation = useNavigation();
@@ -23,11 +26,11 @@ const HeaderStackNav: React.FC<Props> = ({ titleLeft, onPressTitle }) => {
       </TouchableOpacity>
       <TouchableOpacity onPress={onPressTitle}>
         <Text variant="secondary" textDecorationLine="underline" color="text">
-          {titleLeft}
+          {titleRight}
         </Text>
       </TouchableOpacity>
     </Row>
   );
 };
 
-export default HeaderStackNav;
+export default HeaderStackNavStyled;

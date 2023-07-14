@@ -3,7 +3,7 @@ import {
   Image,
   MainScreen,
   Text,
-  HeaderStackNav,
+  HeaderStackNavStyled,
   Column,
   Input,
   Button,
@@ -44,8 +44,8 @@ export default function ManageProfil() {
 
   return (
     <MainScreen typeOfScreen="stack">
-      <HeaderStackNav
-        titleLeft="Modifier"
+      <HeaderStackNavStyled
+        titleRight="Modifier"
         onPressTitle={() => openBottomSheet()}
       />
       {/**Banniere image profile */}
