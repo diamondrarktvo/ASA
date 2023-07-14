@@ -9,6 +9,8 @@ import Input from "./Input";
 import { useTheme } from "@shopify/restyle";
 import { Theme, Size } from "_theme";
 import Icon from "./Icon";
+import { createAccountNavigationTypes } from "./Types";
+import { useNavigation } from "@react-navigation/native";
 
 type Props = {
   children: React.ReactNode;
@@ -32,6 +34,7 @@ const ComponentUserNotLogged = ({
   const theme = useTheme<Theme>();
   const { primary, secondary, white } = theme.colors;
   const [hidePassword, setHidePassword] = useState(true);
+  const navigation = useNavigation<createAccountNavigationTypes>();
 
   return (
     <Box paddingVertical="m" backgroundColor="mainBackground">
@@ -80,7 +83,9 @@ const ComponentUserNotLogged = ({
         <Text variant="primaryBold" color="text">
           Creer un compte
         </Text>
-        <TouchableOpacity onPress={() => console.log("creer compte")}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("create_account_screen")}
+        >
           <Icon name="arrow-forward" size={Size.ICON_LARGE} color={primary} />
         </TouchableOpacity>
       </Row>
