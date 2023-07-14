@@ -39,7 +39,11 @@ export default function MessageScreen() {
 
   const renderItemMessage: ListRenderItem<messageTypes> = ({ item }) => {
     return (
-      <TouchableOpacity onPress={() => navigation.navigate("manage_message")}>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("manage_message", { emetteur: item.emetteur })
+        }
+      >
         <Row alignItems="center" paddingVertical="xs">
           <Image
             source={require("_images/logoASA.jpeg")}

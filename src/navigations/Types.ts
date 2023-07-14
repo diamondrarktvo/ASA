@@ -8,7 +8,7 @@ export interface StackNavigationConfig {
 export type StackParamList = {
   main_tabs: undefined;
   manage_profil: undefined;
-  manage_message: undefined;
+  manage_message: { emetteur: string };
 };
 
 export type TabParamList = {
