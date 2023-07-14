@@ -33,6 +33,7 @@ const allMessages: messageTypes[] = [
 ];
 
 export default function MessageScreen() {
+  console.log("allMessages : ", allMessages);
   const navigation = useNavigation<manageMessageNavigationTypes>();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
@@ -98,6 +99,7 @@ export default function MessageScreen() {
         data={allMessages}
         renderItem={renderItemMessage}
         estimatedItemSize={200}
+        extraData={allMessages}
         ListEmptyComponent={
           <Box>
             <Text variant={"bigTitle"} color="text">
