@@ -69,14 +69,14 @@ export default function ManageMessageScreen() {
           </TouchableOpacity>
         </Row>
         <TouchableOpacity onPress={() => bottomSheetRef.current.close()}>
-          <Row
-            alignItems="center"
-            marginTop="m"
-            width="70%"
-            justifyContent="space-between"
-          >
+          <Row alignItems="center" marginTop="m" justifyContent="flex-start">
             <Icon name="delete" size={Size.ICON_LARGE} color={colors.error} />
-            <Text variant="title" color="error">
+            <Text
+              variant="title"
+              color="error"
+              marginLeft={"s"}
+              numberOfLines={1}
+            >
               Supprimer ce message
             </Text>
           </Row>
