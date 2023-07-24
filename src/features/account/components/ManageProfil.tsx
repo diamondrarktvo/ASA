@@ -42,6 +42,13 @@ export default function ManageProfil() {
     return;
   };
 
+  const closeBottomSheet = () => {
+    if (bottomSheetRef !== null && bottomSheetRef.current !== null) {
+      return bottomSheetRef.current.close();
+    }
+    return;
+  };
+
   return (
     <MainScreen typeOfScreen="stack">
       <HeaderStackNavStyled
@@ -196,7 +203,7 @@ export default function ManageProfil() {
         style={styles.bottomSheet_container}
       >
         <Row alignItems="center" width="67%" justifyContent="space-between">
-          <TouchableOpacity onPress={() => bottomSheetRef.current.close()}>
+          <TouchableOpacity onPress={() => closeBottomSheet()}>
             <Icon name="close" size={Size.ICON_MEDIUM} color={colors.text} />
           </TouchableOpacity>
           <Text

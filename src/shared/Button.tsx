@@ -16,6 +16,7 @@ import {
 
 type ButtonProps = {
   onPress?: () => void;
+  variant: "primary" | "secondary" | "tertiary";
   loading?: boolean;
   label: React.ReactNode;
   disabled?: boolean;
@@ -33,6 +34,7 @@ const BoxButton = createRestyleComponent<BoxButtonProps, Theme>(
 
 const Button: React.FC<ButtonProps> = ({
   onPress,
+  variant,
   loading,
   label,
   disabled,
@@ -45,7 +47,7 @@ const Button: React.FC<ButtonProps> = ({
       disabled={disabled}
     >
       <BoxButton
-        variant="primary"
+        variant={variant}
         paddingVertical="s"
         paddingHorizontal="s"
         borderRadius={"xs"}

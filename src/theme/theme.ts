@@ -4,18 +4,18 @@ import { Typography } from "./typography";
 
 //PALETTE
 const palette = {
-  orangeLight: "#F8AC71",
+  orangeLight: "#DA6002",
   orangePrimary: "#FF8323",
-  orangeDark: "#C66316",
+  orangeDark: "#AB4A00",
 
-  redBordeaux: "#9B0409",
+  redBordeaux: "#FB222D",
 
   white: "#F0F2F3",
   grey: "#939597",
   offWhite: "#DDD",
   black: "#0B0B0B",
   offBlack: "#252525",
-  blue: "#06668C",
+  blue: "#2652AA",
 };
 
 const theme = createTheme({
@@ -23,16 +23,13 @@ const theme = createTheme({
     mainBackground: palette.white,
     mainForeground: palette.black,
     primary: palette.orangePrimary,
+    secondary: palette.grey, //grey
     orangeDark: palette.orangeDark,
     error: palette.redBordeaux,
     white: palette.white,
+    blue: palette.blue,
     black: palette.black,
-    secondary: palette.grey, //grey
     offWhite: palette.offWhite,
-    buttonPrimaryBackground: palette.orangePrimary,
-    buttonSecondaryBackground: palette.blue,
-    cardPrimaryBackground: palette.orangePrimary,
-    cardLightBackground: palette.orangeLight,
     text: palette.black,
     textPrimaryColor: palette.orangePrimary,
   },
@@ -83,13 +80,13 @@ const theme = createTheme({
       color: "white",
     },
     secondary: {
-      backgroundColor: "buttonSecondaryBackground",
+      backgroundColor: "blue",
       color: "white",
     },
     tertiary: {
-      backgroundColor: "white",
+      backgroundColor: "grey",
       color: "black",
-      borderColor: "buttonSecondaryBackground",
+      borderColor: "grey",
     },
   },
 });

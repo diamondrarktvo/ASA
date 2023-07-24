@@ -3,7 +3,10 @@ import { Button, MainScreen, Text } from "_shared";
 export default function SearchScreen() {
   return (
     <MainScreen typeOfScreen="tab">
-      <Button label="Rechercher" />
+      <Text variant="bigTitle" color="primary" textAlign="center">
+        Atsika samy Atsika
+      </Text>
+      <Button variant="secondary" label="Recherchez partout à Madagascar" />
     </MainScreen>
   );
 }

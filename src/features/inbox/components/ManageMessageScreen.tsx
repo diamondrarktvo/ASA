@@ -42,6 +42,13 @@ export default function ManageMessageScreen() {
     return;
   };
 
+  const closeBottomSheet = () => {
+    if (bottomSheetRef !== null && bottomSheetRef.current !== null) {
+      return closeBottomSheet();
+    }
+    return;
+  };
+
   return (
     <MainScreen typeOfScreen="stack">
       <HeaderStackNavNormal
@@ -64,11 +71,11 @@ export default function ManageMessageScreen() {
         style={styles.bottomSheet_container}
       >
         <Row alignItems="center" justifyContent="flex-start">
-          <TouchableOpacity onPress={() => bottomSheetRef.current.close()}>
+          <TouchableOpacity onPress={() => closeBottomSheet()}>
             <Icon name="close" size={Size.ICON_LARGE} color={colors.text} />
           </TouchableOpacity>
         </Row>
-        <TouchableOpacity onPress={() => bottomSheetRef.current.close()}>
+        <TouchableOpacity onPress={() => closeBottomSheet()}>
           <Row alignItems="center" marginTop="m" justifyContent="flex-start">
             <Icon name="delete" size={Size.ICON_LARGE} color={colors.error} />
             <Text
