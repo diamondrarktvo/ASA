@@ -64,7 +64,8 @@ export default function SearchScreen() {
         <Button
           variant="secondary"
           label="Recherchez partout à Madagascar"
-          marginVertical={"m"}
+          marginTop={"s"}
+          marginBottom={"m"}
         />
         <Column marginTop="m">
           <Text variant="primary">Catégorie les plus visités</Text>
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
   imageAnnonce: {
     borderRadius: 10,
     height: 200,
-    width: 200,
+    width: 280,
   },
   imageCatg: {
     borderRadius: 10,
