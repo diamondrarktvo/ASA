@@ -5,6 +5,7 @@ import { Constantes, annonceTypes, categorieTypes } from "_utils";
 import { ActivityIndicator } from "react-native-paper";
 import { useTheme } from "@shopify/restyle";
 import { Theme } from "_theme";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default function SearchScreen() {
   const theme = useTheme<Theme>();
@@ -13,16 +14,19 @@ export default function SearchScreen() {
   //components
   const renderItemCategorie: ListRenderItem<categorieTypes> = ({ item }) => {
     return (
-      <Box key={item.id} marginRight="xs">
-        <ImageBackground
-          source={require("_images/logo.jpg")}
-          style={styles.imageCatg}
-          imageStyle={{ borderRadius: borderRadii.lg }}
-        >
-          <Text variant={"primaryBold"} color={"black"}>
-            {item.title}
-          </Text>
-        </ImageBackground>
+      <Box
+        key={item.id}
+        marginRight={"xs"}
+        backgroundColor={"offWhite"}
+        height={100}
+        width={200}
+        borderRadius={"sm"}
+        alignItems={"center"}
+        justifyContent={"center"}
+      >
+        <Text variant={"primaryBold"} color={"offBlack"}>
+          {item.title}
+        </Text>
       </Box>
     );
   };
@@ -53,42 +57,44 @@ export default function SearchScreen() {
 
   return (
     <MainScreen typeOfScreen="tab">
-      <Text variant="bigTitle" color="primary" textAlign="center">
-        Atsika samy Atsika
-      </Text>
-      <Button
-        variant="secondary"
-        label="Recherchez partout à Madagascar"
-        marginVertical="xs"
-      />
-      <Column marginTop="m">
-        <Text variant="primary">Catégorie les plus visités</Text>
-        <Box width={"100%"} marginTop="xs">
-          <FlashList
-            keyExtractor={(item, index) => item.id.toString()}
-            estimatedItemSize={200}
-            data={Constantes.DATA.categorie}
-            renderItem={renderItemCategorie}
-            horizontal={true}
-            extraData={Constantes.DATA.annonce}
-            showsHorizontalScrollIndicator={false}
-          />
-        </Box>
-      </Column>
-      <Column marginTop="m">
-        <Text variant="primary">Publiées récemment</Text>
-        <Box width={"100%"} marginTop="xs">
-          <FlashList
-            keyExtractor={(item, index) => item.id.toString()}
-            estimatedItemSize={200}
-            data={Constantes.DATA.annonce}
-            renderItem={renderItemAnnonce}
-            horizontal={true}
-            extraData={Constantes.DATA.annonce}
-            showsHorizontalScrollIndicator={false}
-          />
-        </Box>
-      </Column>
+      <ScrollView>
+        <Text variant="headerNavigation" color="primary" textAlign="center">
+          Atsika samy Atsika
+        </Text>
+        <Button
+          variant="secondary"
+          label="Recherchez partout à Madagascar"
+          marginVertical={"m"}
+        />
+        <Column marginTop="m">
+          <Text variant="primary">Catégorie les plus visités</Text>
+          <Box width={"100%"} marginTop="xs">
+            <FlashList
+              keyExtractor={(item, index) => item.id.toString()}
+              estimatedItemSize={200}
+              data={Constantes.DATA.categorie}
+              renderItem={renderItemCategorie}
+              horizontal={true}
+              extraData={Constantes.DATA.annonce}
+              showsHorizontalScrollIndicator={false}
+            />
+          </Box>
+        </Column>
+        <Column marginTop="m">
+          <Text variant="primary">Publiées récemment</Text>
+          <Box width={"100%"} marginTop="xs">
+            <FlashList
+              keyExtractor={(item, index) => item.id.toString()}
+              estimatedItemSize={200}
+              data={Constantes.DATA.annonce}
+              renderItem={renderItemAnnonce}
+              horizontal={true}
+              extraData={Constantes.DATA.annonce}
+              showsHorizontalScrollIndicator={false}
+            />
+          </Box>
+        </Column>
+      </ScrollView>
     </MainScreen>
   );
 }
@@ -96,7 +102,7 @@ export default function SearchScreen() {
 const styles = StyleSheet.create({
   imageAnnonce: {
     borderRadius: 10,
-    height: 150,
+    height: 200,
     width: 200,
   },
   imageCatg: {
@@ -114,5 +120,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignContent: "center",
     alignItems: "center",
+  },
+  shadow: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.37,
+    shadowRadius: 7.49,
+    elevation: 12,
   },
 });

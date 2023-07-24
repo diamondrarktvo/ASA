@@ -30,6 +30,7 @@ const theme = createTheme({
     blue: palette.blue,
     black: palette.black,
     offWhite: palette.offWhite,
+    offBlack: palette.offBlack,
     text: palette.black,
     textPrimaryColor: palette.orangePrimary,
   },
