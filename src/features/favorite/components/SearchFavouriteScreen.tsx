@@ -11,7 +11,7 @@ export default function SearchFavouriteScreen() {
         Les recherches favoris{" "}
       </Text>
       <Text variant="tertiary" color="text">
-        Show your announcer favorite
+        Show your search favorite
       </Text>
     </MainScreen>
   );
