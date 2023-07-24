@@ -59,7 +59,7 @@ export default function SearchScreen() {
     <MainScreen typeOfScreen="tab">
       <ScrollView>
         <Text variant="headerNavigation" color="primary" textAlign="center">
-          Atsika samy Atsika
+          " Atsika samy Atsika "
         </Text>
         <Button
           variant="secondary"
