@@ -1,9 +1,9 @@
 import { Constantes } from "./Constantes";
 
 //types
-import { annonceTypes } from "./Types";
+import { annonceTypes, categorieTypes } from "./Types";
 
 export {Constantes}
 
 //types
-export {annonceTypes}
+export {annonceTypes, categorieTypes}
