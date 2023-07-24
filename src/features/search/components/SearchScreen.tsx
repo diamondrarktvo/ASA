@@ -67,7 +67,7 @@ export default function SearchScreen() {
           marginTop={"s"}
           marginBottom={"m"}
         />
-        <Column marginTop="m">
+        <Column marginTop="s">
           <Text variant="primary">Catégorie les plus visités</Text>
           <Box width={"100%"} marginTop="xs">
             <FlashList
@@ -81,7 +81,7 @@ export default function SearchScreen() {
             />
           </Box>
         </Column>
-        <Column marginTop="m">
+        <Column marginTop="s">
           <Text variant="primary">Publiées récemment</Text>
           <Box width={"100%"} marginTop="xs">
             <FlashList
