@@ -26,7 +26,7 @@ export default function ManageProfil() {
   //bottomsheet
   const snapPoints = useMemo(() => [1, "97%"], []);
 
-  const bottomSheetRef = useRef(null);
+  const bottomSheetRef = useRef<BottomSheetModal | null>(null);
 
   const renderBackDrop = useCallback(
     (props: JSX.IntrinsicAttributes & BottomSheetDefaultBackdropProps) => (
@@ -36,7 +36,7 @@ export default function ManageProfil() {
   );
 
   const openBottomSheet = () => {
-    if (bottomSheetRef !== null || bottomSheetRef !== undefined) {
+    if (bottomSheetRef !== null && bottomSheetRef.current !== null) {
       return bottomSheetRef.current.present();
     }
     return;

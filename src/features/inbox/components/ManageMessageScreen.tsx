@@ -26,7 +26,7 @@ export default function ManageMessageScreen() {
   //bottomsheet
   const snapPoints = useMemo(() => [1, "20%"], []);
 
-  const bottomSheetRef = useRef(null);
+  const bottomSheetRef = useRef<BottomSheetModal | null>(null);
 
   const renderBackDrop = useCallback(
     (props: JSX.IntrinsicAttributes & BottomSheetDefaultBackdropProps) => (
@@ -36,7 +36,7 @@ export default function ManageMessageScreen() {
   );
 
   const openBottomSheet = () => {
-    if (bottomSheetRef !== null || bottomSheetRef !== undefined) {
+    if (bottomSheetRef !== null && bottomSheetRef.current !== null) {
       return bottomSheetRef.current.present();
     }
     return;
