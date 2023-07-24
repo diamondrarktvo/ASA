@@ -1,15 +1,13 @@
-import React from "react";
-import { TabParamList, TopParamList } from "src/navigations/Types";
+import { ImageSourcePropType } from "react-native";
 
-export interface TabRouteTypes {
-  name: keyof TabParamList;
-  component: React.FC<unknown>;
-  tabLabel: string;
-  icon: string;
+export type annonceTypes = {
+    id: number,
+    title: string,
+    image: ImageSourcePropType,
+    description: string;
 }
 
-export interface TopTabRouteTypes {
-  name: keyof TopParamList;
-  topLabel: string;
-  component: React.FC<unknown>;
+export type categorieTypes = {
+    id: number,
+    title: string;
 }
