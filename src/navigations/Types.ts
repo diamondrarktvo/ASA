@@ -28,4 +28,5 @@ export type TopParamListInbox = {
 export type TopParamListFavourite = {
   announcement_screen: undefined;
   announcer_screen: undefined;
+  search_favourite_screen: undefined;
 };
