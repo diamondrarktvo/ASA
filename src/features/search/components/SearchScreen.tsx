@@ -1,10 +1,10 @@
 import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import { ImageBackground, StyleSheet } from "react-native";
-import { Box, Button, Column, Image, MainScreen, Text } from "_shared";
+import { Box, Button, Column, Icon, Image, MainScreen, Text } from "_shared";
 import { Constantes, annonceTypes, categorieTypes } from "_utils";
 import { ActivityIndicator } from "react-native-paper";
 import { useTheme } from "@shopify/restyle";
-import { Theme } from "_theme";
+import { Size, Theme } from "_theme";
 import { ScrollView } from "react-native-gesture-handler";
 
 export default function SearchScreen() {
@@ -41,6 +41,17 @@ export default function SearchScreen() {
             <ActivityIndicator color="#2652AA" style={styles.spinner} />
           }
         />
+        <Icon
+          name="favorite-border"
+          size={Size.ICON_LARGE}
+          color={colors.black}
+          containerStyle={{
+            position: "absolute",
+            zIndex: 2,
+            top: 10,
+            right: 10,
+          }}
+        />
         <Text
           variant="secondary"
           numberOfLines={1}
@@ -59,7 +70,7 @@ export default function SearchScreen() {
     <MainScreen typeOfScreen="tab">
       <ScrollView>
         <Text variant="headerNavigation" color="primary" textAlign="center">
-          " Atsika samy Atsika "
+          "Atsika samy Atsika"
         </Text>
         <Button
           variant="secondary"
