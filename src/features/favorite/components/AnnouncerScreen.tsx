@@ -45,7 +45,7 @@ export default function AnnouncerScreen() {
           </Text>
         </Column>
         <Icon
-          name="favorite-border"
+          name="favorite"
           size={Size.ICON_MEDIUM}
           color={colors.error}
           containerStyle={{

@@ -24,7 +24,7 @@ export default function AnnouncementScreen() {
           }
         />
         <Icon
-          name="favorite-border"
+          name="favorite"
           size={Size.ICON_LARGE}
           color={colors.black}
           containerStyle={{
