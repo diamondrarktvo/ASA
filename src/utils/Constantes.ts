@@ -1,4 +1,4 @@
-import { annonceTypes, categorieTypes } from "./Types";
+import { annonceTypes, announcerTypes, categorieTypes } from "./Types";
 
 const annonce: annonceTypes[] = [
     {
@@ -56,9 +56,43 @@ const categorie: categorieTypes[] = [
     },
 ]
 
+const announcer: announcerTypes[] = [
+    {
+        id: 1,
+        name: "Annonceur 1",
+        image: require('_images/logo.jpg'),
+        phoneNumber: "0345648425"
+    },
+    {
+        id: 2,
+        name: "Annonceur 2",
+        image: require('_images/logo.jpg'),
+        phoneNumber: "0345687825"
+    },
+    {
+        id: 3,
+        name: "Annonceur 3",
+        image: require('_images/logo.jpg'),
+        phoneNumber: "0346532595"
+    },
+    {
+        id: 4,
+        name: "Annonceur 4",
+        image: require('_images/logo.jpg'),
+        phoneNumber: "0335489654"
+    },
+    {
+        id: 5,
+        name: "Annonceur 5",
+        image: require('_images/logo.jpg'),
+        phoneNumber: "0347938171"
+    },
+]
+
 export const Constantes = {
     DATA: {
         annonce,
-        categorie
+        categorie,
+        announcer
     }
 }

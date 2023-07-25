@@ -71,8 +71,8 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   spinner: {
-    height: 150,
-    width: 200,
+    height: 200,
+    width: "100%",
     display: "flex",
     justifyContent: "center",
     alignContent: "center",

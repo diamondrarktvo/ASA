@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
   },
   spinner: {
-    height: 150,
+    height: 200,
     width: 200,
     display: "flex",
     justifyContent: "center",
