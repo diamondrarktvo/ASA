@@ -1,6 +1,15 @@
 import { StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Box, Column, Icon, Image, MainScreen, Row, Text } from "_shared";
+import {
+  Box,
+  Column,
+  EmptyList,
+  Icon,
+  Image,
+  MainScreen,
+  Row,
+  Text,
+} from "_shared";
 import { ActivityIndicator } from "react-native-paper";
 import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import { Constantes, announcerTypes } from "_utils";
@@ -60,6 +69,9 @@ export default function AnnouncerScreen() {
           renderItem={renderItemAnnouncer}
           extraData={Constantes.DATA.announcer}
           showsVerticalScrollIndicator={false}
+          ListEmptyComponent={
+            <EmptyList textToShow="Vous n'avez pas de vendeur en favoris" />
+          }
         />
       </Box>
     </MainScreen>

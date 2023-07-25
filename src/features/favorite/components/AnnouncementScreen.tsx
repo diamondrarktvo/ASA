@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Box, Column, Icon, Image, MainScreen, Text } from "_shared";
+import { Box, Column, EmptyList, Icon, Image, MainScreen, Text } from "_shared";
 import { ActivityIndicator } from "react-native-paper";
 import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import { Constantes, annonceTypes } from "_utils";
@@ -58,6 +58,9 @@ export default function AnnouncementScreen() {
           renderItem={renderItemAnnonce}
           extraData={Constantes.DATA.annonce}
           showsVerticalScrollIndicator={false}
+          ListEmptyComponent={
+            <EmptyList textToShow="Vous n'avez pas d'annonce en favoris" />
+          }
         />
       </Box>
     </MainScreen>

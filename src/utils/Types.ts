@@ -18,3 +18,8 @@ export type categorieTypes = {
     id: number,
     title: string;
 }
+
+export type searchTypes = {
+    id: number,
+    searchValue: string
+}
