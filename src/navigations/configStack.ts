@@ -13,8 +13,9 @@ const transitionConfig: TransitionSpec = {
 };
 
 export const stackNavigationConfig: StackNavigationConfig = {
+  /**stepper config */
   screenOptionsForDisplayedHeader: {
-    headerShown: true,
+    headerShown: false,
     gestureEnabled: true,
     //CardStyleInterpolators est utile pour regler la transition durant le changement de screen, gestureEnabled doit être activé | gestureDirection peut aussi le faire|
     cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, //on utilise la transition par défaut de IOS
@@ -22,7 +23,7 @@ export const stackNavigationConfig: StackNavigationConfig = {
       open: transitionConfig,
       close: transitionConfig,
     },
-    headerTitleAlign: "center",
+    gestureDirection: "horizontal",
   },
   screenOptionsForHiddenHeader: {
     headerShown: false

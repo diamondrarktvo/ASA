@@ -1,39 +1,58 @@
 import { StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Box, Button, Icon, Input, MainScreen, Text } from "_shared";
+import { Box, Button, Icon, Input, MainScreen, Row, Text } from "_shared";
 import { Size, Theme } from "_theme";
 import { useTheme } from "@shopify/restyle";
+import { stepper7NavigationTypes } from "../../types";
 
 export default function StepSix() {
-  //const navigation = useNavigation<>();
+  const navigation = useNavigation<stepper7NavigationTypes>();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
 
   return (
-    <Box marginTop={"m"}>
-      <Text variant={"title"} color="black">
-        Quel produit voulez-vous publier ?
-      </Text>
-      <Text variant={"tertiary"} color={"error"}>
-        NB: Veuillez remplir chaque étape afin de procéder à votre publication!
-      </Text>
-      <Box marginVertical={"xs"}>
-        <Input
-          placeholder="Nom"
-          value="Kapa"
-          iconLeft={{
-            name: "info",
-            size: Size.ICON_MEDIUM,
-            color: colors.text,
-          }}
-        />
+    <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
+      <Box marginTop={"m"}>
+        <Text variant={"title"} color="black">
+          Quel produit voulez-vous publier ?
+        </Text>
+        <Text variant={"tertiary"} color={"error"}>
+          NB: Veuillez remplir chaque étape afin de procéder à votre
+          publication!
+        </Text>
+        <Box marginVertical={"xs"}>
+          <Input
+            placeholder="Nom"
+            value="Kapa"
+            iconLeft={{
+              name: "info",
+              size: Size.ICON_MEDIUM,
+              color: colors.text,
+            }}
+          />
+        </Box>
+        <Row alignItems={"center"} justifyContent="space-around">
+          <Button
+            height={50}
+            alignItems={"center"}
+            justifyContent={"center"}
+            width={150}
+            variant={"tertiary"}
+            label="Précédent"
+            onPress={() => navigation.goBack()}
+          />
+          <Button
+            height={50}
+            alignItems={"center"}
+            justifyContent={"center"}
+            width={150}
+            variant={"secondary"}
+            label="Suivant"
+            onPress={() => navigation.navigate("stepper_screen_7")}
+          />
+        </Row>
       </Box>
-      <Button
-        variant={"secondary"}
-        label="Suivant"
-        onPress={() => console.log("pressed")}
-      />
-    </Box>
+    </MainScreen>
   );
 }
 

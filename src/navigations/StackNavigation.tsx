@@ -14,6 +14,12 @@ import {
   ManageProfil,
   ManageMessageScreen,
   CreateAccountScreen,
+  StepTwo,
+  StepThree,
+  StepFour,
+  StepFive,
+  StepSix,
+  StepSeven,
 } from "_features";
 
 const Stack = createStackNavigator<StackParamList>();
@@ -39,9 +45,17 @@ const StackNavigation = () => {
           />
         </Stack.Group>
 
-        {/*<Stack.Group
+        {/**Stepper screens */}
+        <Stack.Group
           screenOptions={stackNavigationConfig.screenOptionsForDisplayedHeader}
-  ></Stack.Group>*/}
+        >
+          <Stack.Screen name={"stepper_screen_2"} component={StepTwo} />
+          <Stack.Screen name={"stepper_screen_3"} component={StepThree} />
+          <Stack.Screen name={"stepper_screen_4"} component={StepFour} />
+          <Stack.Screen name={"stepper_screen_5"} component={StepFive} />
+          <Stack.Screen name={"stepper_screen_6"} component={StepSix} />
+          <Stack.Screen name={"stepper_screen_7"} component={StepSeven} />
+        </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
   );

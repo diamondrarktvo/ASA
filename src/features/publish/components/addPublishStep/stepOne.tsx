@@ -6,9 +6,10 @@ import { Size, Theme } from "_theme";
 import { Picker } from "@react-native-picker/picker";
 import { useTheme } from "@shopify/restyle";
 import { CheckBox } from "@rneui/themed";
+import { stepper2NavigationTypes } from "../../types";
 
 export default function StepOne() {
-  //const navigation = useNavigation<>();
+  const navigation = useNavigation<stepper2NavigationTypes>();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
   const [selectCategorie, setSelectCategorie] = useState("");
@@ -66,7 +67,7 @@ export default function StepOne() {
       <Button
         variant={"secondary"}
         label="Suivant"
-        onPress={() => console.log("pressed")}
+        onPress={() => navigation.navigate("stepper_screen_2")}
       />
     </Box>
   );
