@@ -70,7 +70,7 @@ const ComponentUserNotLogged = ({
             Mot de passe oublié
           </Text>
         </Row>
-        <Button label="Se connecter" onPress={loggedIn} />
+        <Button variant={"primary"} label="Se connecter" onPress={loggedIn} />
       </Box>
       <Row
         alignItems="center"

@@ -62,6 +62,7 @@ const CreateAccountScreen = () => {
               />
             </Column>
             <Button
+              variant={"primary"}
               label="Creer mon compte"
               onPress={() => navigation.goBack()}
             />

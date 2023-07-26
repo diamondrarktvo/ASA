@@ -85,9 +85,9 @@ const theme = createTheme({
       color: "white",
     },
     tertiary: {
-      backgroundColor: "grey",
+      backgroundColor: "secondary",
       color: "black",
-      borderColor: "grey",
+      borderColor: "secondary",
     },
   },
 });
