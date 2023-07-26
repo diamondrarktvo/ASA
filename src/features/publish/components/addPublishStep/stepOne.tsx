@@ -1,13 +1,17 @@
+import { useState } from "react";
 import { StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Box, Button, Icon, Input, Text } from "_shared";
+import { Box, Button, Icon, Input, Row, Text } from "_shared";
 import { Size, Theme } from "_theme";
+import { Picker } from "@react-native-picker/picker";
 import { useTheme } from "@shopify/restyle";
+import { CheckBox } from "@rneui/themed";
 
 export default function StepOne() {
   //const navigation = useNavigation<>();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
+  const [selectCategorie, setSelectCategorie] = useState("");
 
   return (
     <Box marginTop={"m"}>
@@ -28,6 +32,37 @@ export default function StepOne() {
           }}
         />
       </Box>
+      <Box
+        borderWidth={1}
+        borderRadius={"xs"}
+        marginBottom={"s"}
+        borderColor={"secondary"}
+      >
+        <Picker
+          selectedValue={selectCategorie}
+          onValueChange={(itemValue, itemIndex) =>
+            setSelectCategorie(itemValue)
+          }
+        >
+          <Picker.Item label="Vente" value="vente" />
+          <Picker.Item label="Jeux" value="jeux" />
+          <Picker.Item label="Location" value="location" />
+        </Picker>
+      </Box>
+      <Row justifyContent="space-around">
+        <CheckBox
+          containerStyle={{ backgroundColor: colors.mainBackground }}
+          checkedColor={colors.primary}
+          checked={false}
+          title="Recherche"
+        />
+        <CheckBox
+          containerStyle={{ backgroundColor: colors.mainBackground }}
+          checkedColor={colors.primary}
+          checked={true}
+          title="Offre"
+        />
+      </Row>
       <Button
         variant={"secondary"}
         label="Suivant"
