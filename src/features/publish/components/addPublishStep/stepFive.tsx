@@ -4,6 +4,7 @@ import { Box, Button, Icon, Input, MainScreen, Row, Text } from "_shared";
 import { Size, Theme } from "_theme";
 import { useTheme } from "@shopify/restyle";
 import { stepper6NavigationTypes } from "../../types";
+import { CheckBox } from "@rneui/themed";
 
 export default function StepFive() {
   const navigation = useNavigation<stepper6NavigationTypes>();
@@ -22,21 +23,52 @@ export default function StepFive() {
           Step 5:
         </Text>
         <Text variant={"title"} color="black">
-          Quel produit voulez-vous publier ?
+          Rensigner ici les prix de votre produit :
         </Text>
         <Text variant={"tertiary"} color={"error"}>
-          NB: Veuillez remplir chaque étape afin de procéder à votre
-          publication!
+          NB: Seulement le prix du produit est obligatoire (en Ariary)
         </Text>
         <Box marginVertical={"xs"}>
           <Input
-            placeholder="Nom"
-            value="Kapa"
+            placeholder="Prix du produit"
+            value="5000"
             iconLeft={{
-              name: "info",
+              name: "payment",
               size: Size.ICON_MEDIUM,
               color: colors.text,
             }}
+          />
+          <Input
+            placeholder="Le prix de la livraison locale"
+            value="3000"
+            iconLeft={{
+              name: "two-wheeler",
+              size: Size.ICON_MEDIUM,
+              color: colors.text,
+            }}
+          />
+          <Input
+            placeholder="Le prix de la livraison nationale"
+            value="20000"
+            iconLeft={{
+              name: "local-shipping",
+              size: Size.ICON_MEDIUM,
+              color: colors.text,
+            }}
+          />
+        </Box>
+        <Box flexDirection={"row"}>
+          <CheckBox
+            containerStyle={{ backgroundColor: colors.mainBackground }}
+            checkedColor={colors.primary}
+            checked={true}
+            title="Payement à la livraison"
+          />
+          <CheckBox
+            containerStyle={{ backgroundColor: colors.mainBackground }}
+            checkedColor={colors.primary}
+            checked={false}
+            title="Payement intégrer"
           />
         </Box>
         <Row alignItems={"center"} justifyContent="space-around">
