@@ -4,6 +4,7 @@ import { Box, Button, Icon, Input, MainScreen, Row, Text } from "_shared";
 import { Size, Theme } from "_theme";
 import { useTheme } from "@shopify/restyle";
 import { stepper4NavigationTypes } from "../../types";
+import { CheckBox } from "@rneui/themed";
 
 export default function StepThree() {
   const navigation = useNavigation<stepper4NavigationTypes>();
@@ -22,22 +23,52 @@ export default function StepThree() {
           Step 3:
         </Text>
         <Text variant={"title"} color="black">
-          Quel produit voulez-vous publier ?
+          Les critères de votre produit ?
         </Text>
         <Text variant={"tertiary"} color={"error"}>
-          NB: Veuillez remplir chaque étape afin de procéder à votre
-          publication!
+          NB: Veuillez cocher vos critères!
         </Text>
-        <Box marginVertical={"xs"}>
-          <Input
-            placeholder="Nom"
-            value="Kapa"
-            iconLeft={{
-              name: "info",
-              size: Size.ICON_MEDIUM,
-              color: colors.text,
-            }}
-          />
+        <Box marginVertical={"s"}>
+          {/**offre d'emploi */}
+          <Text variant={"primary"}>Offre d'emploi : </Text>
+          {/**type de contrat */}
+          <Box>
+            <Text variant={"tertiary"}>1 -Type de contrat : </Text>
+            <Box flexDirection={"row"} flexWrap={"wrap"}>
+              <CheckBox
+                containerStyle={{ backgroundColor: colors.mainBackground }}
+                checkedColor={colors.primary}
+                checked={true}
+                title="CDD"
+              />
+              <CheckBox
+                containerStyle={{ backgroundColor: colors.mainBackground }}
+                checkedColor={colors.primary}
+                checked={true}
+                title="CDI"
+              />
+              <CheckBox
+                containerStyle={{ backgroundColor: colors.mainBackground }}
+                checkedColor={colors.primary}
+                checked={true}
+                title="Interim"
+              />
+              <CheckBox
+                containerStyle={{ backgroundColor: colors.mainBackground }}
+                checkedColor={colors.primary}
+                checked={true}
+                title="Autre"
+              />
+            </Box>
+          </Box>
+          {/**secteur d'activité */}
+          <Box>
+            <Text variant={"tertiary"}>2 -Secteur d'activité : </Text>
+          </Box>
+          {/**Fonction */}
+          <Box>
+            <Text variant={"tertiary"}>3 -Fonction: </Text>
+          </Box>
         </Box>
         <Row alignItems={"center"} justifyContent="space-around">
           <Button
