@@ -52,7 +52,7 @@ export default function StepFour() {
             justifyContent={"center"}
             width={150}
             variant={"secondary"}
-            label="Suivant"
+            label="Continuer"
             onPress={() => navigation.navigate("stepper_screen_5")}
           />
         </Row>

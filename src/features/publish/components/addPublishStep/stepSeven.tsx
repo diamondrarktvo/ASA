@@ -4,6 +4,7 @@ import { Box, Button, Icon, Input, MainScreen, Row, Text } from "_shared";
 import { Size, Theme } from "_theme";
 import { useTheme } from "@shopify/restyle";
 import { stepper3NavigationTypes } from "../../types";
+import { CheckBox } from "@rneui/themed";
 
 export default function StepSeven() {
   const navigation = useNavigation();
@@ -22,22 +23,77 @@ export default function StepSeven() {
           Step finale:
         </Text>
         <Text variant={"title"} color="black">
-          Quel produit voulez-vous publier ?
+          Configuration de votre contact
         </Text>
         <Text variant={"tertiary"} color={"error"}>
-          NB: Veuillez remplir chaque étape afin de procéder à votre
-          publication!
+          NB: Vous pouvez ici afficher votre numéro, mail en cochant les cases
         </Text>
         <Box marginVertical={"xs"}>
           <Input
-            placeholder="Nom"
-            value="Kapa"
+            placeholder="Votre numéro téléphone"
+            value="+261 34 56 484 25"
             iconLeft={{
-              name: "info",
+              name: "call",
               size: Size.ICON_MEDIUM,
               color: colors.text,
             }}
           />
+          <Row justifyContent="space-around" alignItems={"center"}>
+            <Text variant={"secondary"}>Afficher le numéro : </Text>
+            <CheckBox
+              containerStyle={{ backgroundColor: colors.mainBackground }}
+              checkedColor={colors.primary}
+              checked={false}
+              title="Oui"
+            />
+            <CheckBox
+              containerStyle={{ backgroundColor: colors.mainBackground }}
+              checkedColor={colors.primary}
+              checked={true}
+              title="Non"
+            />
+          </Row>
+          <Input
+            placeholder="Votre adresse email"
+            value="metyamiko@gmail.com"
+            iconLeft={{
+              name: "mail",
+              size: Size.ICON_MEDIUM,
+              color: colors.text,
+            }}
+          />
+          <Row justifyContent="space-around" alignItems={"center"}>
+            <Text variant={"secondary"}>Afficher le mail : </Text>
+            <CheckBox
+              containerStyle={{ backgroundColor: colors.mainBackground }}
+              checkedColor={colors.primary}
+              checked={false}
+              title="Oui"
+            />
+            <CheckBox
+              containerStyle={{ backgroundColor: colors.mainBackground }}
+              checkedColor={colors.primary}
+              checked={true}
+              title="Non"
+            />
+          </Row>
+          <Text variant={"primaryBold"}>
+            * Refuser les démarches commerciales ?{" "}
+          </Text>
+          <Row justifyContent="space-around" alignItems={"center"}>
+            <CheckBox
+              containerStyle={{ backgroundColor: colors.mainBackground }}
+              checkedColor={colors.primary}
+              checked={false}
+              title="Oui"
+            />
+            <CheckBox
+              containerStyle={{ backgroundColor: colors.mainBackground }}
+              checkedColor={colors.primary}
+              checked={true}
+              title="Non"
+            />
+          </Row>
         </Box>
         <Row alignItems={"center"} justifyContent="space-around">
           <Button

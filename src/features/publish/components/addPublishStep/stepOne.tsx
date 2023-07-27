@@ -74,7 +74,7 @@ export default function StepOne() {
       </Row>
       <Button
         variant={"secondary"}
-        label="Suivant"
+        label="Continuer"
         onPress={() => navigation.navigate("stepper_screen_2")}
       />
     </Box>

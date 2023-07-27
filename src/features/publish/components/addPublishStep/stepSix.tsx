@@ -79,7 +79,7 @@ export default function StepSix() {
             justifyContent={"center"}
             width={150}
             variant={"secondary"}
-            label="Suivant"
+            label="Continuer"
             onPress={() => navigation.navigate("stepper_screen_7")}
           />
         </Row>
