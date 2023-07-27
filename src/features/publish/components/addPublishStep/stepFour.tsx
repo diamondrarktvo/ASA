@@ -22,21 +22,18 @@ export default function StepFour() {
           Step 4:
         </Text>
         <Text variant={"title"} color="black">
-          Quel produit voulez-vous publier ?
+          Insérer ici la description de votre produit :
         </Text>
         <Text variant={"tertiary"} color={"error"}>
-          NB: Veuillez remplir chaque étape afin de procéder à votre
-          publication!
+          NB: Veuillez remplir le champ
         </Text>
         <Box marginVertical={"xs"}>
           <Input
             placeholder="Nom"
             value="Kapa"
-            iconLeft={{
-              name: "info",
-              size: Size.ICON_MEDIUM,
-              color: colors.text,
-            }}
+            multiline={true}
+            numberOfLines={8}
+            textAlignVertical={"top"}
           />
         </Box>
         <Row alignItems={"center"} justifyContent="space-around">
