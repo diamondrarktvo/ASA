@@ -13,6 +13,14 @@ export default function StepSeven() {
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
       <Box marginTop={"m"}>
+        <Text
+          variant={"primary"}
+          color={"blue"}
+          textDecorationLine={"underline"}
+          marginBottom={"xs"}
+        >
+          Step finale:
+        </Text>
         <Text variant={"title"} color="black">
           Quel produit voulez-vous publier ?
         </Text>

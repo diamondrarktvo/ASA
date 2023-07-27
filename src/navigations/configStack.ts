@@ -7,7 +7,7 @@ import { TransitionSpec } from "@react-navigation/stack/lib/typescript/src/types
 const transitionConfig: TransitionSpec = {
   animation: "timing",
   config: {
-    duration: 60,
+    duration: 80,
     easing: Easing.linear,
   },
 };
@@ -26,7 +26,7 @@ export const stackNavigationConfig: StackNavigationConfig = {
     gestureDirection: "horizontal",
   },
   screenOptionsForHiddenHeader: {
-    headerShown: false
+    headerShown: false,
   },
   //screenOptionsTransparentHeader: {},
 };
