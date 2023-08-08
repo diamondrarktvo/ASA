@@ -68,7 +68,7 @@ export default function SearchScreen() {
 
   return (
     <MainScreen typeOfScreen="tab">
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <Text variant={"bigTitle"} color="primary" textAlign="center">
           "Atsika samy Atsika"
         </Text>
@@ -94,6 +94,20 @@ export default function SearchScreen() {
         </Column>
         <Column marginTop="s">
           <Text variant="primary">Publiées récemment</Text>
+          <Box width={"100%"} marginTop="xs">
+            <FlashList
+              keyExtractor={(item, index) => item.id.toString()}
+              estimatedItemSize={200}
+              data={Constantes.DATA.annonce}
+              renderItem={renderItemAnnonce}
+              horizontal={true}
+              extraData={Constantes.DATA.annonce}
+              showsHorizontalScrollIndicator={false}
+            />
+          </Box>
+        </Column>
+        <Column marginTop="s">
+          <Text variant="primary">Suggestion récente des utilisateurs</Text>
           <Box width={"100%"} marginTop="xs">
             <FlashList
               keyExtractor={(item, index) => item.id.toString()}
