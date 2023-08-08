@@ -44,7 +44,7 @@ export default function ManageMessageScreen() {
 
   const closeBottomSheet = () => {
     if (bottomSheetRef !== null && bottomSheetRef.current !== null) {
-      return closeBottomSheet();
+      return bottomSheetRef.current.close();
     }
     return;
   };
