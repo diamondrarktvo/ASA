@@ -69,13 +69,13 @@ export default function SearchScreen() {
   return (
     <MainScreen typeOfScreen="tab">
       <ScrollView>
-        <Text variant="headerNavigation" color="primary" textAlign="center">
+        <Text variant={"bigTitle"} color="primary" textAlign="center">
           "Atsika samy Atsika"
         </Text>
         <Button
           variant="secondary"
           label="Recherchez partout à Madagascar"
-          marginTop={"s"}
+          marginTop={"xs"}
           marginBottom={"m"}
         />
         <Column marginTop="s">
