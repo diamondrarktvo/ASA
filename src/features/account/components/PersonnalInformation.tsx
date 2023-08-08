@@ -359,7 +359,7 @@ export default function PersonnalInformation() {
           </Column>
         </ScrollViewBottomSheet>
         <Box paddingTop="s">
-          <Button label="Enregistrer" />
+          <Button variant={"primary"} label="Enregistrer" />
         </Box>
       </BottomSheetModal>
     </MainScreen>
