@@ -2,14 +2,20 @@ import { Row, Text, TouchableOpacity } from "_shared";
 import { UnitItemSectionLink } from "./UnitItemSectionLink";
 import { Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { favoriteNavigationTypes } from "../types";
+import {
+  favoriteNavigationTypes,
+  PersonnalInformationNavigationTypes,
+} from "../types";
 
 type Props = {
   loggedOut?: () => void;
 };
 
 export const AllMenu = ({ loggedOut }: Props) => {
-  const navigation = useNavigation<favoriteNavigationTypes>();
+  const navigationToFavorite = useNavigation<favoriteNavigationTypes>();
+  const navigationToPersonnalInformation =
+    useNavigation<PersonnalInformationNavigationTypes>();
+
   return (
     <>
       {/**Actions */}
@@ -26,7 +32,7 @@ export const AllMenu = ({ loggedOut }: Props) => {
       <UnitItemSectionLink
         iconLeft="favorite"
         label="Favoris"
-        onPress={() => navigation.navigate("favorite_screen")}
+        onPress={() => navigationToFavorite.navigate("favorite_screen")}
       />
       <UnitItemSectionLink
         iconLeft="redeem"
@@ -41,7 +47,9 @@ export const AllMenu = ({ loggedOut }: Props) => {
       <UnitItemSectionLink
         iconLeft="person-outline"
         label="Informations personnelles"
-        onPress={() => Alert.alert("Menu cliqué!")}
+        onPress={() =>
+          navigationToPersonnalInformation.navigate("personnal_information")
+        }
       />
 
       {/**Parametre */}

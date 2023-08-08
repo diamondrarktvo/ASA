@@ -11,3 +11,8 @@ export type favoriteNavigationTypes = StackNavigationProp<
   TabParamList,
   "favorite_screen"
 >;
+
+export type PersonnalInformationNavigationTypes = StackNavigationProp<
+  StackParamList,
+  "personnal_information"
+>;

@@ -8,6 +8,7 @@ import InboxScreen from "./inbox/components/InboxScreen";
 import AccountScreen from "./account/components/AccountScreen";
 import ManageMessageScreen from "./inbox/components/ManageMessageScreen";
 import CreateAccountScreen from "./account/components/CreateAccountScreen";
+import PersonnalInformation from "./account/components/PersonnalInformation";
 
 //COMPONENTS REUSABLE
 import ManageProfil from "./account/components/ManageProfil";
@@ -25,4 +26,5 @@ export {
   //COMPONENT REUSABLE
   ManageProfil,
   ManageMessageScreen,
+  PersonnalInformation,
 };

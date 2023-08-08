@@ -14,6 +14,7 @@ import {
   ManageProfil,
   ManageMessageScreen,
   CreateAccountScreen,
+  PersonnalInformation,
 } from "_features";
 
 const Stack = createStackNavigator<StackParamList>();
@@ -28,6 +29,10 @@ const StackNavigation = () => {
           <Stack.Screen name={"main_tabs"} component={TabNavigation} />
           {/**Account screen */}
           <Stack.Screen name={"manage_profil"} component={ManageProfil} />
+          <Stack.Screen
+            name={"personnal_information"}
+            component={PersonnalInformation}
+          />
           <Stack.Screen
             name={"create_account_screen"}
             component={CreateAccountScreen}
