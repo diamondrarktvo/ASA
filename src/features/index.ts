@@ -13,6 +13,15 @@ import PersonnalInformation from "./account/components/PersonnalInformation";
 //COMPONENTS REUSABLE
 import ManageProfil from "./account/components/ManageProfil";
 
+//stepper
+import StepOne from "./publish/components/addPublishStep/stepOne";
+import StepTwo from "./publish/components/addPublishStep/stepTwo";
+import StepThree from "./publish/components/addPublishStep/stepThree";
+import StepFour from "./publish/components/addPublishStep/stepFour";
+import StepFive from "./publish/components/addPublishStep/stepFive";
+import StepSix from "./publish/components/addPublishStep/stepSix";
+import StepSeven from "./publish/components/addPublishStep/stepSeven";
+
 export {
   //SCREEN PRINCIPAL
   FavoriteScreen,
@@ -27,4 +36,12 @@ export {
   ManageProfil,
   ManageMessageScreen,
   PersonnalInformation,
+  //stepper
+  StepOne,
+  StepTwo,
+  StepThree,
+  StepFour,
+  StepFive,
+  StepSix,
+  StepSeven,
 };

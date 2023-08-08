@@ -12,6 +12,7 @@
           { "_navigations": "./src/navigations" },
           { "_services": "./src/services" },
           { "_shared": "./src/shared" },
+          { "_hooks": "./src/hooks" },
           { "_store": "./src/store" },
           { "_theme": "./src/theme" },
           { "_utils": "./src/utils" }

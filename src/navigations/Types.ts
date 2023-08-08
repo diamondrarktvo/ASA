@@ -11,6 +11,15 @@ export type StackParamList = {
   personnal_information: undefined;
   create_account_screen: undefined;
   manage_message: { emetteur: string };
+  //stepper screens
+  stepper_screen_1: undefined;
+  stepper_screen_2: undefined;
+  stepper_screen_3: undefined;
+  stepper_screen_4: undefined;
+  stepper_screen_5: undefined;
+  stepper_screen_6: undefined;
+  stepper_screen_7: undefined;
+  //end of stepper screens
 };
 
 export type TabParamList = {
@@ -29,4 +38,5 @@ export type TopParamListInbox = {
 export type TopParamListFavourite = {
   announcement_screen: undefined;
   announcer_screen: undefined;
+  search_favourite_screen: undefined;
 };

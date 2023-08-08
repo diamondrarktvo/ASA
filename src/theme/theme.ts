@@ -30,6 +30,7 @@ const theme = createTheme({
     blue: palette.blue,
     black: palette.black,
     offWhite: palette.offWhite,
+    offBlack: palette.offBlack,
     text: palette.black,
     textPrimaryColor: palette.orangePrimary,
   },
@@ -84,9 +85,9 @@ const theme = createTheme({
       color: "white",
     },
     tertiary: {
-      backgroundColor: "grey",
+      backgroundColor: "secondary",
       color: "black",
-      borderColor: "grey",
+      borderColor: "secondary",
     },
   },
 });

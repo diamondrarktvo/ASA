@@ -9,6 +9,7 @@ import { Size, Theme } from "_theme";
 import { TopParamListFavourite } from "_navigations";
 import AnnouncementScreen from "./AnnouncementScreen";
 import AnnouncerScreen from "./AnnouncerScreen";
+import SearchFavouriteScreen from "./SearchFavouriteScreen";
 
 //top navigation is here because we only need it here
 //types
@@ -22,13 +23,18 @@ interface TopTabRouteTypes {
 const TOPROUTES: TopTabRouteTypes[] = [
   {
     name: "announcement_screen",
-    topLabel: "Annonces",
+    topLabel: "Annonce",
     component: AnnouncementScreen,
   },
   {
     name: "announcer_screen",
-    topLabel: "Annonceurs",
+    topLabel: "Vendeur",
     component: AnnouncerScreen,
+  },
+  {
+    name: "search_favourite_screen",
+    topLabel: "Recherche",
+    component: SearchFavouriteScreen,
   },
 ];
 

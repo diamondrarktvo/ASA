@@ -7,7 +7,19 @@ export type annonceTypes = {
     description: string;
 }
 
+export type announcerTypes = {
+    id: number,
+    name: string,
+    image: ImageSourcePropType,
+    phoneNumber: string;
+}
+
 export type categorieTypes = {
     id: number,
     title: string;
+}
+
+export type searchTypes = {
+    id: number,
+    searchValue: string
 }
