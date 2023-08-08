@@ -19,7 +19,7 @@ export default function StepFour() {
           textDecorationLine={"underline"}
           marginBottom={"xs"}
         >
-          Step 4:
+          Etape 4:
         </Text>
         <Text variant={"title"} color="black">
           Insérer ici la description de votre produit :

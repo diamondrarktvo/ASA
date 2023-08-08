@@ -50,7 +50,7 @@ export default function StepTwo() {
             textDecorationLine={"underline"}
             marginBottom={"xs"}
           >
-            Step 2:
+            Etape 2:
           </Text>
           <Text variant={"title"} color="black">
             Choisir les photos de votre produit
@@ -83,42 +83,60 @@ export default function StepTwo() {
                 justifyContent={"space-evenly"}
                 flexWrap={"wrap"}
               >
-                <Image
-                  source={require("_images/logoASA.jpeg")}
-                  style={{
-                    width: Size.IMAGE_MEDIUM,
-                    height: Size.IMAGE_MEDIUM,
-                    borderRadius: borderRadii.xs,
-                    marginVertical: 5,
-                  }}
-                />
-                <Image
-                  source={require("_images/logoASA.jpeg")}
-                  style={{
-                    width: Size.IMAGE_MEDIUM,
-                    height: Size.IMAGE_MEDIUM,
-                    borderRadius: borderRadii.xs,
-                    marginVertical: 5,
-                  }}
-                />
-                <Image
-                  source={require("_images/logoASA.jpeg")}
-                  style={{
-                    width: Size.IMAGE_MEDIUM,
-                    height: Size.IMAGE_MEDIUM,
-                    borderRadius: borderRadii.xs,
-                    marginVertical: 5,
-                  }}
-                />
-                <Image
-                  source={require("_images/logoASA.jpeg")}
-                  style={{
-                    width: Size.IMAGE_MEDIUM,
-                    height: Size.IMAGE_MEDIUM,
-                    borderRadius: borderRadii.xs,
-                    marginVertical: 5,
-                  }}
-                />
+                <Box>
+                  <Image
+                    source={require("_images/logoASA.jpeg")}
+                    style={{
+                      width: Size.IMAGE_MEDIUM,
+                      height: Size.IMAGE_MEDIUM,
+                      borderRadius: borderRadii.xs,
+                      marginVertical: 5,
+                    }}
+                  />
+                  <Box position={"absolute"} top={8} right={8}>
+                    <Icon
+                      name="close"
+                      size={Size.ICON_MEDIUM}
+                      color={colors.black}
+                    />
+                  </Box>
+                </Box>
+                <Box>
+                  <Image
+                    source={require("_images/logoASA.jpeg")}
+                    style={{
+                      width: Size.IMAGE_MEDIUM,
+                      height: Size.IMAGE_MEDIUM,
+                      borderRadius: borderRadii.xs,
+                      marginVertical: 5,
+                    }}
+                  />
+                  <Box position={"absolute"} top={8} right={8}>
+                    <Icon
+                      name="close"
+                      size={Size.ICON_MEDIUM}
+                      color={colors.black}
+                    />
+                  </Box>
+                </Box>
+                <Box>
+                  <Image
+                    source={require("_images/logoASA.jpeg")}
+                    style={{
+                      width: Size.IMAGE_MEDIUM,
+                      height: Size.IMAGE_MEDIUM,
+                      borderRadius: borderRadii.xs,
+                      marginVertical: 5,
+                    }}
+                  />
+                  <Box position={"absolute"} top={8} right={8}>
+                    <Icon
+                      name="close"
+                      size={Size.ICON_MEDIUM}
+                      color={colors.black}
+                    />
+                  </Box>
+                </Box>
               </Box>
             )}
           </Box>

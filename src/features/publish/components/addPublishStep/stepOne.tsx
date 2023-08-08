@@ -22,7 +22,7 @@ export default function StepOne() {
         textDecorationLine={"underline"}
         marginBottom={"xs"}
       >
-        Step 1:
+        Etape 1:
       </Text>
       <Text variant={"title"} color="black">
         Quel produit voulez-vous publier ?

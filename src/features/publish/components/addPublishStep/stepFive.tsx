@@ -20,7 +20,7 @@ export default function StepFive() {
           textDecorationLine={"underline"}
           marginBottom={"xs"}
         >
-          Step 5:
+          Etape 5:
         </Text>
         <Text variant={"title"} color="black">
           Rensigner ici les prix de votre produit :

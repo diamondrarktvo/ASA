@@ -22,7 +22,7 @@ export default function StepSix() {
           textDecorationLine={"underline"}
           marginBottom={"xs"}
         >
-          Step 6:
+          Etape 6:
         </Text>
         <Text variant={"title"} color="black">
           Où les clients peuvent-ils vous trouver?

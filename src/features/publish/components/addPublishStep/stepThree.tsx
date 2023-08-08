@@ -22,7 +22,7 @@ export default function StepThree() {
             textDecorationLine={"underline"}
             marginBottom={"xs"}
           >
-            Step 3:
+            Etape 3:
           </Text>
           <Text variant={"title"} color="black">
             Les critères de votre produit ?

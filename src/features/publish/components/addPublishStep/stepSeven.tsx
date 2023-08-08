@@ -20,7 +20,7 @@ export default function StepSeven() {
           textDecorationLine={"underline"}
           marginBottom={"xs"}
         >
-          Step finale:
+          Etape finale:
         </Text>
         <Text variant={"title"} color="black">
           Configuration de votre contact
