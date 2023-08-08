@@ -9,15 +9,17 @@ import {
   MainScreen,
   Row,
   Text,
+  TouchableOpacity,
 } from "_shared";
 import { ActivityIndicator } from "react-native-paper";
 import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import { Constantes, announcerTypes } from "_utils";
 import { Size, Theme } from "_theme";
 import { useTheme } from "@shopify/restyle";
+import { manageMessageNavigationTypes } from "../../inbox/types";
 
 export default function AnnouncerScreen() {
-  //const navigation = useNavigation<>();
+  const navigation = useNavigation<manageMessageNavigationTypes>();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
 
@@ -33,16 +35,30 @@ export default function AnnouncerScreen() {
           }
         />
         <Column marginLeft="s">
-          <Text
-            variant="secondary"
-            numberOfLines={1}
-            textDecorationLine={"underline"}
+          <Row alignItems="center">
+            <Icon name="person" size={Size.ICON_SMALL} color={colors.black} />
+            <Text variant="secondary" numberOfLines={1}>
+              {item.name}
+            </Text>
+          </Row>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("manage_message", { emetteur: item.name })
+            }
           >
-            {item.name}
-          </Text>
-          <Text variant={"tertiary"} numberOfLines={1}>
-            {item.phoneNumber}
-          </Text>
+            <Row alignItems="flex-start">
+              <Icon name="chat" size={Size.ICON_SMALL} color={colors.blue} />
+              <Text
+                variant={"primary"}
+                numberOfLines={1}
+                color={"blue"}
+                textDecorationLine={"underline"}
+                textDecorationColor={"blue"}
+              >
+                Envoyer message
+              </Text>
+            </Row>
+          </TouchableOpacity>
         </Column>
         <Icon
           name="favorite"

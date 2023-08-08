@@ -72,14 +72,14 @@ export default function ManageMessageScreen() {
       >
         <Row alignItems="center" justifyContent="flex-start">
           <TouchableOpacity onPress={() => closeBottomSheet()}>
-            <Icon name="close" size={Size.ICON_LARGE} color={colors.text} />
+            <Icon name="close" size={Size.ICON_MEDIUM} color={colors.text} />
           </TouchableOpacity>
         </Row>
         <TouchableOpacity onPress={() => closeBottomSheet()}>
           <Row alignItems="center" marginTop="m" justifyContent="flex-start">
-            <Icon name="delete" size={Size.ICON_LARGE} color={colors.error} />
+            <Icon name="delete" size={Size.ICON_MEDIUM} color={colors.error} />
             <Text
-              variant="title"
+              variant={"primary"}
               color="error"
               marginLeft={"s"}
               numberOfLines={1}

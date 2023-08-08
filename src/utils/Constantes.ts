@@ -64,31 +64,31 @@ const categorie: categorieTypes[] = [
 const announcer: announcerTypes[] = [
   {
     id: 1,
-    name: "Annonceur 1",
+    name: "Rakoto",
     image: require("_images/logo.jpg"),
     phoneNumber: "0345648425",
   },
   {
     id: 2,
-    name: "Annonceur 2",
+    name: "Mety Amiko",
     image: require("_images/logo.jpg"),
     phoneNumber: "0345687825",
   },
   {
     id: 3,
-    name: "Annonceur 3",
+    name: "Dama",
     image: require("_images/logo.jpg"),
     phoneNumber: "0346532595",
   },
   {
     id: 4,
-    name: "Annonceur 4",
+    name: "Toky",
     image: require("_images/logo.jpg"),
     phoneNumber: "0335489654",
   },
   {
     id: 5,
-    name: "Annonceur 5",
+    name: "Babaique",
     image: require("_images/logo.jpg"),
     phoneNumber: "0347938171",
   },
