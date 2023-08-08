@@ -22,7 +22,7 @@ type InputProps = TextInputProps & {
 
 const Input = ({ iconRight, iconLeft, ...props }: InputProps) => {
   const theme = useTheme<Theme>();
-  const { spacing } = theme;
+  const { spacing, colors } = theme;
 
   return (
     <Row
@@ -48,6 +48,7 @@ const Input = ({ iconRight, iconLeft, ...props }: InputProps) => {
           style={{
             width: iconRight ? "90%" : "100%",
             marginLeft: iconLeft ? spacing.s : 0,
+            color: colors.black,
           }}
         />
         {iconRight && (

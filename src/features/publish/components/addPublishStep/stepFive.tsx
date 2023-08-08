@@ -5,11 +5,13 @@ import { Size, Theme } from "_theme";
 import { useTheme } from "@shopify/restyle";
 import { stepper6NavigationTypes } from "../../types";
 import { CheckBox } from "@rneui/themed";
+import { useState } from "react";
 
 export default function StepFive() {
   const navigation = useNavigation<stepper6NavigationTypes>();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
+  const [price, setPrice] = useState({ product: "0", livraison: "0" });
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
@@ -31,7 +33,15 @@ export default function StepFive() {
         <Box marginVertical={"xs"}>
           <Input
             placeholder="Prix du produit"
-            value="5000"
+            value={price.product}
+            onChangeText={(text) =>
+              setPrice((prevState) => {
+                return {
+                  ...prevState,
+                  product: text,
+                };
+              })
+            }
             iconLeft={{
               name: "payment",
               size: Size.ICON_MEDIUM,
@@ -40,21 +50,34 @@ export default function StepFive() {
           />
           <Input
             placeholder="Le prix de la livraison locale"
-            value="3000"
+            value={price.livraison}
+            onChangeText={(text) =>
+              setPrice((prevState) => {
+                return {
+                  ...prevState,
+                  livraison: text,
+                };
+              })
+            }
             iconLeft={{
-              name: "two-wheeler",
+              name: "local-shipping",
               size: Size.ICON_MEDIUM,
               color: colors.text,
             }}
           />
           <Input
             placeholder="Le prix de la livraison nationale"
-            value="20000"
+            value={
+              (
+                parseFloat(price.product) + parseFloat(price.livraison)
+              ).toString() + " Ar"
+            }
             iconLeft={{
-              name: "local-shipping",
+              name: "local-mall",
               size: Size.ICON_MEDIUM,
               color: colors.text,
             }}
+            editable={false}
           />
         </Box>
         <Box flexDirection={"row"} flexWrap={"wrap"}>
