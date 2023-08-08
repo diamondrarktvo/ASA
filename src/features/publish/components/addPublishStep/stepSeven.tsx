@@ -78,19 +78,19 @@ export default function StepSeven() {
             />
           </Row>
           <Text variant={"primaryBold"}>
-            * Refuser les démarches commerciales ?{" "}
+            * Accepter le démarche commercial ?{" "}
           </Text>
           <Row justifyContent="space-around" alignItems={"center"}>
             <CheckBox
               containerStyle={{ backgroundColor: colors.mainBackground }}
               checkedColor={colors.primary}
-              checked={false}
+              checked={true}
               title="Oui"
             />
             <CheckBox
               containerStyle={{ backgroundColor: colors.mainBackground }}
               checkedColor={colors.primary}
-              checked={true}
+              checked={false}
               title="Non"
             />
           </Row>

@@ -57,18 +57,18 @@ export default function StepFive() {
             }}
           />
         </Box>
-        <Box flexDirection={"row"}>
+        <Box flexDirection={"row"} flexWrap={"wrap"}>
           <CheckBox
             containerStyle={{ backgroundColor: colors.mainBackground }}
             checkedColor={colors.primary}
             checked={true}
-            title="Payement à la livraison"
+            title="Payement en ligne"
           />
           <CheckBox
             containerStyle={{ backgroundColor: colors.mainBackground }}
             checkedColor={colors.primary}
             checked={false}
-            title="Payement intégrer"
+            title="Payement après la livraison"
           />
         </Box>
         <Row alignItems={"center"} justifyContent="space-around">
