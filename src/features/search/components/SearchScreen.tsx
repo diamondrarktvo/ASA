@@ -1,13 +1,16 @@
 import { FlashList, ListRenderItem } from "@shopify/flash-list";
+import { useNavigation } from "@react-navigation/native";
 import { ImageBackground, StyleSheet } from "react-native";
 import { Box, Button, Column, Icon, Image, MainScreen, Text } from "_shared";
 import { Constantes, annonceTypes, categorieTypes } from "_utils";
 import { ActivityIndicator } from "react-native-paper";
 import { useTheme } from "@shopify/restyle";
 import { Size, Theme } from "_theme";
+import { searchItemNavigationTypes } from "../types";
 import { ScrollView } from "react-native-gesture-handler";
 
 export default function SearchScreen() {
+  const navigation = useNavigation<searchItemNavigationTypes>();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
 
@@ -77,6 +80,7 @@ export default function SearchScreen() {
           label="Recherchez partout à Madagascar"
           marginTop={"xs"}
           marginBottom={"m"}
+          onPress={() => navigation.navigate("search_item")}
         />
         <Column marginTop="s">
           <Text variant="primary">Catégorie les plus visités</Text>

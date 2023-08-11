@@ -21,6 +21,7 @@ import {
   StepFive,
   StepSix,
   StepSeven,
+  SearchItem,
 } from "_features";
 
 const Stack = createStackNavigator<StackParamList>();
@@ -48,6 +49,9 @@ const StackNavigation = () => {
             name={"manage_message"}
             component={ManageMessageScreen}
           />
+
+          {/**Search item */}
+          <Stack.Screen name={"search_item"} component={SearchItem} />
         </Stack.Group>
 
         {/**Stepper screens */}

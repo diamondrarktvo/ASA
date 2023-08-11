@@ -20,6 +20,7 @@ export type StackParamList = {
   stepper_screen_6: undefined;
   stepper_screen_7: undefined;
   //end of stepper screens
+  search_item: undefined;
 };
 
 export type TabParamList = {

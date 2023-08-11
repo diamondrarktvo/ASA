@@ -1,6 +1,7 @@
 //SCREEN PRINCIPAL
 import FavoriteScreen from "./favorite/components/FavoriteScreen";
 import SearchScreen from "./search/components/SearchScreen";
+import SearchItem from "./search/components/SearchItem";
 import PublishScreen from "./publish/components/PublishScreen";
 import MessageScreen from "./inbox/components/MessageScreen";
 import NotificationScreen from "./inbox/components/NotificationScreen";
@@ -36,6 +37,7 @@ export {
   ManageProfil,
   ManageMessageScreen,
   PersonnalInformation,
+  SearchItem,
   //stepper
   StepOne,
   StepTwo,
