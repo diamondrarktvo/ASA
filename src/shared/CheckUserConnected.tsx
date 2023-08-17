@@ -1,16 +1,6 @@
 import Box, { BoxProps } from "./Box";
-import React, { useState } from "react";
-import Text from "./Text";
-import TouchableOpacity from "./TouchableOpacity";
-import Button from "./Button";
-import Row from "./Row";
-import Column from "./Column";
-import Input from "./Input";
-import { useTheme } from "@shopify/restyle";
-import { Theme, Size } from "_theme";
-import Icon from "./Icon";
-import { createAccountNavigationTypes } from "./Types";
-import { useNavigation } from "@react-navigation/native";
+import React from "react";
+import LoginScreen from "../features/account/components/LoginScreen";
 
 type Props = {
   children: React.ReactNode;
@@ -19,79 +9,6 @@ type Props = {
   subTitleIfNotConnected: string;
   loggedIn: () => void;
 } & Partial<BoxProps>;
-
-type ComponentUserNotLoggedProps = {
-  title?: string;
-  subTitle: string;
-  loggedIn: () => void;
-};
-
-const ComponentUserNotLogged = ({
-  title,
-  subTitle,
-  loggedIn,
-}: ComponentUserNotLoggedProps) => {
-  const theme = useTheme<Theme>();
-  const { primary, secondary, white } = theme.colors;
-  const [hidePassword, setHidePassword] = useState(true);
-  const navigation = useNavigation<createAccountNavigationTypes>();
-
-  return (
-    <Box paddingVertical="m" backgroundColor="mainBackground">
-      <Box>
-        {title ? (
-          <Text variant="bigTitle" color="text">
-            {title}
-          </Text>
-        ) : null}
-        <Row marginBottom="s">
-          <Text variant="title" color="secondary">
-            {subTitle}
-          </Text>
-        </Row>
-        <Column>
-          <Input placeholder="Email*" />
-          <Input
-            placeholder="Mot de passe*"
-            iconRight={{
-              name: hidePassword ? "visibility" : "visibility-off",
-              size: 32,
-              color: secondary,
-              onPress: () => setHidePassword(!hidePassword),
-            }}
-          />
-        </Column>
-        <Row marginVertical="m">
-          <Text
-            variant="primaryBold"
-            textDecorationLine="underline"
-            color="text"
-          >
-            Mot de passe oublié
-          </Text>
-        </Row>
-        <Button variant={"primary"} label="Se connecter" onPress={loggedIn} />
-      </Box>
-      <Row
-        alignItems="center"
-        padding="s"
-        backgroundColor="offWhite"
-        justifyContent="space-between"
-        borderRadius="xs"
-        marginTop="xs"
-      >
-        <Text variant="primaryBold" color="text">
-          Creer un compte
-        </Text>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("create_account_screen")}
-        >
-          <Icon name="arrow-forward" size={Size.ICON_LARGE} color={primary} />
-        </TouchableOpacity>
-      </Row>
-    </Box>
-  );
-};
 
 const CheckUserConnected: React.FC<Props> = ({
   children,
@@ -106,7 +23,7 @@ const CheckUserConnected: React.FC<Props> = ({
       {isUserLogged ? (
         children
       ) : (
-        <ComponentUserNotLogged
+        <LoginScreen
           loggedIn={loggedIn}
           title={titleIfNotConnected}
           subTitle={subTitleIfNotConnected}
