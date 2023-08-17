@@ -7,19 +7,23 @@ import { theme, darkTheme } from "_theme";
 import { StatusBar } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { Provider } from "react-redux";
+import { store } from "_store";
 
 export default function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   return (
-    <ThemeProvider theme={isDarkMode ? darkTheme : theme}>
-      <SafeAreaProvider>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <BottomSheetModalProvider>
-            <StatusBar backgroundColor={theme.colors.primary} />
-            <StackNavigation />
-          </BottomSheetModalProvider>
-        </GestureHandlerRootView>
-      </SafeAreaProvider>
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={isDarkMode ? darkTheme : theme}>
+        <SafeAreaProvider>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <BottomSheetModalProvider>
+              <StatusBar backgroundColor={theme.colors.primary} />
+              <StackNavigation />
+            </BottomSheetModalProvider>
+          </GestureHandlerRootView>
+        </SafeAreaProvider>
+      </ThemeProvider>
+    </Provider>
   );
 }
