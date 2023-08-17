@@ -15,7 +15,8 @@
           { "_hooks": "./src/hooks" },
           { "_store": "./src/store" },
           { "_theme": "./src/theme" },
-          { "_utils": "./src/utils" }
+          { "_utils": "./src/utils" },
+          { "_config": "./src/config" }
         ],
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }

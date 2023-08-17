@@ -3,6 +3,7 @@ import {
   announcerTypes,
   categorieTypes,
   searchTypes,
+  errorCodeTypes,
 } from "./Types";
 
 const annonce: annonceTypes[] = [
@@ -102,11 +103,24 @@ const search: searchTypes[] = [
   { id: 5, searchValue: "Pantalon jean bleue" },
 ];
 
+const ERROR_CODE: errorCodeTypes = {
+  SUCCESS: 200,
+  CREATED: 201,
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
+  FORBIDDEN: 403,
+  NOT_FOUND: 404,
+  INTERNAL_SERVER_ERROR: 500,
+};
+
 export const Constantes = {
   DATA: {
     annonce,
     categorie,
     announcer,
     search,
+  },
+  error: {
+    ERROR_CODE,
   },
 };
