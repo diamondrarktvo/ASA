@@ -1,241 +1,196 @@
-# Todo
+## Table of Contents
 
-- [x] Register
-- [x] Login
-- [x] Pofile
-- [ ] chat
-- [x] CRUD products
+- [Purchase](#purchase)
+- [User](#user)
+- [Authentication](#authentication)
+- [Category](#category)
+- [Product](#product)
+- [Payment Method](#payment-method)
+- [View and Like](#view-and-like)
+- [Follow](#follow)
 
-# fonctionnalité
+## User
 
-- [x] Publier des annonces
-- [x] Consulter les annonces
-- [x] Créer un compte
-- [ ] Affecter des transactions
-- [x] Suivre des produits ou des vendeurs
-- [x] Suivre l’évolution d’un achat jusqu’à la livraison
+### Create User
 
-## Manuale
-
-### Endpoints
-
-- `POST api/client/login`
-  Request:
+- **URL**: `/user`
+- **Method**: POST
+- **Description**: Create a new user.
+- **Request**: User data to be created.
 
 ```json
 {
-  "telephone": "032000000",
-  "mot_de_passe": "thepassword"
-}
-```
-
-Response:
-
-```json
-{
-  "token": "7a43b3b266dd44da6e70b62311a983dcb3b2c465"
-}
-```
-
-- `POST api/client/register` <br>
-    - `email` et `image` sont facultatifs
-
-Request:
-
-```json
-{
-  "nom": "Non",
-  "prenom": "Prenom",
-  "username": "nom_utlisateur",
-  "email": "xyz@gmail.com",
-  "mot_de_passe": "thepassword",
-  "telephone": "03200000",
+  "nickname": "pseudo",
+  "password": "mot_de_passe",
+  "last_name": "Nom",
+  "first_name": "Prenom",
+  "phone_number": "numero_telephone",
   "age": "22"
 }
 ```
 
-Response: `Status 201 CREATED`
+- **Response**: The created user object. `Status Created 201`
 
 ```json
 {
+  "id": 1,
+  "nickname": "pseudo",
+  "email": "",
+  "is_active": true,
+  "date_joined": "2023-08-18T19:06:15.249934Z",
+  "first_name": "Prenom",
+  "last_name": "Nom",
+  "phone_number": "numero_telephone",
   "age": 22,
-  "telephone": "03200000",
-  "image": null,
-  "utilisateur": {
-    "id": 3,
-    "username": "nom_utlisateur",
-    "first_name": "Prenom",
-    "last_name": "Nom",
-    "email": "xyz@gmail.com",
-    "date_joined": "2023-08-14T19:02:08.815990Z"
-  }
+  "is_professional": false,
+  "company_name": "",
+  "unique_company_number": "",
+  "image": null
 }
 ```
 
-- `GET api/client/<int:pk>`
-  **l'authentification est facultative, vous pouvez avoirs plus d'information en s'authentifiant**
+### Update User
 
-Example:
+- **URL**: `/user`
+- **Method**: PUT
+- **Description**: Update user information.
+- **Need Authentication**:
 
-```js
-fetch('http://0.0.0.0:5000/api/client/1', {
-    headers: {
-        'Authorization': "token 7a43b3b266dd44da6e70b62311a983dcb3b2c465",
-        'Accept': '*/*'
-    },
-    method: 'GET',
-})
-    .then(response => {
-        console.log('Response:', response);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-
+```http request
+Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 ```
 
-Response: `Status 200 Ok`
-
-```json  
-{
-    "performance": {
-        "transaction": [],
-        "achat": [],
-        "likes": 0,
-        "vue": 0
-    },
-    "client": {
-        "age": 22,
-        "telephone": "0325911514",
-        "image": null,
-        "utilisateur": {
-            "id": 1,
-            "username": "joe",
-            "first_name": "Fitahiana",
-            "last_name": "Nomeniavo Joe",
-            "email": "24nomeniavo@gmail.com",
-            "date_joined": "2023-08-13T17:31:33.192191Z"
-        }
-    },
-    "produit": []
-}
-```
-
-- `PUT api/client/<int:pk>`
-    - **M-A-jour le profiles**
-- `DELETE api/client/<int:pk>`
-    - **Effacer un profilé**
-- `GET api/categorie`
-  Response:
+- **Request**: Updated user data.
 
 ```json
 {
-  "count": 1,
-  "next": null,
-  "previous": null,
-  "results": [
-    {
-      "id": 1,
-      "criteres": [
-        {
-          "id": 1,
-          "nom": "criter_1",
-          "status": false
-        },
-        {
-          "id": 2,
-          "nom": "criter_2",
-          "status": false
-        }
-      ],
-      "nom": "categirie_1"
-    }
-  ]
+  "nickname": "pseudo",
+  "password": "mot_de_passe",
+  "last_name": "Nom",
+  "first_name": "Prenom",
+  "phone_number": "numero_telephone",
+  "age": "22"
 }
 ```
 
-- `GET api/produit`
+- **Response**: The created user object. `Status Accepted 202`
 
 ```json
 {
+  "id": 1,
+  "nickname": "pseudo",
+  "email": "",
+  "is_active": true,
+  "date_joined": "2023-08-18T19:06:15.249934Z",
+  "first_name": "Prenom",
+  "last_name": "Nom",
+  "phone_number": "numero_telephone",
+  "age": 22,
+  "is_professional": false,
+  "company_name": "",
+  "unique_company_number": "",
+  "image": null
 }
 ```
 
-- `POST api/produit`
-  Example:
+### Get User
 
-```js
-const formData = new FormData();
-formData.append("nom", "pix")
-formData.append("description", "some description")
-for (const image of value.images) {
-    formData.append("uploaded_images", image);
-}
-
-// {
-//     "nom": [
-//         "This field is required."
-//     ],
-//     "description": [
-//         "This field is required."
-//     ],
-//     "localite": [
-//         "This field is required."
-//     ],
-//     "prix": [
-//         "This field is required."
-//     ],
-//     "categorie": [
-//         "This field is required."
-//     ],
-//     "utilisateur": [
-//         "This field is required."
-//     ],
-//     "modes_de_payement": [
-//         "This field is required."
-//     ]
-// }
-
-###
-facultative
-//  prix_livraison_local: decimal
-//  prix_livraison_national: decimal
-//  payement_integre: boolean
-//  quantite: int 1 par defaut
-
-
-fetch('http://0.0.0.0:5000/api/produit', {
-    headers: {
-        'Authorization': "token 7a43b3b266dd44da6e70b62311a983dcb3b2c465",
-        'Accept': '*/*'
-    },
-    method: 'POST',
-    body: formData,
-})
-    .then(response => {
-        console.log('Response:', response);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-
-```
-
-- `PUT produit/add_payement/<int:pk>`
-  pk est id produit
-
-- Need authentication token
-  Request:
+- **URL**: `/user/<int:pk>`
+- **Method**: GET
+- **Description**: Retrieve user details.
+- **Response**: The requested user object. `Status Ok 200`
 
 ```json
-  [
-  {
-    "nom": "MobileMoney",
-    "telephone": "032000000"
-  },
-  {
-    "nom": "MobileMoney",
-    "telephone": "038000000"
-  }
-]
+ {
+  "id": 1,
+  "nickname": "pseudo",
+  "email": "",
+  "is_active": true,
+  "date_joined": "2023-08-18T19:06:15.249934Z",
+  "first_name": "Prenom",
+  "last_name": "Nom",
+  "phone_number": "numero_telephone",
+  "age": 22,
+  "is_professional": false,
+  "company_name": "",
+  "unique_company_number": "",
+  "image": null
+}
 ```
+
+### Delete User
+
+- **URL**: `/user/<int:pk>`
+- **Method**: DELETE
+- **Description**: Delete a user.
+- **Need Authentication**:
+
+```http request
+Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
+```
+
+- **Response**: No content. `Status No content 204`
+
+## Authentication
+
+### User Authentication Token
+
+- **URL**: `/user/auth`
+- **Method**: POST
+- **Description**: Authenticate a user.
+- **Request**: Credential.
+
+```json
+{
+  "phone_number": "numero_telephone",
+  "password": "mot_de_passe"
+}
+```
+
+- **Response**: User authentication token. `Status Ok 200`
+
+```json
+{
+  "token": "926c06bd87e786e085a72b163e0d8e26f1ec6b11"
+}
+```
+
+## Purchase
+
+### List Purchases
+
+- **URL**: `/purchase`
+- **Method**: GET
+- **Description**: Retrieve a list of purchases.
+- **Response**: A list of purchase objects.
+
+### Create Purchase
+
+- **URL**: `/purchase`
+- **Method**: POST
+- **Description**: Create a new purchase.
+- **Request**: Purchase data to be created.
+- **Response**: The created purchase object.
+
+### Retrieve Purchase
+
+- **URL**: `/purchase/<int:pk>`
+- **Method**: GET
+- **Description**: Retrieve a specific purchase.
+- **Response**: The requested purchase object.
+
+### Delete Purchase
+
+- **URL**: `/purchase/<int:pk>`
+- **Method**: DELETE
+- **Description**: Delete a specific purchase.
+- **Response**: No content.
+
+### Confirm Purchase
+
+- **URL**: `/purchase/confirm/<int:pk>`
+- **Method**: PATCH
+- **Description**: Confirm a purchase.
+- **Request**: Updated purchase data.
+- **Response**: The updated purchase object.
+
