@@ -10,6 +10,7 @@ type Props = {
   isError?: boolean;
   errorType: number;
   errorMessage: string;
+  onRefresh: () => void;
 } & Partial<BoxProps>;
 
 const RequestError: React.FC<Props> = ({
@@ -17,9 +18,9 @@ const RequestError: React.FC<Props> = ({
   isError,
   errorType,
   errorMessage,
+  onRefresh,
   ...props
 }) => {
-  console.log("height  : ", Dimensions.get("window").height - 300);
   return (
     <>
       {isError ? (
@@ -38,7 +39,7 @@ const RequestError: React.FC<Props> = ({
           <Button
             variant={"primary"}
             label="Réessayer"
-            onPress={() => console.log("resfresh")}
+            onPress={onRefresh}
             mt={"xs"}
           />
         </Box>

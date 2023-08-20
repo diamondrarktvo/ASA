@@ -31,9 +31,6 @@ const LoginScreen = ({ title, subTitle, loggedIn }: LoginScreenProps) => {
 
   const handleLoading = () => {
     setIsError(true);
-    /*setTimeout(() => {
-      setIsError(false);
-    }, 3000);*/
   };
 
   return (
@@ -43,6 +40,7 @@ const LoginScreen = ({ title, subTitle, loggedIn }: LoginScreenProps) => {
           isError={isError}
           errorType={401}
           errorMessage="Compte non créer"
+          onRefresh={() => setIsError(false)}
         >
           <Box>
             {title ? (

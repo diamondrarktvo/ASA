@@ -3,8 +3,8 @@ export default {
   BASE_URL: process.env.EXPO_PUBLIC_API_HOST + "/api",
 
   //login
-  LOGIN_URL: "/client/login",
+  LOGIN_URL: "/user/auth",
 
   //register
-  REGISTER_URL: "/client/register",
+  REGISTER_URL: "/user",
 };
