@@ -13,6 +13,7 @@ import HeaderStackNavNormal from "./HeaderStackNavNormal";
 import Input from "./Input";
 import EmptyList from "./EmptyList";
 import RequestLoader from "./RequestLoader";
+import RequestError from "./RequestError";
 
 export {
   Icon,
@@ -30,4 +31,5 @@ export {
   Input,
   EmptyList,
   RequestLoader,
+  RequestError,
 };
