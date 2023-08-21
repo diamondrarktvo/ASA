@@ -5,12 +5,12 @@ export const BaseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({
     baseUrl: Config.BASE_URL,
-    /*prepareHeaders: (headers) => {
+    prepareHeaders: (headers) => {
       const token = null;
       headers.set("authorization", `Bearer ${token}`);
 
       return headers;
-    },*/
+    },
   }),
   tagTypes: ["Auth"],
   endpoints: () => ({}),
