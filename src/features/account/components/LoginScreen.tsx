@@ -10,27 +10,40 @@ import Icon from "../../../shared/Icon";
 import Box from "../../../shared/Box";
 import RequestLoader from "../../../shared/RequestLoader";
 import RequestError from "../../../shared/RequestError";
-import { createAccountNavigationTypes } from "../types";
+import { createAccountNavigationTypes, loginNavigationTypes } from "../types";
 import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "@shopify/restyle";
 import { Theme, Size } from "_theme";
+import { useLoginMutation } from "../authApi";
 
 type LoginScreenProps = {
   title?: string;
   subTitle: string;
-  loggedIn: () => void;
 };
 
-const LoginScreen = ({ title, subTitle, loggedIn }: LoginScreenProps) => {
+const LoginScreen = ({ title, subTitle }: LoginScreenProps) => {
   const theme = useTheme<Theme>();
   const { primary, secondary, white } = theme.colors;
   const [hidePassword, setHidePassword] = useState(true);
   const navigation = useNavigation<createAccountNavigationTypes>();
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const [loginValue, setLoginValue] = useState<loginNavigationTypes>({
+    phone_number: "",
+    password: "",
+  });
+  //const [isLoading, setIsLoading] = useState(false);
+  //const [isError, setIsError] = useState(false);
+  const [login, { isError, isLoading, status, data, error }] =
+    useLoginMutation();
 
-  const handleLoading = () => {
-    setIsError(true);
+  //logic
+  const handleSubmit = () => {
+    console.log("lasa ny call api login ..");
+    login(loginValue)
+      .unwrap()
+      .then((res) => {
+        console.log("vita le api pr ..");
+        console.log("res : ", res);
+      });
   };
 
   return (
@@ -39,8 +52,8 @@ const LoginScreen = ({ title, subTitle, loggedIn }: LoginScreenProps) => {
         <RequestError
           isError={isError}
           errorType={401}
-          errorMessage="Compte non créer"
-          onRefresh={() => setIsError(false)}
+          errorMessage="Login erreur "
+          onRefresh={() => console.log("onRefresh")}
         >
           <Box>
             {title ? (
@@ -54,7 +67,15 @@ const LoginScreen = ({ title, subTitle, loggedIn }: LoginScreenProps) => {
               </Text>
             </Row>
             <Column>
-              <Input placeholder="Email*" />
+              <Input
+                placeholder="Email*"
+                onChangeText={(text) =>
+                  setLoginValue((prevState) => ({
+                    ...prevState,
+                    phone_number: text,
+                  }))
+                }
+              />
               <Input
                 placeholder="Mot de passe*"
                 iconRight={{
@@ -63,6 +84,12 @@ const LoginScreen = ({ title, subTitle, loggedIn }: LoginScreenProps) => {
                   color: secondary,
                   onPress: () => setHidePassword(!hidePassword),
                 }}
+                onChangeText={(text) =>
+                  setLoginValue((prevState) => ({
+                    ...prevState,
+                    password: text,
+                  }))
+                }
               />
             </Column>
             <Row marginVertical="m">
@@ -77,7 +104,7 @@ const LoginScreen = ({ title, subTitle, loggedIn }: LoginScreenProps) => {
             <Button
               variant={"primary"}
               label="Se connecter"
-              onPress={/*loggedIn*/ handleLoading}
+              onPress={() => handleSubmit()}
             />
           </Box>
           <Row

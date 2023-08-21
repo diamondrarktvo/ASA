@@ -9,7 +9,6 @@ type Props = {
 } & Partial<BoxProps>;
 
 const RequestLoader: React.FC<Props> = ({ children, isLoading, ...props }) => {
-  console.log("height  : ", Dimensions.get("window").height - 300);
   return (
     <>
       {isLoading ? (

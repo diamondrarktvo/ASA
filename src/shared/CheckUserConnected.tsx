@@ -7,7 +7,6 @@ type Props = {
   isUserLogged: boolean;
   titleIfNotConnected?: string;
   subTitleIfNotConnected: string;
-  loggedIn: () => void;
 } & Partial<BoxProps>;
 
 const CheckUserConnected: React.FC<Props> = ({
@@ -15,7 +14,6 @@ const CheckUserConnected: React.FC<Props> = ({
   isUserLogged,
   titleIfNotConnected,
   subTitleIfNotConnected,
-  loggedIn,
   ...props
 }) => {
   return (
@@ -24,7 +22,6 @@ const CheckUserConnected: React.FC<Props> = ({
         children
       ) : (
         <LoginScreen
-          loggedIn={loggedIn}
           title={titleIfNotConnected}
           subTitle={subTitleIfNotConnected}
         />
