@@ -15,6 +15,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "@shopify/restyle";
 import { Theme, Size } from "_theme";
 import { useLoginMutation } from "../authApi";
+import config from "_config";
 
 type LoginScreenProps = {
   title?: string;
