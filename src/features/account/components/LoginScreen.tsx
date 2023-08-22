@@ -15,7 +15,6 @@ import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "@shopify/restyle";
 import { Theme, Size } from "_theme";
 import { useLoginMutation } from "../authApi";
-import config from "_config";
 
 type LoginScreenProps = {
   title?: string;
@@ -31,8 +30,6 @@ const LoginScreen = ({ title, subTitle }: LoginScreenProps) => {
     phone_number: "",
     password: "",
   });
-  //const [isLoading, setIsLoading] = useState(false);
-  //const [isError, setIsError] = useState(false);
   const [login, { isError, isLoading, status, data, error }] =
     useLoginMutation();
 
