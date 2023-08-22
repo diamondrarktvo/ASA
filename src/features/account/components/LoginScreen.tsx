@@ -44,16 +44,20 @@ const LoginScreen = ({ title, subTitle }: LoginScreenProps) => {
       .then((res) => {
         console.log("vita le api pr ..");
         console.log("res : ", res);
-      });
+      })
+      .catch((e) => {});
   };
+
+  console.log("status : ", status);
+  console.log("data : ", data);
+  console.log("error : ", error?.status);
 
   return (
     <Box paddingVertical="m" backgroundColor="mainBackground">
       <RequestLoader isLoading={isLoading}>
         <RequestError
           isError={isError}
-          errorType={401}
-          errorMessage="Login erreur "
+          errorStatus={error?.status}
           onRefresh={() => console.log("onRefresh")}
         >
           <Box>
@@ -69,7 +73,7 @@ const LoginScreen = ({ title, subTitle }: LoginScreenProps) => {
             </Row>
             <Column>
               <Input
-                placeholder="Email*"
+                placeholder="Numéro télephone*"
                 onChangeText={(text) =>
                   setLoginValue((prevState) => ({
                     ...prevState,

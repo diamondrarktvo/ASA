@@ -1,6 +1,6 @@
 import { ActivityIndicator } from "react-native-paper";
 import Box, { BoxProps } from "./Box";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Dimensions } from "react-native";
 import Text from "./Text";
 import Button from "./Button";
@@ -8,19 +8,29 @@ import Button from "./Button";
 type Props = {
   children: React.ReactNode;
   isError?: boolean;
-  errorType: number;
-  errorMessage: string;
+  errorStatus: number;
   onRefresh: () => void;
 } & Partial<BoxProps>;
 
 const RequestError: React.FC<Props> = ({
   children,
   isError,
-  errorType,
-  errorMessage,
+  errorStatus,
   onRefresh,
   ...props
 }) => {
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
+  useEffect(() => {
+    switch (errorStatus) {
+      case 404:
+        setErrorMessage("Numéro de télephone ou mot de passe incorrect");
+        break;
+      default:
+        break;
+    }
+  }, [errorStatus]);
+
   return (
     <>
       {isError ? (
