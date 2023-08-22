@@ -16,6 +16,7 @@
          "_hooks": ["src/hooks"],
          "_store": ["src/store"],
          "_navigations": ["src/navigations"],
+         "_config": ["src/config"],
       }
   }
 }

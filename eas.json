@@ -8,6 +8,9 @@
       }
     },
     "preview_weekly": {
+      "env": {
+        "EXPO_PUBLIC_API_HOST": "https://nomeniavojoe.pythonanywhere.com"
+      },
       "android": {
         "buildType": "apk"
       }

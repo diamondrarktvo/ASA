@@ -73,7 +73,7 @@ export default function SearchScreen() {
     <MainScreen typeOfScreen="tab">
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text variant={"bigTitle"} color="primary" textAlign="center">
-          "Atsika samy Atsika"
+          "Mety Amiko"
         </Text>
         <Button
           variant="secondary"

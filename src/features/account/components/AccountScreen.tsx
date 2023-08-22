@@ -30,7 +30,6 @@ export default function AccountScreen() {
         titleTabScreen={isUserConnected ? "Menu" : "Bonjour"}
       >
         <CheckUserConnected
-          loggedIn={() => setIsUserConnected(true)}
           isUserLogged={isUserConnected}
           subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
         >

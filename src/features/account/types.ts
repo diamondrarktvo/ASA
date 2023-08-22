@@ -16,3 +16,13 @@ export type PersonnalInformationNavigationTypes = StackNavigationProp<
   StackParamList,
   "personnal_information"
 >;
+
+export type createAccountNavigationTypes = StackNavigationProp<
+  StackParamList,
+  "create_account_screen"
+>;
+
+export type loginNavigationTypes = {
+  phone_number: string;
+  password: string;
+};
