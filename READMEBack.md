@@ -101,7 +101,7 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 - **Response**: The requested user object. `Status Ok 200`
 
 ```json
- {
+{
   "id": 1,
   "nickname": "pseudo",
   "email": "",
@@ -193,4 +193,3 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 - **Description**: Confirm a purchase.
 - **Request**: Updated purchase data.
 - **Response**: The updated purchase object.
-
