@@ -17,6 +17,10 @@ export const store = configureStore({
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors
 // see `setupListeners` docs - takes an optional callback as the 2nd arg for customization
 setupListeners(store.dispatch);
+store.subscribe(() => {
+  console.log("State ato amin'ny store : ");
+  console.log(store.getState());
+});
 
 export type AppDispatch = typeof store.getState;
 export type RootState = ReturnType<typeof store.getState>;
