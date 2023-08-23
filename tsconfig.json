@@ -4,6 +4,7 @@
   "compilerOptions": {
     "jsx": "react-native",
     "strict": true,
+    "module": "esnext",
      "baseUrl": ".",
      "paths": {
          "_shared": ["src/shared"],

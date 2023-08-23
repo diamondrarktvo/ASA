@@ -1,6 +1,7 @@
+import "./ReactotronConfig";
+import "react-native-gesture-handler";
 import { useState } from "react";
 import { ThemeProvider, useTheme } from "@shopify/restyle";
-import "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StackNavigation } from "_navigations";
 import { theme, darkTheme } from "_theme";
