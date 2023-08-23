@@ -1,14 +1,13 @@
-import { Constantes } from "./Constantes";
+//constantes
+export { Constantes } from "./Constantes";
 
 //types
-import {
+export {
   annonceTypes,
   categorieTypes,
   announcerTypes,
   searchTypes,
 } from "./Types";
 
-export { Constantes };
-
-//types
-export { annonceTypes, categorieTypes, announcerTypes, searchTypes };
+//storage
+export { storeDataToMmkvStorage, getDataToMmkvStorage } from "./Storage";
