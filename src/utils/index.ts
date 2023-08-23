@@ -10,4 +10,8 @@ export {
 } from "./Types";
 
 //storage
-export { storeDataToMmkvStorage, getDataToMmkvStorage } from "./Storage";
+export {
+  storeDataToAsyncStorage,
+  getDataToAsyncStorage,
+  storeObjectDataToAsyncStorage,
+} from "./Storage";
