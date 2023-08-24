@@ -15,6 +15,8 @@ import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "@shopify/restyle";
 import { Theme, Size } from "_theme";
 import { useLoginMutation } from "../authApi";
+import { useAppDispatch, useAppSelector } from "_store";
+import { setAccount } from "../accountSlice";
 
 type LoginScreenProps = {
   title?: string;
@@ -23,6 +25,8 @@ type LoginScreenProps = {
 
 const LoginScreen = ({ title, subTitle }: LoginScreenProps) => {
   const theme = useTheme<Theme>();
+  const account = useAppSelector((state) => state.account);
+  const dispatch = useAppDispatch();
   const { primary, secondary, white } = theme.colors;
   const [hidePassword, setHidePassword] = useState(true);
   const navigation = useNavigation<createAccountNavigationTypes>();
@@ -39,21 +43,21 @@ const LoginScreen = ({ title, subTitle }: LoginScreenProps) => {
     login(loginValue)
       .unwrap()
       .then((res) => {
-        console.log("vita le api pr ..");
-        console.log("res : ", res);
+        dispatch(setAccount(res));
       })
       .catch((e) => {});
   };
 
-  console.log("status : ", status);
-  console.log("data : ", data);
-  console.log("error : ", error?.status);
+  //console.log("status : ", status);
+  //console.log("data : ", data);
+  //console.log("error : ", error?.status);
+  console.log("account pr e : ", account);
 
   return (
     <Box paddingVertical="m" backgroundColor="mainBackground">
       <RequestLoader isLoading={isLoading}>
         <RequestError
-          isError={isError}
+          isError={false}
           errorStatus={error?.status}
           onRefresh={() => console.log("onRefresh")}
         >
