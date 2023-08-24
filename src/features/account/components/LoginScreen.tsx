@@ -10,13 +10,14 @@ import Icon from "../../../shared/Icon";
 import Box from "../../../shared/Box";
 import RequestLoader from "../../../shared/RequestLoader";
 import RequestError from "../../../shared/RequestError";
-import { createAccountNavigationTypes, loginNavigationTypes } from "../types";
+import { createAccountNavigationTypes, loginValuesTypes } from "../types";
 import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "@shopify/restyle";
 import { Theme, Size } from "_theme";
 import { useLoginMutation } from "../authApi";
-import { useAppDispatch, useAppSelector } from "_store";
+import { useAppDispatch } from "_store";
 import { setAccount } from "../accountSlice";
+import { storeDataToAsyncStorage, storeObjectDataToAsyncStorage } from "_utils";
 
 type LoginScreenProps = {
   title?: string;
@@ -25,33 +26,32 @@ type LoginScreenProps = {
 
 const LoginScreen = ({ title, subTitle }: LoginScreenProps) => {
   const theme = useTheme<Theme>();
-  const account = useAppSelector((state) => state.account);
   const dispatch = useAppDispatch();
-  const { primary, secondary, white } = theme.colors;
+  const { primary, secondary } = theme.colors;
   const [hidePassword, setHidePassword] = useState(true);
   const navigation = useNavigation<createAccountNavigationTypes>();
-  const [loginValue, setLoginValue] = useState<loginNavigationTypes>({
+  const [loginValue, setLoginValue] = useState<loginValuesTypes>({
     phone_number: "",
     password: "",
   });
-  const [login, { isError, isLoading, status, data, error }] =
-    useLoginMutation();
+  const [login, { isError, isLoading, status, error }] = useLoginMutation();
 
   //logic
   const handleSubmit = () => {
-    console.log("lasa ny call api login ..");
     login(loginValue)
       .unwrap()
       .then((res) => {
-        dispatch(setAccount(res));
+        if (res && res.token) {
+          dispatch(setAccount(res));
+          storeObjectDataToAsyncStorage("token", res.token);
+          storeObjectDataToAsyncStorage("current_account", res.user);
+        }
       })
       .catch((e) => {});
   };
 
   //console.log("status : ", status);
-  //console.log("data : ", data);
-  //console.log("error : ", error?.status);
-  console.log("account pr e : ", account);
+  console.log("error : ", error?.status);
 
   return (
     <Box paddingVertical="m" backgroundColor="mainBackground">

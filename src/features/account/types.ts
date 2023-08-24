@@ -22,7 +22,7 @@ export type createAccountNavigationTypes = StackNavigationProp<
   "create_account_screen"
 >;
 
-export type loginNavigationTypes = {
+export type loginValuesTypes = {
   phone_number: string;
   password: string;
 };

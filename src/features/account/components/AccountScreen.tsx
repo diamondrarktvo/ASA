@@ -1,5 +1,5 @@
 import { Alert, ScrollView, StyleSheet } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useTheme } from "@shopify/restyle";
 import {
   Image,
@@ -15,13 +15,45 @@ import { Size, Theme } from "_theme";
 import VersionCheck from "../../version/VersionCheck";
 import { AllMenu } from "./AllMenu";
 import { manageProfilNavigationTypes } from "../types";
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { useAppDispatch, useAppSelector } from "_store";
+import { removeAccount } from "../accountSlice";
 
 export default function AccountScreen() {
   const navigation = useNavigation<manageProfilNavigationTypes>();
+  const dispatch = useAppDispatch();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
-  const [isUserConnected, setIsUserConnected] = useState(true);
+  const [isUserConnected, setIsUserConnected] = useState(false);
+  const account = useAppSelector((state) => state.account);
+
+  //all logics
+  const handleLogout = () => {
+    Alert.alert("Déconnexion", "Voulez-vous vraiment vous déconnecter ?", [
+      {
+        text: "Annuler",
+        onPress: () => {},
+        style: "cancel",
+      },
+      {
+        text: "Oui",
+        onPress: () => {
+          dispatch(removeAccount());
+          setIsUserConnected(false);
+        },
+      },
+    ]);
+  };
+
+  //all effects
+  useFocusEffect(
+    useCallback(() => {
+      if (account?.token !== null) {
+        setIsUserConnected(true);
+        console.log("account : ");
+      }
+    }, []),
+  );
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -30,7 +62,7 @@ export default function AccountScreen() {
         titleTabScreen={isUserConnected ? "Menu" : "Bonjour"}
       >
         <CheckUserConnected
-          isUserLogged={isUserConnected}
+          isUserConnected={isUserConnected}
           subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
         >
           {/**Profil */}
@@ -54,7 +86,7 @@ export default function AccountScreen() {
               />
               <Column paddingHorizontal="s" flex={2}>
                 <Text variant="title" color="text">
-                  Mety Amiko
+                  {account?.user?.nickname}
                 </Text>
                 <Text variant="secondary" color="text">
                   Afficher le profil
@@ -68,7 +100,7 @@ export default function AccountScreen() {
             </Row>
           </TouchableOpacity>
 
-          <AllMenu loggedOut={() => setIsUserConnected(false)} />
+          <AllMenu loggedOut={() => handleLogout()} />
           <VersionCheck />
         </CheckUserConnected>
       </MainScreen>

@@ -47,6 +47,10 @@ const accountSlice = createSlice({
         state.token = action.payload.token;
       }
     },
+    removeAccount: (state) => {
+      state.user = initialState.user;
+      state.token = initialState.token;
+    },
   },
   extraReducers: (builder) => {
     builder;
@@ -58,6 +62,6 @@ export const selectors = {
   selectCurrentAccount: (state: { account: authState }) => state.account.user,
 };
 
-export const { setAccount } = accountSlice.actions;
+export const { setAccount, removeAccount } = accountSlice.actions;
 
 export default accountSlice;

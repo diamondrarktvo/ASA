@@ -14,4 +14,6 @@ export {
   storeDataToAsyncStorage,
   getDataToAsyncStorage,
   storeObjectDataToAsyncStorage,
+  getObjectDataToAsyncStorage,
+  removeDataToAsyncStorage,
 } from "./Storage";
