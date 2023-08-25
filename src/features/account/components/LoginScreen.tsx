@@ -42,9 +42,10 @@ const LoginScreen = ({ title, subTitle }: LoginScreenProps) => {
       .unwrap()
       .then((res) => {
         if (res && res.token) {
+          console.log("res : ", res);
           dispatch(setAccount(res));
-          storeObjectDataToAsyncStorage("token", res.token);
-          storeObjectDataToAsyncStorage("current_account", res.user);
+          //storeObjectDataToAsyncStorage("token", res.token);
+          //storeObjectDataToAsyncStorage("current_account", res.user);
         }
       })
       .catch((e) => {});

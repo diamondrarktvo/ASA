@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import AuthApi from "./authApi";
+import { removeDataToAsyncStorage } from "_utils";
 
 export interface authState {
   user: {
@@ -17,6 +18,7 @@ export interface authState {
     unique_company_number: string | null;
   };
   token: string | null;
+  is_account_connected: boolean;
 }
 
 const initialState: authState = {
@@ -35,6 +37,7 @@ const initialState: authState = {
     unique_company_number: null,
   },
   token: null,
+  is_account_connected: false,
 };
 
 const accountSlice = createSlice({
@@ -45,11 +48,15 @@ const accountSlice = createSlice({
       if (action.payload.user && action.payload.token) {
         state.user = action.payload.user;
         state.token = action.payload.token;
+        state.is_account_connected = !state.is_account_connected;
       }
     },
     removeAccount: (state) => {
       state.user = initialState.user;
       state.token = initialState.token;
+      state.is_account_connected = false;
+      removeDataToAsyncStorage("token");
+      removeDataToAsyncStorage("current_account");
     },
   },
   extraReducers: (builder) => {
