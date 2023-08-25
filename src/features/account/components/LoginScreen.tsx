@@ -22,9 +22,14 @@ import { storeDataToAsyncStorage, storeObjectDataToAsyncStorage } from "_utils";
 type LoginScreenProps = {
   title?: string;
   subTitle: string;
+  setUserMustLogin?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const LoginScreen = ({ title, subTitle }: LoginScreenProps) => {
+const LoginScreen = ({
+  title,
+  subTitle,
+  setUserMustLogin,
+}: LoginScreenProps) => {
   const theme = useTheme<Theme>();
   const dispatch = useAppDispatch();
   const { primary, secondary } = theme.colors;
@@ -43,9 +48,10 @@ const LoginScreen = ({ title, subTitle }: LoginScreenProps) => {
       .then((res) => {
         if (res && res.token) {
           console.log("res : ", res);
+          setUserMustLogin && setUserMustLogin(false);
           dispatch(setAccount(res));
-          //storeObjectDataToAsyncStorage("token", res.token);
-          //storeObjectDataToAsyncStorage("current_account", res.user);
+          storeObjectDataToAsyncStorage("token", res.token);
+          storeObjectDataToAsyncStorage("current_account", res.user);
         }
       })
       .catch((e) => {});
@@ -85,6 +91,7 @@ const LoginScreen = ({ title, subTitle }: LoginScreenProps) => {
               />
               <Input
                 placeholder="Mot de passe*"
+                secureTextEntry={hidePassword}
                 iconRight={{
                   name: hidePassword ? "visibility" : "visibility-off",
                   size: 32,
@@ -133,6 +140,17 @@ const LoginScreen = ({ title, subTitle }: LoginScreenProps) => {
                 size={Size.ICON_LARGE}
                 color={primary}
               />
+            </TouchableOpacity>
+          </Row>
+          <Row marginTop="xs">
+            <TouchableOpacity
+              onPress={() =>
+                setUserMustLogin ? setUserMustLogin(false) : null
+              }
+            >
+              <Text variant={"primary"} textDecorationLine={"underline"}>
+                Retour
+              </Text>
             </TouchableOpacity>
           </Row>
         </RequestError>

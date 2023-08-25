@@ -25,7 +25,7 @@ export default function AccountScreen() {
   const dispatch = useAppDispatch();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
-  const [isUserConnected, setIsUserConnected] = useState(false);
+  const [userMustLogin, setUserMustLogin] = useState<boolean>(false);
   const accountUser = useAppSelector((state) => state.account);
   const [loading, setLoading] = useState(false);
 
@@ -59,10 +59,18 @@ export default function AccountScreen() {
         titleTabScreen={accountUser.is_account_connected ? "Menu" : "Bonjour"}
       >
         <RequestLoader isLoading={loading}>
-          <CheckUserConnected subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités">
+          <CheckUserConnected
+            userMustLogin={userMustLogin}
+            setUserMustLogin={setUserMustLogin}
+            subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
+          >
             {/**Profil */}
             <TouchableOpacity
-              onPress={() => navigation.navigate("manage_profil")}
+              onPress={() =>
+                accountUser.is_account_connected
+                  ? navigation.navigate("manage_profil")
+                  : setUserMustLogin(true)
+              }
             >
               <Row
                 borderBottomWidth={2}
@@ -97,13 +105,20 @@ export default function AccountScreen() {
                   </>
                 ) : (
                   <Text variant={"secondary"}>
-                    Vous n'êtes pas connectez. Veuillez vous connectez !
+                    Vous n'êtes pas connecté. Cliquez ici pour vous connecter !
                   </Text>
                 )}
               </Row>
             </TouchableOpacity>
 
-            <AllMenu loggedOut={() => handleLogout()} />
+            <AllMenu
+              is_account_connected={accountUser.is_account_connected}
+              action={() =>
+                accountUser.is_account_connected
+                  ? handleLogout()
+                  : setUserMustLogin(true)
+              }
+            />
             <VersionCheck />
           </CheckUserConnected>
         </RequestLoader>
