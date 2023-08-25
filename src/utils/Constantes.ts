@@ -3,7 +3,7 @@ import {
   announcerTypes,
   categorieTypes,
   searchTypes,
-  errorCodeTypes,
+  errorConstants,
 } from "./Types";
 
 const annonce: annonceTypes[] = [
@@ -103,13 +103,16 @@ const search: searchTypes[] = [
   { id: 5, searchValue: "Pantalon jean bleue" },
 ];
 
-const ERROR_CODE: errorCodeTypes = {
+const ERROR_CONSTANT: errorConstants = {
   SUCCESS: 200,
   CREATED: 201,
   BAD_REQUEST: 400,
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,
-  NOT_FOUND: 404,
+  NOT_FOUND: {
+    status: 404,
+    message: "User matching query does not exist.",
+  },
   INTERNAL_SERVER_ERROR: 500,
 };
 
@@ -121,6 +124,6 @@ export const Constantes = {
     search,
   },
   error: {
-    ERROR_CODE,
+    ERROR_CONSTANT,
   },
 };

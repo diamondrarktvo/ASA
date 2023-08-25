@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 //FIXME: cette importation est un exception pour ne pas avoir le WARNING recycle
 import Text from "../../../shared/Text";
 import TouchableOpacity from "../../../shared/TouchableOpacity";
@@ -17,7 +17,8 @@ import { Theme, Size } from "_theme";
 import { useLoginMutation } from "../authApi";
 import { useAppDispatch } from "_store";
 import { setAccount } from "../accountSlice";
-import { storeDataToAsyncStorage, storeObjectDataToAsyncStorage } from "_utils";
+import { Constantes, storeObjectDataToAsyncStorage } from "_utils";
+import { Snackbar } from "react-native-paper";
 
 type LoginScreenProps = {
   title?: string;
@@ -34,11 +35,13 @@ const LoginScreen = ({
   const dispatch = useAppDispatch();
   const { primary, secondary } = theme.colors;
   const [hidePassword, setHidePassword] = useState(true);
+  const [visibleSnackbar, setVisibleSnackbar] = useState(false);
   const navigation = useNavigation<createAccountNavigationTypes>();
   const [loginValue, setLoginValue] = useState<loginValuesTypes>({
     phone_number: "",
     password: "",
   });
+  const [errorNotFound, setErrorNotFound] = useState<boolean>(false);
   const [login, { isError, isLoading, status, error }] = useLoginMutation();
 
   //logic
@@ -47,18 +50,42 @@ const LoginScreen = ({
       .unwrap()
       .then((res) => {
         if (res && res.token) {
-          console.log("res : ", res);
           setUserMustLogin && setUserMustLogin(false);
           dispatch(setAccount(res));
           storeObjectDataToAsyncStorage("token", res.token);
           storeObjectDataToAsyncStorage("current_account", res.user);
         }
       })
-      .catch((e) => {});
+      .catch((e) => {
+        if (e.status === Constantes.error.ERROR_CONSTANT.NOT_FOUND.status) {
+          setVisibleSnackbar(true);
+        }
+      });
   };
 
-  //console.log("status : ", status);
-  console.log("error : ", error?.status);
+  const onDismissSnackBar = () => setVisibleSnackbar(false);
+
+  //components
+
+  //effects
+  useEffect(() => {
+    if (visibleSnackbar) {
+      setTimeout(() => {
+        setVisibleSnackbar(false);
+      }, 4000);
+    }
+  }, [visibleSnackbar]);
+
+  useEffect(() => {
+    if (
+      error &&
+      error.status === Constantes.error.ERROR_CONSTANT.NOT_FOUND.status
+    ) {
+      setErrorNotFound(true);
+    } else {
+      setErrorNotFound(false);
+    }
+  }, [error]);
 
   return (
     <Box paddingVertical="m" backgroundColor="mainBackground">
@@ -82,15 +109,22 @@ const LoginScreen = ({
             <Column>
               <Input
                 placeholder="Numéro télephone*"
-                onChangeText={(text) =>
+                errorMessage={
+                  errorNotFound ? "Numéro télephone incorrect" : undefined
+                }
+                onChangeText={(text) => {
                   setLoginValue((prevState) => ({
                     ...prevState,
                     phone_number: text,
-                  }))
-                }
+                  }));
+                  setErrorNotFound(false);
+                }}
               />
               <Input
                 placeholder="Mot de passe*"
+                errorMessage={
+                  errorNotFound ? "Mot de passe incorrect" : undefined
+                }
                 secureTextEntry={hidePassword}
                 iconRight={{
                   name: hidePassword ? "visibility" : "visibility-off",
@@ -98,12 +132,13 @@ const LoginScreen = ({
                   color: secondary,
                   onPress: () => setHidePassword(!hidePassword),
                 }}
-                onChangeText={(text) =>
+                onChangeText={(text) => {
                   setLoginValue((prevState) => ({
                     ...prevState,
                     password: text,
-                  }))
-                }
+                  }));
+                  setErrorNotFound(false);
+                }}
               />
             </Column>
             <Row marginVertical="m">
@@ -155,6 +190,18 @@ const LoginScreen = ({
           </Row>
         </RequestError>
       </RequestLoader>
+      <Snackbar
+        visible={visibleSnackbar}
+        onDismiss={onDismissSnackBar}
+        action={{
+          label: "Ok",
+          onPress: () => {
+            // Do something
+          },
+        }}
+      >
+        Utilisateur non trouvé, veuillez vérifier vos identifiants!
+      </Snackbar>
     </Box>
   );
 };

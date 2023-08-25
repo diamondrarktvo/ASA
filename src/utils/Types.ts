@@ -24,12 +24,15 @@ export type searchTypes = {
   searchValue: string;
 };
 
-export type errorCodeTypes = {
+export type errorConstants = {
   SUCCESS: number;
   CREATED: number;
   BAD_REQUEST: number;
   UNAUTHORIZED: number;
   FORBIDDEN: number;
-  NOT_FOUND: number;
+  NOT_FOUND: {
+    status: number;
+    message: string;
+  };
   INTERNAL_SERVER_ERROR: number;
 };
