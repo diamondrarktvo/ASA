@@ -18,10 +18,15 @@ import { StyleSheet, ScrollView } from "react-native";
 import { ScrollView as ScrollViewBottomSheet } from "react-native-gesture-handler";
 import { BottomSheetModal, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types";
+import { useAppSelector } from "_store";
+import { formatDate } from "_utils";
 
 export default function ManageProfil() {
   const theme = useTheme<Theme>();
   const { borderRadii, colors, spacing } = theme;
+
+  //state data
+  const accountUser = useAppSelector((state) => state.account.user);
 
   //bottomsheet
   const snapPoints = useMemo(() => [1, "97%"], []);
@@ -48,6 +53,7 @@ export default function ManageProfil() {
     }
     return;
   };
+  console.log("tetetet : ", accountUser);
 
   return (
     <MainScreen typeOfScreen="stack">
@@ -80,6 +86,11 @@ export default function ManageProfil() {
           <Text variant="secondary" color="text">
             Utilisateur client
           </Text>
+          {accountUser && accountUser.date_joined && (
+            <Text variant={"tertiary"} fontWeight={"400"} color={"primaryDark"}>
+              Membre depuis :{formatDate(accountUser.date_joined)}
+            </Text>
+          )}
         </Box>
 
         {/**TODO: transform this to an array */}
@@ -105,7 +116,8 @@ export default function ManageProfil() {
           </Text>
           <Input
             placeholder="Nom"
-            value="Mety Amiko"
+            editable={false}
+            value={accountUser.first_name ? accountUser.first_name : ""}
             iconLeft={{
               name: "person",
               size: Size.ICON_SMALL,
@@ -125,7 +137,29 @@ export default function ManageProfil() {
           </Text>
           <Input
             placeholder="Prenom"
-            value="Mety Amiko be"
+            editable={false}
+            value={accountUser.last_name ? accountUser.last_name : ""}
+            iconLeft={{
+              name: "person",
+              size: Size.ICON_SMALL,
+              color: colors.text,
+            }}
+          />
+
+          {/**Pseudo */}
+          <Text
+            variant="primary"
+            color="text"
+            fontWeight="bold"
+            marginLeft="xs"
+            textDecorationLine="underline"
+          >
+            Pseudo:
+          </Text>
+          <Input
+            placeholder="Pseudo"
+            editable={false}
+            value={accountUser.nickname ? accountUser.nickname : ""}
             iconLeft={{
               name: "person",
               size: Size.ICON_SMALL,
@@ -145,7 +179,8 @@ export default function ManageProfil() {
           </Text>
           <Input
             placeholder="Age"
-            value="22"
+            editable={false}
+            value={accountUser.age ? accountUser.age.toString() : ""}
             iconLeft={{
               name: "person",
               size: Size.ICON_SMALL,
@@ -165,7 +200,8 @@ export default function ManageProfil() {
           </Text>
           <Input
             placeholder="Adresse email"
-            value="metyamiko@gmail.com"
+            editable={false}
+            value={accountUser.email ? accountUser.email : ""}
             iconLeft={{
               name: "mail",
               size: Size.ICON_SMALL,
@@ -184,8 +220,13 @@ export default function ManageProfil() {
             Numéro téléphone:
           </Text>
           <Input
-            placeholder="Adresse email"
-            value="034 78 968 58"
+            placeholder="Numéro téléphone"
+            editable={false}
+            value={
+              accountUser.phone_number
+                ? accountUser.phone_number.toString()
+                : ""
+            }
             iconLeft={{
               name: "call",
               size: Size.ICON_SMALL,
@@ -276,7 +317,7 @@ export default function ManageProfil() {
             </Text>
             <Input
               placeholder="Nom"
-              value="Mety Amiko"
+              value={accountUser.first_name ? accountUser.first_name : ""}
               iconLeft={{
                 name: "person",
                 size: Size.ICON_SMALL,
@@ -296,7 +337,27 @@ export default function ManageProfil() {
             </Text>
             <Input
               placeholder="Prenom"
-              value="Mety Amiko be"
+              value={accountUser.last_name ? accountUser.last_name : ""}
+              iconLeft={{
+                name: "person",
+                size: Size.ICON_SMALL,
+                color: colors.text,
+              }}
+            />
+
+            {/**Prenom */}
+            <Text
+              variant="primary"
+              color="text"
+              fontWeight="bold"
+              marginLeft="xs"
+              textDecorationLine="underline"
+            >
+              Pseudo:
+            </Text>
+            <Input
+              placeholder="Pseudo"
+              value={accountUser.nickname ? accountUser.nickname : ""}
               iconLeft={{
                 name: "person",
                 size: Size.ICON_SMALL,
@@ -316,7 +377,7 @@ export default function ManageProfil() {
             </Text>
             <Input
               placeholder="Age"
-              value="22"
+              value={accountUser.age ? accountUser.age.toString() : ""}
               iconLeft={{
                 name: "person",
                 size: Size.ICON_SMALL,
@@ -336,7 +397,7 @@ export default function ManageProfil() {
             </Text>
             <Input
               placeholder="Adresse email"
-              value="metyamiko@gmail.com"
+              value={accountUser.email ? accountUser.email : ""}
               iconLeft={{
                 name: "mail",
                 size: Size.ICON_SMALL,
@@ -356,7 +417,11 @@ export default function ManageProfil() {
             </Text>
             <Input
               placeholder="Adresse email"
-              value="034 78 968 58"
+              value={
+                accountUser.phone_number
+                  ? accountUser.phone_number.toString()
+                  : ""
+              }
               iconLeft={{
                 name: "call",
                 size: Size.ICON_SMALL,

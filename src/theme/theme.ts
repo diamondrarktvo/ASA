@@ -23,6 +23,7 @@ const theme = createTheme({
     mainBackground: palette.white,
     mainForeground: palette.black,
     primary: palette.orangePrimary,
+    primaryDark: palette.orangeDark,
     secondary: palette.grey, //grey
     orangeDark: palette.orangeDark,
     error: palette.redBordeaux,

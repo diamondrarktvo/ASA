@@ -17,3 +17,6 @@ export {
   getObjectDataToAsyncStorage,
   removeDataToAsyncStorage,
 } from "./Storage";
+
+//function utils
+export { formatDate } from "./layout";
