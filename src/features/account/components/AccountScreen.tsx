@@ -50,6 +50,11 @@ export default function AccountScreen() {
     ]);
   };
 
+  console.log(
+    "accountUser.is_account_connected ==================> : ",
+    accountUser.is_account_connected,
+  );
+
   //all effects
 
   return (

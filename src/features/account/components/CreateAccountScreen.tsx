@@ -15,9 +15,13 @@ import { useTheme } from "@shopify/restyle";
 import { Theme, Size } from "_theme";
 import { ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { RadioButton } from "react-native-paper";
+import { RadioButton, Snackbar } from "react-native-paper";
 import { useRegisterMutation } from "../authApi";
 import { accountNavigationTypes } from "../types";
+import { ERROR_REGISTER, parseErrorMessage } from "../utilsAuth";
+import { useAppDispatch } from "_store";
+import { Constantes, storeObjectDataToAsyncStorage } from "_utils";
+import { setAccount } from "../accountSlice";
 
 type registerTypes = {
   nickname: string | null;
@@ -35,7 +39,9 @@ type registerTypes = {
 
 const CreateAccountScreen = () => {
   const navigation = useNavigation();
+  const dispatch = useAppDispatch();
   const navigateToAccountScreen = useNavigation<accountNavigationTypes>();
+  const [visibleSnackbar, setVisibleSnackbar] = useState(false);
   const [hidePassword, setHidePassword] = useState(true);
   const [hideConfirmPassword, setHideConfirmPassword] = useState(true);
   const [password, setPassword] = useState<{
@@ -70,9 +76,15 @@ const CreateAccountScreen = () => {
       .unwrap()
       .then((res) => {
         console.log("resAPI : ", res);
+        dispatch(setAccount(res));
+        storeObjectDataToAsyncStorage("token", res.token);
+        storeObjectDataToAsyncStorage("current_account", res.user);
+        navigateToAccountScreen.navigate("account_screen");
       })
       .catch((e) => {
-        console.log("error : ", e);
+        if (e.status === ERROR_REGISTER.MUST_UNIQUE.status) {
+          setVisibleSnackbar(true);
+        }
       });
   };
 
@@ -216,7 +228,7 @@ const CreateAccountScreen = () => {
             <Button
               variant={"primary"}
               label="Creer mon compte"
-              onPress={() => navigateToAccountScreen.navigate("account_screen")}
+              onPress={() => handleSubmit()}
               marginTop={"s"}
             />
             <Row
@@ -241,6 +253,18 @@ const CreateAccountScreen = () => {
           </Box>
         </RequestLoader>
       </ScrollView>
+      <Snackbar
+        visible={visibleSnackbar}
+        onDismiss={() => setVisibleSnackbar(false)}
+        action={{
+          label: "Ok",
+          onPress: () => {
+            // Do something
+          },
+        }}
+      >
+        {parseErrorMessage(error)}
+      </Snackbar>
     </MainScreen>
   );
 };
