@@ -53,7 +53,6 @@ export default function ManageProfil() {
     }
     return;
   };
-  console.log("tetetet : ", accountUser);
 
   return (
     <MainScreen typeOfScreen="stack">

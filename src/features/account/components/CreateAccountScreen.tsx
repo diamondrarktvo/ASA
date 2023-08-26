@@ -6,6 +6,7 @@ import {
   Icon,
   Input,
   MainScreen,
+  RequestLoader,
   Row,
   Text,
   TouchableOpacity,
@@ -15,6 +16,8 @@ import { Theme, Size } from "_theme";
 import { ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { RadioButton } from "react-native-paper";
+import { useRegisterMutation } from "../authApi";
+import { accountNavigationTypes } from "../types";
 
 type registerTypes = {
   nickname: string | null;
@@ -31,7 +34,9 @@ type registerTypes = {
 };
 
 const CreateAccountScreen = () => {
-  const [hidePassword, setHidePassword] = useState(false);
+  const navigation = useNavigation();
+  const navigateToAccountScreen = useNavigation<accountNavigationTypes>();
+  const [hidePassword, setHidePassword] = useState(true);
   const [hideConfirmPassword, setHideConfirmPassword] = useState(true);
   const [password, setPassword] = useState<{
     new_password: string;
@@ -54,9 +59,22 @@ const CreateAccountScreen = () => {
     password: null,
   });
   const [checked, setChecked] = useState("yes");
-  const navigation = useNavigation();
   const theme = useTheme<Theme>();
   const { colors } = theme;
+  const [register, { isError, isLoading, status, error }] =
+    useRegisterMutation();
+
+  //logic
+  const handleSubmit = () => {
+    register(registerValue)
+      .unwrap()
+      .then((res) => {
+        console.log("resAPI : ", res);
+      })
+      .catch((e) => {
+        console.log("error : ", e);
+      });
+  };
 
   //effect
   useEffect(() => {
@@ -65,6 +83,8 @@ const CreateAccountScreen = () => {
       is_professional: checked === "yes" ? true : false,
     }));
   }, [checked]);
+
+  //console.log("registerValue : ", registerValue);
 
   useEffect(() => {
     if (password.new_password === password.confirm_password) {
@@ -83,141 +103,143 @@ const CreateAccountScreen = () => {
   return (
     <MainScreen typeOfScreen="stack">
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Box paddingVertical="m" backgroundColor="mainBackground">
-          <Text variant="headerNavigation" color="text">
-            Bienvenue
-          </Text>
-          <Column>
-            <Input
-              placeholder="Nom*"
-              onChangeText={(text) =>
-                setRegisterValue((prevState) => ({
-                  ...prevState,
-                  first_name: text,
-                }))
-              }
-            />
-            <Input
-              placeholder="Prénom*"
-              onChangeText={(text) =>
-                setRegisterValue((prevState) => ({
-                  ...prevState,
-                  last_name: text,
-                }))
-              }
-            />
-            <Input
-              placeholder="Pseudo*"
-              onChangeText={(text) =>
-                setRegisterValue((prevState) => ({
-                  ...prevState,
-                  nickname: text,
-                }))
-              }
-            />
-            <Input
-              placeholder="Age*"
-              onChangeText={(text) =>
-                setRegisterValue((prevState) => ({
-                  ...prevState,
-                  age: text,
-                }))
-              }
-            />
-            <Input
-              placeholder="Numéro téléphone*"
-              onChangeText={(text) =>
-                setRegisterValue((prevState) => ({
-                  ...prevState,
-                  phone_number: text,
-                }))
-              }
-            />
-            <Input
-              placeholder="Email"
-              onChangeText={(text) =>
-                setRegisterValue((prevState) => ({
-                  ...prevState,
-                  email: text,
-                }))
-              }
-            />
-            <Row justifyContent="space-around" alignItems={"center"}>
-              <Text variant={"secondary"}>Vous êtes professionel ? </Text>
-              <RadioButton
-                value="yes"
-                color={colors.primary}
-                status={checked === "yes" ? "checked" : "unchecked"}
-                onPress={() => setChecked("yes")}
-              />
-              <Text variant="tertiary">Oui</Text>
-              <RadioButton
-                value="no"
-                color={colors.primary}
-                status={checked === "no" ? "checked" : "unchecked"}
-                onPress={() => setChecked("no")}
-              />
-              <Text variant="tertiary">Non</Text>
-            </Row>
-            <Input
-              placeholder="Mot de passe*"
-              secureTextEntry={hideConfirmPassword}
-              onChangeText={(text) =>
-                setPassword((prevState) => ({
-                  ...prevState,
-                  new_password: text,
-                }))
-              }
-              iconRight={{
-                name: hidePassword ? "visibility" : "visibility-off",
-                size: 32,
-                color: colors.secondary,
-                onPress: () => setHidePassword(!hidePassword),
-              }}
-            />
-            <Input
-              placeholder="Confirmer mot de passe*"
-              secureTextEntry={hideConfirmPassword}
-              onChangeText={(text) =>
-                setPassword((prevState) => ({
-                  ...prevState,
-                  confirm_password: text,
-                }))
-              }
-              iconRight={{
-                name: hideConfirmPassword ? "visibility" : "visibility-off",
-                size: 32,
-                color: colors.secondary,
-                onPress: () => setHideConfirmPassword(!hideConfirmPassword),
-              }}
-            />
-          </Column>
-          <Button
-            variant={"primary"}
-            label="Creer mon compte"
-            onPress={() => navigation.goBack()}
-            marginTop={"s"}
-          />
-          <Row
-            alignItems="center"
-            padding="s"
-            backgroundColor="offWhite"
-            justifyContent="space-between"
-            borderRadius="xs"
-            marginTop="xs"
-          >
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Icon
-                name="arrow-back"
-                size={Size.ICON_LARGE}
-                color={colors.primary}
-              />
-            </TouchableOpacity>
-            <Text variant="primaryBold" color="text">
-              Se connecter
+        <RequestLoader isLoading={isLoading}>
+          <Box paddingVertical="m" backgroundColor="mainBackground">
+            <Text variant="headerNavigation" color="text">
+              Bienvenue
             </Text>
-          </Row>
-        </Box>
+            <Column>
+              <Input
+                placeholder="Nom*"
+                onChangeText={(text) =>
+                  setRegisterValue((prevState) => ({
+                    ...prevState,
+                    first_name: text,
+                  }))
+                }
+              />
+              <Input
+                placeholder="Prénom*"
+                onChangeText={(text) =>
+                  setRegisterValue((prevState) => ({
+                    ...prevState,
+                    last_name: text,
+                  }))
+                }
+              />
+              <Input
+                placeholder="Pseudo*"
+                onChangeText={(text) =>
+                  setRegisterValue((prevState) => ({
+                    ...prevState,
+                    nickname: text,
+                  }))
+                }
+              />
+              <Input
+                placeholder="Age*"
+                onChangeText={(text) =>
+                  setRegisterValue((prevState) => ({
+                    ...prevState,
+                    age: text,
+                  }))
+                }
+              />
+              <Input
+                placeholder="Numéro téléphone*"
+                onChangeText={(text) =>
+                  setRegisterValue((prevState) => ({
+                    ...prevState,
+                    phone_number: text,
+                  }))
+                }
+              />
+              <Input
+                placeholder="Email"
+                onChangeText={(text) =>
+                  setRegisterValue((prevState) => ({
+                    ...prevState,
+                    email: text,
+                  }))
+                }
+              />
+              <Row justifyContent="space-around" alignItems={"center"}>
+                <Text variant={"secondary"}>Vous êtes professionel ? </Text>
+                <RadioButton
+                  value="yes"
+                  color={colors.primary}
+                  status={checked === "yes" ? "checked" : "unchecked"}
+                  onPress={() => setChecked("yes")}
+                />
+                <Text variant="tertiary">Oui</Text>
+                <RadioButton
+                  value="no"
+                  color={colors.primary}
+                  status={checked === "no" ? "checked" : "unchecked"}
+                  onPress={() => setChecked("no")}
+                />
+                <Text variant="tertiary">Non</Text>
+              </Row>
+              <Input
+                placeholder="Mot de passe*"
+                secureTextEntry={hidePassword}
+                onChangeText={(text) =>
+                  setPassword((prevState) => ({
+                    ...prevState,
+                    new_password: text,
+                  }))
+                }
+                iconRight={{
+                  name: hidePassword ? "visibility" : "visibility-off",
+                  size: 32,
+                  color: colors.secondary,
+                  onPress: () => setHidePassword(!hidePassword),
+                }}
+              />
+              <Input
+                placeholder="Confirmer mot de passe*"
+                secureTextEntry={hideConfirmPassword}
+                onChangeText={(text) =>
+                  setPassword((prevState) => ({
+                    ...prevState,
+                    confirm_password: text,
+                  }))
+                }
+                iconRight={{
+                  name: hideConfirmPassword ? "visibility" : "visibility-off",
+                  size: 32,
+                  color: colors.secondary,
+                  onPress: () => setHideConfirmPassword(!hideConfirmPassword),
+                }}
+              />
+            </Column>
+            <Button
+              variant={"primary"}
+              label="Creer mon compte"
+              onPress={() => navigateToAccountScreen.navigate("account_screen")}
+              marginTop={"s"}
+            />
+            <Row
+              alignItems="center"
+              padding="s"
+              backgroundColor="offWhite"
+              justifyContent="space-between"
+              borderRadius="xs"
+              marginTop="xs"
+            >
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Icon
+                  name="arrow-back"
+                  size={Size.ICON_LARGE}
+                  color={colors.primary}
+                />
+              </TouchableOpacity>
+              <Text variant="primaryBold" color="text">
+                Se connecter
+              </Text>
+            </Row>
+          </Box>
+        </RequestLoader>
       </ScrollView>
     </MainScreen>
   );

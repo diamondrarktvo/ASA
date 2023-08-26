@@ -10,7 +10,7 @@ import Icon from "../../../shared/Icon";
 import Box from "../../../shared/Box";
 import RequestLoader from "../../../shared/RequestLoader";
 import RequestError from "../../../shared/RequestError";
-import { createAccountNavigationTypes, loginValuesTypes } from "../types";
+import { loginValuesTypes } from "../types";
 import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "@shopify/restyle";
 import { Theme, Size } from "_theme";
@@ -36,7 +36,7 @@ const LoginScreen = ({
   const { primary, secondary } = theme.colors;
   const [hidePassword, setHidePassword] = useState(true);
   const [visibleSnackbar, setVisibleSnackbar] = useState(false);
-  const navigation = useNavigation<createAccountNavigationTypes>();
+  const navigation = useNavigation();
   const [loginValue, setLoginValue] = useState<loginValuesTypes>({
     phone_number: "",
     password: "",

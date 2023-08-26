@@ -41,3 +41,10 @@ export type TopParamListFavourite = {
   announcer_screen: undefined;
   search_favourite_screen: undefined;
 };
+
+// To type the navigation object obtained from useNavigation
+declare global {
+  namespace ReactNavigation {
+    interface RootParamList extends StackParamList {}
+  }
+}
