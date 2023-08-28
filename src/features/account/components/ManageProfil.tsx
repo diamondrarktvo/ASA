@@ -79,7 +79,6 @@ export default function ManageProfil() {
       .then((res) => {
         console.log("resAPI : ", res);
         dispatch(setAccount(res));
-        storeObjectDataToAsyncStorage("token", res.token);
         storeObjectDataToAsyncStorage("current_account", res.user);
         closeBottomSheet();
       })
