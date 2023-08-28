@@ -80,10 +80,7 @@ export default function ManageProfil() {
             }}
           />
           <Text variant="bigTitle" color="text">
-            Mety Amiko
-          </Text>
-          <Text variant="secondary" color="text">
-            Utilisateur client
+            {accountUser.first_name} {accountUser.last_name}
           </Text>
           {accountUser && accountUser.date_joined && (
             <Text variant={"tertiary"} fontWeight={"400"} color={"primaryDark"}>
