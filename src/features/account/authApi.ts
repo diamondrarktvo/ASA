@@ -17,10 +17,18 @@ const AuthApi = BaseApi.injectEndpoints({
         body: arg,
       }),
     }),
+    update: build.mutation({
+      query: (arg) => ({
+        url: config.UPDATE_URL,
+        method: "PUT",
+        body: arg,
+      }),
+    }),
   }),
   overrideExisting: true,
 });
 
-export const { useLoginMutation, useRegisterMutation } = AuthApi;
+export const { useLoginMutation, useRegisterMutation, useUpdateMutation } =
+  AuthApi;
 
 export default AuthApi;

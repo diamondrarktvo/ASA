@@ -7,4 +7,7 @@ export default {
 
   //register
   REGISTER_URL: "/user",
+
+  //update
+  UPDATE_URL: "/user",
 };
