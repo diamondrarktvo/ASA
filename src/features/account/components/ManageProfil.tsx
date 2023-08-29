@@ -73,14 +73,7 @@ export default function ManageProfil() {
   console.log("valueForUpdate : ", valueForUpdate);
 
   const handleSubmit = () => {
-    update({
-      first_name: "RKT",
-      last_name: "vetso",
-      nickname: "dada",
-      age: "22",
-      email: "vetso.rktvo@gmail.com",
-      phone_number: "0345648425",
-    })
+    update(valueForUpdate)
       .unwrap()
       .then((res) => {
         console.log("resAPI : ", res);

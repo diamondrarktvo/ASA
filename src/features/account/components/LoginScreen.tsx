@@ -17,7 +17,11 @@ import { Theme, Size } from "_theme";
 import { useLoginMutation } from "../authApi";
 import { useAppDispatch } from "_store";
 import { setAccount } from "../accountSlice";
-import { Constantes, storeObjectDataToAsyncStorage } from "_utils";
+import {
+  Constantes,
+  getObjectDataToAsyncStorage,
+  storeObjectDataToAsyncStorage,
+} from "_utils";
 import { Snackbar } from "react-native-paper";
 
 type LoginScreenProps = {
