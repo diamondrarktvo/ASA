@@ -40,7 +40,6 @@ export default function ManageProfil() {
     age: accountUser.age?.toString(),
     email: accountUser.email,
     phone_number: accountUser.phone_number?.toString(),
-    password: "Diamondra_10", //TODO: remove this
   });
 
   //state data
@@ -74,20 +73,27 @@ export default function ManageProfil() {
   console.log("valueForUpdate : ", valueForUpdate);
 
   const handleSubmit = () => {
-    update(valueForUpdate)
+    update({
+      first_name: "RKT",
+      last_name: "vetso",
+      nickname: "dada",
+      age: "22",
+      email: "vetso.rktvo@gmail.com",
+      phone_number: "0345648425",
+    })
       .unwrap()
       .then((res) => {
         console.log("resAPI : ", res);
-        dispatch(setAccount(res));
-        storeObjectDataToAsyncStorage("current_account", res.user);
+        //dispatch(setAccount(res));
+        //storeObjectDataToAsyncStorage("current_account", res.user);
         closeBottomSheet();
       })
       .catch((e) => {
-        if (e.status === ERROR_REGISTER.MUST_UNIQUE.status) {
-          setVisibleSnackbar(true);
-        }
+        setVisibleSnackbar(true);
       });
   };
+
+  console.log("errior py : ", error);
 
   return (
     <MainScreen typeOfScreen="stack">
@@ -115,7 +121,7 @@ export default function ManageProfil() {
                 marginBottom: spacing.s,
               }}
             />
-            <Text variant="bigTitle" color="text">
+            <Text variant="bigTitle" color="text" textAlign={"center"}>
               {valueForUpdate.first_name} {valueForUpdate.last_name}
             </Text>
             {accountUser && accountUser.date_joined && (

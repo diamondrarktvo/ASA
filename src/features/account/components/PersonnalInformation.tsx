@@ -40,7 +40,6 @@ export default function PersonnalInformation() {
     age: accountUser.age?.toString(),
     email: accountUser.email,
     phone_number: accountUser.phone_number?.toString(),
-    password: "Diamondra_10", //TODO: remove this
   });
 
   //state data
@@ -71,15 +70,15 @@ export default function PersonnalInformation() {
     return;
   };
 
-  console.log("valueForUpdate : ", valueForUpdate);
+  console.log("valueForUpdate personnal: ", valueForUpdate);
 
   const handleSubmit = () => {
     update(valueForUpdate)
       .unwrap()
       .then((res) => {
         console.log("resAPI : ", res);
-        dispatch(setAccount(res));
-        storeObjectDataToAsyncStorage("current_account", res.user);
+        //dispatch(setAccount(res));
+        //storeObjectDataToAsyncStorage("current_account", res.user);
         closeBottomSheet();
       })
       .catch((e) => {
@@ -115,7 +114,7 @@ export default function PersonnalInformation() {
                 marginBottom: spacing.s,
               }}
             />
-            <Text variant="bigTitle" color="text">
+            <Text variant="bigTitle" color="text" textAlign={"center"}>
               {valueForUpdate.first_name} {valueForUpdate.last_name}
             </Text>
             {accountUser && accountUser.date_joined && (

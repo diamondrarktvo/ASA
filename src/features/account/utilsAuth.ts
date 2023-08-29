@@ -9,6 +9,11 @@ export type errorAuthTypes = {
   };
 };
 
+export type errorNoAuthTypes = {
+  status: number;
+  message: string;
+};
+
 export const ERROR_REGISTER: errorAuthTypes = {
   MUST_UNIQUE: {
     status: 400,
@@ -18,6 +23,11 @@ export const ERROR_REGISTER: errorAuthTypes = {
       nickname: "A user with that nickname already exists.",
     },
   },
+};
+
+export const ERROR_NO_AUTH: errorNoAuthTypes = {
+  status: 401,
+  message: "Authentication credentials were not provided.",
 };
 
 export const parseErrorMessage = (error) => {
@@ -43,6 +53,13 @@ export const parseErrorMessage = (error) => {
       ERROR_REGISTER.MUST_UNIQUE.message.nickname === error?.data?.nickname[0]
     ) {
       return (errorMessage = "Un utilisateur avec ce pseudo existe déjà.");
+    }
+  }
+
+  if (error?.status === ERROR_NO_AUTH.status) {
+    if (error?.data.detail === ERROR_NO_AUTH.message) {
+      return (errorMessage =
+        "Vous devez être connecté pour effectuer cette action ou votre session a expiré, veuillez vous reconnecter.");
     }
   }
   return errorMessage;

@@ -60,8 +60,14 @@ const accountSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder;
-    //.addMatcher()
+    builder.addMatcher(
+      AuthApi.endpoints.update.matchFulfilled,
+      (state, action) => {
+        if (action.payload) {
+          Object.assign(state.user, action.payload);
+        }
+      },
+    );
   },
 });
 
