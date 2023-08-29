@@ -22,7 +22,6 @@ import { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typesc
 import { useAppDispatch, useAppSelector } from "_store";
 import { formatDate, storeObjectDataToAsyncStorage } from "_utils";
 import { useUpdateMutation } from "../authApi";
-import { setAccount } from "../accountSlice";
 import { ERROR_REGISTER, parseErrorMessage } from "../utilsAuth";
 import { Snackbar } from "react-native-paper";
 
@@ -70,21 +69,17 @@ export default function PersonnalInformation() {
     return;
   };
 
-  console.log("valueForUpdate personnal: ", valueForUpdate);
-
   const handleSubmit = () => {
     update(valueForUpdate)
       .unwrap()
       .then((res) => {
         console.log("resAPI : ", res);
         //dispatch(setAccount(res));
-        //storeObjectDataToAsyncStorage("current_account", res.user);
+        storeObjectDataToAsyncStorage("current_account", res.user);
         closeBottomSheet();
       })
       .catch((e) => {
-        if (e.status === ERROR_REGISTER.MUST_UNIQUE.status) {
-          setVisibleSnackbar(true);
-        }
+        setVisibleSnackbar(true);
       });
   };
 
