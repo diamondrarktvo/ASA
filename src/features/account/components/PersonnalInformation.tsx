@@ -12,7 +12,7 @@ import {
   Icon,
   RequestLoader,
 } from "_shared";
-import { useMemo, useRef, useCallback, useState } from "react";
+import { useMemo, useRef, useCallback, useState, useEffect } from "react";
 import { Theme, Size } from "_theme";
 import { useTheme } from "@shopify/restyle";
 import { StyleSheet, ScrollView } from "react-native";
@@ -23,7 +23,7 @@ import { useAppDispatch, useAppSelector } from "_store";
 import { formatDate, storeObjectDataToAsyncStorage } from "_utils";
 import { useUpdateMutation } from "../authApi";
 import { ERROR_REGISTER, parseErrorMessage } from "../utilsAuth";
-import { Snackbar } from "react-native-paper";
+import { RadioButton, Snackbar } from "react-native-paper";
 
 export default function PersonnalInformation() {
   const theme = useTheme<Theme>();
@@ -32,6 +32,7 @@ export default function PersonnalInformation() {
   const accountUser = useAppSelector((state) => state.account.user);
   const [update, { isError, isLoading, status, error }] = useUpdateMutation();
   const [visibleSnackbar, setVisibleSnackbar] = useState(false);
+  const [checked, setChecked] = useState("yes");
   const [valueForUpdate, setValueForUpdate] = useState({
     first_name: accountUser.first_name,
     last_name: accountUser.last_name,
@@ -39,6 +40,9 @@ export default function PersonnalInformation() {
     age: accountUser.age?.toString(),
     email: accountUser.email,
     phone_number: accountUser.phone_number?.toString(),
+    is_professional: accountUser.is_professional,
+    company_name: accountUser.company_name,
+    unique_company_number: accountUser.unique_company_number,
   });
 
   //state data
@@ -82,6 +86,14 @@ export default function PersonnalInformation() {
         setVisibleSnackbar(true);
       });
   };
+
+  //effect
+  useEffect(() => {
+    setValueForUpdate((prevState) => ({
+      ...prevState,
+      is_professional: checked === "yes" ? true : false,
+    }));
+  }, [checked]);
 
   return (
     <MainScreen typeOfScreen="stack">
@@ -238,6 +250,27 @@ export default function PersonnalInformation() {
                 color: colors.text,
               }}
             />
+
+            {/**Is professional */}
+            <Row justifyContent="space-around" alignItems={"center"}>
+              <Text variant={"secondary"}>Vous êtes professionel ? </Text>
+              <RadioButton
+                value="yes"
+                color={colors.primary}
+                disabled={true}
+                status={checked === "yes" ? "checked" : "unchecked"}
+                onPress={() => setChecked("yes")}
+              />
+              <Text variant="tertiary">Oui</Text>
+              <RadioButton
+                value="no"
+                color={colors.primary}
+                disabled={true}
+                status={checked === "no" ? "checked" : "unchecked"}
+                onPress={() => setChecked("no")}
+              />
+              <Text variant="tertiary">Non</Text>
+            </Row>
 
             {/**Numéro téléphone */}
             <Text
@@ -466,6 +499,25 @@ export default function PersonnalInformation() {
                   color: colors.text,
                 }}
               />
+
+              {/**Is professional */}
+              <Row justifyContent="space-around" alignItems={"center"}>
+                <Text variant={"secondary"}>Vous êtes professionel ? </Text>
+                <RadioButton
+                  value="yes"
+                  color={colors.primary}
+                  status={checked === "yes" ? "checked" : "unchecked"}
+                  onPress={() => setChecked("yes")}
+                />
+                <Text variant="tertiary">Oui</Text>
+                <RadioButton
+                  value="no"
+                  color={colors.primary}
+                  status={checked === "no" ? "checked" : "unchecked"}
+                  onPress={() => setChecked("no")}
+                />
+                <Text variant="tertiary">Non</Text>
+              </Row>
 
               {/**Numéro téléphone */}
               <Text

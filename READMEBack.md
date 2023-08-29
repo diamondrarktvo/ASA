@@ -75,7 +75,6 @@
 | phone_number | unique_company_number |
 | age          | image                 |
 
-
 ```http request
 Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 ```
@@ -120,7 +119,7 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 - **Response**: The requested user object. `Status Ok 200`
 
 ```json
- {
+{
   "id": 1,
   "nickname": "pseudo",
   "email": "",
@@ -177,9 +176,11 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 ## Category
 
 ### List Categories
+
 - **URL**: `/category`
 - **Method**: GET
 - **Description**: Retrieve all categories.
+
 ```json
 [
   {
@@ -198,65 +199,110 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 ## SubCategory
 
 ### List SubCategories
+
 - **URL**: `/subcategory/<int:id_category>`
 - **Method**: GET
 - **Description**: Retrieve all subcategories of a category.
+
 ```json
 [
   {
     "id": 1,
-    "name": "subcategory_name",
-    "category": 1,
-  },
-  {
-    "id": 2,
-    "name": "subcategory_name",
-    "category": 1,
-  }
-]
-```
-
-## Criteia
-
-### List Criteias
-- **URL**: `/criteia/<int:id_subcategory>`
-- **Method**: GET
-- **Description**: Retrieve all criteias of a subcategory.
-```json
-[
-    {
+    "criteria": [
+      {
         "id": 1,
         "response": [
-            {
-                "value": "CDD"
-            },
-            {
-                "value": "CDI"
-            },
-            {
-                "value": "Intérim"
-            },
-            {
-                "value": "Autre"
-            }
+          {
+            "value": "CDD"
+          },
+          {
+            "value": "CDI"
+          },
+          {
+            "value": "Intérim"
+          },
+          {
+            "value": "Autre"
+          }
         ],
         "name": "Type de contrat",
-        "type": "list",
-        "sub_category": 1
-    },
-    {
+        "type": "choice"
+      },
+      {
         "id": 2,
         "response": [],
-        "name": "Secteur d'activite",
-        "type": "str",
-        "sub_category": 1
-    },
-    {
+        "name": "Secteur d'activité",
+        "type": "text"
+      },
+      {
         "id": 3,
         "response": [],
         "name": "Fonction",
-        "type": "str",
-        "sub_category": 1
-    }
+        "type": "text"
+      },
+      {
+        "id": 4,
+        "response": [
+          {
+            "value": "0 à 2 ans"
+          },
+          {
+            "value": "2 à 5 ans"
+          },
+          {
+            "value": "plus de 5 ans"
+          }
+        ],
+        "name": "Expérience",
+        "type": "choice"
+      },
+      {
+        "id": 5,
+        "response": [
+          {
+            "value": "CP"
+          },
+          {
+            "value": "BEPC"
+          },
+          {
+            "value": "BAC"
+          },
+          {
+            "value": "BAC +2"
+          },
+          {
+            "value": "BAC +3"
+          },
+          {
+            "value": "BAC +5"
+          }
+        ],
+        "name": "Niveau d'etudes",
+        "type": "choice"
+      },
+      {
+        "id": 6,
+        "response": [
+          {
+            "value": "Temps partiel"
+          },
+          {
+            "value": "Temps plein"
+          }
+        ],
+        "name": "Travail à",
+        "type": "choice"
+      },
+      {
+        "id": 7,
+        "response": [],
+        "name": "Reference",
+        "type": "text"
+      }
+    ],
+    "nom": "Offre d'emploi",
+    "category": 1
+  }
 ]
 ```
