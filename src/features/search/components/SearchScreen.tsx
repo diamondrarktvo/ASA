@@ -1,6 +1,6 @@
 import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import { useNavigation } from "@react-navigation/native";
-import { ImageBackground, StyleSheet } from "react-native";
+import { Dimensions, ImageBackground, StyleSheet } from "react-native";
 import { Box, Button, Column, Icon, Image, MainScreen, Text } from "_shared";
 import { Constantes, annonceTypes, categorieTypes } from "_utils";
 import { ActivityIndicator } from "react-native-paper";
@@ -19,15 +19,33 @@ export default function SearchScreen() {
     return (
       <Box
         key={item.id}
-        marginRight={"xs"}
+        marginRight={"xxs"}
         backgroundColor={"offWhite"}
-        height={100}
-        width={200}
-        borderRadius={"sm"}
-        alignItems={"center"}
-        justifyContent={"center"}
+        height={90}
+        width={140}
+        borderRadius={"xxs"}
+        alignItems={"flex-start"}
+        justifyContent={"flex-end"}
       >
-        <Text variant={"primaryBold"} color={"offBlack"}>
+        <Image
+          source={item.image}
+          containerStyle={styles.imageCategory}
+          PlaceholderContent={
+            <ActivityIndicator color="#2652AA" style={styles.spinnerCatg} />
+          }
+        />
+        <Text
+          variant={"tertiary"}
+          fontWeight={"600"}
+          color={"white"}
+          paddingLeft={"m"}
+          paddingBottom={"s"}
+          style={{
+            position: "absolute",
+            bottom: 3,
+            left: 3,
+          }}
+        >
           {item.title}
         </Text>
       </Box>
@@ -36,17 +54,17 @@ export default function SearchScreen() {
 
   const renderItemAnnonce: ListRenderItem<annonceTypes> = ({ item }) => {
     return (
-      <Column key={item.id} marginRight="xs">
+      <Column key={item.id} marginBottom={"s"}>
         <Image
           source={item.image}
           containerStyle={styles.imageAnnonce}
           PlaceholderContent={
-            <ActivityIndicator color="#2652AA" style={styles.spinner} />
+            <ActivityIndicator color="#2652AA" style={styles.spinnerAnnonce} />
           }
         />
         <Icon
           name="favorite-border"
-          size={Size.ICON_LARGE}
+          size={Size.ICON_MEDIUM}
           color={colors.black}
           containerStyle={{
             position: "absolute",
@@ -73,7 +91,7 @@ export default function SearchScreen() {
     <MainScreen typeOfScreen="tab">
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text variant={"bigTitle"} color="primary" textAlign="center">
-          "Mety Amiko"
+          Mety Amiko
         </Text>
         <Button
           variant="secondary"
@@ -83,7 +101,7 @@ export default function SearchScreen() {
           onPress={() => navigation.navigate("search_item")}
         />
         <Column marginTop="s">
-          <Text variant="primary">Catégorie les plus visités</Text>
+          <Text variant="primaryBold">Catégorie les plus visités</Text>
           <Box width={"100%"} marginTop="xs">
             <FlashList
               keyExtractor={(item, index) => item.id.toString()}
@@ -97,30 +115,21 @@ export default function SearchScreen() {
           </Box>
         </Column>
         <Column marginTop="s">
-          <Text variant="primary">Publiées récemment</Text>
-          <Box width={"100%"} marginTop="xs">
+          <Text variant="primaryBold">Annonces fraîchement publiées</Text>
+          {/*//FIXME: fix the height of the list*/}
+          <Box
+            style={{ flex: 1, height: Dimensions.get("window").height - 90 }}
+            width={"100%"}
+            marginTop="xs"
+          >
             <FlashList
               keyExtractor={(item, index) => item.id.toString()}
               estimatedItemSize={200}
               data={Constantes.DATA.annonce}
               renderItem={renderItemAnnonce}
-              horizontal={true}
+              numColumns={2}
               extraData={Constantes.DATA.annonce}
-              showsHorizontalScrollIndicator={false}
-            />
-          </Box>
-        </Column>
-        <Column marginTop="s">
-          <Text variant="primary">Suggestion récente des utilisateurs</Text>
-          <Box width={"100%"} marginTop="xs">
-            <FlashList
-              keyExtractor={(item, index) => item.id.toString()}
-              estimatedItemSize={200}
-              data={Constantes.DATA.annonce}
-              renderItem={renderItemAnnonce}
-              horizontal={true}
-              extraData={Constantes.DATA.annonce}
-              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
             />
           </Box>
         </Column>
@@ -131,21 +140,26 @@ export default function SearchScreen() {
 
 const styles = StyleSheet.create({
   imageAnnonce: {
-    borderRadius: 10,
-    height: 200,
-    width: 280,
+    borderRadius: 6,
+    height: 180,
+    width: 180,
   },
-  imageCatg: {
-    borderRadius: 10,
-    height: 60,
-    width: 200,
+  imageCategory: {
+    borderRadius: 6,
+    height: 90,
+    width: 140,
+  },
+  spinnerAnnonce: {
+    height: 100,
+    width: 100,
     display: "flex",
     justifyContent: "center",
     alignContent: "center",
+    alignItems: "center",
   },
-  spinner: {
-    height: 200,
-    width: 200,
+  spinnerCatg: {
+    height: 90,
+    width: 140,
     display: "flex",
     justifyContent: "center",
     alignContent: "center",

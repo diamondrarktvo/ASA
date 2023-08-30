@@ -37,6 +37,7 @@ const theme = createTheme({
   },
   spacing: {
     none: "0%",
+    xxs: "1%",
     xs: "2%",
     s: "4%",
     m: "8%",
@@ -58,6 +59,7 @@ const theme = createTheme({
   },
   borderRadii: {
     none: 0,
+    xxs: 4,
     xs: 8,
     sm: 16,
     md: 24,
