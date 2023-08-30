@@ -30,6 +30,7 @@ export default function ManageProfil() {
   const dispatch = useAppDispatch();
   const { borderRadii, colors, spacing } = theme;
   const accountUser = useAppSelector((state) => state.account.user);
+  const token = useAppSelector((state) => state.account.token);
   const [update, { isError, isLoading, status, error }] = useUpdateMutation();
   const [visibleSnackbar, setVisibleSnackbar] = useState(false);
   const [checked, setChecked] = useState("yes");
@@ -43,6 +44,7 @@ export default function ManageProfil() {
     is_professional: accountUser.is_professional,
     company_name: accountUser.company_name,
     unique_company_number: accountUser.unique_company_number,
+    token: token,
   });
 
   //state data

@@ -1,4 +1,5 @@
 import { ImageSourcePropType } from "react-native";
+import { Image } from "_shared";
 
 export type annonceTypes = {
   id: number;
@@ -17,6 +18,7 @@ export type announcerTypes = {
 export type categorieTypes = {
   id: number;
   title: string;
+  image: ImageSourcePropType;
 };
 
 export type searchTypes = {

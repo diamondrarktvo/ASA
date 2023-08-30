@@ -43,22 +43,27 @@ const categorie: categorieTypes[] = [
   {
     id: 1,
     title: "Categorie 1",
+    image: require("_images/logo.jpg"),
   },
   {
     id: 2,
     title: "Categorie 2",
+    image: require("_images/logo.jpg"),
   },
   {
     id: 3,
     title: "Categorie 3",
+    image: require("_images/logo.jpg"),
   },
   {
     id: 4,
     title: "Categorie 4",
+    image: require("_images/logo.jpg"),
   },
   {
     id: 5,
     title: "Categorie 5",
+    image: require("_images/logo.jpg"),
   },
 ];
 

@@ -21,7 +21,20 @@ const AuthApi = BaseApi.injectEndpoints({
       query: (arg) => ({
         url: config.UPDATE_URL,
         method: "PUT",
-        body: arg,
+        body: {
+          first_name: arg.first_name,
+          last_name: arg.last_name,
+          nickname: arg.nickname,
+          age: arg.age,
+          email: arg.email,
+          phone_number: arg.phone_number,
+          is_professional: arg.is_professional,
+          company_name: arg.company_name,
+          unique_company_number: arg.unique_company_number,
+        },
+        headers: {
+          Authorization: `token ${arg.token}`,
+        },
       }),
     }),
   }),
