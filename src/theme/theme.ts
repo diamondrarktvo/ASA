@@ -90,6 +90,22 @@ const theme = createTheme({
       color: "black",
       borderColor: "secondary",
     },
+    buttonWithShadow: {
+      backgroundColor: "white",
+      width: "95%",
+      mx: "xs",
+      color: "black",
+      borderWidth: 1,
+      borderColor: "white",
+      shadowColor: "black",
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+    },
   },
 });
 

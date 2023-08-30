@@ -76,7 +76,7 @@ export default function SearchScreen() {
           "Mety Amiko"
         </Text>
         <Button
-          variant="secondary"
+          variant={"buttonWithShadow"}
           label="Recherchez partout à Madagascar"
           marginTop={"xs"}
           marginBottom={"m"}

@@ -1,7 +1,7 @@
 import { TouchableHighlight, ActivityIndicator } from "react-native";
 import Text from "./Text";
 import Box from "./Box";
-import { Theme } from "_theme";
+import { Size, Theme, theme } from "_theme";
 import React from "react";
 import {
   border,
@@ -13,6 +13,8 @@ import {
   SpacingProps,
   VariantProps,
 } from "@shopify/restyle";
+import Icon from "./Icon";
+import Row from "./Row";
 
 type ButtonProps = {
   onPress?: () => void;
@@ -20,6 +22,7 @@ type ButtonProps = {
   loading?: boolean;
   label: React.ReactNode;
   disabled?: boolean;
+  color?: string;
 } & Partial<BoxProps<Theme>>;
 
 type BoxButtonProps = SpacingProps<Theme> &
@@ -38,8 +41,10 @@ const Button: React.FC<ButtonProps> = ({
   loading,
   label,
   disabled,
+  color = "black",
   ...rest
 }) => {
+  const { primary, secondary } = theme.colors;
   return (
     <TouchableHighlight
       onPress={onPress}
@@ -56,7 +61,13 @@ const Button: React.FC<ButtonProps> = ({
         {loading ? (
           <ActivityIndicator color="white" />
         ) : (
-          <Text variant="button">{label}</Text>
+          <Row alignItems="center" justifyContent="space-between">
+            <Icon name="search" size={Size.ICON_MEDIUM} color={secondary} />
+            <Text variant="secondary" color={color} textAlign={"left"}>
+              {label}
+            </Text>
+            <Icon name="gps-fixed" size={Size.ICON_MEDIUM} color={secondary} />
+          </Row>
         )}
       </BoxButton>
     </TouchableHighlight>
