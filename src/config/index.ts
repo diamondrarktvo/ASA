@@ -2,6 +2,7 @@ export default {
   //url de base
   BASE_URL: process.env.EXPO_PUBLIC_API_HOST + "/api",
 
+  /*==== USER ===*/
   //login
   LOGIN_URL: "/user/auth",
 
@@ -10,4 +11,8 @@ export default {
 
   //update
   UPDATE_URL: "/user",
+
+  /*==== CATEGORY ===*/
+  //GET
+  GET_CATEGORY_URL: "/category",
 };
