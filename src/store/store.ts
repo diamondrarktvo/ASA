@@ -20,7 +20,7 @@ export const store = configureStore({
 // see `setupListeners` docs - takes an optional callback as the 2nd arg for customization
 setupListeners(store.dispatch);
 store.subscribe(() => {
-  console.log("State ato amin'ny store : ");
+  console.log("State ato amin'ny storee : ");
   console.log(store.getState());
 });
 

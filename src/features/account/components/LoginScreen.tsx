@@ -17,11 +17,7 @@ import { Theme, Size } from "_theme";
 import { useLoginMutation } from "../authApi";
 import { useAppDispatch } from "_store";
 import { setAccount } from "../accountSlice";
-import {
-  Constantes,
-  getObjectDataToAsyncStorage,
-  storeObjectDataToAsyncStorage,
-} from "_utils";
+import { Constantes, storeObjectDataToAsyncStorage } from "_utils";
 import { Snackbar } from "react-native-paper";
 
 type LoginScreenProps = {
@@ -61,6 +57,7 @@ const LoginScreen = ({
         }
       })
       .catch((e) => {
+        console.log("error login :", e);
         if (e.status === Constantes.error.ERROR_CONSTANT.NOT_FOUND.status) {
           setVisibleSnackbar(true);
         }
