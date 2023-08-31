@@ -154,6 +154,7 @@ const LoginScreen = ({
             <Button
               variant={"primary"}
               label="Se connecter"
+              bold="bold"
               onPress={() => handleSubmit()}
             />
           </Box>

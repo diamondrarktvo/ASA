@@ -6,6 +6,6 @@ export const BaseApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: Config.BASE_URL,
   }),
-  tagTypes: ["Auth"],
+  tagTypes: ["Auth", "Category"],
   endpoints: () => ({}),
 });

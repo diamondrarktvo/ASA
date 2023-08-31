@@ -96,7 +96,6 @@ const theme = createTheme({
       backgroundColor: "white",
       width: "95%",
       mx: "xs",
-      color: "black",
       borderWidth: 1,
       borderColor: "white",
       shadowColor: "black",

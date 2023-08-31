@@ -18,9 +18,12 @@ import Row from "./Row";
 
 type ButtonProps = {
   onPress?: () => void;
-  variant: "primary" | "secondary" | "tertiary";
+  variant: "primary" | "secondary" | "tertiary | buttonWithShadow";
   loading?: boolean;
   label: React.ReactNode;
+  iconRight?: string;
+  iconLeft?: string;
+  bold?: string | number | undefined;
   disabled?: boolean;
   color?: string;
 } & Partial<BoxProps<Theme>>;
@@ -40,8 +43,12 @@ const Button: React.FC<ButtonProps> = ({
   variant,
   loading,
   label,
+  iconRight,
+  bold,
+  borderLeftColor,
+  iconLeft,
   disabled,
-  color = "black",
+  color = "white",
   ...rest
 }) => {
   const { primary, secondary } = theme.colors;
@@ -61,12 +68,23 @@ const Button: React.FC<ButtonProps> = ({
         {loading ? (
           <ActivityIndicator color="white" />
         ) : (
-          <Row alignItems="center" justifyContent="space-between">
-            <Icon name="search" size={Size.ICON_MEDIUM} color={secondary} />
-            <Text variant="secondary" color={color} textAlign={"left"}>
+          <Row
+            alignItems="center"
+            justifyContent={iconLeft || iconRight ? "space-between" : "center"}
+          >
+            {iconLeft && (
+              <Icon name={iconLeft} size={Size.ICON_MEDIUM} color={secondary} />
+            )}
+            <Text variant="secondary" color={color} fontWeight={bold}>
               {label}
             </Text>
-            <Icon name="gps-fixed" size={Size.ICON_MEDIUM} color={secondary} />
+            {iconRight && (
+              <Icon
+                name={iconRight}
+                size={Size.ICON_MEDIUM}
+                color={secondary}
+              />
+            )}
           </Row>
         )}
       </BoxButton>

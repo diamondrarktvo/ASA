@@ -8,14 +8,33 @@ import { useTheme } from "@shopify/restyle";
 import { Size, Theme } from "_theme";
 import { searchItemNavigationTypes } from "../types";
 import { ScrollView } from "react-native-gesture-handler";
+import { useGetCategoryQuery } from "../../sharedApi";
+import { CategoryType } from "../../types";
+import { useState } from "react";
+import { useEffect } from "react";
 
 export default function SearchScreen() {
   const navigation = useNavigation<searchItemNavigationTypes>();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
+  const {
+    data,
+    isLoading: isCategoriesLoading,
+    isFetching,
+    refetch,
+    error,
+  } = useGetCategoryQuery(undefined);
+  const [categories, setCategories] = useState<CategoryType[]>([]);
+
+  //effect
+  useEffect(() => {
+    setCategories(data?.categories);
+  }, [data]);
+
+  console.log("categories : ", categories);
 
   //components
-  const renderItemCategorie: ListRenderItem<categorieTypes> = ({ item }) => {
+  const renderItemCategorie: ListRenderItem<CategoryType> = ({ item }) => {
     return (
       <Box
         key={item.id}
@@ -28,7 +47,7 @@ export default function SearchScreen() {
         justifyContent={"flex-end"}
       >
         <Image
-          source={item.image}
+          source={{ uri: item.image }}
           containerStyle={styles.imageCategory}
           PlaceholderContent={
             <ActivityIndicator color="#2652AA" style={styles.spinnerCatg} />
@@ -46,7 +65,7 @@ export default function SearchScreen() {
             left: 3,
           }}
         >
-          {item.title}
+          {item.name}
         </Text>
       </Box>
     );
@@ -95,6 +114,9 @@ export default function SearchScreen() {
         </Text>
         <Button
           variant={"buttonWithShadow"}
+          iconLeft="search"
+          iconRight="gps-fixed"
+          color="black"
           label="Recherchez partout à Madagascar"
           marginTop={"xs"}
           marginBottom={"m"}
@@ -106,7 +128,7 @@ export default function SearchScreen() {
             <FlashList
               keyExtractor={(item, index) => item.id.toString()}
               estimatedItemSize={200}
-              data={Constantes.DATA.categorie}
+              data={categories}
               renderItem={renderItemCategorie}
               horizontal={true}
               extraData={Constantes.DATA.annonce}

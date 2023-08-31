@@ -7,6 +7,8 @@ export {
   categorieTypes,
   announcerTypes,
   searchTypes,
+  SuccessHttpResponse,
+  ApiInformationType,
 } from "./Types";
 
 //storage

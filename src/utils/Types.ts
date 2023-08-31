@@ -38,3 +38,23 @@ export type errorConstants = {
   };
   INTERNAL_SERVER_ERROR: number;
 };
+
+export interface HttpResponse {
+  message: string;
+  code: number;
+}
+
+export interface SuccessHttpResponse<T> {
+  status: boolean;
+  count: number;
+  next: string | null;
+  previous: string | null;
+  data: T[];
+  http_response: HttpResponse;
+}
+
+export type ApiInformationType = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+};
