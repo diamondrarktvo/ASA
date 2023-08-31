@@ -38,16 +38,17 @@ export default function SearchScreen() {
     return (
       <Box
         key={item.id}
-        marginRight={"xxs"}
-        backgroundColor={"offWhite"}
-        height={90}
+        marginRight={"xs"}
+        height={120}
         width={140}
         borderRadius={"xxs"}
         alignItems={"flex-start"}
         justifyContent={"flex-end"}
       >
         <Image
-          source={{ uri: item.image }}
+          source={
+            item.image ? { uri: item.image } : require("_images/logo.jpg")
+          }
           containerStyle={styles.imageCategory}
           PlaceholderContent={
             <ActivityIndicator color="#2652AA" style={styles.spinnerCatg} />
@@ -56,7 +57,7 @@ export default function SearchScreen() {
         <Text
           variant={"tertiary"}
           fontWeight={"600"}
-          color={"white"}
+          color={"black"}
           paddingLeft={"m"}
           paddingBottom={"s"}
           style={{
@@ -124,15 +125,16 @@ export default function SearchScreen() {
         />
         <Column marginTop="s">
           <Text variant="primaryBold">Catégorie les plus visités</Text>
-          <Box width={"100%"} marginTop="xs">
+          <Box width={"100%"} height={120} marginTop="xs">
             <FlashList
               keyExtractor={(item, index) => item.id.toString()}
               estimatedItemSize={200}
               data={categories}
               renderItem={renderItemCategorie}
               horizontal={true}
-              extraData={Constantes.DATA.annonce}
+              extraData={categories}
               showsHorizontalScrollIndicator={false}
+              ListEmptyComponent={<Text>No catégorie</Text>}
             />
           </Box>
         </Column>
@@ -168,7 +170,7 @@ const styles = StyleSheet.create({
   },
   imageCategory: {
     borderRadius: 6,
-    height: 90,
+    height: 120,
     width: 140,
   },
   spinnerAnnonce: {
@@ -180,7 +182,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   spinnerCatg: {
-    height: 90,
+    height: 120,
     width: 140,
     display: "flex",
     justifyContent: "center",
