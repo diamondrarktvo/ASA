@@ -64,7 +64,6 @@ export default function SearchScreen() {
           imageStyle={{
             resizeMode: "cover",
             borderRadius: 6,
-            tintColor: "rgba(0,0,0,0.4)",
           }}
         >
           <Text
