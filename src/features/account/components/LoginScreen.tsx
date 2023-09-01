@@ -92,7 +92,11 @@ const LoginScreen = ({
     <Box paddingVertical="m" backgroundColor="mainBackground">
       <RequestLoader isLoading={isLoading}>
         <RequestError
-          isError={false}
+          isError={
+            isError &&
+            error &&
+            error.status !== Constantes.error.ERROR_CONSTANT.NOT_FOUND.status
+          }
           errorStatus={error?.status}
           onRefresh={() => console.log("onRefresh")}
         >

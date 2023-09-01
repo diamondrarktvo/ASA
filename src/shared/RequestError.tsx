@@ -23,10 +23,16 @@ const RequestError: React.FC<Props> = ({
 
   useEffect(() => {
     switch (errorStatus) {
+      case 500:
+        setErrorMessage(
+          "Une erreur est survenue sur le serveur, veuillez réessayer plus tard",
+        );
+        break;
       case 404:
-        setErrorMessage("Numéro de télephone ou mot de passe incorrect");
+        setErrorMessage("La ressource demandée n'existe pas");
         break;
       default:
+        setErrorMessage("Une erreur est survenue, veuillez réessayer");
         break;
     }
   }, [errorStatus]);

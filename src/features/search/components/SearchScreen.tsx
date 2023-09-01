@@ -8,6 +8,7 @@ import {
   Icon,
   Image,
   MainScreen,
+  RequestError,
   RequestLoader,
   Text,
 } from "_shared";
@@ -29,10 +30,11 @@ export default function SearchScreen() {
   const { borderRadii, colors } = theme;
   const {
     data,
+    isError: isErrorCategory,
     isLoading: isCategoriesLoading,
     isFetching: isCategoriesFetching,
     refetch,
-    error,
+    error: errorCategory,
   } = useGetCategoryQuery(undefined);
 
   //effect
@@ -44,7 +46,7 @@ export default function SearchScreen() {
         key={item.id}
         marginRight={"xs"}
         height={80}
-        width={120}
+        width={150}
         borderRadius={"xxs"}
         alignItems={"flex-start"}
         justifyContent={"flex-end"}
@@ -57,7 +59,7 @@ export default function SearchScreen() {
           style={{
             marginHorizontal: 4,
             height: 80,
-            width: 120,
+            width: 150,
           }}
           imageStyle={{
             resizeMode: "cover",
@@ -122,55 +124,64 @@ export default function SearchScreen() {
   return (
     <MainScreen typeOfScreen="tab">
       <RequestLoader isLoading={isCategoriesFetching || isCategoriesLoading}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Text variant={"bigTitle"} color="primary" textAlign="center">
-            Mety Amiko
-          </Text>
-          <Button
-            variant={"buttonWithShadow"}
-            iconLeft="search"
-            iconRight="gps-fixed"
-            color="black"
-            label="Recherchez partout à Madagascar"
-            marginTop={"xs"}
-            marginBottom={"m"}
-            onPress={() => navigation.navigate("search_item")}
-          />
-          <Column marginTop="xs">
-            <Text variant="primaryBold">Catégorie les plus visités</Text>
-            <Box width={"100%"} height={80} marginTop="xs">
-              <FlashList
-                keyExtractor={(item, index) => item.id.toString()}
-                estimatedItemSize={200}
-                data={data?.categories}
-                renderItem={renderItemCategorie}
-                horizontal={true}
-                extraData={data?.categories}
-                showsHorizontalScrollIndicator={false}
-                ListEmptyComponent={<Text>Catégorie indisponible</Text>}
-              />
-            </Box>
-          </Column>
-          <Column marginTop="xs">
-            <Text variant="primaryBold">Annonces fraîchement publiées</Text>
-            {/*//FIXME: fix the height of the list*/}
-            <Box
-              style={{ flex: 1, height: Dimensions.get("window").height - 90 }}
-              width={"100%"}
-              marginTop="xs"
-            >
-              <FlashList
-                keyExtractor={(item, index) => item.id.toString()}
-                estimatedItemSize={200}
-                data={Constantes.DATA.annonce}
-                renderItem={renderItemAnnonce}
-                numColumns={2}
-                extraData={Constantes.DATA.annonce}
-                showsVerticalScrollIndicator={false}
-              />
-            </Box>
-          </Column>
-        </ScrollView>
+        <RequestError
+          isError={isErrorCategory}
+          errorStatus={errorCategory?.status}
+          onRefresh={() => console.log("onRefresh")}
+        >
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <Text variant={"bigTitle"} color="primary" textAlign="center">
+              Mety Amiko
+            </Text>
+            <Button
+              variant={"buttonWithShadow"}
+              iconLeft="search"
+              iconRight="gps-fixed"
+              color="black"
+              label="Recherchez partout à Madagascar"
+              marginTop={"xs"}
+              marginBottom={"m"}
+              onPress={() => navigation.navigate("search_item")}
+            />
+            <Column marginTop="xs">
+              <Text variant="primaryBold">Catégorie les plus visités</Text>
+              <Box width={"100%"} height={80} marginTop="xs">
+                <FlashList
+                  keyExtractor={(item, index) => item.id.toString()}
+                  estimatedItemSize={200}
+                  data={data?.categories}
+                  renderItem={renderItemCategorie}
+                  horizontal={true}
+                  extraData={data?.categories}
+                  showsHorizontalScrollIndicator={false}
+                  ListEmptyComponent={<Text>Catégorie indisponible</Text>}
+                />
+              </Box>
+            </Column>
+            <Column marginTop="s">
+              <Text variant="primaryBold">Annonces fraîchement publiées</Text>
+              {/*//FIXME: fix the height of the list*/}
+              <Box
+                style={{
+                  flex: 1,
+                  height: Dimensions.get("window").height - 90,
+                }}
+                width={"100%"}
+                marginTop="xs"
+              >
+                <FlashList
+                  keyExtractor={(item, index) => item.id.toString()}
+                  estimatedItemSize={200}
+                  data={Constantes.DATA.annonce}
+                  renderItem={renderItemAnnonce}
+                  numColumns={2}
+                  extraData={Constantes.DATA.annonce}
+                  showsVerticalScrollIndicator={false}
+                />
+              </Box>
+            </Column>
+          </ScrollView>
+        </RequestError>
       </RequestLoader>
     </MainScreen>
   );
@@ -181,11 +192,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     height: 180,
     width: 180,
-  },
-  imageCategory: {
-    borderRadius: 6,
-    height: 90,
-    width: 140,
   },
   spinnerAnnonce: {
     height: 100,
