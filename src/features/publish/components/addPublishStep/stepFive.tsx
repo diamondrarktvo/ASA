@@ -33,7 +33,7 @@ export default function StepFive() {
         <Box marginVertical={"xs"}>
           <Input
             placeholder="Prix du produit"
-            value={price.product}
+            value={price.product !== "0" ? price.product : ""}
             onChangeText={(text) =>
               setPrice((prevState) => {
                 return {
@@ -50,7 +50,7 @@ export default function StepFive() {
           />
           <Input
             placeholder="Le prix de la livraison locale"
-            value={price.livraison}
+            value={price.livraison !== "0" ? price.livraison : ""}
             onChangeText={(text) =>
               setPrice((prevState) => {
                 return {
