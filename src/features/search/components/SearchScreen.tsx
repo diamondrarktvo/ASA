@@ -46,7 +46,7 @@ export default function SearchScreen() {
         key={item.id}
         marginRight={"xs"}
         height={80}
-        width={150}
+        width={130}
         borderRadius={"xxs"}
         alignItems={"flex-start"}
         justifyContent={"flex-end"}
@@ -59,7 +59,7 @@ export default function SearchScreen() {
           style={{
             marginHorizontal: 4,
             height: 80,
-            width: 150,
+            width: 130,
           }}
           imageStyle={{
             resizeMode: "cover",
