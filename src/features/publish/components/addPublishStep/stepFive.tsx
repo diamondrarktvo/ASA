@@ -5,6 +5,7 @@ import { Size, Theme } from "_theme";
 import { useTheme } from "@shopify/restyle";
 import { stepper6NavigationTypes } from "../../types";
 import { CheckBox } from "@rneui/themed";
+import { RadioButton } from "react-native-paper";
 import { useState } from "react";
 
 export default function StepFive() {
@@ -12,6 +13,7 @@ export default function StepFive() {
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
   const [price, setPrice] = useState({ product: "0", livraison: "0" });
+  const [paymentPriceMethod, setPaymentPriceMethod] = useState("online");
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
@@ -80,19 +82,23 @@ export default function StepFive() {
             editable={false}
           />
         </Box>
-        <Box flexDirection={"row"} flexWrap={"wrap"}>
-          <CheckBox
-            containerStyle={{ backgroundColor: colors.mainBackground }}
-            checkedColor={colors.primary}
-            checked={true}
-            title="Payement en ligne"
+        <Box flexDirection={"row"} alignItems={"center"} flexWrap={"wrap"}>
+          <RadioButton
+            value="yes"
+            color={colors.primary}
+            status={paymentPriceMethod === "online" ? "checked" : "unchecked"}
+            onPress={() => setPaymentPriceMethod("online")}
           />
-          <CheckBox
-            containerStyle={{ backgroundColor: colors.mainBackground }}
-            checkedColor={colors.primary}
-            checked={false}
-            title="Payement après la livraison"
+          <Text variant="tertiary">Payement en ligne</Text>
+          <RadioButton
+            value="no"
+            color={colors.primary}
+            status={
+              paymentPriceMethod === "afterLivraison" ? "checked" : "unchecked"
+            }
+            onPress={() => setPaymentPriceMethod("afterLivraison")}
           />
+          <Text variant="tertiary">Payement après la livraison</Text>
         </Box>
         <Row alignItems={"center"} justifyContent="space-around">
           <Button
