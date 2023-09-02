@@ -55,7 +55,7 @@ export default function SearchScreen() {
           source={
             item.image ? { uri: item.image } : require("_images/logo.jpg")
           }
-          blurRadius={5}
+          blurRadius={8}
           style={{
             marginHorizontal: 4,
             height: 80,
@@ -66,10 +66,13 @@ export default function SearchScreen() {
             borderRadius: 6,
           }}
         >
+          <Box
+            style={[StyleSheet.absoluteFillObject, styles.maskImageCatg]}
+          ></Box>
           <Text
             variant={"tertiary"}
             fontWeight={"bold"}
-            color={"black"}
+            color={"white"}
             paddingLeft={"m"}
             paddingBottom={"s"}
             style={{
@@ -126,7 +129,7 @@ export default function SearchScreen() {
         <RequestError
           isError={isErrorCategory}
           errorStatus={errorCategory?.status}
-          onRefresh={() => console.log("onRefresh")}
+          onRefresh={() => refetch()}
         >
           <ScrollView showsVerticalScrollIndicator={false}>
             <Text variant={"bigTitle"} color="primary" textAlign="center">
@@ -191,6 +194,12 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     height: 180,
     width: 180,
+  },
+  maskImageCatg: {
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    borderRadius: 6,
+    height: 80,
+    width: 130,
   },
   spinnerAnnonce: {
     height: 100,
