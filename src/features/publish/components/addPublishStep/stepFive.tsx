@@ -82,23 +82,29 @@ export default function StepFive() {
             editable={false}
           />
         </Box>
-        <Box flexDirection={"row"} alignItems={"center"} flexWrap={"wrap"}>
-          <RadioButton
-            value="yes"
-            color={colors.primary}
-            status={paymentPriceMethod === "online" ? "checked" : "unchecked"}
-            onPress={() => setPaymentPriceMethod("online")}
-          />
-          <Text variant="tertiary">Payement en ligne</Text>
-          <RadioButton
-            value="no"
-            color={colors.primary}
-            status={
-              paymentPriceMethod === "afterLivraison" ? "checked" : "unchecked"
-            }
-            onPress={() => setPaymentPriceMethod("afterLivraison")}
-          />
-          <Text variant="tertiary">Payement après la livraison</Text>
+        <Box flexDirection={"column"}>
+          <Box flexDirection={"row"} alignItems={"center"}>
+            <RadioButton
+              value="yes"
+              color={colors.primary}
+              status={paymentPriceMethod === "online" ? "checked" : "unchecked"}
+              onPress={() => setPaymentPriceMethod("online")}
+            />
+            <Text variant="tertiary">Payement en ligne</Text>
+          </Box>
+          <Box flexDirection={"row"} alignItems={"center"}>
+            <RadioButton
+              value="no"
+              color={colors.primary}
+              status={
+                paymentPriceMethod === "afterLivraison"
+                  ? "checked"
+                  : "unchecked"
+              }
+              onPress={() => setPaymentPriceMethod("afterLivraison")}
+            />
+            <Text variant="tertiary">Payement à la livraison</Text>
+          </Box>
         </Box>
         <Row alignItems={"center"} justifyContent="space-around">
           <Button
