@@ -3,12 +3,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { BaseApi } from "_services";
 import accountSlice from "../features/account/accountSlice";
+import publishSlice from "../features/publish/publishSlice";
 
 export const store = configureStore({
   reducer: {
     // Add the generated reducer as a specific top-level slice
     [BaseApi.reducerPath]: BaseApi.reducer,
     [accountSlice.name]: accountSlice.reducer,
+    [publishSlice.name]: publishSlice.reducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
