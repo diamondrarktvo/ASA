@@ -11,6 +11,7 @@ import {
   Row,
   Text,
 } from "_shared";
+import { RadioButton } from "react-native-paper";
 import { Size, Theme } from "_theme";
 import { Picker } from "@react-native-picker/picker";
 import { useTheme } from "@shopify/restyle";
@@ -22,6 +23,7 @@ export default function StepOne() {
   const navigation = useNavigation<stepper2NavigationTypes>();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
+  const [typeProduct, setTypeProduct] = useState<"offer" | "search">("offer");
   const [selectCategorie, setSelectCategorie] = useState("");
   const {
     data,
@@ -96,19 +98,21 @@ export default function StepOne() {
                 ))}
             </Picker>
           </Box>
-          <Row justifyContent="space-around">
-            <CheckBox
-              containerStyle={{ backgroundColor: colors.mainBackground }}
-              checkedColor={colors.primary}
-              checked={false}
-              title="Recherche"
+          <Row justifyContent={"flex-start"} alignItems={"center"}>
+            <RadioButton
+              value="offer"
+              color={colors.primary}
+              status={typeProduct === "offer" ? "checked" : "unchecked"}
+              onPress={() => setTypeProduct("offer")}
             />
-            <CheckBox
-              containerStyle={{ backgroundColor: colors.mainBackground }}
-              checkedColor={colors.primary}
-              checked={true}
-              title="Offre"
+            <Text variant="tertiary">Offre</Text>
+            <RadioButton
+              value="search"
+              color={colors.primary}
+              status={typeProduct === "search" ? "checked" : "unchecked"}
+              onPress={() => setTypeProduct("search")}
             />
+            <Text variant="tertiary">Recherche</Text>
           </Row>
           <Button
             variant={"secondary"}

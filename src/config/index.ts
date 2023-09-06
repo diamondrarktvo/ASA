@@ -15,4 +15,11 @@ export default {
   /*==== CATEGORY ===*/
   //GET
   GET_CATEGORY_URL: "/category",
+
+  /*===== PRODUCT =====*/
+  //GET
+  GET_PRODUCT_URL: "/product",
+
+  //POST
+  POST_PRODUCT_URL: "/product",
 };

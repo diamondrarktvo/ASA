@@ -2,17 +2,27 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface publishStateType {
   product: {
-    id: number | null;
-    title: string | null;
+    name: string | null;
     description: string | null;
+    location: string | null;
+    price: number | null;
+    sub_category: number | null;
+    uploaded_images: string[] | [];
+    list_payement_method: string[] | [];
+    seller: number | null;
   };
 }
 
 const initialState: publishStateType = {
   product: {
-    id: null,
-    title: null,
+    name: null,
     description: null,
+    location: null,
+    price: null,
+    sub_category: null,
+    uploaded_images: [],
+    list_payement_method: [],
+    seller: null,
   },
 };
 
@@ -22,7 +32,7 @@ const publishSlice = createSlice({
   reducers: {
     setProduct: (state, action: PayloadAction<publishStateType>) => {
       if (action.payload.product) {
-        state.product = action.payload.product;
+        state.product = { ...state.product, ...action.payload.product };
       }
     },
   },
