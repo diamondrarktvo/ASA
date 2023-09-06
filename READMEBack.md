@@ -306,3 +306,64 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
   }
 ]
 ```
+
+## Vendeur Favoris
+
+### Add new Favoris
+
+- **URL**: `/follow/seller`
+- **Method**: Post
+- **Description**: follow other user
+- **Need Authentication**:
+- **Request**:
+
+```json
+{
+  "seller_id": 1
+}
+```
+
+- **Response**
+
+```json
+{
+  "id": 1,
+  "seller": {
+    "id": 1,
+    "nickname": "nickname",
+    "image": null
+  },
+  "timestamp": "2023-09-06T17:53:41.890339Z"
+}
+```
+
+### List all follow
+
+- **URL**: `/follow/seller`
+- **Method**: Get
+- **Description**:
+- **Need Authentication**:
+
+- **Response**: `Status Ok 200`
+
+```json
+[
+  {
+    "id": 1,
+    "seller": {
+      "id": 1,
+      "nickname": "nickname",
+      "image": null
+    },
+    "timestamp": "2023-09-06T17:53:41.890339Z"
+  }
+]
+```
+
+### Delete favoris
+
+- **URL**: `/follow/seller/<int:pk>`
+- **Method**: Delete
+- **Description**:
+- **Need Authentication**:
+- **Response**: `Status No content 204`
