@@ -10,6 +10,13 @@ export interface publishStateType {
     uploaded_images: string[] | [];
     list_payement_method: string[] | [];
     seller: number | null;
+    phone_number_contact: string | null;
+    email_contact: string | null;
+    national_delivery_price: number | null;
+    local_delivery_price: number | null;
+    type: string | null;
+    quantity: number | null;
+    payement_integrate: boolean | null;
   };
 }
 
@@ -23,6 +30,13 @@ const initialState: publishStateType = {
     uploaded_images: [],
     list_payement_method: [],
     seller: null,
+    phone_number_contact: null,
+    email_contact: null,
+    national_delivery_price: null,
+    local_delivery_price: null,
+    type: null,
+    quantity: null,
+    payement_integrate: null,
   },
 };
 
@@ -34,6 +48,9 @@ const publishSlice = createSlice({
       if (action.payload.product) {
         state.product = { ...state.product, ...action.payload.product };
       }
+    },
+    reinitializeProduct: (state) => {
+      state.product = initialState.product;
     },
   },
   extraReducers: (builder) => {},
