@@ -18,13 +18,16 @@ import { useTheme } from "@shopify/restyle";
 import { CheckBox } from "@rneui/themed";
 import { stepper2NavigationTypes } from "../../types";
 import { useGetCategoryQuery } from "../../../sharedApi";
+import { useAppDispatch, useAppSelector } from "_store";
+import { setCurrentCategorySelected, selectors } from "../../publishSlice";
 
 export default function StepOne() {
   const navigation = useNavigation<stepper2NavigationTypes>();
+  const catg = useAppSelector(selectors.getCurrentCategorySelected);
+  const dispatch = useAppDispatch();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
   const [typeProduct, setTypeProduct] = useState<"offer" | "search">("offer");
-  const [selectCategorie, setSelectCategorie] = useState("");
   const {
     data,
     isError: isErrorCategory,
@@ -33,6 +36,13 @@ export default function StepOne() {
     refetch,
     error: errorCategory,
   } = useGetCategoryQuery(undefined);
+  const [selectCategorie, setSelectCategorie] = useState(
+    data?.categories[0].id,
+  );
+
+  console.log("catg en cours : ", catg);
+
+  console.log("selectCategorie : ", selectCategorie);
 
   return (
     <RequestLoader isLoading={isCategoriesFetching || isCategoriesLoading}>
@@ -76,9 +86,10 @@ export default function StepOne() {
           >
             <Picker
               selectedValue={selectCategorie}
-              onValueChange={(itemValue, itemIndex) =>
-                setSelectCategorie(itemValue)
-              }
+              onValueChange={(itemValue, itemIndex) => {
+                setSelectCategorie(itemValue);
+                dispatch(setCurrentCategorySelected(itemValue));
+              }}
             >
               {!data ||
                 data?.categories?.length === 0 ||
@@ -93,7 +104,7 @@ export default function StepOne() {
                   <Picker.Item
                     key={category.id}
                     label={category.name}
-                    value={category.name}
+                    value={category.id}
                   />
                 ))}
             </Picker>
