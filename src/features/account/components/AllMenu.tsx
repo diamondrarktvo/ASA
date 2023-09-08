@@ -14,9 +14,7 @@ type Props = {
 };
 
 export const AllMenu = ({ is_account_connected, action }: Props) => {
-  const navigationToFavorite = useNavigation<favoriteNavigationTypes>();
-  const navigationToPersonnalInformation =
-    useNavigation<PersonnalInformationNavigationTypes>();
+  const navigation = useNavigation();
 
   return (
     <>
@@ -36,7 +34,9 @@ export const AllMenu = ({ is_account_connected, action }: Props) => {
           <UnitItemSectionLink
             iconLeft="favorite"
             label="Favoris"
-            onPress={() => navigationToFavorite.navigate("favorite_screen")}
+            onPress={() =>
+              navigation.navigate("main_tab", { screen: "favorite_screen" })
+            }
           />
           <UnitItemSectionLink
             iconLeft="redeem"
@@ -51,9 +51,7 @@ export const AllMenu = ({ is_account_connected, action }: Props) => {
           <UnitItemSectionLink
             iconLeft="person-outline"
             label="Mon profil"
-            onPress={() =>
-              navigationToPersonnalInformation.navigate("personnal_information")
-            }
+            onPress={() => navigation.navigate("personnal_information")}
           />
 
           {/**Parametre */}
@@ -66,7 +64,7 @@ export const AllMenu = ({ is_account_connected, action }: Props) => {
           <UnitItemSectionLink
             iconLeft="payment"
             label="Payement"
-            onPress={() => Alert.alert("Menu cliqué!")}
+            onPress={() => navigation.navigate("manage_payment")}
           />
           <UnitItemSectionLink
             iconLeft="online-prediction"

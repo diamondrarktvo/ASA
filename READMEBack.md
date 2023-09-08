@@ -367,3 +367,352 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 - **Description**:
 - **Need Authentication**:
 - **Response**: `Status No content 204`
+
+## Product
+
+### Create Product
+
+- **URL**: `/product`
+- **Method**: POST
+- **Description**: Create a new product.
+- **Need Authentication**:
+- **Request**: Product data to be created.
+
+| Required     | Optional                 |
+| ------------ | ------------------------ |
+| name         | uploaded_images          |
+| description  | list_payement_method     |
+| location     | payement_integrate: bool |
+| price        | quantity: int            |
+| sub_category | type: char               |
+| seller       | local_delivery_price     |
+|              | national_delivery_price  |
+|              | email_contact            |
+|              | phone_number_contact     |
+
+`type`: [Recherche, Offre]
+
+```json
+{
+  "uploaded_images": [],
+  "list_payement_method": [],
+  "name": "Dev Java",
+  "description": "Cherche un developpeur java Export en spring boot",
+  "location": "e-tech",
+  "price": 10000,
+  "sub_category": 1,
+  "seller": 1
+}
+```
+
+- **Response**: `Status Created 201`
+
+```json
+{
+  "id": 1,
+  "pictures": [],
+  "payement_method": [
+    {
+      "id": 1,
+      "user": "joe",
+      "name": "MobileMoney",
+      "phone": "0325911514",
+      "card_number": null,
+      "expiration_date": null,
+      "cvv": null
+    }
+  ],
+  "product_criteria": [],
+  "name": "Dev Java",
+  "publication_date": "2023-09-02T13:25:25.350589Z",
+  "description": "Cherche un developpeur java Export en spring boot",
+  "location": "e-tech",
+  "price": "10000.00",
+  "local_delivery_price": null,
+  "national_delivery_price": null,
+  "payement_integrate": true,
+  "expiration": 3,
+  "quantity": 1,
+  "type": "Offre",
+  "state": "Activé",
+  "email_contact": null,
+  "phone_number_contact": null,
+  "sub_category": 1,
+  "seller": 2,
+  "likes": [],
+  "views": []
+}
+```
+
+### Update Product
+
+- **URL**: `/product/<int:pk>`
+- **Method**: PUT
+- **Description**: Update product information.
+- **Need Authentication**:
+- **Request**: Updated product data.
+
+```json
+{
+  "uploaded_images": [],
+  "list_payement_method": [],
+  "name": "Dev Java",
+  "description": "Cherche un developpeur java Export en spring boot",
+  "location": "e-tech",
+  "price": 10000,
+  "sub_category": 1,
+  "seller": 1
+}
+```
+
+- **Response**:
+
+```json
+{
+  "id": 1,
+  "pictures": [],
+  "payement_method": [
+    {
+      "id": 1,
+      "user": "joe",
+      "name": "MobileMoney",
+      "phone": "0325911514",
+      "card_number": null,
+      "expiration_date": null,
+      "cvv": null
+    }
+  ],
+  "product_criteria": [],
+  "name": "Dev Java",
+  "publication_date": "2023-09-02T13:25:25.350589Z",
+  "description": "Cherche un developpeur java Export en spring boot",
+  "location": "e-tech",
+  "price": "10000.00",
+  "local_delivery_price": null,
+  "national_delivery_price": null,
+  "payement_integrate": true,
+  "expiration": 3,
+  "quantity": 1,
+  "type": "Offre",
+  "state": "Activé",
+  "email_contact": null,
+  "phone_number_contact": null,
+  "sub_category": 1,
+  "seller": 2,
+  "likes": [],
+  "views": []
+}
+```
+
+### Get Product
+
+- **URL**: `/product/<int:pk>`
+- **Method**: GET
+- **Description**: Retrieve product details.
+- **Response**:
+
+```json
+{
+  "id": 1,
+  "pictures": [],
+  "payement_method": [
+    {
+      "id": 1,
+      "user": "joe",
+      "name": "MobileMoney",
+      "phone": "0325911514",
+      "card_number": null,
+      "expiration_date": null,
+      "cvv": null
+    }
+  ],
+  "product_criteria": [],
+  "name": "Dev Java",
+  "publication_date": "2023-09-02T13:25:25.350589Z",
+  "description": "Cherche un developpeur java Export en spring boot",
+  "location": "e-tech",
+  "price": "10000.00",
+  "local_delivery_price": null,
+  "national_delivery_price": null,
+  "payement_integrate": true,
+  "expiration": 3,
+  "quantity": 1,
+  "type": "Offre",
+  "state": "Activé",
+  "email_contact": null,
+  "phone_number_contact": null,
+  "sub_category": 1,
+  "seller": 2,
+  "likes": [],
+  "views": []
+}
+```
+
+### Get All Product
+
+- **URL**: `/product`
+- **Method**: GET
+- **Description**: Retrieve all product.
+
+- **Response**:
+
+```json
+{
+  "count": 1,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "id": 1,
+      "pictures": [],
+      "payement_method": [
+        {
+          "id": 1,
+          "user": "joe",
+          "name": "MobileMoney",
+          "phone": "0325911514",
+          "card_number": null,
+          "expiration_date": null,
+          "cvv": null
+        }
+      ],
+      "product_criteria": [],
+      "name": "Dev Java",
+      "publication_date": "2023-09-02T13:25:25.350589Z",
+      "description": "Cherche un developpeur java Export en spring boot",
+      "location": "e-tech",
+      "price": "10000.00",
+      "local_delivery_price": null,
+      "national_delivery_price": null,
+      "payement_integrate": true,
+      "expiration": 3,
+      "quantity": 1,
+      "type": "Offre",
+      "state": "Activé",
+      "email_contact": null,
+      "phone_number_contact": null,
+      "sub_category": 1,
+      "seller": 2,
+      "likes": [],
+      "views": []
+    }
+  ]
+}
+```
+
+### Delete product
+
+- **URL**: `/product/<int:pk>`
+- **Method**: Delete
+- **Description**: Delete product.
+- **Need authentication**
+
+## PayementMethod
+
+### Create PayementMethod
+
+- **URL**: `/payementmethod`
+- **Method**: POST
+- **Description**: Create a new payement method.
+- **Need Authentication**:
+
+| Required                                                | Optional        |
+| ------------------------------------------------------- | --------------- |
+| name : [MobileMoney, Paypal, VISA, Payé à la Livraison] | phone           |
+|                                                         | card_number     |
+|                                                         | expiration_date |
+|                                                         | cvv             |
+
+- **Request**:
+
+```json
+{
+  "name": "MobileMoney",
+  "phone": "0325911514"
+}
+```
+
+- **Response**: `Created 201`
+
+```json
+{
+  "name": "MobileMoney",
+  "phone": "0325911514",
+  "card_number": null,
+  "expiration_date": null,
+  "cvv": null
+}
+```
+
+### Update PayementMethod
+
+- **URL**: `/payementmethod/<int:pk>`
+- **Method**: PUT
+- **Description**: Update payement method.
+- **Need Authentication**:
+- **Request**:
+
+```json
+{
+  "name": "MobileMoney",
+  "phone": "0337015514"
+}
+```
+
+- **Response**: `Accepted 202`
+
+```json
+{
+  "name": "MobileMoney",
+  "phone": "0337015514",
+  "card_number": null,
+  "expiration_date": null,
+  "cvv": null
+}
+```
+
+### Get PayementMethod
+
+- **URL**: `/payementmethod/<int:pk>`
+- **Method**: GET
+- **Description**: Retrieve payement method.
+- **Need Authentication**:
+- **Response**: `Ok 200`
+
+```json
+{
+  "name": "MobileMoney",
+  "phone": "0337015514",
+  "card_number": null,
+  "expiration_date": null,
+  "cvv": null
+}
+```
+
+### Get All PayementMethod
+
+- **URL**: `/payementmethod`
+- **Method**: GET
+- **Description**: Get all list payement method.
+- **Need Authentication**:
+- **Response**: `Ok 200`
+
+```json
+[
+  {
+    "name": "MobileMoney",
+    "phone": "0337015514",
+    "card_number": null,
+    "expiration_date": null,
+    "cvv": null
+  }
+]
+```
+
+### Delete PayementMethod
+
+- **URL**: `/payementmethod/<int:pk>`
+- **Method**: DELETE
+- **Description**: Delete payement methode
+- **Need Authentication**:
+- **Response**: `Nocontent 204`

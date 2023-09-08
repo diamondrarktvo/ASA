@@ -22,4 +22,11 @@ export default {
 
   //POST
   POST_PRODUCT_URL: "/product",
+
+  /**==== PAYMENT ===== */
+  //POST
+  POST_PAYMENT_METHOD_URL: "/payementmethod",
+
+  //GET ALL
+  GET_PAYMENT_METHOD_URL: "/payementmethod",
 };
