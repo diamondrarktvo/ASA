@@ -22,6 +22,7 @@ import {
   StepSix,
   StepSeven,
   SearchItem,
+  ManagePayment,
 } from "_features";
 
 const Stack = createStackNavigator<StackParamList>();
@@ -29,11 +30,11 @@ const Stack = createStackNavigator<StackParamList>();
 const StackNavigation = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={"main_tabs"}>
+      <Stack.Navigator initialRouteName={"main_tab"}>
         <Stack.Group
           screenOptions={stackNavigationConfig.screenOptionsForHiddenHeader}
         >
-          <Stack.Screen name={"main_tabs"} component={TabNavigation} />
+          <Stack.Screen name={"main_tab"} component={TabNavigation} />
           {/**Account screen */}
           <Stack.Screen name={"manage_profil"} component={ManageProfil} />
           <Stack.Screen
@@ -44,6 +45,7 @@ const StackNavigation = () => {
             name={"create_account_screen"}
             component={CreateAccountScreen}
           />
+          <Stack.Screen name={"manage_payment"} component={ManagePayment} />
           {/**Inbox screen */}
           <Stack.Screen
             name={"manage_message"}

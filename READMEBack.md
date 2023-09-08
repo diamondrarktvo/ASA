@@ -606,3 +606,113 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 - **Method**: Delete
 - **Description**: Delete product.
 - **Need authentication**
+
+## PayementMethod
+
+### Create PayementMethod
+
+- **URL**: `/payementmethod`
+- **Method**: POST
+- **Description**: Create a new payement method.
+- **Need Authentication**:
+
+| Required                                                | Optional        |
+| ------------------------------------------------------- | --------------- |
+| name : [MobileMoney, Paypal, VISA, Payé à la Livraison] | phone           |
+|                                                         | card_number     |
+|                                                         | expiration_date |
+|                                                         | cvv             |
+
+- **Request**:
+
+```json
+{
+  "name": "MobileMoney",
+  "phone": "0325911514"
+}
+```
+
+- **Response**: `Created 201`
+
+```json
+{
+  "name": "MobileMoney",
+  "phone": "0325911514",
+  "card_number": null,
+  "expiration_date": null,
+  "cvv": null
+}
+```
+
+### Update PayementMethod
+
+- **URL**: `/payementmethod/<int:pk>`
+- **Method**: PUT
+- **Description**: Update payement method.
+- **Need Authentication**:
+- **Request**:
+
+```json
+{
+  "name": "MobileMoney",
+  "phone": "0337015514"
+}
+```
+
+- **Response**: `Accepted 202`
+
+```json
+{
+  "name": "MobileMoney",
+  "phone": "0337015514",
+  "card_number": null,
+  "expiration_date": null,
+  "cvv": null
+}
+```
+
+### Get PayementMethod
+
+- **URL**: `/payementmethod/<int:pk>`
+- **Method**: GET
+- **Description**: Retrieve payement method.
+- **Need Authentication**:
+- **Response**: `Ok 200`
+
+```json
+{
+  "name": "MobileMoney",
+  "phone": "0337015514",
+  "card_number": null,
+  "expiration_date": null,
+  "cvv": null
+}
+```
+
+### Get All PayementMethod
+
+- **URL**: `/payementmethod`
+- **Method**: GET
+- **Description**: Get all list payement method.
+- **Need Authentication**:
+- **Response**: `Ok 200`
+
+```json
+[
+  {
+    "name": "MobileMoney",
+    "phone": "0337015514",
+    "card_number": null,
+    "expiration_date": null,
+    "cvv": null
+  }
+]
+```
+
+### Delete PayementMethod
+
+- **URL**: `/payementmethod/<int:pk>`
+- **Method**: DELETE
+- **Description**: Delete payement methode
+- **Need Authentication**:
+- **Response**: `Nocontent 204`

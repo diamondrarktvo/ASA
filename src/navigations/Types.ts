@@ -1,3 +1,4 @@
+import { NavigatorScreenParams } from "@react-navigation/native";
 import { StackNavigationOptions } from "@react-navigation/stack";
 
 export interface StackNavigationConfig {
@@ -6,9 +7,10 @@ export interface StackNavigationConfig {
 }
 
 export type StackParamList = {
-  main_tabs: undefined;
+  main_tab: NavigatorScreenParams<TabParamList>;
   manage_profil: undefined;
   personnal_information: undefined;
+  manage_payment: undefined;
   create_account_screen: undefined;
   manage_message: { emetteur: string };
   //stepper screens
