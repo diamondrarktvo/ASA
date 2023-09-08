@@ -59,7 +59,7 @@ const Button: React.FC<ButtonProps> = ({
       disabled={disabled}
     >
       <BoxButton
-        variant={variant}
+        variant={disabled ? "tertiary" : variant}
         paddingVertical="s"
         paddingHorizontal="s"
         borderRadius={"xs"}

@@ -144,6 +144,14 @@ export default function ManagePayment() {
     }
   }, [allPaymentMethod]);*/
 
+  useEffect(() => {
+    if (visibleSnackbar) {
+      setTimeout(() => {
+        setVisibleSnackbar(false);
+      }, 3000);
+    }
+  }, [visibleSnackbar]);
+
   return (
     <MainScreen typeOfScreen="stack">
       <RequestLoader
