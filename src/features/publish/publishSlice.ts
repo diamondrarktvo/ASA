@@ -40,7 +40,7 @@ const publishSlice = createSlice({
 });
 
 export const selectors = {
-  selectProduct: (state: { publish: publishStateType }) =>
+  selectProductToPublish: (state: { publish: publishStateType }) =>
     state.publish.product,
 };
 

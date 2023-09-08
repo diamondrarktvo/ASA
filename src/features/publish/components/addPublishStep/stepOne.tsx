@@ -18,6 +18,8 @@ import { useTheme } from "@shopify/restyle";
 import { CheckBox } from "@rneui/themed";
 import { stepper2NavigationTypes } from "../../types";
 import { useGetCategoryQuery } from "../../../sharedApi";
+import { useAppSelector } from "_store";
+import { selectors } from "../../publishSlice";
 
 export default function StepOne() {
   const navigation = useNavigation<stepper2NavigationTypes>();
@@ -25,6 +27,7 @@ export default function StepOne() {
   const { borderRadii, colors } = theme;
   const [typeProduct, setTypeProduct] = useState<"offer" | "search">("offer");
   const [selectCategorie, setSelectCategorie] = useState("");
+  const currentProduct = useAppSelector(selectors.selectProductToPublish);
   const {
     data,
     isError: isErrorCategory,
@@ -33,6 +36,8 @@ export default function StepOne() {
     refetch,
     error: errorCategory,
   } = useGetCategoryQuery(undefined);
+
+  console.log("selectCategorie lele : ", selectCategorie);
 
   return (
     <RequestLoader isLoading={isCategoriesFetching || isCategoriesLoading}>
@@ -80,14 +85,10 @@ export default function StepOne() {
                 setSelectCategorie(itemValue)
               }
             >
-              {!data ||
-                data?.categories?.length === 0 ||
-                (data?.categories === undefined && (
-                  <Picker.Item
-                    label={"Choisir"}
-                    value={"Veuillez choisir vos types de ventes"}
-                  />
-                ))}
+              <Picker.Item
+                label={"Choisir"}
+                value={"Veuillez choisir vos types de ventes"}
+              />
               {data &&
                 data?.categories.map((category) => (
                   <Picker.Item
