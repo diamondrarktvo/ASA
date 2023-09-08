@@ -16,18 +16,21 @@ import { stepper3NavigationTypes } from "../../types";
 import { useState, useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { ScrollView } from "react-native-gesture-handler";
-import { useAppSelector } from "_store";
-import { selectors } from "../../publishSlice";
+import { useAppDispatch, useAppSelector } from "_store";
+import { selectors, setProduct } from "../../publishSlice";
 
 export default function StepTwo() {
   const navigation = useNavigation<stepper3NavigationTypes>();
+  const dispatch = useAppDispatch();
   const theme = useTheme<Theme>();
   const [imageImported, setImageImported] = useState<string[]>([]);
   const { borderRadii, colors } = theme;
   const currentProduct = useAppSelector(selectors.selectProductToPublish);
+  const [valueForStepper, setValueForStepper] = useState(currentProduct);
+  const [disableButton, setDisableButton] = useState(true);
 
-  console.log("step 2 currentProduct : ", currentProduct);
   console.log("imageImported : ", imageImported);
+  console.log("valueForStepper step 2 : ", valueForStepper);
 
   //function
   const pickImages = async () => {
@@ -53,6 +56,25 @@ export default function StepTwo() {
     newImageImportedArray.splice(index, 1);
     setImageImported(newImageImportedArray);
   };
+
+  const handleContinueStepper = () => {
+    if (imageImported.length !== 0) {
+      console.log("valueForStepper step before dispatch : ", valueForStepper);
+      dispatch(setProduct(valueForStepper));
+      navigation.navigate("stepper_screen_3");
+    }
+  };
+
+  //all effects
+  useEffect(() => {
+    if (imageImported.length !== 0) {
+      setValueForStepper((prevState) => ({
+        ...prevState,
+        uploaded_images: imageImported,
+      }));
+      setDisableButton(false);
+    }
+  }, [imageImported]);
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
@@ -138,9 +160,10 @@ export default function StepTwo() {
               alignItems={"center"}
               justifyContent={"center"}
               width={150}
+              disabled={disableButton}
               variant={"secondary"}
               label="Continuer"
-              onPress={() => navigation.navigate("stepper_screen_3")}
+              onPress={() => handleContinueStepper()}
             />
           </Row>
         </Box>
