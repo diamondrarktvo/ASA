@@ -70,7 +70,7 @@ export default function ManagePayment() {
   return (
     <MainScreen typeOfScreen="stack">
       <RequestLoader isLoading={false}>
-        <HeaderStackNavNormal title={"Moyens de paiement"} />
+        <HeaderStackNavNormal title={"Méthodes de paiement"} />
 
         <Text variant={"secondary"} mt={"xs"}>
           Vous pouvez gérer ici vos identifiants pour le mode de payement en
