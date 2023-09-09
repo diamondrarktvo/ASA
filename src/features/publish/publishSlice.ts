@@ -1,41 +1,41 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface publishStateType {
-  name: string | null;
-  description: string | null;
-  location: string | null;
-  price: number | null;
-  sub_category: number | null;
+  name: string;
+  description: string;
+  location: string;
+  price: number;
+  sub_category: number;
   uploaded_images: string[] | [];
   list_payement_method: string[] | [];
-  seller: number | null;
-  phone_number_contact: string | null;
-  email_contact: string | null;
-  national_delivery_price: number | null;
-  local_delivery_price: number | null;
-  type: string | null;
-  quantity: number | null;
-  payement_integrate: boolean | null;
-  category: number | string | null;
+  seller: number;
+  phone_number_contact: string;
+  email_contact: string;
+  national_delivery_price: number;
+  local_delivery_price: number;
+  type: string;
+  quantity: number;
+  payement_integrate: boolean;
+  category: number;
 }
 
 const initialState: publishStateType = {
-  name: null,
-  description: null,
-  location: null,
-  price: null,
-  sub_category: null,
+  name: "",
+  description: "",
+  location: "",
+  price: 0,
+  sub_category: 0,
   uploaded_images: [],
   list_payement_method: [],
-  seller: null,
-  phone_number_contact: null,
-  email_contact: null,
-  national_delivery_price: null,
-  local_delivery_price: null,
-  type: null,
-  quantity: null,
-  payement_integrate: null,
-  category: null,
+  seller: 0,
+  phone_number_contact: "",
+  email_contact: "",
+  national_delivery_price: 0,
+  local_delivery_price: 0,
+  type: "",
+  quantity: 0,
+  payement_integrate: false,
+  category: 0,
 };
 
 const publishSlice = createSlice({

@@ -16,6 +16,9 @@ export default {
   //GET
   GET_CATEGORY_URL: "/category",
 
+  /**==== SUBCATEGORY ==== */
+  GET_SUB_CATEGORY_URL: "/subcategory/",
+
   /*===== PRODUCT =====*/
   //GET
   GET_PRODUCT_URL: "/product",

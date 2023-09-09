@@ -6,6 +6,24 @@ export type CategoryType = {
   image: string;
 };
 
+export type criteriaType = {
+  id: number;
+  response: [
+    {
+      value: string;
+    },
+  ];
+  name: string;
+  type: string;
+};
+
+export type SubCategoryType = {
+  id: number;
+  criteria: criteriaType[];
+  nom: string;
+  category: number;
+};
+
 export type CategoriesType = {
   categories: CategoryType[];
 };

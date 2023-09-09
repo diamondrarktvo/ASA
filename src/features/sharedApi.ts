@@ -1,6 +1,6 @@
 import config from "_config";
 import { BaseApi } from "_services";
-import { CategoryResponseType, CategoryType } from "./types";
+import { CategoryResponseType, CategoryType, SubCategoryType } from "./types";
 import { ApiInformationType } from "_utils";
 
 const sharedApi = BaseApi.injectEndpoints({
@@ -24,10 +24,17 @@ const sharedApi = BaseApi.injectEndpoints({
         };
       },
     }),
+    getSubCategory: build.query<SubCategoryType[], number>({
+      query: (id) => ({
+        url: config.GET_SUB_CATEGORY_URL + id,
+        method: "GET",
+      }),
+      providesTags: ["SubCategory"],
+    }),
   }),
   overrideExisting: true,
 });
 
-export const { useGetCategoryQuery } = sharedApi;
+export const { useGetCategoryQuery, useGetSubCategoryQuery } = sharedApi;
 
 export default sharedApi;
