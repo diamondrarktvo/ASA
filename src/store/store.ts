@@ -25,7 +25,7 @@ export const store = configureStore({
 setupListeners(store.dispatch);
 store.subscribe(() => {
   console.log("State ato amin'ny storee : ");
-  console.log(store.getState());
+  console.log(store.getState().publish);
 });
 
 export type AppDispatch = typeof store.getState;

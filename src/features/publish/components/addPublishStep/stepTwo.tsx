@@ -29,9 +29,6 @@ export default function StepTwo() {
   const [valueForStepper, setValueForStepper] = useState(currentProduct);
   const [disableButton, setDisableButton] = useState(true);
 
-  console.log("imageImported : ", imageImported);
-  console.log("valueForStepper step 2 : ", valueForStepper);
-
   //function
   const pickImages = async () => {
     // No permissions request is necessary for launching the image library
@@ -41,8 +38,6 @@ export default function StepTwo() {
       aspect: [4, 3],
       quality: 1,
     });
-
-    console.log("result imae : ", result);
 
     if (!result.canceled) {
       let newImageImportedArray = [...imageImported];
@@ -59,7 +54,7 @@ export default function StepTwo() {
 
   const handleContinueStepper = () => {
     if (imageImported.length !== 0) {
-      console.log("valueForStepper step before dispatch : ", valueForStepper);
+      //console.log("valueForStepper step before dispatch : ", valueForStepper);
       dispatch(setProduct(valueForStepper));
       navigation.navigate("stepper_screen_3");
     }

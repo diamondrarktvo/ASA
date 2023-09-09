@@ -6,11 +6,32 @@ import { useTheme } from "@shopify/restyle";
 import { stepper4NavigationTypes } from "../../types";
 import { CheckBox } from "@rneui/themed";
 import { ScrollView } from "react-native-gesture-handler";
+import { useAppDispatch, useAppSelector } from "_store";
+import { selectors, setProduct } from "../../publishSlice";
+import { useState } from "react";
 
 export default function StepThree() {
   const navigation = useNavigation<stepper4NavigationTypes>();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
+  const currentProduct = useAppSelector(selectors.selectProductToPublish);
+  const [valueForStepper, setValueForStepper] = useState(currentProduct);
+  const currentCategorySelected = useAppSelector(
+    selectors.getCurrentCategorySelected,
+  );
+  const dispatch = useAppDispatch();
+  const [disableButton, setDisableButton] = useState(true);
+
+  console.log("currentCategorySelected : ", currentCategorySelected);
+  console.log("currentProduct step 3 :", currentProduct);
+
+  const handleContinueStepper = () => {
+    if (true) {
+      //console.log("valueForStepper step before dispatch : ", valueForStepper);
+      dispatch(setProduct(valueForStepper));
+      navigation.navigate("stepper_screen_4");
+    }
+  };
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
@@ -216,7 +237,8 @@ export default function StepThree() {
               width={150}
               variant={"secondary"}
               label="Continuer"
-              onPress={() => navigation.navigate("stepper_screen_4")}
+              disabled={disableButton}
+              onPress={() => handleContinueStepper()}
             />
           </Row>
         </Box>

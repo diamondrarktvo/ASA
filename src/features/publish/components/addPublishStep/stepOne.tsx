@@ -51,7 +51,6 @@ export default function StepOne() {
 
   const handleContinueStepper = () => {
     if (productName !== "") {
-      console.log("valueForStepper step 1 : ", valueForStepper);
       dispatch(setProduct(valueForStepper));
       dispatch(setCurrentCategorySelected(selectCategorie));
       navigation.navigate("stepper_screen_2");
