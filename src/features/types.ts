@@ -18,10 +18,8 @@ export type criteriaType = {
 };
 
 export type SubCategoryType = {
-  id: number;
-  criteria: criteriaType[];
-  nom: string;
-  category: number;
+  id: number | undefined;
+  nom: string | undefined;
 };
 
 export type CategoriesType = {

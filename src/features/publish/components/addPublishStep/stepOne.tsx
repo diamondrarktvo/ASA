@@ -17,13 +17,12 @@ import { Picker } from "@react-native-picker/picker";
 import { useTheme } from "@shopify/restyle";
 import { CheckBox } from "@rneui/themed";
 import { stepper2NavigationTypes } from "../../types";
-import { useGetCategoryQuery } from "../../../sharedApi";
-import { useAppDispatch, useAppSelector } from "_store";
 import {
-  setCurrentCategorySelected,
-  selectors,
-  setProduct,
-} from "../../publishSlice";
+  useGetCategoryQuery,
+  useGetSubCategoryQuery,
+} from "../../../sharedApi";
+import { useAppDispatch, useAppSelector } from "_store";
+import { selectors, setProduct } from "../../publishSlice";
 
 export default function StepOne() {
   const navigation = useNavigation<stepper2NavigationTypes>();
@@ -36,11 +35,29 @@ export default function StepOne() {
     isError: isErrorCategory,
     isLoading: isCategoriesLoading,
     isFetching: isCategoriesFetching,
-    refetch,
+    refetch: refetchCategories,
     error: errorCategory,
   } = useGetCategoryQuery(undefined);
   const [selectCategorie, setSelectCategorie] = useState(
     data?.categories[0].id,
+  );
+  const {
+    data: allSubCategories,
+    isError: isErrorSubCategory,
+    isLoading: isSubCategoriesLoading,
+    isFetching: isSubCategoriesFetching,
+    refetch: refetchSubCategories,
+    error: errorSubCategory,
+  } = useGetSubCategoryQuery(selectCategorie, {
+    skip: selectCategorie === 0,
+  });
+
+  const [selectSubCategorie, setSelectSubCategorie] = useState(
+    allSubCategories &&
+      allSubCategories.length &&
+      allSubCategories[0]?.id !== undefined
+      ? allSubCategories[0]?.id
+      : 0,
   );
   const [productName, setProductName] = useState("");
   const [disableButton, setDisableButton] = useState(true);
@@ -52,28 +69,52 @@ export default function StepOne() {
   const handleContinueStepper = () => {
     if (productName !== "") {
       dispatch(setProduct(valueForStepper));
-      dispatch(setCurrentCategorySelected(selectCategorie));
       navigation.navigate("stepper_screen_2");
     }
   };
 
+  //all effects
   useEffect(() => {
     setValueForStepper((prevState) => ({
       ...prevState,
       type: typeProduct,
       name: productName,
+      sub_category: selectSubCategorie,
     }));
-    if (productName !== "" && selectCategorie !== "") {
+    if (productName !== "" && selectSubCategorie !== 0) {
       setDisableButton(false);
     }
-  }, [typeProduct, productName]);
+  }, [typeProduct, productName, selectSubCategorie]);
+
+  useEffect(() => {
+    refetchSubCategories();
+    if (
+      allSubCategories &&
+      allSubCategories.length !== 0 &&
+      allSubCategories[0]?.id
+    ) {
+      setSelectSubCategorie(allSubCategories[0]?.id);
+    } else if (
+      allSubCategories === undefined ||
+      allSubCategories.length === 0
+    ) {
+      setSelectSubCategorie(0);
+    }
+  }, [selectCategorie, allSubCategories]);
 
   return (
-    <RequestLoader isLoading={isCategoriesFetching || isCategoriesLoading}>
+    <RequestLoader
+      isLoading={
+        isCategoriesFetching ||
+        isCategoriesLoading ||
+        isSubCategoriesLoading ||
+        isSubCategoriesFetching
+      }
+    >
       <RequestError
         isError={isErrorCategory}
         errorStatus={errorCategory?.status}
-        onRefresh={() => refetch()}
+        onRefresh={() => refetchCategories()}
       >
         <Box marginTop={"m"}>
           <Text
@@ -103,6 +144,9 @@ export default function StepOne() {
               }}
             />
           </Box>
+          <Text variant={"secondary"} color={"text"}>
+            Catégorie
+          </Text>
           <Box
             borderWidth={1}
             borderRadius={"xs"}
@@ -112,19 +156,47 @@ export default function StepOne() {
             <Picker
               selectedValue={selectCategorie}
               onValueChange={(itemValue, itemIndex) => {
-                if (itemValue !== "Choisir") {
+                if (itemValue !== 0) {
                   setSelectCategorie(itemValue);
-                  dispatch(setCurrentCategorySelected(itemValue));
                 }
               }}
             >
-              <Picker.Item label={"Choisir"} value={"Choisir"} />
+              <Picker.Item label={"Categorie"} value={0} />
               {data &&
                 data?.categories.map((category) => (
                   <Picker.Item
                     key={category.id}
                     label={category.name}
                     value={category.id}
+                  />
+                ))}
+            </Picker>
+          </Box>
+          <Text variant={"secondary"} color={"text"}>
+            Sous-catégorie
+          </Text>
+          <Box
+            borderWidth={1}
+            borderRadius={"xs"}
+            marginBottom={"s"}
+            borderColor={"secondary"}
+          >
+            <Picker
+              selectedValue={selectSubCategorie}
+              onValueChange={(itemValue, itemIndex) => {
+                if (itemValue !== 0) {
+                  setSelectSubCategorie(itemValue);
+                }
+              }}
+            >
+              <Picker.Item label={"Sous-catégorie"} value={0} />
+              {allSubCategories &&
+                allSubCategories?.length !== 0 &&
+                allSubCategories?.map((subCategory) => (
+                  <Picker.Item
+                    key={subCategory?.id}
+                    label={subCategory?.nom}
+                    value={subCategory?.id}
                   />
                 ))}
             </Picker>

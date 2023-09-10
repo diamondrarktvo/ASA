@@ -16,7 +16,6 @@ export interface publishStateType {
   type: string;
   quantity: number;
   payement_integrate: boolean;
-  category: number;
 }
 
 const initialState: publishStateType = {
@@ -35,7 +34,6 @@ const initialState: publishStateType = {
   type: "",
   quantity: 0,
   payement_integrate: false,
-  category: 0,
 };
 
 const publishSlice = createSlice({
@@ -44,9 +42,6 @@ const publishSlice = createSlice({
   reducers: {
     setProduct: (state, action: PayloadAction<publishStateType>) => {
       Object.assign(state, action.payload);
-    },
-    setCurrentCategorySelected: (state, action: PayloadAction<number>) => {
-      state.category = action.payload;
     },
     reinitializeProduct: (state) => {
       state = initialState;
@@ -58,11 +53,10 @@ const publishSlice = createSlice({
 export const selectors = {
   selectProductToPublish: (state: { publish: publishStateType }) =>
     state.publish,
-  getCurrentCategorySelected: (state: { publish: publishStateType }) =>
-    state.publish.category,
+  getCurrentSubCategorySelected: (state: { publish: publishStateType }) =>
+    state.publish.sub_category,
 };
 
-export const { setProduct, setCurrentCategorySelected, reinitializeProduct } =
-  publishSlice.actions;
+export const { setProduct, reinitializeProduct } = publishSlice.actions;
 
 export default publishSlice;

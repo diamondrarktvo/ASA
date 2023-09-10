@@ -18,7 +18,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useAppDispatch, useAppSelector } from "_store";
 import { selectors, setProduct } from "../../publishSlice";
 import { useState } from "react";
-import { useGetSubCategoryQuery } from "../../../sharedApi";
+import { useGetCriteriaQuery } from "../../../sharedApi";
 
 export default function StepThree() {
   const navigation = useNavigation<stepper4NavigationTypes>();
@@ -26,21 +26,21 @@ export default function StepThree() {
   const { borderRadii, colors } = theme;
   const currentProduct = useAppSelector(selectors.selectProductToPublish);
   const [valueForStepper, setValueForStepper] = useState(currentProduct);
-  const currentCategorySelected = useAppSelector(
-    selectors.getCurrentCategorySelected,
+  const currentSubCategorySelected = useAppSelector(
+    selectors.getCurrentSubCategorySelected,
   );
   const dispatch = useAppDispatch();
   const [disableButton, setDisableButton] = useState(true);
   const {
     data: allCriteria,
-    isError: isErrorSubCategory,
-    isLoading: isSubCategoriesLoading,
-    isFetching: isSubCategoriesFetching,
+    isError: isErrorCriteria,
+    isLoading: isCriteriaLoading,
+    isFetching: isCriteriaFetching,
     refetch,
-    error: errorSubCategory,
-  } = useGetSubCategoryQuery(currentCategorySelected);
+    error: errorCriteria,
+  } = useGetCriteriaQuery(currentSubCategorySelected);
 
-  console.log("currentCategorySelected : ", currentCategorySelected);
+  console.log("currentSubCategorySelected : ", currentSubCategorySelected);
 
   console.log("allCriteria e : ", allCriteria);
 
@@ -54,9 +54,7 @@ export default function StepThree() {
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
-      <RequestLoader
-        isLoading={isSubCategoriesLoading || isSubCategoriesFetching}
-      >
+      <RequestLoader isLoading={isCriteriaFetching || isCriteriaLoading}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Box marginTop={"m"}>
             <Text
