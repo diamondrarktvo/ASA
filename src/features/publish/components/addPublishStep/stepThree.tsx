@@ -19,6 +19,7 @@ import { useAppDispatch, useAppSelector } from "_store";
 import { selectors, setProduct } from "../../publishSlice";
 import { useState } from "react";
 import { useGetCriteriaQuery } from "../../../sharedApi";
+import { RadioButton } from "react-native-paper";
 
 export default function StepThree() {
   const navigation = useNavigation<stepper4NavigationTypes>();
@@ -38,11 +39,14 @@ export default function StepThree() {
     isFetching: isCriteriaFetching,
     refetch,
     error: errorCriteria,
-  } = useGetCriteriaQuery(currentSubCategorySelected);
+  } = useGetCriteriaQuery(currentSubCategorySelected, {
+    skip: currentSubCategorySelected === 0,
+  });
 
   console.log("currentSubCategorySelected : ", currentSubCategorySelected);
 
   console.log("allCriteria e : ", allCriteria);
+  console.log("valueForStepper : ", valueForStepper);
 
   const handleContinueStepper = () => {
     if (true) {
@@ -72,172 +76,42 @@ export default function StepThree() {
               NB: Veuillez cocher vos critères!
             </Text>
             <Box marginVertical={"s"}>
-              {/**offre d'emploi */}
-              <Text variant={"primary"}>Offre d'emploi : </Text>
-              {/**type de contrat */}
-              <Box>
-                <Text variant={"tertiary"}>1 -Type de contrat : </Text>
-                <Box flexDirection={"row"} flexWrap={"wrap"}>
-                  <CheckBox
-                    containerStyle={{ backgroundColor: colors.mainBackground }}
-                    checkedColor={colors.primary}
-                    checked={true}
-                    title="CDD"
-                  />
-                  <CheckBox
-                    containerStyle={{ backgroundColor: colors.mainBackground }}
-                    checkedColor={colors.primary}
-                    checked={false}
-                    title="CDI"
-                  />
-                  <CheckBox
-                    containerStyle={{ backgroundColor: colors.mainBackground }}
-                    checkedColor={colors.primary}
-                    checked={false}
-                    title="Interim"
-                  />
-                  <CheckBox
-                    containerStyle={{ backgroundColor: colors.mainBackground }}
-                    checkedColor={colors.primary}
-                    checked={false}
-                    title="Autre"
-                  />
-                </Box>
-              </Box>
-              {/**secteur d'activité */}
-              <Box>
-                <Text variant={"tertiary"}>2 -Secteur d'activité : </Text>
-              </Box>
-              {/**Fonction */}
-              <Box>
-                <Text variant={"tertiary"}>3 -Fonction: </Text>
-              </Box>
-              {/**Experience */}
-              <Box>
-                <Text variant={"tertiary"}>4 -Experience: </Text>
-                <Box flexDirection={"row"} flexWrap={"wrap"}>
-                  <CheckBox
-                    containerStyle={{ backgroundColor: colors.mainBackground }}
-                    checkedColor={colors.primary}
-                    checked={true}
-                    title="0 à 2 ans"
-                  />
-                  <CheckBox
-                    containerStyle={{ backgroundColor: colors.mainBackground }}
-                    checkedColor={colors.primary}
-                    checked={false}
-                    title="2 à 5 ans"
-                  />
-                  <CheckBox
-                    containerStyle={{ backgroundColor: colors.mainBackground }}
-                    checkedColor={colors.primary}
-                    checked={false}
-                    title="plus de 5 ans"
-                  />
-                </Box>
-              </Box>
-              {/**type de travail */}
-              <Box>
-                <Text variant={"tertiary"}>5 -Travail à : </Text>
-                <Box flexDirection={"row"} flexWrap={"wrap"}>
-                  <CheckBox
-                    containerStyle={{ backgroundColor: colors.mainBackground }}
-                    checkedColor={colors.primary}
-                    checked={true}
-                    title="temps partiel"
-                  />
-                  <CheckBox
-                    containerStyle={{ backgroundColor: colors.mainBackground }}
-                    checkedColor={colors.primary}
-                    checked={false}
-                    title="temps plein"
-                  />
-                </Box>
-              </Box>
-              <Box>
-                <Text variant={"tertiary"}>6 -Référence: </Text>
-              </Box>
-            </Box>
-
-            <Box marginVertical={"s"}>
-              {/**formation */}
-              <Text variant={"primary"}>Formation : </Text>
-              {/**type de formation */}
-              <Box>
-                <Text variant={"tertiary"}>1 -Type de formation : </Text>
-                <Box flexDirection={"row"} flexWrap={"wrap"}>
-                  <CheckBox
-                    containerStyle={{ backgroundColor: colors.mainBackground }}
-                    checkedColor={colors.primary}
-                    checked={true}
-                    title="présentiel"
-                  />
-                  <CheckBox
-                    containerStyle={{ backgroundColor: colors.mainBackground }}
-                    checkedColor={colors.primary}
-                    checked={false}
-                    title="en ligne"
-                  />
-                </Box>
-              </Box>
-              {/**Domaine */}
-              <Box>
-                <Text variant={"tertiary"}>2 -Domaine : </Text>
-              </Box>
-              {/**Diplôme */}
-              <Box>
-                <Text variant={"tertiary"}>3 -Diplôme: </Text>
-                <Box flexDirection={"row"} flexWrap={"wrap"}>
-                  <CheckBox
-                    containerStyle={{ backgroundColor: colors.mainBackground }}
-                    checkedColor={colors.primary}
-                    checked={true}
-                    title="Oui"
-                  />
-                  <CheckBox
-                    containerStyle={{ backgroundColor: colors.mainBackground }}
-                    checkedColor={colors.primary}
-                    checked={false}
-                    title="Non"
-                  />
-                </Box>
-              </Box>
-              {/**Experience */}
-              <Box>
-                <Text variant={"tertiary"}>4 -Experience: </Text>
-                <Box flexDirection={"row"} flexWrap={"wrap"}>
-                  <CheckBox
-                    containerStyle={{ backgroundColor: colors.mainBackground }}
-                    checkedColor={colors.primary}
-                    checked={true}
-                    title="0 à 2 ans"
-                  />
-                  <CheckBox
-                    containerStyle={{ backgroundColor: colors.mainBackground }}
-                    checkedColor={colors.primary}
-                    checked={false}
-                    title="2 à 5 ans"
-                  />
-                </Box>
-              </Box>
-              {/**certificat d'aptitude */}
-              <Box>
-                <Text variant={"tertiary"}>5 -Certificat d'aptitude : </Text>
-                <Box flexDirection={"row"} flexWrap={"wrap"}>
-                  <CheckBox
-                    containerStyle={{ backgroundColor: colors.mainBackground }}
-                    checkedColor={colors.primary}
-                    checked={true}
-                    title="Oui"
-                  />
-                  <CheckBox
-                    containerStyle={{ backgroundColor: colors.mainBackground }}
-                    checkedColor={colors.primary}
-                    checked={false}
-                    title="Non"
-                  />
-                </Box>
-              </Box>
+              <Text variant={"primary"}>
+                {valueForStepper.sub_category_name}
+              </Text>
+              {allCriteria &&
+                allCriteria.length !== 0 &&
+                allCriteria.map((criteria) => (
+                  <>
+                    <Box key={criteria.id}>
+                      <Text variant={"tertiary"}>
+                        {criteria.id} {criteria.name}
+                      </Text>
+                      <Box flexDirection={"row"} flexWrap={"wrap"}>
+                        {criteria.type === "text" && (
+                          <Input placeholder={criteria.name} />
+                        )}
+                        {criteria.type === "choice" &&
+                          criteria.response?.length > 0 &&
+                          criteria.response?.map((response, index) => (
+                            <Box
+                              flexDirection={"row"}
+                              alignItems={"center"}
+                              key={index}
+                            >
+                              <RadioButton
+                                value={response.value}
+                                color={colors.primary}
+                                status={"unchecked"}
+                                onPress={() => console.log("pressed")}
+                              />
+                              <Text variant="tertiary">{response.value}</Text>
+                            </Box>
+                          ))}
+                      </Box>
+                    </Box>
+                  </>
+                ))}
             </Box>
 
             <Row alignItems={"center"} justifyContent="space-around">

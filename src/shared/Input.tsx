@@ -35,7 +35,7 @@ const Input = ({ iconRight, iconLeft, errorMessage, ...props }: InputProps) => {
         width="100%"
         paddingHorizontal={iconLeft ? "xs" : "s"}
         paddingVertical="s"
-        marginTop="s"
+        marginVertical="xs"
         alignItems="center"
       >
         {iconLeft && (

@@ -59,6 +59,13 @@ export default function StepOne() {
       ? allSubCategories[0]?.id
       : 0,
   );
+  const [selectSubCategorieName, setSelectSubCategorieName] = useState(
+    allSubCategories &&
+      allSubCategories.length &&
+      allSubCategories[0]?.nom !== undefined
+      ? allSubCategories[0]?.nom
+      : "",
+  );
   const [productName, setProductName] = useState("");
   const [disableButton, setDisableButton] = useState(true);
   const [typeProduct, setTypeProduct] = useState<"Offre" | "Recherche">(
@@ -79,7 +86,8 @@ export default function StepOne() {
       ...prevState,
       type: typeProduct,
       name: productName,
-      sub_category: selectSubCategorie,
+      sub_category_id: selectSubCategorie,
+      sub_category_name: selectSubCategorieName,
     }));
     if (productName !== "" && selectSubCategorie !== 0) {
       setDisableButton(false);
@@ -91,14 +99,17 @@ export default function StepOne() {
     if (
       allSubCategories &&
       allSubCategories.length !== 0 &&
-      allSubCategories[0]?.id
+      allSubCategories[0]?.id &&
+      allSubCategories[0]?.nom
     ) {
       setSelectSubCategorie(allSubCategories[0]?.id);
+      setSelectSubCategorieName(allSubCategories[0]?.nom);
     } else if (
       allSubCategories === undefined ||
       allSubCategories.length === 0
     ) {
       setSelectSubCategorie(0);
+      setSelectSubCategorieName("");
     }
   }, [selectCategorie, allSubCategories]);
 

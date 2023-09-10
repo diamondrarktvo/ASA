@@ -5,7 +5,8 @@ export interface publishStateType {
   description: string;
   location: string;
   price: number;
-  sub_category: number;
+  sub_category_id: number;
+  sub_category_name: string;
   uploaded_images: string[] | [];
   list_payement_method: string[] | [];
   seller: number;
@@ -23,7 +24,8 @@ const initialState: publishStateType = {
   description: "",
   location: "",
   price: 0,
-  sub_category: 0,
+  sub_category_id: 0,
+  sub_category_name: "",
   uploaded_images: [],
   list_payement_method: [],
   seller: 0,
@@ -54,7 +56,7 @@ export const selectors = {
   selectProductToPublish: (state: { publish: publishStateType }) =>
     state.publish,
   getCurrentSubCategorySelected: (state: { publish: publishStateType }) =>
-    state.publish.sub_category,
+    state.publish.sub_category_id,
 };
 
 export const { setProduct, reinitializeProduct } = publishSlice.actions;

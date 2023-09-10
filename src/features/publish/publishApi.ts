@@ -12,7 +12,7 @@ const publishApi = BaseApi.injectEndpoints({
           description: arg.description,
           location: arg.location,
           price: arg.price,
-          sub_category: arg.sub_category,
+          sub_category_id: arg.sub_category_id,
           uploaded_images: arg.uploaded_images,
           list_payement_method: arg.list_payement_method,
           seller: arg.seller,
