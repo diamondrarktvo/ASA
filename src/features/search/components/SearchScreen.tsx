@@ -10,6 +10,7 @@ import {
   MainScreen,
   RequestError,
   RequestLoader,
+  Row,
   Text,
 } from "_shared";
 import { Constantes } from "_utils";
@@ -101,7 +102,7 @@ export default function SearchScreen() {
 
   const renderItemAnnonce: ListRenderItem<annonceType> = ({ item }) => {
     return (
-      <Column key={item.id} marginBottom={"s"}>
+      <Column key={item.id} marginBottom={"m"}>
         <Image
           source={
             item.pictures[0]
@@ -124,16 +125,40 @@ export default function SearchScreen() {
             right: 10,
           }}
         />
-        <Text
-          variant="secondary"
-          numberOfLines={1}
-          textDecorationLine={"underline"}
-        >
+        <Text variant="secondary" numberOfLines={1} fontWeight={"600"}>
           {item.name}
+        </Text>
+        <Text variant="tertiary" numberOfLines={1} fontWeight={"400"}>
+          {typeof item.price === "number" ? item.price : parseInt(item.price)}{" "}
+          Ar
         </Text>
         <Text variant={"tertiary"} numberOfLines={1}>
           {item.description}
         </Text>
+        {item.local_delivery_price ||
+          (item.national_delivery_price && (
+            <Row
+              backgroundColor="primary"
+              opacity={0.4}
+              padding={"xs"}
+              borderRadius="sm"
+              marginTop={"m"}
+            >
+              <Icon
+                name="local-shipping"
+                size={Size.ICON_SMALL}
+                color={colors.black}
+              />
+              <Text
+                variant={"tertiary"}
+                numberOfLines={1}
+                color={"text"}
+                fontWeight={"400"}
+              >
+                Livraison possible
+              </Text>
+            </Row>
+          ))}
       </Column>
     );
   };
@@ -213,7 +238,7 @@ export default function SearchScreen() {
 
 const styles = StyleSheet.create({
   imageAnnonce: {
-    borderRadius: 6,
+    borderRadius: 4,
     height: 180,
     width: 180,
   },
