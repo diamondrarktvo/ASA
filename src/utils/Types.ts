@@ -15,12 +15,6 @@ export type announcerTypes = {
   phoneNumber: string;
 };
 
-export type categorieTypes = {
-  id: number;
-  title: string;
-  image: ImageSourcePropType;
-};
-
 export type searchTypes = {
   id: number;
   searchValue: string;

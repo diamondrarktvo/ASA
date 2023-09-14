@@ -12,32 +12,43 @@ import {
   RequestLoader,
   Text,
 } from "_shared";
-import { Constantes, annonceTypes, categorieTypes } from "_utils";
+import { Constantes } from "_utils";
 import { ActivityIndicator } from "react-native-paper";
 import { useTheme } from "@shopify/restyle";
 import { Size, Theme } from "_theme";
-import { searchItemNavigationTypes } from "../types";
+import { annonceType, searchItemNavigationTypes } from "../types";
 import { ScrollView } from "react-native-gesture-handler";
 import { useGetCategoryQuery } from "../../sharedApi";
 import { CategoryType } from "../../types";
 import { useState } from "react";
 import { useEffect } from "react";
 import { Skeleton } from "@rneui/themed";
+import { useGetAllAnnonceQuery } from "../searchApi";
 
 export default function SearchScreen() {
   const navigation = useNavigation<searchItemNavigationTypes>();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
   const {
-    data,
+    data: allCategories,
     isError: isErrorCategory,
     isLoading: isCategoriesLoading,
     isFetching: isCategoriesFetching,
-    refetch,
+    refetch: refetchCategories,
     error: errorCategory,
   } = useGetCategoryQuery(undefined);
 
+  const {
+    data: allAnnonces,
+    isError: isErrorAnnonce,
+    isLoading: isAnnonceLoading,
+    isFetching: isAnnonceFetching,
+    refetch: refetchAnnonces,
+    error: errorAnnonce,
+  } = useGetAllAnnonceQuery(undefined);
+
   //effect
+  console.log("allAnnonces : ", allAnnonces);
 
   //components
   const renderItemCategorie: ListRenderItem<CategoryType> = ({ item }) => {
@@ -88,11 +99,15 @@ export default function SearchScreen() {
     );
   };
 
-  const renderItemAnnonce: ListRenderItem<annonceTypes> = ({ item }) => {
+  const renderItemAnnonce: ListRenderItem<annonceType> = ({ item }) => {
     return (
       <Column key={item.id} marginBottom={"s"}>
         <Image
-          source={item.image}
+          source={
+            item.pictures[0]
+              ? { uri: item.pictures[0] }
+              : require("_images/logo.jpg")
+          }
           containerStyle={styles.imageAnnonce}
           PlaceholderContent={
             <ActivityIndicator color="#2652AA" style={styles.spinnerAnnonce} />
@@ -114,7 +129,7 @@ export default function SearchScreen() {
           numberOfLines={1}
           textDecorationLine={"underline"}
         >
-          {item.title}
+          {item.name}
         </Text>
         <Text variant={"tertiary"} numberOfLines={1}>
           {item.description}
@@ -125,11 +140,18 @@ export default function SearchScreen() {
 
   return (
     <MainScreen typeOfScreen="tab">
-      <RequestLoader isLoading={isCategoriesFetching || isCategoriesLoading}>
+      <RequestLoader
+        isLoading={
+          isCategoriesFetching ||
+          isCategoriesLoading ||
+          isAnnonceLoading ||
+          isAnnonceFetching
+        }
+      >
         <RequestError
-          isError={isErrorCategory}
-          errorStatus={errorCategory?.status}
-          onRefresh={() => refetch()}
+          isError={isErrorCategory || isErrorAnnonce}
+          errorStatus={errorCategory?.status || errorAnnonce?.status}
+          onRefresh={() => refetchCategories()}
         >
           <ScrollView showsVerticalScrollIndicator={false}>
             <Text variant={"bigTitle"} color="primary" textAlign="center">
@@ -151,10 +173,10 @@ export default function SearchScreen() {
                 <FlashList
                   keyExtractor={(item, index) => item.id.toString()}
                   estimatedItemSize={200}
-                  data={data?.categories}
+                  data={allCategories?.categories}
                   renderItem={renderItemCategorie}
                   horizontal={true}
-                  extraData={data?.categories}
+                  extraData={allCategories?.categories}
                   showsHorizontalScrollIndicator={false}
                   ListEmptyComponent={<Text>Catégorie indisponible</Text>}
                 />
@@ -174,10 +196,10 @@ export default function SearchScreen() {
                 <FlashList
                   keyExtractor={(item, index) => item.id.toString()}
                   estimatedItemSize={200}
-                  data={Constantes.DATA.annonce}
+                  data={allAnnonces?.annonces?.slice(0, 6)}
                   renderItem={renderItemAnnonce}
                   numColumns={2}
-                  extraData={Constantes.DATA.annonce}
+                  extraData={allAnnonces?.annonces?.slice(0, 6)}
                   showsVerticalScrollIndicator={false}
                 />
               </Box>
