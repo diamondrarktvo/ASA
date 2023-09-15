@@ -1,6 +1,10 @@
 import config from "_config";
 import { BaseApi } from "_services";
-import { annonceType, AnnonceResponseType } from "./types";
+import {
+  annonceType,
+  AnnoncesResponseType,
+  AnnonceResponseType,
+} from "./types";
 import { ApiInformationType } from "_utils";
 
 const searchApi = BaseApi.injectEndpoints({
@@ -10,7 +14,7 @@ const searchApi = BaseApi.injectEndpoints({
         url: config.GET_PRODUCT_URL,
         method: "GET",
       }),
-      transformResponse: (response: AnnonceResponseType) => {
+      transformResponse: (response: AnnoncesResponseType) => {
         const annonces: annonceType[] = response.results || [];
         const apiInformation: ApiInformationType = {
           count: response.count,
@@ -23,10 +27,16 @@ const searchApi = BaseApi.injectEndpoints({
         };
       },
     }),
+    getOnAnnonce: build.query<annonceType, number>({
+      query: (id) => ({
+        url: `${config.GET_PRODUCT_URL}/${id}`,
+        method: "GET",
+      }),
+    }),
   }),
   overrideExisting: true,
 });
 
-export const { useGetAllAnnonceQuery } = searchApi;
+export const { useGetAllAnnonceQuery, useGetOnAnnonceQuery } = searchApi;
 
 export default searchApi;

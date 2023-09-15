@@ -3,8 +3,6 @@ export { Constantes } from "./Constantes";
 
 //types
 export {
-  annonceTypes,
-  categorieTypes,
   announcerTypes,
   searchTypes,
   SuccessHttpResponse,
@@ -21,4 +19,4 @@ export {
 } from "./Storage";
 
 //function utils
-export { formatDate } from "./layout";
+export { formatDate, formatDateToString } from "./layout";

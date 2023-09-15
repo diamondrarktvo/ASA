@@ -23,6 +23,7 @@ import {
   StepSeven,
   SearchItem,
   ManagePayment,
+  ProductDetailScreen,
 } from "_features";
 
 const Stack = createStackNavigator<StackParamList>();
@@ -54,6 +55,10 @@ const StackNavigation = () => {
 
           {/**Search item */}
           <Stack.Screen name={"search_item"} component={SearchItem} />
+          <Stack.Screen
+            name={"product_detail_screen"}
+            component={ProductDetailScreen}
+          />
         </Stack.Group>
 
         {/**Stepper screens */}

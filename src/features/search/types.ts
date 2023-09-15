@@ -45,6 +45,10 @@ export type payement_method_type = {
   cvv: string | number | null;
 };
 
-export type AnnonceResponseType = ApiInformationType & {
+export type AnnoncesResponseType = ApiInformationType & {
   results: annonceType[];
+};
+
+export type AnnonceResponseType = {
+  annonces: annonceType[];
 };

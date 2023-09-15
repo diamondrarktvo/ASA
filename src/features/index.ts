@@ -14,6 +14,7 @@ import ManagePayment from "./account/components/ManagePayment";
 
 //COMPONENTS REUSABLE
 import ManageProfil from "./account/components/ManageProfil";
+import ProductDetailScreen from "./search/components/ProductDetailScreen";
 
 //stepper
 import StepOne from "./publish/components/addPublishStep/stepOne";
@@ -40,6 +41,7 @@ export {
   PersonnalInformation,
   ManagePayment,
   SearchItem,
+  ProductDetailScreen,
   //stepper
   StepOne,
   StepTwo,

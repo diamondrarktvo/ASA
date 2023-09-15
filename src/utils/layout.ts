@@ -7,3 +7,16 @@ export function formatDate(dateString: string) {
 
   return `${day}-${month}-${year}`;
 }
+
+export function formatDateToString(inputDate: string) {
+  const options: {} = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  };
+  const date = new Date(inputDate);
+  const formattedDate = date.toLocaleDateString("fr-FR", options);
+  return formattedDate;
+}

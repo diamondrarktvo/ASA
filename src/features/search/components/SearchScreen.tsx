@@ -12,6 +12,7 @@ import {
   RequestLoader,
   Row,
   Text,
+  TouchableOpacity,
 } from "_shared";
 import { Constantes } from "_utils";
 import { ActivityIndicator } from "react-native-paper";
@@ -49,7 +50,6 @@ export default function SearchScreen() {
   } = useGetAllAnnonceQuery(undefined);
 
   //effect
-  console.log("allAnnonces : ", allAnnonces);
 
   //components
   const renderItemCategorie: ListRenderItem<CategoryType> = ({ item }) => {
@@ -102,40 +102,50 @@ export default function SearchScreen() {
 
   const renderItemAnnonce: ListRenderItem<annonceType> = ({ item }) => {
     return (
-      <Column key={item.id} marginBottom={"s"}>
-        <Image
-          source={
-            item.pictures[0]
-              ? { uri: item.pictures[0] }
-              : require("_images/logo.jpg")
-          }
-          containerStyle={styles.imageAnnonce}
-          PlaceholderContent={
-            <ActivityIndicator color="#2652AA" style={styles.spinnerAnnonce} />
-          }
-        />
-        <Icon
-          name="favorite-border"
-          size={Size.ICON_MEDIUM}
-          color={colors.black}
-          containerStyle={{
-            position: "absolute",
-            zIndex: 2,
-            top: 10,
-            right: 10,
-          }}
-        />
-        <Text variant="secondary" numberOfLines={1} fontWeight={"600"}>
-          {item.name}
-        </Text>
-        <Text variant="tertiary" numberOfLines={1} fontWeight={"400"}>
-          {typeof item.price === "number" ? item.price : parseInt(item.price)}{" "}
-          Ar
-        </Text>
-        <Text variant={"tertiary"} numberOfLines={1}>
-          {item.description}
-        </Text>
-      </Column>
+      <TouchableOpacity
+        key={item.id}
+        onPress={() =>
+          navigation.navigate("product_detail_screen", { idOfProduct: item.id })
+        }
+      >
+        <Column marginBottom={"s"}>
+          <Image
+            source={
+              item.pictures[0]
+                ? { uri: item.pictures[0] }
+                : require("_images/logo.jpg")
+            }
+            containerStyle={styles.imageAnnonce}
+            PlaceholderContent={
+              <ActivityIndicator
+                color="#2652AA"
+                style={styles.spinnerAnnonce}
+              />
+            }
+          />
+          <Icon
+            name="favorite-border"
+            size={Size.ICON_MEDIUM}
+            color={colors.black}
+            containerStyle={{
+              position: "absolute",
+              zIndex: 2,
+              top: 10,
+              right: 10,
+            }}
+          />
+          <Text variant="secondary" numberOfLines={1} fontWeight={"600"}>
+            {item.name}
+          </Text>
+          <Text variant="tertiary" numberOfLines={1} fontWeight={"400"}>
+            {typeof item.price === "number" ? item.price : parseInt(item.price)}{" "}
+            Ar
+          </Text>
+          <Text variant={"tertiary"} numberOfLines={1}>
+            {item.description}
+          </Text>
+        </Column>
+      </TouchableOpacity>
     );
   };
 

@@ -23,6 +23,7 @@ export type StackParamList = {
   stepper_screen_7: undefined;
   //end of stepper screens
   search_item: undefined;
+  product_detail_screen: { idOfProduct: number };
 };
 
 export type TabParamList = {
