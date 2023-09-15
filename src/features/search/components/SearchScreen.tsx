@@ -102,7 +102,7 @@ export default function SearchScreen() {
 
   const renderItemAnnonce: ListRenderItem<annonceType> = ({ item }) => {
     return (
-      <Column key={item.id} marginBottom={"m"}>
+      <Column key={item.id} marginBottom={"s"}>
         <Image
           source={
             item.pictures[0]
@@ -135,30 +135,6 @@ export default function SearchScreen() {
         <Text variant={"tertiary"} numberOfLines={1}>
           {item.description}
         </Text>
-        {item.local_delivery_price ||
-          (item.national_delivery_price && (
-            <Row
-              backgroundColor="primary"
-              opacity={0.4}
-              padding={"xs"}
-              borderRadius="sm"
-              marginTop={"m"}
-            >
-              <Icon
-                name="local-shipping"
-                size={Size.ICON_SMALL}
-                color={colors.black}
-              />
-              <Text
-                variant={"tertiary"}
-                numberOfLines={1}
-                color={"text"}
-                fontWeight={"400"}
-              >
-                Livraison possible
-              </Text>
-            </Row>
-          ))}
       </Column>
     );
   };
@@ -213,7 +189,7 @@ export default function SearchScreen() {
               <Box
                 style={{
                   flex: 1,
-                  height: Dimensions.get("window").height - 90,
+                  height: Dimensions.get("window").height,
                 }}
                 width={"100%"}
                 marginTop="xs"
