@@ -13,7 +13,7 @@ import {
   Row,
   Text,
 } from "_shared";
-import { Constantes, formatDateToString } from "_utils";
+import { Constantes, formatDateToString, getFirstCharactere } from "_utils";
 import { ActivityIndicator } from "react-native-paper";
 import { useTheme } from "@shopify/restyle";
 import { Size, Theme } from "_theme";
@@ -186,14 +186,55 @@ export default function ProductDetailScreen() {
               <Text variant={"tertiary"}>{annonce?.quantity}</Text>
             </Box>
 
-            <Box mt={"s"}>
+            <Column mt={"s"}>
               <Text variant={"secondary"} fontWeight={"600"}>
-                Contact du vendeur
+                Vendeur
+              </Text>
+              <Row
+                width={"100%"}
+                alignItems="center"
+                justifyContent="space-between"
+                my={"xs"}
+              >
+                <Text
+                  style={[
+                    styles.firstCharacter,
+                    { backgroundColor: colors.offBlack, color: colors.white },
+                  ]}
+                >
+                  {annonce?.seller && getFirstCharactere(annonce.seller)}
+                </Text>
+                <Button
+                  variant={"tertiary"}
+                  label={"Suivre"}
+                  backgroundColor={"transparent"}
+                  onPress={() => null}
+                  paddingVertical={"l"}
+                />
+              </Row>
+              <Text variant={"tertiary"} fontWeight={"500"} mt={"xs"}>
+                {annonce?.seller}
               </Text>
               <Text variant={"tertiary"}>{annonce?.phone_number_contact}</Text>
-            </Box>
+            </Column>
           </MainScreen>
         </ScrollView>
+        {annonce?.seller && (
+          <Button
+            variant={"primary"}
+            color="white"
+            label="Message"
+            width={"95%"}
+            mx={"xs"}
+            borderRadius={"md"}
+            marginVertical={"xs"}
+            onPress={() =>
+              navigation.navigate("manage_message", {
+                emetteur: annonce.seller,
+              })
+            }
+          />
+        )}
       </RequestError>
     </RequestLoader>
   );
@@ -236,5 +277,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.37,
     shadowRadius: 7.49,
     elevation: 12,
+  },
+  firstCharacter: {
+    fontSize: 24,
+    fontWeight: "bold",
+    borderRadius: 50,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
   },
 });

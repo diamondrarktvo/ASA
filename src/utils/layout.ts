@@ -20,3 +20,10 @@ export function formatDateToString(inputDate: string) {
   const formattedDate = date.toLocaleDateString("fr-FR", options);
   return formattedDate;
 }
+
+export function getFirstCharactere(text: string) {
+  if (text === "" || undefined || null) {
+    return "";
+  }
+  return text.charAt(0).toUpperCase();
+}

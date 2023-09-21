@@ -311,7 +311,7 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 
 ### Add new Favoris
 
-- **URL**: `/follow/seller`
+- **URL**: `/favorite/seller`
 - **Method**: Post
 - **Description**: follow other user
 - **Need Authentication**:
@@ -339,7 +339,7 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 
 ### List all follow
 
-- **URL**: `/follow/seller`
+- **URL**: `/favorite/seller`
 - **Method**: Get
 - **Description**:
 - **Need Authentication**:
@@ -362,7 +362,7 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 
 ### Delete favoris
 
-- **URL**: `/follow/seller/<int:pk>`
+- **URL**: `/favorite/seller/<int:pk>`
 - **Method**: Delete
 - **Description**:
 - **Need Authentication**:

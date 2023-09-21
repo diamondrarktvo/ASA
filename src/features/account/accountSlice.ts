@@ -17,7 +17,7 @@ export interface authState {
     company_name: string | null;
     unique_company_number: string | null;
   };
-  token: string | null;
+  token: string | undefined;
   is_account_connected: boolean;
 }
 
@@ -36,7 +36,7 @@ const initialState: authState = {
     company_name: null,
     unique_company_number: null,
   },
-  token: null,
+  token: undefined,
   is_account_connected: false,
 };
 

@@ -16,6 +16,7 @@ const palette = {
   black: "#0B0B0B",
   offBlack: "#252525",
   blue: "#2652AA",
+  transparent: "transparent",
 };
 
 const theme = createTheme({
@@ -34,6 +35,7 @@ const theme = createTheme({
     offBlack: palette.offBlack,
     text: palette.black,
     textPrimaryColor: palette.orangePrimary,
+    transparent: palette.transparent,
   },
   spacing: {
     none: "0%",

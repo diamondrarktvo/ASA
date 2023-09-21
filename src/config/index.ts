@@ -35,4 +35,8 @@ export default {
 
   //GET ALL
   GET_PAYMENT_METHOD_URL: "/payementmethod",
+
+  /**======FAVORITE ===== */
+  //GET ALL SELLER FAVORITE
+  GET_FAVORITE_URL: "/favorite/seller",
 };

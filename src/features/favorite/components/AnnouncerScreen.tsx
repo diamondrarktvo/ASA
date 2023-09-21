@@ -13,22 +13,40 @@ import {
 } from "_shared";
 import { ActivityIndicator } from "react-native-paper";
 import { FlashList, ListRenderItem } from "@shopify/flash-list";
-import { Constantes, announcerTypes } from "_utils";
 import { Size, Theme } from "_theme";
 import { useTheme } from "@shopify/restyle";
 import { manageMessageNavigationTypes } from "../../inbox/types";
+import { useGetAllFavoriteByUserQuery } from "../favoriteApi";
+import { useAppSelector } from "_store";
+import { favoriteType } from "../types";
 
 export default function AnnouncerScreen() {
   const navigation = useNavigation<manageMessageNavigationTypes>();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
+  const token = useAppSelector((state) => state.account.token);
+
+  const {
+    data: favoriteSeller,
+    isError: isErrorfavorite,
+    isLoading: isFavoriteLoading,
+    isFetching: isFavoriteFetching,
+    refetch: refetchFavoriteSeller,
+    error: errorFavorite,
+  } = useGetAllFavoriteByUserQuery(token, {
+    skip: !token,
+  });
 
   //components
-  const renderItemAnnouncer: ListRenderItem<announcerTypes> = ({ item }) => {
+  const renderItemAnnouncer: ListRenderItem<favoriteType> = ({ item }) => {
     return (
       <Row key={item.id} marginBottom="s" width={"100%"}>
         <Image
-          source={item.image}
+          source={
+            item.seller.image
+              ? { uri: item.seller.image }
+              : require("_images/logoASA.jpeg")
+          }
           containerStyle={styles.imageProfil}
           PlaceholderContent={
             <ActivityIndicator color="#2652AA" style={styles.spinner} />
@@ -38,12 +56,14 @@ export default function AnnouncerScreen() {
           <Row alignItems="center">
             <Icon name="person" size={Size.ICON_SMALL} color={colors.black} />
             <Text variant="secondary" numberOfLines={1}>
-              {item.name}
+              {item.seller.nickname}
             </Text>
           </Row>
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("manage_message", { emetteur: item.name })
+              navigation.navigate("manage_message", {
+                emetteur: item.seller.nickname,
+              })
             }
           >
             <Row alignItems="flex-start">
@@ -81,9 +101,9 @@ export default function AnnouncerScreen() {
         <FlashList
           keyExtractor={(item, index) => item.id.toString()}
           estimatedItemSize={200}
-          data={Constantes.DATA.announcer}
+          data={favoriteSeller}
           renderItem={renderItemAnnouncer}
-          extraData={Constantes.DATA.announcer}
+          extraData={favoriteSeller}
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={
             <EmptyList textToShow="Vous n'avez pas de vendeur en favoris" />

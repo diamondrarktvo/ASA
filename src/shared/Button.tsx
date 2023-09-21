@@ -18,7 +18,7 @@ import Row from "./Row";
 
 type ButtonProps = {
   onPress?: () => void;
-  variant: "primary" | "secondary" | "tertiary | buttonWithShadow";
+  variant: "primary" | "secondary" | "tertiary" | "buttonWithShadow";
   loading?: boolean;
   label: React.ReactNode;
   iconRight?: string;
