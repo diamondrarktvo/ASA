@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import {
   Box,
@@ -7,24 +8,31 @@ import {
   Icon,
   Image,
   MainScreen,
+  RequestError,
+  RequestLoader,
   Row,
   Text,
   TouchableOpacity,
 } from "_shared";
-import { ActivityIndicator } from "react-native-paper";
+import { ActivityIndicator, Snackbar } from "react-native-paper";
 import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import { Size, Theme } from "_theme";
 import { useTheme } from "@shopify/restyle";
 import { manageMessageNavigationTypes } from "../../inbox/types";
-import { useGetAllFavoriteByUserQuery } from "../favoriteApi";
+import {
+  useGetAllFavoriteByUserQuery,
+  useDeleteFavoriteMutation,
+} from "../favoriteApi";
 import { useAppSelector } from "_store";
 import { favoriteType } from "../types";
 
 export default function AnnouncerScreen() {
   const navigation = useNavigation<manageMessageNavigationTypes>();
+  const [visibleSnackbar, setVisibleSnackbar] = useState(false);
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
   const token = useAppSelector((state) => state.account.token);
+  const [messageSnackBar, setMessageSnackBar] = useState("");
 
   const {
     data: favoriteSeller,
@@ -36,6 +44,30 @@ export default function AnnouncerScreen() {
   } = useGetAllFavoriteByUserQuery(token, {
     skip: !token,
   });
+  const [
+    deleteFavorite,
+    {
+      isError: isErrorDeleteFavorite,
+      isLoading: isLoadingDeleteFavorite,
+      status: statusDeleteFavorite,
+      error: errorDeleteFavorite,
+    },
+  ] = useDeleteFavoriteMutation();
+
+  //all logics
+  const handleDeleteFavorite = async (id: number) => {
+    deleteFavorite({ id, token })
+      .unwrap()
+      .then((result) => {
+        refetchFavoriteSeller();
+        setVisibleSnackbar(true);
+        setMessageSnackBar("Vendeur supprimé des favoris");
+      })
+      .catch((error) => {
+        setVisibleSnackbar(true);
+        setMessageSnackBar(error.message);
+      });
+  };
 
   //components
   const renderItemAnnouncer: ListRenderItem<favoriteType> = ({ item }) => {
@@ -90,6 +122,7 @@ export default function AnnouncerScreen() {
             top: 10,
             right: 10,
           }}
+          onPress={() => handleDeleteFavorite(item.id)}
         />
       </Row>
     );
@@ -97,19 +130,43 @@ export default function AnnouncerScreen() {
 
   return (
     <MainScreen typeOfScreen="stack">
-      <Box flexDirection={"column"} flex={1}>
-        <FlashList
-          keyExtractor={(item, index) => item.id.toString()}
-          estimatedItemSize={200}
-          data={favoriteSeller}
-          renderItem={renderItemAnnouncer}
-          extraData={favoriteSeller}
-          showsVerticalScrollIndicator={false}
-          ListEmptyComponent={
-            <EmptyList textToShow="Vous n'avez pas de vendeur en favoris" />
-          }
-        />
-      </Box>
+      <RequestLoader
+        isLoading={
+          isFavoriteLoading || isFavoriteFetching || isLoadingDeleteFavorite
+        }
+      >
+        <RequestError
+          isError={isErrorfavorite || isErrorDeleteFavorite}
+          errorStatus={errorFavorite?.status || errorDeleteFavorite?.status}
+          onRefresh={() => refetchFavoriteSeller()}
+        >
+          <Box flexDirection={"column"} flex={1}>
+            <FlashList
+              keyExtractor={(item, index) => item.id.toString()}
+              estimatedItemSize={200}
+              data={favoriteSeller}
+              renderItem={renderItemAnnouncer}
+              extraData={favoriteSeller}
+              showsVerticalScrollIndicator={false}
+              ListEmptyComponent={
+                <EmptyList textToShow="Vous n'avez pas de vendeur en favoris" />
+              }
+            />
+          </Box>
+        </RequestError>
+      </RequestLoader>
+      <Snackbar
+        visible={visibleSnackbar}
+        onDismiss={() => setVisibleSnackbar(false)}
+        action={{
+          label: "Ok",
+          onPress: () => {
+            // Do something
+          },
+        }}
+      >
+        {messageSnackBar}
+      </Snackbar>
     </MainScreen>
   );
 }

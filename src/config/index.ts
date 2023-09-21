@@ -39,4 +39,7 @@ export default {
   /**======FAVORITE ===== */
   //GET ALL SELLER FAVORITE
   GET_FAVORITE_URL: "/favorite/seller",
+
+  //DELETE FAVORITE SELLER
+  DELETE_FAVORITE_URL: "/favorite/seller",
 };
