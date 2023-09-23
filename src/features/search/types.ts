@@ -32,7 +32,11 @@ export type annonceType = {
   email_contact: string | null;
   phone_number_contact: string | null;
   sub_category: number;
-  seller: string;
+  seller: {
+    id: number;
+    nickname: string;
+    is_followed: boolean;
+  };
 };
 
 export type payement_method_type = {

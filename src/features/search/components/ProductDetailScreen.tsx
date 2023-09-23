@@ -1,6 +1,6 @@
 import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { Dimensions, ImageBackground, StyleSheet } from "react-native";
+import { ImageBackground, StyleSheet } from "react-native";
 import {
   Box,
   Button,
@@ -14,16 +14,18 @@ import {
   Text,
 } from "_shared";
 import { Constantes, formatDateToString, getFirstCharactere } from "_utils";
-import { ActivityIndicator } from "react-native-paper";
+import { ActivityIndicator, Snackbar } from "react-native-paper";
 import { useTheme } from "@shopify/restyle";
 import { Size, Theme } from "_theme";
-import { annonceType } from "../types";
 import { ScrollView } from "react-native-gesture-handler";
 import { CategoryType } from "../../types";
-import { useState } from "react";
-import { useEffect } from "react";
-import { Skeleton } from "@rneui/themed";
-import { useGetOnAnnonceQuery } from "../searchApi";
+import { useEffect, useState } from "react";
+import { useGetOneAnnonceQuery } from "../searchApi";
+import {
+  useAddFavoriteSellerMutation,
+  useDeleteFavoriteSellerMutation,
+} from "../../favorite/favoriteApi";
+import { useAppSelector } from "_store";
 
 export default function ProductDetailScreen() {
   const navigation = useNavigation();
@@ -31,6 +33,9 @@ export default function ProductDetailScreen() {
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
   const idOfProduct = route.params?.idOfProduct;
+  const token = useAppSelector((state) => state.account.token);
+  const [visibleSnackbar, setVisibleSnackbar] = useState(false);
+  const [messageSnackBar, setMessageSnackBar] = useState("");
 
   const {
     data: annonce,
@@ -39,12 +44,85 @@ export default function ProductDetailScreen() {
     isFetching: isAnnonceFetching,
     refetch: refetchAnnonce,
     error: errorAnnonce,
-  } = useGetOnAnnonceQuery(idOfProduct, {
-    skip: !idOfProduct,
-  });
+  } = useGetOneAnnonceQuery(
+    { id: idOfProduct, token: token ? token : undefined },
+    {
+      skip: !idOfProduct,
+    },
+  );
 
-  //effect
+  const [
+    addFavoriteSeller,
+    {
+      isError: isErrorAddFavorite,
+      isLoading: isLoadingAddFavorite,
+      status: statusAddFavorite,
+      error: errorAddFavorite,
+    },
+  ] = useAddFavoriteSellerMutation();
+  const [
+    deleteFavoriteSeller,
+    {
+      isError: isErrorDeleteFavorite,
+      isLoading: isLoadingDeleteFavorite,
+      status: statusDeleteFavorite,
+      error: errorDeleteFavorite,
+    },
+  ] = useDeleteFavoriteSellerMutation();
+
   console.log("annonce : ", annonce);
+
+  //all logics
+  const handleAddFavoriteSeller = (id: number) => {
+    addFavoriteSeller({ id: id, token: token })
+      .unwrap()
+      .then((result) => {
+        refetchAnnonce();
+        setVisibleSnackbar(true);
+        setMessageSnackBar("Vendeur ajouté aux favoris");
+      });
+  };
+
+  const handleChangeFavoriteSeller = () => {
+    if (annonce?.seller) {
+      if (annonce?.seller.is_followed) {
+        console.log(
+          "annonce?.seller.is_followed : true ngmb",
+          annonce?.seller.is_followed,
+        );
+        handleDeleteFavorite(annonce.seller.id);
+      } else {
+        console.log(
+          "annonce?.seller.is_followed : false ngmb",
+          annonce?.seller.is_followed,
+        );
+        handleAddFavoriteSeller(annonce.seller.id);
+      }
+    }
+    return;
+  };
+
+  const handleDeleteFavorite = (id: number) => {
+    deleteFavoriteSeller({ id, token })
+      .unwrap()
+      .then((result) => {
+        refetchAnnonce();
+        setVisibleSnackbar(true);
+        setMessageSnackBar("Vendeur supprimé des favoris");
+      })
+      .catch((error) => {
+        setVisibleSnackbar(true);
+        setMessageSnackBar(error.message);
+      });
+  };
+
+  const handleRefetch = () => {
+    if (isErrorAnnonce) {
+      refetchAnnonce();
+    } else if (isErrorAddFavorite && annonce?.seller.id) {
+      handleAddFavoriteSeller(annonce?.seller.id);
+    }
+  };
 
   //components
   const renderItemCriteria: ListRenderItem<CategoryType> = ({ item }) => {
@@ -98,10 +176,39 @@ export default function ProductDetailScreen() {
   return (
     <RequestLoader isLoading={isAnnonceLoading || isAnnonceFetching}>
       <RequestError
-        isError={isErrorAnnonce}
-        errorStatus={errorAnnonce?.status}
-        onRefresh={() => refetchAnnonce()}
+        isError={isErrorAnnonce || isErrorAddFavorite || isErrorDeleteFavorite}
+        errorStatus={errorAnnonce?.status || errorAddFavorite?.status}
+        onRefresh={() => handleRefetch()}
       >
+        <Row
+          style={{ position: "absolute", zIndex: 10, top: 0 }}
+          justifyContent="space-between"
+          width="100%"
+          paddingHorizontal="s"
+          paddingTop="s"
+        >
+          <Icon
+            name="arrow-back"
+            size={Size.ICON_MEDIUM}
+            color={colors.black}
+            containerStyle={{
+              backgroundColor: "white",
+              borderRadius: 50,
+              padding: 6,
+            }}
+            onPress={() => navigation.goBack()}
+          />
+          <Icon
+            name="favorite-border"
+            size={Size.ICON_MEDIUM}
+            color={colors.black}
+            containerStyle={{
+              backgroundColor: "white",
+              borderRadius: 50,
+              padding: 6,
+            }}
+          />
+        </Row>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Box>
             <Image
@@ -119,35 +226,6 @@ export default function ProductDetailScreen() {
                 />
               }
             />
-            <Row
-              style={{ position: "absolute" }}
-              justifyContent="space-between"
-              width="100%"
-              paddingHorizontal="s"
-              paddingTop="s"
-            >
-              <Icon
-                name="arrow-back"
-                size={Size.ICON_MEDIUM}
-                color={colors.black}
-                containerStyle={{
-                  backgroundColor: "white",
-                  borderRadius: 50,
-                  padding: 6,
-                }}
-                onPress={() => navigation.goBack()}
-              />
-              <Icon
-                name="favorite-border"
-                size={Size.ICON_MEDIUM}
-                color={colors.black}
-                containerStyle={{
-                  backgroundColor: "white",
-                  borderRadius: 50,
-                  padding: 6,
-                }}
-              />
-            </Row>
           </Box>
 
           <MainScreen typeOfScreen="stack">
@@ -202,18 +280,21 @@ export default function ProductDetailScreen() {
                     { backgroundColor: colors.offBlack, color: colors.white },
                   ]}
                 >
-                  {annonce?.seller && getFirstCharactere(annonce.seller)}
+                  {annonce?.seller &&
+                    getFirstCharactere(annonce.seller.nickname)}
                 </Text>
                 <Button
-                  variant={"tertiary"}
-                  label={"Suivre"}
-                  backgroundColor={"transparent"}
-                  onPress={() => null}
+                  variant={
+                    annonce?.seller.is_followed ? "secondary" : "tertiary"
+                  }
+                  label={annonce?.seller.is_followed ? "Suivi" : "Suivre"}
+                  loading={isLoadingAddFavorite || isLoadingDeleteFavorite}
+                  onPress={() => handleChangeFavoriteSeller()}
                   paddingVertical={"l"}
                 />
               </Row>
               <Text variant={"tertiary"} fontWeight={"500"} mt={"xs"}>
-                {annonce?.seller}
+                {annonce?.seller.nickname}
               </Text>
               <Text variant={"tertiary"}>{annonce?.phone_number_contact}</Text>
             </Column>
@@ -230,12 +311,24 @@ export default function ProductDetailScreen() {
             marginVertical={"xs"}
             onPress={() =>
               navigation.navigate("manage_message", {
-                emetteur: annonce.seller,
+                emetteur: annonce.seller.nickname,
               })
             }
           />
         )}
       </RequestError>
+      <Snackbar
+        visible={visibleSnackbar}
+        onDismiss={() => setVisibleSnackbar(false)}
+        action={{
+          label: "Ok",
+          onPress: () => {
+            // Do something
+          },
+        }}
+      >
+        {messageSnackBar}
+      </Snackbar>
     </RequestLoader>
   );
 }

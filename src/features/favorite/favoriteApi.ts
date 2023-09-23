@@ -4,22 +4,35 @@ import { favoriteType } from "./types";
 import { ApiInformationType } from "_utils";
 
 type deleteProps = { id: number; token: string };
+type addProps = deleteProps;
 
 const favoriteApi = BaseApi.injectEndpoints({
   endpoints: (build) => ({
-    getAllFavoriteByUser: build.query<favoriteType[], string>({
+    getAllFavoriteSellerByUser: build.query<favoriteType[], string>({
       query: (token) => ({
-        url: config.GET_FAVORITE_URL,
+        url: config.FAVORITE_SELLER_URL,
         method: "GET",
         headers: {
           Authorization: `token ${token}`,
         },
       }),
     }),
-    deleteFavorite: build.mutation<undefined | null, deleteProps>({
+    deleteFavoriteSeller: build.mutation<undefined | null, deleteProps>({
       query: (arg) => ({
-        url: `${config.DELETE_FAVORITE_URL}/${arg.id}`,
+        url: `${config.FAVORITE_SELLER_URL}/${arg.id}`,
         method: "DELETE",
+        headers: {
+          Authorization: `token ${arg.token}`,
+        },
+      }),
+    }),
+    addFavoriteSeller: build.mutation<undefined | null, addProps>({
+      query: (arg) => ({
+        url: config.FAVORITE_SELLER_URL,
+        method: "POST",
+        body: {
+          seller_id: arg.id,
+        },
         headers: {
           Authorization: `token ${arg.token}`,
         },
@@ -29,7 +42,10 @@ const favoriteApi = BaseApi.injectEndpoints({
   overrideExisting: true,
 });
 
-export const { useGetAllFavoriteByUserQuery, useDeleteFavoriteMutation } =
-  favoriteApi;
+export const {
+  useGetAllFavoriteSellerByUserQuery,
+  useDeleteFavoriteSellerMutation,
+  useAddFavoriteSellerMutation,
+} = favoriteApi;
 
 export default favoriteApi;

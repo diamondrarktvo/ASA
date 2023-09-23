@@ -14,23 +14,22 @@ import {
   Text,
   TouchableOpacity,
 } from "_shared";
-import { Constantes } from "_utils";
 import { ActivityIndicator } from "react-native-paper";
 import { useTheme } from "@shopify/restyle";
 import { Size, Theme } from "_theme";
 import { annonceType, searchItemNavigationTypes } from "../types";
-import { ScrollView } from "react-native-gesture-handler";
+import { RefreshControl, ScrollView } from "react-native-gesture-handler";
 import { useGetCategoryQuery } from "../../sharedApi";
 import { CategoryType } from "../../types";
-import { useState } from "react";
-import { useEffect } from "react";
-import { Skeleton } from "@rneui/themed";
+import { useEffect, useState } from "react";
 import { useGetAllAnnonceQuery } from "../searchApi";
+import { useAppSelector } from "_store";
 
 export default function SearchScreen() {
   const navigation = useNavigation<searchItemNavigationTypes>();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
+  const token = useAppSelector((state) => state.account.token);
   const {
     data: allCategories,
     isError: isErrorCategory,
@@ -47,7 +46,16 @@ export default function SearchScreen() {
     isFetching: isAnnonceFetching,
     refetch: refetchAnnonces,
     error: errorAnnonce,
-  } = useGetAllAnnonceQuery(undefined);
+  } = useGetAllAnnonceQuery(token ? token : undefined);
+
+  //all logics
+  const handleRefetch = () => {
+    if (isErrorAnnonce) {
+      refetchAnnonces();
+    } else if (isErrorCategory) {
+      refetchCategories();
+    }
+  };
 
   //effect
 
@@ -162,7 +170,7 @@ export default function SearchScreen() {
         <RequestError
           isError={isErrorCategory || isErrorAnnonce}
           errorStatus={errorCategory?.status || errorAnnonce?.status}
-          onRefresh={() => refetchCategories()}
+          onRefresh={() => handleRefetch()}
         >
           <ScrollView showsVerticalScrollIndicator={false}>
             <Text variant={"bigTitle"} color="primary" textAlign="center">
@@ -212,6 +220,12 @@ export default function SearchScreen() {
                   numColumns={2}
                   extraData={allAnnonces?.annonces?.slice(0, 6)}
                   showsVerticalScrollIndicator={false}
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={isAnnonceFetching}
+                      onRefresh={() => refetchAnnonces()}
+                    />
+                  }
                 />
               </Box>
             </Column>

@@ -20,8 +20,8 @@ import { Size, Theme } from "_theme";
 import { useTheme } from "@shopify/restyle";
 import { manageMessageNavigationTypes } from "../../inbox/types";
 import {
-  useGetAllFavoriteByUserQuery,
-  useDeleteFavoriteMutation,
+  useGetAllFavoriteSellerByUserQuery,
+  useDeleteFavoriteSellerMutation,
 } from "../favoriteApi";
 import { useAppSelector } from "_store";
 import { favoriteType } from "../types";
@@ -41,22 +41,22 @@ export default function AnnouncerScreen() {
     isFetching: isFavoriteFetching,
     refetch: refetchFavoriteSeller,
     error: errorFavorite,
-  } = useGetAllFavoriteByUserQuery(token, {
+  } = useGetAllFavoriteSellerByUserQuery(token, {
     skip: !token,
   });
   const [
-    deleteFavorite,
+    deleteFavoriteSeller,
     {
       isError: isErrorDeleteFavorite,
       isLoading: isLoadingDeleteFavorite,
       status: statusDeleteFavorite,
       error: errorDeleteFavorite,
     },
-  ] = useDeleteFavoriteMutation();
+  ] = useDeleteFavoriteSellerMutation();
 
   //all logics
-  const handleDeleteFavorite = async (id: number) => {
-    deleteFavorite({ id, token })
+  const handleDeleteFavorite = (id: number) => {
+    deleteFavoriteSeller({ id, token })
       .unwrap()
       .then((result) => {
         refetchFavoriteSeller();
@@ -122,7 +122,7 @@ export default function AnnouncerScreen() {
             top: 10,
             right: 10,
           }}
-          onPress={() => handleDeleteFavorite(item.id)}
+          onPress={() => handleDeleteFavorite(item.seller.id)}
         />
       </Row>
     );

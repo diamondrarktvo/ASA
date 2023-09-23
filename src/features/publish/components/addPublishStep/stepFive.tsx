@@ -27,7 +27,7 @@ export default function StepFive() {
           Etape 5:
         </Text>
         <Text variant={"title"} color="black">
-          Rensigner ici les prix de votre produit :
+          Renseigner ici les prix de votre produit :
         </Text>
         <Text variant={"tertiary"} color={"error"}>
           NB: Seulement le prix du produit est obligatoire (en Ariary)
