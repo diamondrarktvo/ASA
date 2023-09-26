@@ -270,6 +270,7 @@ export default function ProductDetailScreen() {
               borderRadius: 50,
               padding: 6,
             }}
+            onPress={() => handleChangeFavoriteAnnonce()}
           />
         </Row>
         <ScrollView showsVerticalScrollIndicator={false}>
