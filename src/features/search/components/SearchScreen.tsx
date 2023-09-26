@@ -92,8 +92,8 @@ export default function SearchScreen() {
   };
 
   const handleChangeFavoriteAnnonce = (annonce: annonceType) => {
-    if (annonce?.seller) {
-      if (annonce?.seller.is_followed) {
+    if (annonce) {
+      if (annonce?.is_favorite) {
         handleDeleteFavoriteAnnonce(annonce.id);
       } else {
         handleAddFavoriteAnnonce(annonce.id);
@@ -190,7 +190,7 @@ export default function SearchScreen() {
             }
           />
           <Icon
-            name="favorite-border"
+            name={item.is_favorite ? "favorite" : "favorite-border"}
             size={Size.ICON_MEDIUM}
             color={colors.black}
             containerStyle={{

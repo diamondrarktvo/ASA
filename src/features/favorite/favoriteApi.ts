@@ -84,7 +84,7 @@ const favoriteApi = BaseApi.injectEndpoints({
         url: config.FAVORITE_PRODUCT_URL,
         method: "POST",
         body: {
-          seller_id: arg.id,
+          id_product: arg.id,
         },
         headers: {
           Authorization: `token ${arg.token}`,

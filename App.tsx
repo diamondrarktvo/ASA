@@ -19,8 +19,7 @@ export default function App() {
   const [connected, setConnected] = useState(false);
 
   const socket = io(SOCKET_URL, {
-    transports: ["websocket"],
-    extraHeaders: {
+    query: {
       access_token: "86567dd03ac2be30f1d58ebd811bcd2a4ed1d72d",
     },
   });
