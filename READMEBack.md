@@ -753,7 +753,7 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 ```js
 // notificaiton/<nickname>
 const chatSocket = new WebSocket(
-  "ws://localhost:8000/ws/notificaiton/<nickname>",
+  "ws://localhost:8000/ws/notification/<nickname>",
   ["access_token", "<Token>"],
 );
 

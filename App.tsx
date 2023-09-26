@@ -16,21 +16,23 @@ import { store } from "_store";
 import io from "socket.io-client";
 
 const SOCKET_URL =
-  "wss://metyamikoservice-api.onrender.com/ws/notificaiton/joe";
+  "wss://metyamikoservice-api.onrender.com/ws/notification/joe";
 
 export default function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [connected, setConnected] = useState(false);
 
   const socket = io(SOCKET_URL, {
-    query: {
+    transports: ["websocket"],
+    rejectUnauthorized: false,
+    auth: {
       access_token: "86567dd03ac2be30f1d58ebd811bcd2a4ed1d72d",
     },
   });
 
   useEffect(() => {
     console.log("depart e");
-    //console.log("socket : ", socket);
+    console.log("socket : ", socket);
     socket.on("connected", () => {
       console.log("Connected to server e");
     });
