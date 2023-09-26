@@ -50,6 +50,48 @@ const favoriteApi = BaseApi.injectEndpoints({
       }),
       invalidatesTags: ["FavoriteSeller", "Announce"],
     }),
+    getAllFavoriteAnnonceByUser: build.query<favoriteType[], string>({
+      query: (token) => ({
+        url: config.FAVORITE_PRODUCT_URL,
+        method: "GET",
+        headers: {
+          Authorization: `token ${token}`,
+        },
+      }),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({
+                type: "FavoriteAnnounce" as const,
+                id,
+              })),
+              { type: "FavoriteAnnounce", id: "LIST" },
+            ]
+          : [{ type: "FavoriteAnnounce", id: "LIST" }],
+    }),
+    deleteFavoriteAnnonce: build.mutation<undefined | null, deleteProps>({
+      query: (arg) => ({
+        url: `${config.FAVORITE_PRODUCT_URL}/${arg.id}`,
+        method: "DELETE",
+        headers: {
+          Authorization: `token ${arg.token}`,
+        },
+      }),
+      invalidatesTags: ["FavoriteAnnounce", "Announce"],
+    }),
+    addFavoriteAnnonce: build.mutation<undefined | null, addProps>({
+      query: (arg) => ({
+        url: config.FAVORITE_PRODUCT_URL,
+        method: "POST",
+        body: {
+          seller_id: arg.id,
+        },
+        headers: {
+          Authorization: `token ${arg.token}`,
+        },
+      }),
+      invalidatesTags: ["FavoriteAnnounce", "Announce"],
+    }),
   }),
   overrideExisting: true,
 });
@@ -58,6 +100,9 @@ export const {
   useGetAllFavoriteSellerByUserQuery,
   useDeleteFavoriteSellerMutation,
   useAddFavoriteSellerMutation,
+  useAddFavoriteAnnonceMutation,
+  useDeleteFavoriteAnnonceMutation,
+  useGetAllFavoriteAnnonceByUserQuery,
 } = favoriteApi;
 
 export default favoriteApi;

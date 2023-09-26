@@ -24,12 +24,19 @@ import { CategoryType } from "../../types";
 import { useEffect, useState } from "react";
 import { useGetAllAnnonceQuery } from "../searchApi";
 import { useAppSelector } from "_store";
+import {
+  useAddFavoriteAnnonceMutation,
+  useDeleteFavoriteAnnonceMutation,
+} from "../../favorite/favoriteApi";
 
 export default function SearchScreen() {
   const navigation = useNavigation<searchItemNavigationTypes>();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
   const token = useAppSelector((state) => state.account.token);
+  const [visibleSnackbar, setVisibleSnackbar] = useState(false);
+  const [messageSnackBar, setMessageSnackBar] = useState("");
+
   const {
     data: allCategories,
     isError: isErrorCategory,
@@ -48,6 +55,23 @@ export default function SearchScreen() {
     error: errorAnnonce,
   } = useGetAllAnnonceQuery(token ? token : undefined);
 
+  const [
+    addFavoriteAnnonce,
+    {
+      isError: isErrorAddFavoriteAnnonce,
+      isLoading: isLoadingAddFavoriteAnnonce,
+      error: errorAddFavoriteAnnonce,
+    },
+  ] = useAddFavoriteAnnonceMutation();
+  const [
+    deleteFavoriteAnnonce,
+    {
+      isError: isErrorDeleteFavoriteAnnonce,
+      isLoading: isLoadingDeleteFavoriteAnnonce,
+      error: errorDeleteFavoriteAnnonce,
+    },
+  ] = useDeleteFavoriteAnnonceMutation();
+
   //all logics
   const handleRefetch = () => {
     if (isErrorAnnonce) {
@@ -55,6 +79,40 @@ export default function SearchScreen() {
     } else if (isErrorCategory) {
       refetchCategories();
     }
+  };
+
+  //announce favorite
+  const handleAddFavoriteAnnonce = (id: number) => {
+    addFavoriteAnnonce({ id: id, token: token })
+      .unwrap()
+      .then((result) => {
+        setVisibleSnackbar(true);
+        setMessageSnackBar("Annonce ajouté aux favoris");
+      });
+  };
+
+  const handleChangeFavoriteAnnonce = (annonce: annonceType) => {
+    if (annonce?.seller) {
+      if (annonce?.seller.is_followed) {
+        handleDeleteFavoriteAnnonce(annonce.id);
+      } else {
+        handleAddFavoriteAnnonce(annonce.id);
+      }
+    }
+    return;
+  };
+
+  const handleDeleteFavoriteAnnonce = (id: number) => {
+    deleteFavoriteAnnonce({ id, token })
+      .unwrap()
+      .then((result) => {
+        setVisibleSnackbar(true);
+        setMessageSnackBar("Annonce supprimé des favoris");
+      })
+      .catch((error) => {
+        setVisibleSnackbar(true);
+        setMessageSnackBar(error.message);
+      });
   };
 
   //effect
@@ -141,6 +199,7 @@ export default function SearchScreen() {
               top: 10,
               right: 10,
             }}
+            onPress={() => handleChangeFavoriteAnnonce(item)}
           />
           <Text variant="secondary" numberOfLines={1} fontWeight={"600"}>
             {item.name}
@@ -164,12 +223,24 @@ export default function SearchScreen() {
           isCategoriesFetching ||
           isCategoriesLoading ||
           isAnnonceLoading ||
-          isAnnonceFetching
+          isAnnonceFetching ||
+          isLoadingAddFavoriteAnnonce ||
+          isLoadingDeleteFavoriteAnnonce
         }
       >
         <RequestError
-          isError={isErrorCategory || isErrorAnnonce}
-          errorStatus={errorCategory?.status || errorAnnonce?.status}
+          isError={
+            isErrorCategory ||
+            isErrorAnnonce ||
+            isErrorAddFavoriteAnnonce ||
+            isErrorDeleteFavoriteAnnonce
+          }
+          errorStatus={
+            errorCategory?.status ||
+            errorAnnonce?.status ||
+            errorDeleteFavoriteAnnonce?.status ||
+            errorAddFavoriteAnnonce?.status
+          }
           onRefresh={() => handleRefetch()}
         >
           <ScrollView showsVerticalScrollIndicator={false}>

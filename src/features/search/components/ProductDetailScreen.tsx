@@ -22,7 +22,9 @@ import { CategoryType } from "../../types";
 import { useEffect, useState } from "react";
 import { useGetOneAnnonceQuery } from "../searchApi";
 import {
+  useAddFavoriteAnnonceMutation,
   useAddFavoriteSellerMutation,
+  useDeleteFavoriteAnnonceMutation,
   useDeleteFavoriteSellerMutation,
 } from "../../favorite/favoriteApi";
 import { useAppSelector } from "_store";
@@ -56,7 +58,6 @@ export default function ProductDetailScreen() {
     {
       isError: isErrorAddFavorite,
       isLoading: isLoadingAddFavorite,
-      status: statusAddFavorite,
       error: errorAddFavorite,
     },
   ] = useAddFavoriteSellerMutation();
@@ -65,14 +66,31 @@ export default function ProductDetailScreen() {
     {
       isError: isErrorDeleteFavorite,
       isLoading: isLoadingDeleteFavorite,
-      status: statusDeleteFavorite,
       error: errorDeleteFavorite,
     },
   ] = useDeleteFavoriteSellerMutation();
 
+  const [
+    addFavoriteAnnonce,
+    {
+      isError: isErrorAddFavoriteAnnonce,
+      isLoading: isLoadingAddFavoriteAnnonce,
+      error: errorAddFavoriteAnnonce,
+    },
+  ] = useAddFavoriteAnnonceMutation();
+  const [
+    deleteFavoriteAnnonce,
+    {
+      isError: isErrorDeleteFavoriteAnnonce,
+      isLoading: isLoadingDeleteFavoriteAnnonce,
+      error: errorDeleteFavoriteAnnonce,
+    },
+  ] = useDeleteFavoriteAnnonceMutation();
+
   console.log("annonce : ", annonce);
 
   //all logics
+  //seller favorite
   const handleAddFavoriteSeller = (id: number) => {
     addFavoriteSeller({ id: id, token: token })
       .unwrap()
@@ -85,16 +103,8 @@ export default function ProductDetailScreen() {
   const handleChangeFavoriteSeller = () => {
     if (annonce?.seller) {
       if (annonce?.seller.is_followed) {
-        console.log(
-          "annonce?.seller.is_followed : true ngmb",
-          annonce?.seller.is_followed,
-        );
         handleDeleteFavorite(annonce.seller.id);
       } else {
-        console.log(
-          "annonce?.seller.is_followed : false ngmb",
-          annonce?.seller.is_followed,
-        );
         handleAddFavoriteSeller(annonce.seller.id);
       }
     }
@@ -114,11 +124,47 @@ export default function ProductDetailScreen() {
       });
   };
 
+  //announce favorite
+  const handleAddFavoriteAnnonce = (id: number) => {
+    addFavoriteAnnonce({ id: id, token: token })
+      .unwrap()
+      .then((result) => {
+        setVisibleSnackbar(true);
+        setMessageSnackBar("Annonce ajouté aux favoris");
+      });
+  };
+
+  const handleChangeFavoriteAnnonce = () => {
+    if (annonce?.seller) {
+      if (annonce?.seller.is_followed) {
+        handleDeleteFavoriteAnnonce(annonce.id);
+      } else {
+        handleAddFavoriteAnnonce(annonce.id);
+      }
+    }
+    return;
+  };
+
+  const handleDeleteFavoriteAnnonce = (id: number) => {
+    deleteFavoriteAnnonce({ id, token })
+      .unwrap()
+      .then((result) => {
+        setVisibleSnackbar(true);
+        setMessageSnackBar("Annonce supprimé des favoris");
+      })
+      .catch((error) => {
+        setVisibleSnackbar(true);
+        setMessageSnackBar(error.message);
+      });
+  };
+
   const handleRefetch = () => {
     if (isErrorAnnonce) {
       refetchAnnonce();
     } else if (isErrorAddFavorite && annonce?.seller.id) {
       handleAddFavoriteSeller(annonce?.seller.id);
+    } else if (isErrorAddFavoriteAnnonce && annonce?.id) {
+      handleAddFavoriteAnnonce(annonce?.id);
     }
   };
 
@@ -172,10 +218,29 @@ export default function ProductDetailScreen() {
   };
 
   return (
-    <RequestLoader isLoading={isAnnonceLoading || isAnnonceFetching}>
+    <RequestLoader
+      isLoading={
+        isAnnonceLoading ||
+        isAnnonceFetching ||
+        isLoadingAddFavoriteAnnonce ||
+        isLoadingDeleteFavoriteAnnonce
+      }
+    >
       <RequestError
-        isError={isErrorAnnonce || isErrorAddFavorite || isErrorDeleteFavorite}
-        errorStatus={errorAnnonce?.status || errorAddFavorite?.status}
+        isError={
+          isErrorAnnonce ||
+          isErrorAddFavorite ||
+          isErrorDeleteFavorite ||
+          isErrorAddFavoriteAnnonce ||
+          isErrorDeleteFavoriteAnnonce
+        }
+        errorStatus={
+          errorAnnonce?.status ||
+          errorAddFavorite?.status ||
+          errorDeleteFavorite?.status ||
+          errorDeleteFavoriteAnnonce?.status ||
+          errorAddFavoriteAnnonce?.status
+        }
         onRefresh={() => handleRefetch()}
       >
         <Row
