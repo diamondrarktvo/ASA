@@ -14,7 +14,7 @@ import {
   Text,
   TouchableOpacity,
 } from "_shared";
-import { ActivityIndicator } from "react-native-paper";
+import { ActivityIndicator, Snackbar } from "react-native-paper";
 import { useTheme } from "@shopify/restyle";
 import { Size, Theme } from "_theme";
 import { annonceType, searchItemNavigationTypes } from "../types";
@@ -301,6 +301,18 @@ export default function SearchScreen() {
               </Box>
             </Column>
           </ScrollView>
+          <Snackbar
+            visible={visibleSnackbar}
+            onDismiss={() => setVisibleSnackbar(false)}
+            action={{
+              label: "Ok",
+              onPress: () => {
+                // Do something
+              },
+            }}
+          >
+            {messageSnackBar}
+          </Snackbar>
         </RequestError>
       </RequestLoader>
     </MainScreen>

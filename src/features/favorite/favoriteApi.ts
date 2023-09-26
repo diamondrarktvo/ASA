@@ -1,6 +1,6 @@
 import config from "_config";
 import { BaseApi } from "_services";
-import { favoriteType } from "./types";
+import { favoriteAnnonceType, favoriteType } from "./types";
 import { ApiInformationType } from "_utils";
 
 type deleteProps = { id: number; token: string };
@@ -50,7 +50,7 @@ const favoriteApi = BaseApi.injectEndpoints({
       }),
       invalidatesTags: ["FavoriteSeller", "Announce"],
     }),
-    getAllFavoriteAnnonceByUser: build.query<favoriteType[], string>({
+    getAllFavoriteAnnonceByUser: build.query<favoriteAnnonceType[], string>({
       query: (token) => ({
         url: config.FAVORITE_PRODUCT_URL,
         method: "GET",
