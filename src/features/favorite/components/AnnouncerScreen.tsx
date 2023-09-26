@@ -59,7 +59,6 @@ export default function AnnouncerScreen() {
     deleteFavoriteSeller({ id, token })
       .unwrap()
       .then((result) => {
-        refetchFavoriteSeller();
         setVisibleSnackbar(true);
         setMessageSnackBar("Vendeur supprimé des favoris");
       })

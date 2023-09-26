@@ -77,7 +77,6 @@ export default function ProductDetailScreen() {
     addFavoriteSeller({ id: id, token: token })
       .unwrap()
       .then((result) => {
-        refetchAnnonce();
         setVisibleSnackbar(true);
         setMessageSnackBar("Vendeur ajouté aux favoris");
       });
@@ -106,7 +105,6 @@ export default function ProductDetailScreen() {
     deleteFavoriteSeller({ id, token })
       .unwrap()
       .then((result) => {
-        refetchAnnonce();
         setVisibleSnackbar(true);
         setMessageSnackBar("Vendeur supprimé des favoris");
       })
