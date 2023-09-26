@@ -311,7 +311,7 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 
 ### Add new Favoris
 
-- **URL**: `/favorite/seller`
+- **URL**: `/follow/seller`
 - **Method**: Post
 - **Description**: follow other user
 - **Need Authentication**:
@@ -339,7 +339,7 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 
 ### List all follow
 
-- **URL**: `/favorite/seller`
+- **URL**: `/follow/seller`
 - **Method**: Get
 - **Description**:
 - **Need Authentication**:
@@ -362,7 +362,7 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 
 ### Delete favoris
 
-- **URL**: `/favorite/seller/<int:pk>`
+- **URL**: `/follow/seller/<int:pk>`
 - **Method**: Delete
 - **Description**:
 - **Need Authentication**:
@@ -716,3 +716,59 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 - **Description**: Delete payement methode
 - **Need Authentication**:
 - **Response**: `Nocontent 204`
+
+## Notification
+
+### List Notification
+
+- **URL**: `/notification`
+- **Method**: GET
+- **Description**: Get all list notification.
+- **Need Authentication**:
+- **Response**: `Ok 200`
+
+```json
+[
+  {
+    "id": 1,
+    "title": "title",
+    "description": "description",
+    "date": "2023-09-06T18:06:15.249934Z",
+    "is_read": false,
+    "user": 1
+  }
+]
+```
+
+### Delete Notification
+
+- **URL**: `/notification/<int:pk>`
+- **Method**: DELETE
+- **Description**: Delete notification
+- **Need Authentication**:
+- **Response**: `Nocontent 204`
+
+## RealTime Notification with websocket
+
+```js
+// notificaiton/<nickname>
+const chatSocket = new WebSocket(
+  "ws://localhost:8000/ws/notificaiton/<nickname>",
+  ["access_token", "<Token>"],
+);
+
+// verify connection
+chatSocket.onopen = function (e) {
+  console.log("The connection was setup successfully !");
+};
+// verify error
+chatSocket.onclose = function (e) {
+  console.log("Something unexpected happened !");
+};
+
+// receive message
+chatSocket.onmessage = function (e) {
+  const data = JSON.parse(e.data);
+  console.log(data);
+};
+```

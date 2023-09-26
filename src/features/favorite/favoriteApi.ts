@@ -16,6 +16,16 @@ const favoriteApi = BaseApi.injectEndpoints({
           Authorization: `token ${token}`,
         },
       }),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({
+                type: "FavoriteSeller" as const,
+                id,
+              })),
+              { type: "FavoriteSeller", id: "LIST" },
+            ]
+          : [{ type: "FavoriteSeller", id: "LIST" }],
     }),
     deleteFavoriteSeller: build.mutation<undefined | null, deleteProps>({
       query: (arg) => ({
@@ -25,6 +35,9 @@ const favoriteApi = BaseApi.injectEndpoints({
           Authorization: `token ${arg.token}`,
         },
       }),
+      invalidatesTags: (resp, _, arg) => [
+        { type: "FavoriteSeller", id: arg.id },
+      ],
     }),
     addFavoriteSeller: build.mutation<undefined | null, addProps>({
       query: (arg) => ({
@@ -37,6 +50,7 @@ const favoriteApi = BaseApi.injectEndpoints({
           Authorization: `token ${arg.token}`,
         },
       }),
+      invalidatesTags: ["FavoriteSeller"],
     }),
   }),
   overrideExisting: true,

@@ -29,6 +29,7 @@ const searchApi = BaseApi.injectEndpoints({
           apiInformation,
         };
       },
+      providesTags: [{ type: "Announce", id: "LIST" }],
     }),
     getOneAnnonce: build.query<
       annonceType,
@@ -41,6 +42,10 @@ const searchApi = BaseApi.injectEndpoints({
           Authorization: arg.token ? `token ${arg.token}` : undefined,
         },
       }),
+      providesTags: (result) =>
+        result
+          ? [{ type: "Announce", id: result.id }]
+          : [{ type: "Announce", id: "LIST" }],
     }),
   }),
   overrideExisting: true,
