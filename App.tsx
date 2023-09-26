@@ -1,4 +1,8 @@
 import "react-native-gesture-handler";
+navigator.__defineGetter__("userAgent", function () {
+  // you have to import rect native first !!
+  return "react-native";
+});
 import { useEffect, useState } from "react";
 import { ThemeProvider, useTheme } from "@shopify/restyle";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -26,15 +30,20 @@ export default function App() {
 
   useEffect(() => {
     console.log("depart e");
-    socket.on("connect", () => {
+    //console.log("socket : ", socket);
+    socket.on("connected", () => {
       console.log("Connected to server e");
     });
+
+    /*socket.on("connect_error", (err) => {
+      console.log(err);
+    });*/
 
     socket.on("disconnect", () => {
       console.log("Disconnected from server");
     });
     console.log("fin");
-  });
+  }, []);
 
   return (
     <Provider store={store}>
