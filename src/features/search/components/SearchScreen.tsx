@@ -14,7 +14,7 @@ import {
   Text,
   TouchableOpacity,
 } from "_shared";
-import { ActivityIndicator } from "react-native-paper";
+import { ActivityIndicator, Snackbar } from "react-native-paper";
 import { useTheme } from "@shopify/restyle";
 import { Size, Theme } from "_theme";
 import { annonceType, searchItemNavigationTypes } from "../types";
@@ -92,8 +92,8 @@ export default function SearchScreen() {
   };
 
   const handleChangeFavoriteAnnonce = (annonce: annonceType) => {
-    if (annonce?.seller) {
-      if (annonce?.seller.is_followed) {
+    if (annonce) {
+      if (annonce?.is_favorite) {
         handleDeleteFavoriteAnnonce(annonce.id);
       } else {
         handleAddFavoriteAnnonce(annonce.id);
@@ -190,7 +190,7 @@ export default function SearchScreen() {
             }
           />
           <Icon
-            name="favorite-border"
+            name={item.is_favorite ? "favorite" : "favorite-border"}
             size={Size.ICON_MEDIUM}
             color={colors.black}
             containerStyle={{
@@ -301,6 +301,18 @@ export default function SearchScreen() {
               </Box>
             </Column>
           </ScrollView>
+          <Snackbar
+            visible={visibleSnackbar}
+            onDismiss={() => setVisibleSnackbar(false)}
+            action={{
+              label: "Ok",
+              onPress: () => {
+                // Do something
+              },
+            }}
+          >
+            {messageSnackBar}
+          </Snackbar>
         </RequestError>
       </RequestLoader>
     </MainScreen>

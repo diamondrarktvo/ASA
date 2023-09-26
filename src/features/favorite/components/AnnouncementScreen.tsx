@@ -1,23 +1,80 @@
 import { StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Box, Column, EmptyList, Icon, Image, MainScreen, Text } from "_shared";
-import { ActivityIndicator } from "react-native-paper";
+import {
+  Box,
+  Column,
+  EmptyList,
+  Icon,
+  Image,
+  MainScreen,
+  RequestError,
+  RequestLoader,
+  Text,
+} from "_shared";
+import { ActivityIndicator, Snackbar } from "react-native-paper";
 import { FlashList, ListRenderItem } from "@shopify/flash-list";
-import { Constantes, annonceTypes } from "_utils";
+import { Constantes } from "_utils";
 import { Size, Theme } from "_theme";
 import { useTheme } from "@shopify/restyle";
+import { favoriteAnnonceType } from "../types";
+import { useAppSelector } from "_store";
+import {
+  useDeleteFavoriteAnnonceMutation,
+  useGetAllFavoriteAnnonceByUserQuery,
+} from "../favoriteApi";
+import { useState } from "react";
 
 export default function AnnouncementScreen() {
   //const navigation = useNavigation<>();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
+  const token = useAppSelector((state) => state.account.token);
+  const [visibleSnackbar, setVisibleSnackbar] = useState(false);
+  const [messageSnackBar, setMessageSnackBar] = useState("");
+
+  const {
+    data: favoriteAnnonce,
+    isError: isErrorfavorite,
+    isLoading: isFavoriteLoading,
+    isFetching: isFavoriteFetching,
+    refetch: refetchFavoriteSeller,
+    error: errorFavorite,
+  } = useGetAllFavoriteAnnonceByUserQuery(token, {
+    skip: !token,
+  });
+  const [
+    deleteFavoriteAnnonce,
+    {
+      isError: isErrorDeleteFavoriteAnnonce,
+      isLoading: isLoadingDeleteFavoriteAnnonce,
+      error: errorDeleteFavoriteAnnonce,
+    },
+  ] = useDeleteFavoriteAnnonceMutation();
+
+  //all logics
+  const handleDeleteFavoriteAnnonce = (id: number) => {
+    deleteFavoriteAnnonce({ id, token })
+      .unwrap()
+      .then((result) => {
+        setVisibleSnackbar(true);
+        setMessageSnackBar("Annonce supprimé des favoris");
+      })
+      .catch((error) => {
+        setVisibleSnackbar(true);
+        setMessageSnackBar(error.message);
+      });
+  };
 
   //components
-  const renderItemAnnonce: ListRenderItem<annonceTypes> = ({ item }) => {
+  const renderItemAnnonce: ListRenderItem<favoriteAnnonceType> = ({ item }) => {
     return (
       <Column key={item.id} marginBottom="s">
         <Image
-          source={item.image}
+          source={
+            item.product.pictures.length > 0
+              ? { uri: item.product.pictures[0] }
+              : require("_images/logoASA.jpeg")
+          }
           containerStyle={styles.imageAnnonce}
           PlaceholderContent={
             <ActivityIndicator color="#2652AA" style={styles.spinner} />
@@ -33,16 +90,14 @@ export default function AnnouncementScreen() {
             top: 10,
             right: 10,
           }}
+          onPress={() => handleDeleteFavoriteAnnonce(item.product.id)}
         />
         <Text
           variant="secondary"
           numberOfLines={1}
           textDecorationLine={"underline"}
         >
-          {item.title}
-        </Text>
-        <Text variant={"tertiary"} numberOfLines={1}>
-          {item.description}
+          {item.product.name}
         </Text>
       </Column>
     );
@@ -50,19 +105,39 @@ export default function AnnouncementScreen() {
 
   return (
     <MainScreen typeOfScreen="stack">
-      <Box flexDirection={"column"} flex={1}>
-        <FlashList
-          keyExtractor={(item, index) => item.id.toString()}
-          estimatedItemSize={200}
-          data={Constantes.DATA.annonce}
-          renderItem={renderItemAnnonce}
-          extraData={Constantes.DATA.annonce}
-          showsVerticalScrollIndicator={false}
-          ListEmptyComponent={
-            <EmptyList textToShow="Vous n'avez pas d'annonce en favoris" />
-          }
-        />
-      </Box>
+      <RequestLoader isLoading={isFavoriteLoading || isFavoriteFetching}>
+        <RequestError
+          isError={isErrorfavorite}
+          errorStatus={errorFavorite?.status}
+          onRefresh={() => refetchFavoriteSeller()}
+        >
+          <Box flexDirection={"column"} flex={1}>
+            <FlashList
+              keyExtractor={(item, index) => item.id.toString()}
+              estimatedItemSize={200}
+              data={favoriteAnnonce}
+              renderItem={renderItemAnnonce}
+              extraData={favoriteAnnonce}
+              showsVerticalScrollIndicator={false}
+              ListEmptyComponent={
+                <EmptyList textToShow="Vous n'avez pas d'annonce en favoris" />
+              }
+            />
+          </Box>
+          <Snackbar
+            visible={visibleSnackbar}
+            onDismiss={() => setVisibleSnackbar(false)}
+            action={{
+              label: "Ok",
+              onPress: () => {
+                // Do something
+              },
+            }}
+          >
+            {messageSnackBar}
+          </Snackbar>
+        </RequestError>
+      </RequestLoader>
     </MainScreen>
   );
 }

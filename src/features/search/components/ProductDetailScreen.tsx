@@ -135,8 +135,8 @@ export default function ProductDetailScreen() {
   };
 
   const handleChangeFavoriteAnnonce = () => {
-    if (annonce?.seller) {
-      if (annonce?.seller.is_followed) {
+    if (annonce) {
+      if (annonce?.is_favorite) {
         handleDeleteFavoriteAnnonce(annonce.id);
       } else {
         handleAddFavoriteAnnonce(annonce.id);
@@ -262,7 +262,9 @@ export default function ProductDetailScreen() {
             onPress={() => navigation.goBack()}
           />
           <Icon
-            name="favorite-border"
+            name={
+              annonce && annonce.is_favorite ? "favorite" : "favorite-border"
+            }
             size={Size.ICON_MEDIUM}
             color={colors.black}
             containerStyle={{

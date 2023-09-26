@@ -16,6 +16,7 @@ export type annonceType = {
   payement_method: payement_method_type[];
   product_criteria: [];
   likes: [];
+  is_favorite: boolean;
   views: [];
   name: string;
   publication_date: string;

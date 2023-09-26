@@ -1,4 +1,5 @@
 import { StackParamList } from "src/navigations/Types";
+import { ImageSourcePropType } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
 //export type detailScreenNavigationType = StackNavigationProp<StackParamList, "">;
@@ -13,4 +14,15 @@ export type sellerType = {
   id: number;
   nickname: string;
   image: null | string;
+};
+
+export type favoriteAnnonceType = {
+  id: number;
+  user: string;
+  product: {
+    id: number;
+    name: string;
+    pictures: ImageSourcePropType[];
+  };
+  timestamp: string;
 };
