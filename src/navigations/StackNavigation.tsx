@@ -9,8 +9,6 @@ import { StackParamList } from "./Types";
 //IMPORT NAVIGATION TAB
 import TabNavigation from "./TabNavigation";
 
-import io from "socket.io-client";
-
 //IMPORT SCREEN
 import {
   ManageProfil,
@@ -38,56 +36,26 @@ const StackNavigation = () => {
   const accountUser = useAppSelector((state) => state.account);
 
   console.log("accountUser : ", accountUser);
-  console.log("SOCKET_URL : ", SOCKET_URL);
 
-  const socket = io(SOCKET_URL, {
-    transports: ["websocket"],
-    path: "/ws/notification/Vetsokeli",
-    query: {
-      access_token: "86567dd03ac2be30f1d58ebd811bcd2a4ed1d72d",
-    },
-    auth: {
-      access_token: "86567dd03ac2be30f1d58ebd811bcd2a4ed1d72d",
-    },
-    extraHeaders: {
-      access_token: "86567dd03ac2be30f1d58ebd811bcd2a4ed1d72d",
-    },
-  });
-
-  /*const socket = new WebSocket(
-    "https://metyamikoservice-api.onrender.com/ws/notification/Vetsokeli",
-    ["access_token", "86567dd03ac2be30f1d58ebd811bcd2a4ed1d72d"],
-  );*/
+  const socket = new WebSocket(`${SOCKET_URL}/ws/notification/Vetsokeli`, [
+    "access_token",
+    "86567dd03ac2be30f1d58ebd811bcd2a4ed1d72d",
+  ]);
 
   useEffect(() => {
     console.log("depart e");
     console.log("chatSocket : ", socket);
-    socket.on("connect", () => {
-      console.log("Connected to server e");
-    });
-
-    socket.on("open", () => {
-      console.log("Connected to server e");
-    });
 
     // verify connection
-    /*socket.onopen = function (e) {
+    socket.onopen = function (e) {
       console.log("The connection was setup successfully !");
-    };*/
+    };
     // verify error
-    /*socket.onclose = function (e) {
+    socket.onclose = function (e) {
       console.log("Something unexpected happened !");
-    };*/
-
-    /*socket.on("connect_error", (err) => {
-      console.log(err);
-    });*/
-
-    socket.on("disconnect", () => {
-      console.log("Disconnected from server");
-    });
+    };
     console.log("fin");
-  }, []);
+  });
 
   return (
     <NavigationContainer>
