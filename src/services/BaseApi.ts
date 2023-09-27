@@ -6,6 +6,12 @@ export const BaseApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: Config.BASE_URL,
   }),
-  tagTypes: ["Auth", "FavoriteSeller", "FavoriteAnnounce", "Announce"],
+  tagTypes: [
+    "Auth",
+    "FavoriteSeller",
+    "FavoriteAnnounce",
+    "Notification",
+    "Announce",
+  ],
   endpoints: () => ({}),
 });

@@ -23,3 +23,12 @@ export type manageMessageNavigationTypes = StackNavigationProp<
   StackParamList,
   "manage_message"
 >;
+
+export type notificationResponseType = {
+  id: number;
+  title: string;
+  content: string;
+  is_read: boolean;
+  timestamp: string;
+  owner: number;
+};
