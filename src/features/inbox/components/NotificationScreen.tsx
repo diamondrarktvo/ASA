@@ -19,6 +19,7 @@ import { notificationResponseType } from "../types";
 import { useGetAllNotificationQuery } from "../inboxApi";
 import { useAppSelector } from "_store";
 import { formatDateToString } from "_utils";
+import { RefreshControl } from "react-native-gesture-handler";
 
 export default function NotificationScreen() {
   const navigation = useNavigation();
@@ -73,9 +74,11 @@ export default function NotificationScreen() {
 
   return (
     <MainScreen typeOfScreen="stack" paddingHorizontal="none">
-      <RequestLoader isLoading={isNotificationLoading}>
+      <RequestLoader
+        isLoading={isNotificationLoading || isNotificationFetching}
+      >
         <RequestError
-          isError={isErrorNotification || isNotificationFetching}
+          isError={isErrorNotification}
           errorStatus={errorNotification?.status}
           onRefresh={() => refetchNotificationSeller()}
         >
@@ -84,6 +87,12 @@ export default function NotificationScreen() {
             extraData={allNotification}
             renderItem={renderItemNotification}
             estimatedItemSize={200}
+            refreshControl={
+              <RefreshControl
+                refreshing={isNotificationFetching}
+                onRefresh={() => refetchNotificationSeller()}
+              />
+            }
             ListEmptyComponent={
               <EmptyList textToShow="Vous n'avez aucune notification." />
             }

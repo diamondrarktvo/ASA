@@ -15,6 +15,7 @@ import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import { useTheme } from "@shopify/restyle";
 import { Size, Theme } from "_theme";
 import { messageTypes, manageMessageNavigationTypes } from "../types";
+import { RefreshControl } from "react-native-gesture-handler";
 
 const allMessages: messageTypes[] = [
   {
@@ -101,6 +102,12 @@ export default function MessageScreen() {
         renderItem={renderItemMessage}
         estimatedItemSize={200}
         extraData={allMessages}
+        /* refreshControl={
+          <RefreshControl
+            refreshing={isNotificationFetching}
+            onRefresh={() => refetchNotificationSeller()}
+          />
+        }*/
         ListEmptyComponent={
           <EmptyList textToShow="Vous n'avez aucun message." />
         }
