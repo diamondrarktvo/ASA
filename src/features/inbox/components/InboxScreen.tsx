@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { useTheme } from "@shopify/restyle";
@@ -10,6 +10,7 @@ import { Size, Theme } from "_theme";
 import { TopParamListInbox } from "_navigations";
 import MessageScreen from "./MessageScreen";
 import NotificationScreen from "./NotificationScreen";
+import { useAppSelector } from "_store";
 
 //top navigation is here because we only need it here
 //types
@@ -71,7 +72,18 @@ const TopNavigation = () => {
 
 export default function InboxScreen() {
   //const navigation = useNavigation<>();
-  const [userMustLogin, setUserMustLogin] = useState<boolean>(true);
+  const isUserConnected = useAppSelector(
+    (state) => state.account.is_account_connected,
+  );
+  const [userMustLogin, setUserMustLogin] = useState<boolean>(!isUserConnected);
+
+  //effect
+  useEffect(() => {
+    setUserMustLogin(!isUserConnected);
+  }, [isUserConnected]);
+
+  console.log("userMustLogin inbox : ", userMustLogin);
+  console.log("isUserConnected inbox : ", isUserConnected);
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Boite de réception">

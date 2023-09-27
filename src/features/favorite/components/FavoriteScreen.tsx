@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { useTheme } from "@shopify/restyle";
 
@@ -11,6 +11,7 @@ import { TopParamListFavourite } from "_navigations";
 import AnnouncementScreen from "./AnnouncementScreen";
 import AnnouncerScreen from "./AnnouncerScreen";
 import SearchFavouriteScreen from "./SearchFavouriteScreen";
+import { useAppSelector } from "_store";
 
 //top navigation is here because we only need it here
 //types
@@ -77,7 +78,18 @@ const TopNavigation = () => {
 
 export default function FavoriteScreen() {
   //const navigation = useNavigation<>();
-  const [userMustLogin, setUserMustLogin] = useState<boolean>(true);
+  const isUserConnected = useAppSelector(
+    (state) => state.account.is_account_connected,
+  );
+  const [userMustLogin, setUserMustLogin] = useState<boolean>(!isUserConnected);
+
+  //effect
+  useEffect(() => {
+    setUserMustLogin(!isUserConnected);
+  }, [isUserConnected]);
+
+  console.log("userMustLogin inbox : ", userMustLogin);
+  console.log("isUserConnected inbox : ", isUserConnected);
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Favoris">
