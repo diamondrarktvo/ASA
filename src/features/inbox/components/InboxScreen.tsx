@@ -1,10 +1,11 @@
 import { StyleSheet } from "react-native";
+import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { useTheme } from "@shopify/restyle";
 
 //IMPORT LOCAL
-import { MainScreen, Text } from "_shared";
+import { CheckUserConnected, MainScreen, Text } from "_shared";
 import { Size, Theme } from "_theme";
 import { TopParamListInbox } from "_navigations";
 import MessageScreen from "./MessageScreen";
@@ -70,10 +71,17 @@ const TopNavigation = () => {
 
 export default function InboxScreen() {
   //const navigation = useNavigation<>();
+  const [userMustLogin, setUserMustLogin] = useState<boolean>(true);
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Boite de réception">
-      <TopNavigation />
+      <CheckUserConnected
+        userMustLogin={userMustLogin}
+        setUserMustLogin={setUserMustLogin}
+        subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
+      >
+        <TopNavigation />
+      </CheckUserConnected>
     </MainScreen>
   );
 }

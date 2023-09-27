@@ -4,6 +4,7 @@ import { Dimensions, ImageBackground, StyleSheet } from "react-native";
 import {
   Box,
   Button,
+  CheckUserConnected,
   Column,
   Icon,
   Image,
@@ -33,9 +34,10 @@ export default function SearchScreen() {
   const navigation = useNavigation<searchItemNavigationTypes>();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
-  const token = useAppSelector((state) => state.account.token);
+  const accountUser = useAppSelector((state) => state.account);
   const [visibleSnackbar, setVisibleSnackbar] = useState(false);
   const [messageSnackBar, setMessageSnackBar] = useState("");
+  const [userMustLogin, setUserMustLogin] = useState<boolean>(false);
 
   const {
     data: allCategories,
@@ -53,7 +55,7 @@ export default function SearchScreen() {
     isFetching: isAnnonceFetching,
     refetch: refetchAnnonces,
     error: errorAnnonce,
-  } = useGetAllAnnonceQuery(token ? token : undefined);
+  } = useGetAllAnnonceQuery(accountUser.token ? accountUser.token : undefined);
 
   const [
     addFavoriteAnnonce,
@@ -83,7 +85,7 @@ export default function SearchScreen() {
 
   //announce favorite
   const handleAddFavoriteAnnonce = (id: number) => {
-    addFavoriteAnnonce({ id: id, token: token })
+    addFavoriteAnnonce({ id: id, token: accountUser.token })
       .unwrap()
       .then((result) => {
         setVisibleSnackbar(true);
@@ -103,7 +105,7 @@ export default function SearchScreen() {
   };
 
   const handleDeleteFavoriteAnnonce = (id: number) => {
-    deleteFavoriteAnnonce({ id, token })
+    deleteFavoriteAnnonce({ id, token: accountUser.token })
       .unwrap()
       .then((result) => {
         setVisibleSnackbar(true);
@@ -199,7 +201,13 @@ export default function SearchScreen() {
               top: 10,
               right: 10,
             }}
-            onPress={() => handleChangeFavoriteAnnonce(item)}
+            onPress={() => {
+              if (accountUser.is_account_connected) {
+                handleChangeFavoriteAnnonce(item);
+              } else {
+                setUserMustLogin(true);
+              }
+            }}
           />
           <Text variant="secondary" numberOfLines={1} fontWeight={"600"}>
             {item.name}
@@ -243,76 +251,82 @@ export default function SearchScreen() {
           }
           onRefresh={() => handleRefetch()}
         >
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <Text variant={"bigTitle"} color="primary" textAlign="center">
-              Mety Amiko
-            </Text>
-            <Button
-              variant={"buttonWithShadow"}
-              iconLeft="search"
-              iconRight="gps-fixed"
-              color="black"
-              label="Recherchez partout à Madagascar"
-              marginTop={"xs"}
-              marginBottom={"m"}
-              onPress={() => navigation.navigate("search_item")}
-            />
-            <Column marginTop="xs">
-              <Text variant="primaryBold">Catégorie les plus visités</Text>
-              <Box width={"100%"} height={80} marginTop="xs">
-                <FlashList
-                  keyExtractor={(item, index) => item.id.toString()}
-                  estimatedItemSize={200}
-                  data={allCategories?.categories}
-                  renderItem={renderItemCategorie}
-                  horizontal={true}
-                  extraData={allCategories?.categories}
-                  showsHorizontalScrollIndicator={false}
-                  ListEmptyComponent={<Text>Catégorie indisponible</Text>}
-                />
-              </Box>
-            </Column>
-            <Column marginTop="s">
-              <Text variant="primaryBold">Annonces fraîchement publiées</Text>
-              {/*//FIXME: fix the height of the list*/}
-              <Box
-                style={{
-                  flex: 1,
-                  height: Dimensions.get("window").height,
-                }}
-                width={"100%"}
-                marginTop="xs"
-              >
-                <FlashList
-                  keyExtractor={(item, index) => item.id.toString()}
-                  estimatedItemSize={200}
-                  data={allAnnonces?.annonces?.slice(0, 6)}
-                  renderItem={renderItemAnnonce}
-                  numColumns={2}
-                  extraData={allAnnonces?.annonces?.slice(0, 6)}
-                  showsVerticalScrollIndicator={false}
-                  refreshControl={
-                    <RefreshControl
-                      refreshing={isAnnonceFetching}
-                      onRefresh={() => refetchAnnonces()}
-                    />
-                  }
-                />
-              </Box>
-            </Column>
-          </ScrollView>
-          <Snackbar
-            visible={visibleSnackbar}
-            onDismiss={() => setVisibleSnackbar(false)}
-            action={{
-              label: "Ok",
-              onPress: () => {
-                // Do something
-              },
-            }}
+          <CheckUserConnected
+            userMustLogin={userMustLogin}
+            setUserMustLogin={setUserMustLogin}
+            subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
           >
-            {messageSnackBar}
-          </Snackbar>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <Text variant={"bigTitle"} color="primary" textAlign="center">
+                Mety Amiko
+              </Text>
+              <Button
+                variant={"buttonWithShadow"}
+                iconLeft="search"
+                iconRight="gps-fixed"
+                color="black"
+                label="Recherchez partout à Madagascar"
+                marginTop={"xs"}
+                marginBottom={"m"}
+                onPress={() => navigation.navigate("search_item")}
+              />
+              <Column marginTop="xs">
+                <Text variant="primaryBold">Catégorie les plus visités</Text>
+                <Box width={"100%"} height={80} marginTop="xs">
+                  <FlashList
+                    keyExtractor={(item, index) => item.id.toString()}
+                    estimatedItemSize={200}
+                    data={allCategories?.categories}
+                    renderItem={renderItemCategorie}
+                    horizontal={true}
+                    extraData={allCategories?.categories}
+                    showsHorizontalScrollIndicator={false}
+                    ListEmptyComponent={<Text>Catégorie indisponible</Text>}
+                  />
+                </Box>
+              </Column>
+              <Column marginTop="s">
+                <Text variant="primaryBold">Annonces fraîchement publiées</Text>
+                {/*//FIXME: fix the height of the list*/}
+                <Box
+                  style={{
+                    flex: 1,
+                    height: Dimensions.get("window").height,
+                  }}
+                  width={"100%"}
+                  marginTop="xs"
+                >
+                  <FlashList
+                    keyExtractor={(item, index) => item.id.toString()}
+                    estimatedItemSize={200}
+                    data={allAnnonces?.annonces?.slice(0, 6)}
+                    renderItem={renderItemAnnonce}
+                    numColumns={2}
+                    extraData={allAnnonces?.annonces?.slice(0, 6)}
+                    showsVerticalScrollIndicator={false}
+                    refreshControl={
+                      <RefreshControl
+                        refreshing={isAnnonceFetching}
+                        onRefresh={() => refetchAnnonces()}
+                      />
+                    }
+                  />
+                </Box>
+              </Column>
+            </ScrollView>
+            <Snackbar
+              visible={visibleSnackbar}
+              onDismiss={() => setVisibleSnackbar(false)}
+              action={{
+                label: "Ok",
+                onPress: () => {
+                  // Do something
+                },
+              }}
+            >
+              {messageSnackBar}
+            </Snackbar>
+          </CheckUserConnected>
         </RequestError>
       </RequestLoader>
     </MainScreen>

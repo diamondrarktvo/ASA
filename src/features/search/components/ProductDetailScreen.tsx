@@ -4,6 +4,7 @@ import { ImageBackground, StyleSheet } from "react-native";
 import {
   Box,
   Button,
+  CheckUserConnected,
   Column,
   Icon,
   Image,
@@ -35,9 +36,10 @@ export default function ProductDetailScreen() {
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
   const idOfProduct = route.params?.idOfProduct;
-  const token = useAppSelector((state) => state.account.token);
+  const accountUser = useAppSelector((state) => state.account);
   const [visibleSnackbar, setVisibleSnackbar] = useState(false);
   const [messageSnackBar, setMessageSnackBar] = useState("");
+  const [userMustLogin, setUserMustLogin] = useState<boolean>(false);
 
   const {
     data: annonce,
@@ -47,7 +49,10 @@ export default function ProductDetailScreen() {
     refetch: refetchAnnonce,
     error: errorAnnonce,
   } = useGetOneAnnonceQuery(
-    { id: idOfProduct, token: token ? token : undefined },
+    {
+      id: idOfProduct,
+      token: accountUser.token ? accountUser.token : undefined,
+    },
     {
       skip: !idOfProduct,
     },
@@ -87,12 +92,12 @@ export default function ProductDetailScreen() {
     },
   ] = useDeleteFavoriteAnnonceMutation();
 
-  console.log("annonce : ", annonce);
+  console.log("accountUser : ", accountUser);
 
   //all logics
   //seller favorite
   const handleAddFavoriteSeller = (id: number) => {
-    addFavoriteSeller({ id: id, token: token })
+    addFavoriteSeller({ id: id, token: accountUser.token })
       .unwrap()
       .then((result) => {
         setVisibleSnackbar(true);
@@ -112,7 +117,7 @@ export default function ProductDetailScreen() {
   };
 
   const handleDeleteFavorite = (id: number) => {
-    deleteFavoriteSeller({ id, token })
+    deleteFavoriteSeller({ id, token: accountUser.token })
       .unwrap()
       .then((result) => {
         setVisibleSnackbar(true);
@@ -126,7 +131,7 @@ export default function ProductDetailScreen() {
 
   //announce favorite
   const handleAddFavoriteAnnonce = (id: number) => {
-    addFavoriteAnnonce({ id: id, token: token })
+    addFavoriteAnnonce({ id: id, token: accountUser.token })
       .unwrap()
       .then((result) => {
         setVisibleSnackbar(true);
@@ -146,7 +151,7 @@ export default function ProductDetailScreen() {
   };
 
   const handleDeleteFavoriteAnnonce = (id: number) => {
-    deleteFavoriteAnnonce({ id, token })
+    deleteFavoriteAnnonce({ id, token: accountUser.token })
       .unwrap()
       .then((result) => {
         setVisibleSnackbar(true);
@@ -243,145 +248,165 @@ export default function ProductDetailScreen() {
         }
         onRefresh={() => handleRefetch()}
       >
-        <Row
-          style={{ position: "absolute", zIndex: 10, top: 0 }}
-          justifyContent="space-between"
-          width="100%"
-          paddingHorizontal="s"
-          paddingTop="s"
+        <CheckUserConnected
+          userMustLogin={userMustLogin}
+          setUserMustLogin={setUserMustLogin}
+          subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
         >
-          <Icon
-            name="arrow-back"
-            size={Size.ICON_MEDIUM}
-            color={colors.black}
-            containerStyle={{
-              backgroundColor: "white",
-              borderRadius: 50,
-              padding: 6,
-            }}
-            onPress={() => navigation.goBack()}
-          />
-          <Icon
-            name={
-              annonce && annonce.is_favorite ? "favorite" : "favorite-border"
-            }
-            size={Size.ICON_MEDIUM}
-            color={colors.black}
-            containerStyle={{
-              backgroundColor: "white",
-              borderRadius: 50,
-              padding: 6,
-            }}
-            onPress={() => handleChangeFavoriteAnnonce()}
-          />
-        </Row>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Box>
-            <Image
-              source={
-                /*
+          <Row
+            style={{ position: "absolute", zIndex: 10, top: 0 }}
+            justifyContent="space-between"
+            width="100%"
+            paddingHorizontal="s"
+            paddingTop="s"
+          >
+            <Icon
+              name="arrow-back"
+              size={Size.ICON_MEDIUM}
+              color={colors.black}
+              containerStyle={{
+                backgroundColor: "white",
+                borderRadius: 50,
+                padding: 6,
+              }}
+              onPress={() => navigation.goBack()}
+            />
+            <Icon
+              name={
+                annonce && annonce.is_favorite ? "favorite" : "favorite-border"
+              }
+              size={Size.ICON_MEDIUM}
+              color={colors.black}
+              containerStyle={{
+                backgroundColor: "white",
+                borderRadius: 50,
+                padding: 6,
+              }}
+              onPress={() => {
+                if (accountUser.is_account_connected) {
+                  handleChangeFavoriteAnnonce();
+                } else {
+                  setUserMustLogin(true);
+                }
+              }}
+            />
+          </Row>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <Box>
+              <Image
+                source={
+                  /*
               item.pictures[0]
                 ? { uri: item.pictures[0] }
                 : */ require("_images/logo.jpg")
-              }
-              containerStyle={styles.imageAnnonce}
-              PlaceholderContent={
-                <ActivityIndicator
-                  color="#2652AA"
-                  style={styles.spinnerAnnonce}
-                />
+                }
+                containerStyle={styles.imageAnnonce}
+                PlaceholderContent={
+                  <ActivityIndicator
+                    color="#2652AA"
+                    style={styles.spinnerAnnonce}
+                  />
+                }
+              />
+            </Box>
+
+            <MainScreen typeOfScreen="stack">
+              <Text variant={"primaryBold"}>{annonce?.name}</Text>
+              <Text variant={"primary"}>{annonce?.price} Ar</Text>
+              <Text variant={"tertiary"}>
+                {" "}
+                Publié le{" "}
+                {annonce?.publication_date &&
+                  formatDateToString(annonce?.publication_date)}
+              </Text>
+
+              <Box mt={"s"}>
+                <Text variant={"secondary"} fontWeight={"600"}>
+                  Critères
+                </Text>
+              </Box>
+              <Box mt={"s"}>
+                <Text variant={"secondary"} fontWeight={"600"}>
+                  Description
+                </Text>
+                <Text variant={"tertiary"}>{annonce?.description}</Text>
+              </Box>
+
+              <Box mt={"s"}>
+                <Text variant={"secondary"} fontWeight={"600"}>
+                  Localisation
+                </Text>
+                <Text variant={"tertiary"}>{annonce?.location}</Text>
+              </Box>
+
+              <Box mt={"s"}>
+                <Text variant={"secondary"} fontWeight={"600"}>
+                  Quantité
+                </Text>
+                <Text variant={"tertiary"}>{annonce?.quantity}</Text>
+              </Box>
+
+              <Column mt={"s"}>
+                <Text variant={"secondary"} fontWeight={"600"}>
+                  Vendeur
+                </Text>
+                <Row
+                  width={"100%"}
+                  alignItems="center"
+                  justifyContent="space-between"
+                  my={"xs"}
+                >
+                  <Text
+                    style={[
+                      styles.firstCharacter,
+                      { backgroundColor: colors.offBlack, color: colors.white },
+                    ]}
+                  >
+                    {annonce?.seller &&
+                      getFirstCharactere(annonce.seller.nickname)}
+                  </Text>
+                  <Button
+                    variant={
+                      annonce?.seller.is_followed ? "secondary" : "tertiary"
+                    }
+                    label={annonce?.seller.is_followed ? "Suivi" : "Suivre"}
+                    loading={isLoadingAddFavorite || isLoadingDeleteFavorite}
+                    onPress={() => {
+                      if (accountUser.is_account_connected) {
+                        handleChangeFavoriteSeller();
+                      } else {
+                        setUserMustLogin(true);
+                      }
+                    }}
+                    paddingVertical={"l"}
+                  />
+                </Row>
+                <Text variant={"tertiary"} fontWeight={"500"} mt={"xs"}>
+                  {annonce?.seller.nickname}
+                </Text>
+                <Text variant={"tertiary"}>
+                  {annonce?.phone_number_contact}
+                </Text>
+              </Column>
+            </MainScreen>
+          </ScrollView>
+          {annonce?.seller && (
+            <Button
+              variant={"primary"}
+              color="white"
+              label="Message"
+              width={"95%"}
+              mx={"xs"}
+              borderRadius={"md"}
+              marginVertical={"xs"}
+              onPress={() =>
+                navigation.navigate("manage_message", {
+                  emetteur: annonce.seller.nickname,
+                })
               }
             />
-          </Box>
-
-          <MainScreen typeOfScreen="stack">
-            <Text variant={"primaryBold"}>{annonce?.name}</Text>
-            <Text variant={"primary"}>{annonce?.price} Ar</Text>
-            <Text variant={"tertiary"}>
-              {" "}
-              Publié le{" "}
-              {annonce?.publication_date &&
-                formatDateToString(annonce?.publication_date)}
-            </Text>
-
-            <Box mt={"s"}>
-              <Text variant={"secondary"} fontWeight={"600"}>
-                Critères
-              </Text>
-            </Box>
-            <Box mt={"s"}>
-              <Text variant={"secondary"} fontWeight={"600"}>
-                Description
-              </Text>
-              <Text variant={"tertiary"}>{annonce?.description}</Text>
-            </Box>
-
-            <Box mt={"s"}>
-              <Text variant={"secondary"} fontWeight={"600"}>
-                Localisation
-              </Text>
-              <Text variant={"tertiary"}>{annonce?.location}</Text>
-            </Box>
-
-            <Box mt={"s"}>
-              <Text variant={"secondary"} fontWeight={"600"}>
-                Quantité
-              </Text>
-              <Text variant={"tertiary"}>{annonce?.quantity}</Text>
-            </Box>
-
-            <Column mt={"s"}>
-              <Text variant={"secondary"} fontWeight={"600"}>
-                Vendeur
-              </Text>
-              <Row
-                width={"100%"}
-                alignItems="center"
-                justifyContent="space-between"
-                my={"xs"}
-              >
-                <Text
-                  style={[
-                    styles.firstCharacter,
-                    { backgroundColor: colors.offBlack, color: colors.white },
-                  ]}
-                >
-                  {annonce?.seller &&
-                    getFirstCharactere(annonce.seller.nickname)}
-                </Text>
-                <Button
-                  variant={
-                    annonce?.seller.is_followed ? "secondary" : "tertiary"
-                  }
-                  label={annonce?.seller.is_followed ? "Suivi" : "Suivre"}
-                  loading={isLoadingAddFavorite || isLoadingDeleteFavorite}
-                  onPress={() => handleChangeFavoriteSeller()}
-                  paddingVertical={"l"}
-                />
-              </Row>
-              <Text variant={"tertiary"} fontWeight={"500"} mt={"xs"}>
-                {annonce?.seller.nickname}
-              </Text>
-              <Text variant={"tertiary"}>{annonce?.phone_number_contact}</Text>
-            </Column>
-          </MainScreen>
-        </ScrollView>
-        {annonce?.seller && (
-          <Button
-            variant={"primary"}
-            color="white"
-            label="Message"
-            width={"95%"}
-            mx={"xs"}
-            borderRadius={"md"}
-            marginVertical={"xs"}
-            onPress={() =>
-              navigation.navigate("manage_message", {
-                emetteur: annonce.seller.nickname,
-              })
-            }
-          />
-        )}
+          )}
+        </CheckUserConnected>
       </RequestError>
       <Snackbar
         visible={visibleSnackbar}
