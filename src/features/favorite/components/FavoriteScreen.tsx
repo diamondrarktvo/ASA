@@ -1,10 +1,11 @@
 import { StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { useTheme } from "@shopify/restyle";
 
 //IMPORT LOCAL
-import { MainScreen, Text } from "_shared";
+import { CheckUserConnected, MainScreen, Text } from "_shared";
 import { Size, Theme } from "_theme";
 import { TopParamListFavourite } from "_navigations";
 import AnnouncementScreen from "./AnnouncementScreen";
@@ -76,10 +77,17 @@ const TopNavigation = () => {
 
 export default function FavoriteScreen() {
   //const navigation = useNavigation<>();
+  const [userMustLogin, setUserMustLogin] = useState<boolean>(true);
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Favoris">
-      <TopNavigation />
+      <CheckUserConnected
+        userMustLogin={userMustLogin}
+        setUserMustLogin={setUserMustLogin}
+        subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
+      >
+        <TopNavigation />
+      </CheckUserConnected>
     </MainScreen>
   );
 }
