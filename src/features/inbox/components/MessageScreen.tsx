@@ -9,6 +9,7 @@ import {
   Image,
   Column,
   TouchableOpacity,
+  EmptyList,
 } from "_shared";
 import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import { useTheme } from "@shopify/restyle";
@@ -101,15 +102,7 @@ export default function MessageScreen() {
         estimatedItemSize={200}
         extraData={allMessages}
         ListEmptyComponent={
-          <Box>
-            <Text variant={"bigTitle"} color="text">
-              Vous n'avez aucun message non lu.
-            </Text>
-            <Text variant={"primary"} color="text">
-              Lorsque vous communiquez avec un annonceurs, les messages
-              apparaissent ici.
-            </Text>
-          </Box>
+          <EmptyList textToShow="Vous n'avez aucun message." />
         }
       />
     </MainScreen>
