@@ -9,14 +9,6 @@ export type messageTypes = {
   date: string;
 };
 
-export type notificationTypes = {
-  id: number;
-  notifieur: string;
-  information: string;
-  read: boolean;
-  date: string;
-};
-
 //navigation stack types
 
 export type manageMessageNavigationTypes = StackNavigationProp<
