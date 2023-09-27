@@ -399,11 +399,15 @@ export default function ProductDetailScreen() {
               mx={"xs"}
               borderRadius={"md"}
               marginVertical={"xs"}
-              onPress={() =>
-                navigation.navigate("manage_message", {
-                  emetteur: annonce.seller.nickname,
-                })
-              }
+              onPress={() => {
+                if (accountUser.is_account_connected) {
+                  navigation.navigate("manage_message", {
+                    emetteur: annonce.seller.nickname,
+                  });
+                } else {
+                  setUserMustLogin(true);
+                }
+              }}
             />
           )}
         </CheckUserConnected>
