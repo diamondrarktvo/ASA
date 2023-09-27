@@ -9,6 +9,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { Provider } from "react-redux";
 import { store } from "_store";
+import Socket from "./Socket";
 
 export default function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -20,6 +21,7 @@ export default function App() {
           <GestureHandlerRootView style={{ flex: 1 }}>
             <BottomSheetModalProvider>
               <StatusBar backgroundColor={theme.colors.primary} />
+              <Socket />
               <StackNavigation />
             </BottomSheetModalProvider>
           </GestureHandlerRootView>

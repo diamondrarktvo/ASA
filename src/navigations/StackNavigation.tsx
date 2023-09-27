@@ -25,38 +25,10 @@ import {
   ManagePayment,
   ProductDetailScreen,
 } from "_features";
-import { useAppSelector } from "_store";
-import { useEffect, useState } from "react";
 
 const Stack = createStackNavigator<StackParamList>();
 
-const SOCKET_URL = process.env.EXPO_PUBLIC_API_HOST || "";
-
 const StackNavigation = () => {
-  const accountUser = useAppSelector((state) => state.account);
-
-  console.log("accountUser : ", accountUser);
-
-  const socket = new WebSocket(`${SOCKET_URL}/ws/notification/Vetsokeli`, [
-    "access_token",
-    "86567dd03ac2be30f1d58ebd811bcd2a4ed1d72d",
-  ]);
-
-  useEffect(() => {
-    console.log("depart e");
-    console.log("chatSocket : ", socket);
-
-    // verify connection
-    socket.onopen = function (e) {
-      console.log("The connection was setup successfully !");
-    };
-    // verify error
-    socket.onclose = function (e) {
-      console.log("Something unexpected happened !");
-    };
-    console.log("fin");
-  });
-
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={"main_tab"}>
