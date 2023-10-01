@@ -50,7 +50,11 @@ export default function NotificationScreen() {
         backgroundColor={item.is_read ? "white" : "offWhite"}
       >
         <Image
-          source={require("_images/logoASA.jpeg")}
+          source={
+            item.user_action.image
+              ? { uri: item.user_action.image }
+              : require("_images/logoASA.jpeg")
+          }
           style={{
             width: Size.IMAGE_SMALL,
             height: Size.IMAGE_SMALL,
@@ -58,10 +62,10 @@ export default function NotificationScreen() {
           }}
         />
         <Column marginLeft="xs" width="75%">
-          <Text variant="primaryBold" color="text">
-            {item.title}
-          </Text>
           <Text variant="secondary" color="text">
+            <Text variant="primaryBold" color="text">
+              {item.user_action.nickname}{" "}
+            </Text>
             {item.content}
           </Text>
           <Text variant="secondary" color="secondary">

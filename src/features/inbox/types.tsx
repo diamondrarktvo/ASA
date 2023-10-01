@@ -1,5 +1,6 @@
 import { StackParamList, TabParamList } from "src/navigations/Types";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { ImageSourcePropType } from "react-native";
 
 export type messageTypes = {
   id: number;
@@ -22,5 +23,10 @@ export type notificationResponseType = {
   content: string;
   is_read: boolean;
   timestamp: string;
+  user_action: {
+    id: number;
+    nickname: string;
+    image: ImageSourcePropType;
+  };
   owner: number;
 };
