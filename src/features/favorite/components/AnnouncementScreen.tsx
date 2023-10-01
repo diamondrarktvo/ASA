@@ -17,15 +17,17 @@ import { Constantes } from "_utils";
 import { Size, Theme } from "_theme";
 import { useTheme } from "@shopify/restyle";
 import { favoriteAnnonceType } from "../types";
-import { useAppSelector } from "_store";
+import { useAppDispatch, useAppSelector } from "_store";
 import {
   useDeleteFavoriteAnnonceMutation,
   useGetAllFavoriteAnnonceByUserQuery,
 } from "../favoriteApi";
 import { useState } from "react";
+import { removeAccount } from "../../account/accountSlice";
 
 export default function AnnouncementScreen() {
   //const navigation = useNavigation<>();
+  const dispatch = useAppDispatch();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
   const token = useAppSelector((state) => state.account.token);
@@ -51,6 +53,12 @@ export default function AnnouncementScreen() {
     },
   ] = useDeleteFavoriteAnnonceMutation();
 
+  const handleFetchError = (error: any) => {
+    if (error.detail?.includes("Invalid token")) {
+      return dispatch(removeAccount());
+    }
+  };
+
   //all logics
   const handleDeleteFavoriteAnnonce = (id: number) => {
     deleteFavoriteAnnonce({ id, token })
@@ -62,6 +70,7 @@ export default function AnnouncementScreen() {
       .catch((error) => {
         setVisibleSnackbar(true);
         setMessageSnackBar(error.message);
+        handleFetchError(error);
       });
   };
 

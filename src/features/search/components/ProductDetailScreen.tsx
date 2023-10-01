@@ -28,11 +28,13 @@ import {
   useDeleteFavoriteAnnonceMutation,
   useDeleteFavoriteSellerMutation,
 } from "../../favorite/favoriteApi";
-import { useAppSelector } from "_store";
+import { useAppDispatch, useAppSelector } from "_store";
+import { removeAccount } from "../../account/accountSlice";
 
 export default function ProductDetailScreen() {
   const navigation = useNavigation();
   const route = useRoute();
+  const dispatch = useAppDispatch();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
   const idOfProduct = route.params?.idOfProduct;
@@ -57,6 +59,12 @@ export default function ProductDetailScreen() {
       skip: !idOfProduct,
     },
   );
+
+  const handleFetchError = (error: any) => {
+    if (error.detail?.includes("Invalid token")) {
+      return dispatch(removeAccount());
+    }
+  };
 
   const [
     addFavoriteSeller,
@@ -102,6 +110,11 @@ export default function ProductDetailScreen() {
       .then((result) => {
         setVisibleSnackbar(true);
         setMessageSnackBar("Vendeur ajouté aux favoris");
+      })
+      .catch((err) => {
+        setVisibleSnackbar(true);
+        setMessageSnackBar(err.message);
+        handleFetchError(err);
       });
   };
 
@@ -126,6 +139,7 @@ export default function ProductDetailScreen() {
       .catch((error) => {
         setVisibleSnackbar(true);
         setMessageSnackBar(error.message);
+        handleFetchError(error);
       });
   };
 
@@ -136,6 +150,11 @@ export default function ProductDetailScreen() {
       .then((result) => {
         setVisibleSnackbar(true);
         setMessageSnackBar("Annonce ajouté aux favoris");
+      })
+      .catch((err) => {
+        setVisibleSnackbar(true);
+        setMessageSnackBar(err.message);
+        handleFetchError(err);
       });
   };
 
@@ -160,6 +179,7 @@ export default function ProductDetailScreen() {
       .catch((error) => {
         setVisibleSnackbar(true);
         setMessageSnackBar(error.message);
+        handleFetchError(error);
       });
   };
 
