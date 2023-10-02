@@ -231,9 +231,7 @@ export default function SearchScreen() {
           isCategoriesFetching ||
           isCategoriesLoading ||
           isAnnonceLoading ||
-          isAnnonceFetching ||
-          isLoadingAddFavoriteAnnonce ||
-          isLoadingDeleteFavoriteAnnonce
+          isAnnonceFetching
         }
       >
         <RequestError
