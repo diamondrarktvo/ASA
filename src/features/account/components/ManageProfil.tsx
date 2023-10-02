@@ -13,6 +13,7 @@ import {
   RequestLoader,
 } from "_shared";
 import { useMemo, useRef, useCallback, useState, useEffect } from "react";
+import * as ImagePicker from "expo-image-picker";
 import { Theme, Size } from "_theme";
 import { useTheme } from "@shopify/restyle";
 import { StyleSheet, ScrollView } from "react-native";
@@ -24,7 +25,7 @@ import { formatDate, storeObjectDataToAsyncStorage } from "_utils";
 import { useUpdateMutation } from "../authApi";
 import { ERROR_REGISTER, parseErrorMessage } from "../utilsAuth";
 import { RadioButton, Snackbar } from "react-native-paper";
-import { removeAccount } from "../accountSlice";
+import { removeAccount, setAccount } from "../accountSlice";
 
 export default function ManageProfil() {
   const theme = useTheme<Theme>();
@@ -34,6 +35,7 @@ export default function ManageProfil() {
   const token = useAppSelector((state) => state.account.token);
   const [update, { isError, isLoading, status, error }] = useUpdateMutation();
   const [visibleSnackbar, setVisibleSnackbar] = useState(false);
+  const [imageImported, setImageImported] = useState<string[]>([]);
   const [valueForUpdate, setValueForUpdate] = useState({
     first_name: accountUser.first_name,
     last_name: accountUser.last_name,
@@ -76,12 +78,32 @@ export default function ManageProfil() {
     return;
   };
 
+  const pickImages = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      let newImageImportedArray = [...imageImported];
+      newImageImportedArray.push(result.assets[0].uri);
+      setImageImported(newImageImportedArray);
+    }
+  };
+
+  const removeThisImage = () => {
+    setImageImported([]);
+  };
+
   const handleSubmit = () => {
     update(valueForUpdate)
       .unwrap()
       .then((res) => {
         console.log("resAPI : ", res);
-        //dispatch(setAccount(res));
+        dispatch(setAccount(res));
         //storeObjectDataToAsyncStorage("current_account", res.user);
         closeBottomSheet();
       })
@@ -105,6 +127,20 @@ export default function ManageProfil() {
       is_professional: !prevState.is_professional,
     }));
   };
+
+  useEffect(() => {
+    if (imageImported.length !== 0) {
+      setValueForUpdate((prevState) => ({
+        ...prevState,
+        image: imageImported[0],
+      }));
+    } else {
+      setValueForUpdate((prevState) => ({
+        ...prevState,
+        image: accountUser.image || "",
+      }));
+    }
+  }, [imageImported]);
 
   return (
     <MainScreen typeOfScreen="stack">
@@ -410,7 +446,9 @@ export default function ManageProfil() {
             >
               <Image
                 source={
-                  valueForUpdate.image
+                  imageImported.length !== 0
+                    ? { uri: imageImported[0] }
+                    : valueForUpdate.image
                     ? { uri: valueForUpdate.image }
                     : require("_images/logoASA.jpeg")
                 }
@@ -421,7 +459,23 @@ export default function ManageProfil() {
                   marginBottom: spacing.s,
                 }}
               />
-              <TouchableOpacity>
+              {imageImported.length !== 0 && (
+                <Box
+                  position={"absolute"}
+                  bottom={70}
+                  right={95}
+                  backgroundColor={"primary"}
+                  borderRadius={"hg"}
+                >
+                  <Icon
+                    name="close"
+                    size={Size.ICON_LARGE}
+                    color={colors.black}
+                    onPress={() => removeThisImage()}
+                  />
+                </Box>
+              )}
+              <TouchableOpacity onPress={pickImages}>
                 <Row
                   alignItems="center"
                   backgroundColor="mainBackground"
