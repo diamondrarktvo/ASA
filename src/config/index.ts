@@ -42,4 +42,7 @@ export default {
 
   /*******NOTIFICATION*** */
   GET_ALL_NOTIFICATION_BY_USER_URL: "/notification",
+
+  /*******CONVERSATION*** */
+  GET_CONVERSATION_URL: "/conversation",
 };
