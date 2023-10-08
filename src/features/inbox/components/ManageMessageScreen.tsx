@@ -177,6 +177,7 @@ export default function ManageMessageScreen() {
                 padding: 8,
                 color: colors.white,
               }}
+              onPress={() => setIsMessageAlreadyStart(true)}
             />
           </Box>
         )}
