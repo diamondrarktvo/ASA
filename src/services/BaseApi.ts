@@ -12,6 +12,7 @@ export const BaseApi = createApi({
     "FavoriteAnnounce",
     "Notification",
     "Announce",
+    "Conversation",
     "Message",
   ],
   endpoints: () => ({}),

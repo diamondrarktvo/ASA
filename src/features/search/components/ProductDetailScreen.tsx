@@ -100,8 +100,6 @@ export default function ProductDetailScreen() {
     },
   ] = useDeleteFavoriteAnnonceMutation();
 
-  console.log("accountUser : ", accountUser);
-
   //all logics
   //seller favorite
   const handleAddFavoriteSeller = (id: number) => {
