@@ -25,7 +25,10 @@ const chatApi = BaseApi.injectEndpoints({
           Authorization: `token ${arg.token}`,
         },
       }),
-      providesTags: [{ type: "Conversation", id: "LIST" }],
+      providesTags: (result) =>
+        result
+          ? [{ type: "Conversation", id: result.id }]
+          : [{ type: "Conversation", id: "LIST" }],
     }),
     postConversation: build.mutation<
       unknown[],
@@ -42,6 +45,7 @@ const chatApi = BaseApi.injectEndpoints({
       invalidatesTags: ["Conversation"],
     }),
   }),
+  overrideExisting: true,
 });
 
 export const {
