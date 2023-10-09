@@ -1,10 +1,10 @@
 import config from "_config";
 import { BaseApi } from "_services";
-import { notificationResponseType } from "./types";
+import { conversationTypes, participantTypes } from "./types";
 
 const chatApi = BaseApi.injectEndpoints({
   endpoints: (build) => ({
-    getAllConversations: build.query<unknown[], string>({
+    getAllConversations: build.query<conversationTypes[], string | undefined>({
       query: (token) => ({
         url: config.GET_CONVERSATION_URL,
         method: "GET",
@@ -12,10 +12,18 @@ const chatApi = BaseApi.injectEndpoints({
           Authorization: `token ${token}`,
         },
       }),
+      transformResponse: (resp: conversationTypes) => {
+        const allParticipants: participantTypes[] = resp.participants || [];
+        const idConversation: number = resp.id;
+        return {
+          allParticipants,
+          idConversation,
+        };
+      },
       providesTags: [{ type: "Conversation", id: "LIST" }],
     }),
     getMessageInConversation: build.query<
-      unknown[],
+      conversationTypes[],
       { token: string | undefined; id_conversation: number }
     >({
       query: (arg) => ({
@@ -25,13 +33,12 @@ const chatApi = BaseApi.injectEndpoints({
           Authorization: `token ${arg.token}`,
         },
       }),
-      providesTags: (result) =>
-        result
-          ? [{ type: "Conversation", id: result.id }]
-          : [{ type: "Conversation", id: "LIST" }],
+      providesTags: (result, _, arg) => [
+        { type: "Conversation", id: arg.id_conversation },
+      ],
     }),
     postConversation: build.mutation<
-      unknown[],
+      conversationTypes,
       { token: string; seller_id: number }
     >({
       query: (arg) => ({

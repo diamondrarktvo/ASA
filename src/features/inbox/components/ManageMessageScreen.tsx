@@ -120,7 +120,7 @@ export default function ManageMessageScreen() {
       >
         <HeaderStackNavNormal
           title={emetteur}
-          subTitle="Délai de réponse : 30 minutes"
+          subTitle="Délai de réponse : 30 minutes0345657370"
           iconRight="more-vert"
           iconRightOnPress={() => openBottomSheet()}
         />

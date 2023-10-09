@@ -10,6 +10,18 @@ export type messageTypes = {
   date: string;
 };
 
+export type participantTypes = {
+  id: number;
+  nickname: string;
+  image: ImageSourcePropType;
+  is_me: false;
+};
+
+export type conversationTypes = {
+  id: number;
+  participants: participantTypes[];
+};
+
 //navigation stack types
 
 export type manageMessageNavigationTypes = StackNavigationProp<
