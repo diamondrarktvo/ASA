@@ -1,6 +1,6 @@
 import config from "_config";
 import { BaseApi } from "_services";
-import { conversationTypes, participantTypes } from "./types";
+import { conversationTypes, newConversationTypesAfterTransform, participantTypes } from "./types";
 
 const chatApi = BaseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -13,12 +13,9 @@ const chatApi = BaseApi.injectEndpoints({
         },
       }),
       transformResponse: (resp: conversationTypes) => {
-        const allParticipants: participantTypes[] = resp.participants || [];
-        const idConversation: number = resp.id;
-        return {
-          allParticipants,
-          idConversation,
-        };
+        console.log("resp lele : ", resp);
+        const allConversations: newConversationTypesAfterTransform[] = [];
+        return allConversations;
       },
       providesTags: [{ type: "Conversation", id: "LIST" }],
     }),

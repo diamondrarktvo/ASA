@@ -22,6 +22,11 @@ export type conversationTypes = {
   participants: participantTypes[];
 };
 
+export type newConversationTypesAfterTransform = {
+  id: number;
+  transmitter: participantTypes;
+};
+
 //navigation stack types
 
 export type manageMessageNavigationTypes = StackNavigationProp<
