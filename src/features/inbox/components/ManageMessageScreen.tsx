@@ -35,8 +35,8 @@ export default function ManageMessageScreen() {
   const accountUser = useAppSelector((state) => state.account);
   const [messages, setMessages] = useState<any[]>([]);
   const [isMessageAlreadyStart, setIsMessageAlreadyStart] = useState(false);
-  const { emetteur } =
-    useRoute<RouteProp<StackParamList, "manage_message">>()?.params;
+  const { nickName, id } =
+    useRoute<RouteProp<StackParamList, "manage_message">>()?.params.emetteur;
   const {
     data: allMessage,
     isError: isMessageError,
@@ -105,7 +105,7 @@ export default function ManageMessageScreen() {
   const handleStartConversation = () => {
     startConversation({
       token: accountUser.token ? accountUser.token : undefined,
-      seller_id: 2,
+      seller_id: id,
     })
       .unwrap()
       .then((res) => {
@@ -148,8 +148,8 @@ export default function ManageMessageScreen() {
         onRefresh={() => refetchMessage()}
       >
         <HeaderStackNavNormal
-          title={emetteur}
-          subTitle="Délai de réponse : 30 minutes0345657370"
+          title={nickName}
+          subTitle="Délai de réponse : 30 minutes"
           iconRight="more-vert"
           iconRightOnPress={() => openBottomSheet()}
         />
