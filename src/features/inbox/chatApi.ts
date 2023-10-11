@@ -17,13 +17,12 @@ const chatApi = BaseApi.injectEndpoints({
         },
       }),
       transformResponse: (resp: conversationTypes[]) => {
-        console.log("resp lele : ", resp);
-        const allConversations: newConversationTypesAfterTransform[] | [] = resp
+        const allConversations: conversationTypes[] | [] = resp
           ? resp.map((conversation) => ({
               id: conversation.id,
-              transmitter: conversation.participants.filter(
+              participants: conversation.participants.filter(
                 (participant) => !participant.is_me,
-              )[0],
+              ),
             }))
           : [];
         return allConversations;

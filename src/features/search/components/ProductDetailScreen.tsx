@@ -420,7 +420,10 @@ export default function ProductDetailScreen() {
               onPress={() => {
                 if (accountUser.is_account_connected) {
                   navigation.navigate("manage_message", {
-                    emetteur: annonce.seller.nickname,
+                    emetteur: {
+                      nickName: annonce.seller.nickname,
+                      id: annonce.seller.id,
+                    },
                   });
                 } else {
                   setUserMustLogin(true);

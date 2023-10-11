@@ -102,7 +102,10 @@ export default function AnnouncerScreen() {
           <TouchableOpacity
             onPress={() =>
               navigation.navigate("manage_message", {
-                emetteur: item.seller.nickname,
+                emetteur: {
+                  nickName: item.seller.nickname,
+                  id: item.seller.id,
+                },
               })
             }
           >

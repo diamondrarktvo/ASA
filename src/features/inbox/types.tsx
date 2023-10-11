@@ -24,7 +24,7 @@ export type conversationTypes = {
 
 export type newConversationTypesAfterTransform = {
   id: number;
-  transmitter: participantTypes;
+  participants: participantTypes;
 };
 
 //navigation stack types
