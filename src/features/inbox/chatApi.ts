@@ -45,9 +45,9 @@ const chatApi = BaseApi.injectEndpoints({
         { type: "Conversation", id: arg.id_conversation },
       ],
     }),
-    postConversation: build.mutation<
+    startConversation: build.mutation<
       conversationTypes,
-      { token: string; seller_id: number }
+      { token: string | undefined; seller_id: number }
     >({
       query: (arg) => ({
         url: config.GET_CONVERSATION_URL,
@@ -66,7 +66,7 @@ const chatApi = BaseApi.injectEndpoints({
 export const {
   useGetAllConversationsQuery,
   useGetMessageInConversationQuery,
-  usePostConversationMutation,
+  useStartConversationMutation,
 } = chatApi;
 
 export default chatApi;

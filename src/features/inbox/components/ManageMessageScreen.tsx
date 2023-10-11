@@ -19,7 +19,10 @@ import { BottomSheetModal, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types";
 import { Size, Theme } from "_theme";
 import { useAppDispatch, useAppSelector } from "_store";
-import { useGetMessageInConversationQuery } from "../chatApi";
+import {
+  useGetMessageInConversationQuery,
+  useStartConversationMutation,
+} from "../chatApi";
 import { removeAccount } from "../../account/accountSlice";
 import { GiftedChat, Send } from "react-native-gifted-chat";
 import AnimatedLottieView from "lottie-react-native";
@@ -50,6 +53,16 @@ export default function ManageMessageScreen() {
       skip: !accountUser.token,
     },
   );
+
+  const [
+    startConversation,
+    {
+      isError: isErrorStartConversation,
+      isLoading: isLoadingStartConversation,
+      status: statusStartConversation,
+      error: errorStartConversation,
+    },
+  ] = useStartConversationMutation();
 
   //bottomsheet
   const snapPoints = useMemo(() => [1, "20%"], []);
@@ -88,6 +101,22 @@ export default function ManageMessageScreen() {
       GiftedChat.append(previousMessages, messages),
     );
   }, []);
+
+  const handleStartConversation = () => {
+    startConversation({
+      token: accountUser.token ? accountUser.token : undefined,
+      seller_id: 2,
+    })
+      .unwrap()
+      .then((res) => {
+        console.log("start conv res", res);
+        setIsMessageAlreadyStart(true);
+      })
+      .catch((e) => {
+        console.log("error start :", e);
+        setIsMessageAlreadyStart(false);
+      });
+  };
 
   //all effect
   useEffect(() => {
@@ -177,7 +206,7 @@ export default function ManageMessageScreen() {
                 padding: 8,
                 color: colors.white,
               }}
-              onPress={() => setIsMessageAlreadyStart(true)}
+              onPress={() => handleStartConversation()}
             />
           </Box>
         )}
