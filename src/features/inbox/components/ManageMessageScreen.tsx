@@ -118,6 +118,14 @@ export default function ManageMessageScreen() {
       });
   };
 
+  const handleRefetch = () => {
+    if (isErrorStartConversation) {
+      handleStartConversation();
+    } else if (isMessageError) {
+      refetchMessage();
+    }
+  };
+
   //all effect
   useEffect(() => {
     handleFetchError(errorMessage);
@@ -143,9 +151,9 @@ export default function ManageMessageScreen() {
   return (
     <MainScreen typeOfScreen="stack">
       <RequestError
-        isError={isMessageError}
-        errorStatus={errorMessage?.status}
-        onRefresh={() => refetchMessage()}
+        isError={isMessageError || isErrorStartConversation}
+        errorStatus={errorMessage?.status || errorStartConversation?.status}
+        onRefresh={() => handleRefetch()}
       >
         <HeaderStackNavNormal
           title={nickName}
