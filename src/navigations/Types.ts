@@ -16,7 +16,7 @@ export type StackParamList = {
     emetteur: {
       nickName: string;
       id_seller: number;
-      id_conversation: number | undefined | null;
+      id_conversation: number | null;
     };
   };
   //stepper screens

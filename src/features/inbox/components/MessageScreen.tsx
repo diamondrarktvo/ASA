@@ -22,6 +22,7 @@ import { RefreshControl } from "react-native-gesture-handler";
 import { useGetAllConversationsQuery } from "../chatApi";
 import { useAppDispatch, useAppSelector } from "_store";
 import { removeAccount } from "../../account/accountSlice";
+import { formatDateToString } from "_utils";
 
 export default function MessageScreen() {
   const navigation = useNavigation<manageMessageNavigationTypes>();
@@ -97,10 +98,11 @@ export default function MessageScreen() {
                 numberOfLines={1}
                 style={{ width: "65%" }}
               >
-                blablabababbababakbjbajabzjabza
+                {item.latest_message?.text || "Commencez à discuter"}
               </Text>
               <Text variant="secondary" color="secondary">
-                17 Sept 2022
+                {item.latest_message &&
+                  formatDateToString(item.latest_message.createAt)}
               </Text>
             </Row>
           </Column>

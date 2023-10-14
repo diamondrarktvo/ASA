@@ -86,6 +86,24 @@ const chatApi = BaseApi.injectEndpoints({
       }),
       invalidatesTags: ["Conversation"],
     }),
+    sendMessage: build.mutation<
+      undefined,
+      {
+        token: string | undefined;
+        message: string;
+        id_conversation: number | null;
+      }
+    >({
+      query: (arg) => ({
+        url: config.POST_MESSAGE,
+        method: "POST",
+        body: { conversation: arg.id_conversation, text: arg.message },
+        headers: {
+          Authorization: `token ${arg.token}`,
+        },
+      }),
+      invalidatesTags: ["Conversation"],
+    }),
   }),
   overrideExisting: true,
 });
@@ -96,6 +114,7 @@ export const {
   useGetMessageInConversationQuery,
   useStartConversationMutation,
   useDeleteConversationMutation,
+  useSendMessageMutation,
 } = chatApi;
 
 export default chatApi;

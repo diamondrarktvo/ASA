@@ -20,11 +20,35 @@ export type participantTypes = {
 export type conversationTypes = {
   id: number;
   participants: participantTypes[];
+  latest_message: null | {
+    text: string;
+    createAt: string;
+  };
 };
 
 export type newConversationTypesAfterTransform = {
   id: number;
   participants: participantTypes;
+};
+
+export type messageType = {
+  _id: number;
+  text: string;
+  createAt: string;
+  user: {
+    _id: number;
+    name: string;
+    avatar: ImageSourcePropType | null;
+  };
+};
+
+export type messageGiftedProps = {
+  _id: string;
+  createdAt: string;
+  text: string;
+  user: {
+    _id: number;
+  };
 };
 
 //navigation stack types

@@ -5,7 +5,7 @@ import { formatDateToString, pushNotification } from "_utils";
 
 const SOCKET_URL = process.env.EXPO_PUBLIC_API_HOST || "";
 
-const Socket = () => {
+const SocketNotification = () => {
   const [connectedToSocket, setConnectedToSocket] = useState(false);
   const accountUser = useAppSelector((state) => state.account);
 
@@ -66,4 +66,4 @@ const Socket = () => {
   ) : null;
 };
 
-export default Socket;
+export default SocketNotification;

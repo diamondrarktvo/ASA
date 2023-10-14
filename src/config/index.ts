@@ -45,4 +45,5 @@ export default {
 
   /*******CONVERSATION*** */
   GET_CONVERSATION_URL: "/conversation",
+  POST_MESSAGE: "/send_message",
 };

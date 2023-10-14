@@ -23,11 +23,14 @@ import {
   useDeleteConversationMutation,
   useGetIfConversationStartedQuery,
   useGetMessageInConversationQuery,
+  useSendMessageMutation,
   useStartConversationMutation,
 } from "../chatApi";
 import { removeAccount } from "../../account/accountSlice";
 import { GiftedChat, Send } from "react-native-gifted-chat";
 import AnimatedLottieView from "lottie-react-native";
+import { useSocketMessage } from "../hooks/useSocketMessage";
+import { messageGiftedProps } from "../types";
 
 export default function ManageMessageScreen() {
   const navigation = useNavigation();
@@ -39,6 +42,11 @@ export default function ManageMessageScreen() {
   const [isMessageAlreadyStart, setIsMessageAlreadyStart] = useState(false);
   const { nickName, id_seller, id_conversation } =
     useRoute<RouteProp<StackParamList, "manage_message">>()?.params.emetteur;
+  const { messageCurrent } = useSocketMessage({
+    id_conversation: id_conversation,
+    token: accountUser.token,
+  });
+
   const {
     data: allMessage,
     isError: isMessageError,
@@ -90,6 +98,15 @@ export default function ManageMessageScreen() {
       error: errorDeleteConversation,
     },
   ] = useDeleteConversationMutation();
+
+  const [
+    sendMessage,
+    {
+      isError: isErrorSendMessage,
+      isLoading: isLoadingSendMessage,
+      error: errorSendMessage,
+    },
+  ] = useSendMessageMutation();
 
   //bottomsheet
   const snapPoints = useMemo(() => [1, "20%"], []);
@@ -160,6 +177,21 @@ export default function ManageMessageScreen() {
       });
   };
 
+  const handleSendMessage = (messages: messageGiftedProps[]) => {
+    sendMessage({
+      token: accountUser.token ? accountUser.token : undefined,
+      id_conversation: id_conversation,
+      message: messages.length > 0 ? messages[0].text : "",
+    })
+      .unwrap()
+      .then((res) => {
+        console.log("send conv res", res);
+      })
+      .catch((e) => {
+        console.log("error send message :", e);
+      });
+  };
+
   const handleRefetch = () => {
     if (isErrorStartConversation) {
       handleStartConversation();
@@ -196,7 +228,7 @@ export default function ManageMessageScreen() {
     ]);
   }, []);
 
-  console.log("errorStatusConversation", isErrorStatusConversation);
+  console.log("messageCurrent", messageCurrent);
 
   return (
     <MainScreen typeOfScreen="stack">
@@ -233,9 +265,12 @@ export default function ManageMessageScreen() {
               <GiftedChat
                 messages={messages}
                 placeholder="Ecrivez un message ici..."
-                onSend={(messages) => onSend(messages)}
+                onSend={(messages) => {
+                  //handleSendMessage(messages);
+                  onSend(messages);
+                }}
                 user={{
-                  _id: 1,
+                  _id: accountUser.user.id ? accountUser.user.id : 0,
                 }}
                 isLoadingEarlier={
                   isMessageLoading ||
