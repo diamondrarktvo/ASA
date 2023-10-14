@@ -103,7 +103,9 @@ const chatApi = BaseApi.injectEndpoints({
           Authorization: `token ${arg.token}`,
         },
       }),
-      invalidatesTags: ["Conversation"],
+      invalidatesTags: (resp, _, arg) => [
+        { type: "Conversation", id: arg.id_conversation },
+      ],
     }),
   }),
   overrideExisting: true,

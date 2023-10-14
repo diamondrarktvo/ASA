@@ -38,7 +38,7 @@ export default function ManageMessageScreen() {
   const { borderRadii, colors } = theme;
   const dispatch = useAppDispatch();
   const accountUser = useAppSelector((state) => state.account);
-  const [messages, setMessages] = useState<any[]>([]);
+  const [messages, setMessages] = useState<any[]>(allMessage);
   const [isMessageAlreadyStart, setIsMessageAlreadyStart] = useState(false);
   const { nickName, id_seller, id_conversation } =
     useRoute<RouteProp<StackParamList, "manage_message">>()?.params.emetteur;
@@ -219,10 +219,9 @@ export default function ManageMessageScreen() {
     } else {
       setMessages([]);
     }
-  }, []);
+  }, [allMessage]);
 
-  console.log("isStarty", isMessageAlreadyStart);
-  console.log("is_conversation_started", is_conversation_started);
+  console.log("allMessage", allMessage);
 
   return (
     <MainScreen typeOfScreen="stack">
