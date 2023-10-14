@@ -23,6 +23,7 @@ const chatApi = BaseApi.injectEndpoints({
               participants: conversation.participants.filter(
                 (participant) => !participant.is_me,
               ),
+              latest_message: conversation.latest_message,
             }))
           : [];
         return allConversations;

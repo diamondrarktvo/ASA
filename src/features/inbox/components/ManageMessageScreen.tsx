@@ -42,10 +42,10 @@ export default function ManageMessageScreen() {
   const [isMessageAlreadyStart, setIsMessageAlreadyStart] = useState(false);
   const { nickName, id_seller, id_conversation } =
     useRoute<RouteProp<StackParamList, "manage_message">>()?.params.emetteur;
-  const { messageCurrent } = useSocketMessage({
+  /*const { messageCurrent } = useSocketMessage({
     id_conversation: id_conversation,
     token: accountUser.token,
-  });
+  });*/
 
   const {
     data: allMessage,
@@ -214,21 +214,15 @@ export default function ManageMessageScreen() {
   }, [is_conversation_started]);
 
   useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: "Bienvenue sur l'application Atsika Samy Atsika.",
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar: require("_images/logoASA.jpeg"),
-        },
-      },
-    ]);
+    if (allMessage && allMessage?.length > 0) {
+      setMessages(allMessage);
+    } else {
+      setMessages([]);
+    }
   }, []);
 
-  console.log("messageCurrent", messageCurrent);
+  console.log("isStarty", isMessageAlreadyStart);
+  console.log("is_conversation_started", is_conversation_started);
 
   return (
     <MainScreen typeOfScreen="stack">
@@ -266,7 +260,7 @@ export default function ManageMessageScreen() {
                 messages={messages}
                 placeholder="Ecrivez un message ici..."
                 onSend={(messages) => {
-                  //handleSendMessage(messages);
+                  handleSendMessage(messages);
                   onSend(messages);
                 }}
                 user={{

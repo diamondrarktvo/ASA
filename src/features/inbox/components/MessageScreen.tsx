@@ -22,7 +22,7 @@ import { RefreshControl } from "react-native-gesture-handler";
 import { useGetAllConversationsQuery } from "../chatApi";
 import { useAppDispatch, useAppSelector } from "_store";
 import { removeAccount } from "../../account/accountSlice";
-import { formatDateToString } from "_utils";
+import { formatDate } from "_utils";
 
 export default function MessageScreen() {
   const navigation = useNavigation<manageMessageNavigationTypes>();
@@ -44,8 +44,6 @@ export default function MessageScreen() {
       skip: !accountUser.token,
     },
   );
-
-  console.log("allConversation de: ", allConversation);
 
   const handleFetchError = (error: any) => {
     if (error?.data?.detail?.includes("Invalid token")) {
@@ -102,7 +100,7 @@ export default function MessageScreen() {
               </Text>
               <Text variant="secondary" color="secondary">
                 {item.latest_message &&
-                  formatDateToString(item.latest_message.createAt)}
+                  formatDate(item.latest_message.createAt)}
               </Text>
             </Row>
           </Column>
