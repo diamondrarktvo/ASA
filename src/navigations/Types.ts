@@ -15,7 +15,8 @@ export type StackParamList = {
   manage_message: {
     emetteur: {
       nickName: string;
-      id: number;
+      id_seller: number;
+      id_conversation: number | undefined | null;
     };
   };
   //stepper screens

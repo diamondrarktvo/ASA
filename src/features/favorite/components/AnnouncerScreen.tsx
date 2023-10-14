@@ -104,7 +104,8 @@ export default function AnnouncerScreen() {
               navigation.navigate("manage_message", {
                 emetteur: {
                   nickName: item.seller.nickname,
-                  id: item.seller.id,
+                  id_seller: item.seller.id,
+                  id_conversation: null,
                 },
               })
             }

@@ -65,7 +65,8 @@ export default function MessageScreen() {
           navigation.navigate("manage_message", {
             emetteur: {
               nickName: item.participants[0].nickname,
-              id: item.participants[0].id,
+              id_seller: item.participants[0].id,
+              id_conversation: item.id,
             },
           })
         }

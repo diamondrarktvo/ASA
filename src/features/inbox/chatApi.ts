@@ -29,9 +29,24 @@ const chatApi = BaseApi.injectEndpoints({
       },
       providesTags: [{ type: "Conversation", id: "LIST" }],
     }),
+    getIfConversationStarted: build.query<
+      { is_started: boolean },
+      { token: string | undefined; id_seller: number }
+    >({
+      query: (arg) => ({
+        url: `${config.GET_CONVERSATION_URL}/status/${arg.id_seller}`,
+        method: "GET",
+        headers: {
+          Authorization: `token ${arg.token}`,
+        },
+      }),
+      transformResponse: (resp: { is_started: boolean }) => {
+        return resp.is_started;
+      },
+    }),
     getMessageInConversation: build.query<
       conversationTypes[],
-      { token: string | undefined; id_conversation: number }
+      { token: string | undefined; id_conversation: number | null }
     >({
       query: (arg) => ({
         url: `${config.GET_CONVERSATION_URL}/${arg.id_conversation}`,
@@ -58,14 +73,29 @@ const chatApi = BaseApi.injectEndpoints({
       }),
       invalidatesTags: ["Conversation"],
     }),
+    deleteConversation: build.mutation<
+      undefined,
+      { token: string | undefined; id_conversation: number | null }
+    >({
+      query: (arg) => ({
+        url: `${config.GET_CONVERSATION_URL}/${arg.id_conversation}`,
+        method: "DELETE",
+        headers: {
+          Authorization: `token ${arg.token}`,
+        },
+      }),
+      invalidatesTags: ["Conversation"],
+    }),
   }),
   overrideExisting: true,
 });
 
 export const {
   useGetAllConversationsQuery,
+  useGetIfConversationStartedQuery,
   useGetMessageInConversationQuery,
   useStartConversationMutation,
+  useDeleteConversationMutation,
 } = chatApi;
 
 export default chatApi;

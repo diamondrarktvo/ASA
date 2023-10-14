@@ -422,7 +422,8 @@ export default function ProductDetailScreen() {
                   navigation.navigate("manage_message", {
                     emetteur: {
                       nickName: annonce.seller.nickname,
-                      id: annonce.seller.id,
+                      id_seller: annonce.seller.id,
+                      id_conversation: null,
                     },
                   });
                 } else {
