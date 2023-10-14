@@ -1,6 +1,11 @@
 import { StyleSheet } from "react-native";
 import { useMemo, useRef, useCallback, useEffect, useState } from "react";
-import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
+import {
+  useRoute,
+  RouteProp,
+  useNavigation,
+  useFocusEffect,
+} from "@react-navigation/native";
 import {
   MainScreen,
   Text,
@@ -38,7 +43,7 @@ export default function ManageMessageScreen() {
   const { borderRadii, colors } = theme;
   const dispatch = useAppDispatch();
   const accountUser = useAppSelector((state) => state.account);
-  const [messages, setMessages] = useState<any[]>(allMessage);
+  const [messages, setMessages] = useState<any[]>([]);
   const [isMessageAlreadyStart, setIsMessageAlreadyStart] = useState(false);
   const { nickName, id_seller, id_conversation } =
     useRoute<RouteProp<StackParamList, "manage_message">>()?.params.emetteur;
@@ -207,6 +212,12 @@ export default function ManageMessageScreen() {
     handleFetchError(errorMessage);
   }, [errorMessage]);
 
+  useFocusEffect(
+    useCallback(() => {
+      refetchMessage();
+    }, [messages]),
+  );
+
   useEffect(() => {
     if (is_conversation_started) {
       setIsMessageAlreadyStart(true);
@@ -221,7 +232,10 @@ export default function ManageMessageScreen() {
     }
   }, [allMessage]);
 
-  console.log("allMessage", allMessage);
+  console.log(
+    "messages",
+    messages.map((mess) => mess._id),
+  );
 
   return (
     <MainScreen typeOfScreen="stack">
@@ -275,6 +289,7 @@ export default function ManageMessageScreen() {
                     <Text variant="primary">Chargement...</Text>
                   </Box>
                 )}
+                extraData={messages}
                 renderSend={(props) => (
                   <Send {...props}>
                     <Box mb={"m"} mr={"s"}>

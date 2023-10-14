@@ -87,7 +87,11 @@ export default function AccountScreen() {
                 {accountUser.is_account_connected ? (
                   <>
                     <Image
-                      source={require("_images/logoASA.jpeg")}
+                      source={
+                        accountUser?.user?.image
+                          ? { uri: accountUser.user.image }
+                          : require("_images/logoASA.jpeg")
+                      }
                       style={{
                         width: Size.IMAGE_SMALL,
                         height: Size.IMAGE_SMALL,

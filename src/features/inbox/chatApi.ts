@@ -56,9 +56,7 @@ const chatApi = BaseApi.injectEndpoints({
           Authorization: `token ${arg.token}`,
         },
       }),
-      providesTags: (result, _, arg) => [
-        { type: "Conversation", id: arg.id_conversation },
-      ],
+      providesTags: ["Conversation"],
     }),
     startConversation: build.mutation<
       conversationTypes,
@@ -103,9 +101,7 @@ const chatApi = BaseApi.injectEndpoints({
           Authorization: `token ${arg.token}`,
         },
       }),
-      invalidatesTags: (resp, _, arg) => [
-        { type: "Conversation", id: arg.id_conversation },
-      ],
+      invalidatesTags: ["Conversation"],
     }),
   }),
   overrideExisting: true,
