@@ -214,7 +214,9 @@ export default function ManageMessageScreen() {
 
   useFocusEffect(
     useCallback(() => {
-      refetchMessage();
+      if (isMessageLoading) {
+        refetchMessage();
+      }
     }, [messages]),
   );
 
@@ -232,10 +234,7 @@ export default function ManageMessageScreen() {
     }
   }, [allMessage]);
 
-  console.log(
-    "messages",
-    messages.map((mess) => mess._id),
-  );
+  console.log(errorMessage);
 
   return (
     <MainScreen typeOfScreen="stack">
@@ -289,7 +288,6 @@ export default function ManageMessageScreen() {
                     <Text variant="primary">Chargement...</Text>
                   </Box>
                 )}
-                extraData={messages}
                 renderSend={(props) => (
                   <Send {...props}>
                     <Box mb={"m"} mr={"s"}>

@@ -58,7 +58,9 @@ export default function MessageScreen() {
 
   useFocusEffect(
     useCallback(() => {
-      refetchConversation();
+      if (isConversationLoading) {
+        refetchConversation();
+      }
     }, []),
   );
 
