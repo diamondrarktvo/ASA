@@ -22,6 +22,9 @@ export function useSocketMessage({
     ["access_token", `${token || ""}`],
   );
 
+  console.log("id_conversation : ", id_conversation);
+  console.log("token : ", token);
+
   useEffect(() => {
     // verify connection
     socket.onopen = (e) => {
@@ -38,8 +41,8 @@ export function useSocketMessage({
     // receive notifs
     socket.onmessage = async (e) => {
       const data = JSON.parse(e.data);
-      setMessageCurrent(data.message);
-      console.log(data.message);
+      //setMessageCurrent(data.message);
+      console.log(data);
     };
   }, [id_conversation]);
 

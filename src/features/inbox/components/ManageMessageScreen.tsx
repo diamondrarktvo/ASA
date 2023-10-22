@@ -224,8 +224,6 @@ export default function ManageMessageScreen() {
     }
   }, [allMessage]);
 
-  console.log("isMessageFetching : ", isMessageFetching);
-
   return (
     <MainScreen typeOfScreen="stack">
       <RequestLoader
