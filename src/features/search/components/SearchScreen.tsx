@@ -219,7 +219,7 @@ export default function SearchScreen() {
               position: "absolute",
               zIndex: 2,
               top: 10,
-              right: 10,
+              left: 12,
             }}
             onPress={() => {
               if (accountUser.is_account_connected) {
@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
   imageAnnonce: {
     borderRadius: 4,
     height: 180,
-    width: 180,
+    width: 170,
   },
   maskImageCatg: {
     backgroundColor: "rgba(0, 0, 0, 0.5)",
