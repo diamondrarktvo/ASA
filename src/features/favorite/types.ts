@@ -14,6 +14,7 @@ export type sellerType = {
   id: number;
   nickname: string;
   image: null | string;
+  id_conversation: undefined | number;
 };
 
 export type favoriteAnnonceType = {

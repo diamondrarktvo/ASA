@@ -423,7 +423,7 @@ export default function ProductDetailScreen() {
                     emetteur: {
                       nickName: annonce.seller.nickname,
                       id_seller: annonce.seller.id,
-                      id_conversation: null,
+                      id_conversation: annonce.seller.id_conversation ?? null,
                     },
                   });
                 } else {

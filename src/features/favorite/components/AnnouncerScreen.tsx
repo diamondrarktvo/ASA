@@ -105,7 +105,7 @@ export default function AnnouncerScreen() {
                 emetteur: {
                   nickName: item.seller.nickname,
                   id_seller: item.seller.id,
-                  id_conversation: null,
+                  id_conversation: item.seller.id_conversation ?? null,
                 },
               })
             }

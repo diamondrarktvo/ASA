@@ -42,10 +42,10 @@ export default function ManageMessageScreen() {
   const [isMessageAlreadyStart, setIsMessageAlreadyStart] = useState(false);
   const { nickName, id_seller, id_conversation } =
     useRoute<RouteProp<StackParamList, "manage_message">>()?.params.emetteur;
-  /*const { messageCurrent } = useSocketMessage({
+  const { messageCurrent } = useSocketMessage({
     id_conversation: id_conversation,
     token: accountUser.token,
-  });*/
+  });
 
   const {
     data: allMessage,
@@ -206,11 +206,15 @@ export default function ManageMessageScreen() {
   useEffect(() => {
     handleFetchError(errorMessage);
   }, [errorMessage]);
+
   useEffect(() => {
     if (is_conversation_started) {
       setIsMessageAlreadyStart(true);
     }
-  }, [is_conversation_started]);
+    if (!id_conversation) {
+      setIsMessageAlreadyStart(false);
+    }
+  }, [is_conversation_started, id_conversation]);
 
   useEffect(() => {
     if (allMessage && allMessage?.length > 0) {

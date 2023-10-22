@@ -17,8 +17,6 @@ export function useSocketMessage({
   const [connectedToSocket, setConnectedToSocket] = useState(false);
   const [messageCurrent, setMessageCurrent] = useState<messageType[]>([]);
 
-  console.log("token : ", token);
-
   const socket = new WebSocket(
     `${SOCKET_URL}/ws/conversation/${id_conversation}`,
     ["access_token", `${token || ""}`],
