@@ -5,15 +5,22 @@
     "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "jsEngine": "hermes",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#FF8323"
     },
-    "assetBundlePatterns": [
-      "**/*"
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
     ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -21,6 +28,11 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCfeV-dI5JYOl39mJDqsyL8xtRykQHU29I"
+        }
       },
       "package": "com.diamondrarktvo.asa"
     },

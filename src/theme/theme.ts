@@ -4,18 +4,19 @@ import { Typography } from "./typography";
 
 //PALETTE
 const palette = {
-  orangeLight: "#F8AC71",
+  orangeLight: "#DA6002",
   orangePrimary: "#FF8323",
-  orangeDark: "#C66316",
+  orangeDark: "#AB4A00",
 
-  redBordeaux: "#9B0409",
+  redBordeaux: "#FB222D",
 
   white: "#F0F2F3",
   grey: "#939597",
   offWhite: "#DDD",
   black: "#0B0B0B",
   offBlack: "#252525",
-  blue: "#06668C",
+  blue: "#2652AA",
+  transparent: "transparent",
 };
 
 const theme = createTheme({
@@ -23,21 +24,23 @@ const theme = createTheme({
     mainBackground: palette.white,
     mainForeground: palette.black,
     primary: palette.orangePrimary,
+    primaryDark: palette.orangeDark,
+    secondary: palette.grey, //grey
     orangeDark: palette.orangeDark,
     error: palette.redBordeaux,
     white: palette.white,
+    blue: palette.blue,
     black: palette.black,
-    secondary: palette.grey, //grey
     offWhite: palette.offWhite,
-    buttonPrimaryBackground: palette.orangePrimary,
-    buttonSecondaryBackground: palette.blue,
-    cardPrimaryBackground: palette.orangePrimary,
-    cardLightBackground: palette.orangeLight,
+    offBlack: palette.offBlack,
     text: palette.black,
     textPrimaryColor: palette.orangePrimary,
+    transparent: palette.transparent,
   },
   spacing: {
     none: "0%",
+    xxs: "1%",
+    xs: "2%",
     s: "4%",
     m: "8%",
     l: "16%",
@@ -58,7 +61,8 @@ const theme = createTheme({
   },
   borderRadii: {
     none: 0,
-    xs: 4,
+    xxs: 4,
+    xs: 8,
     sm: 16,
     md: 24,
     lg: 64,
@@ -70,6 +74,7 @@ const theme = createTheme({
       ...Typography.button,
       color: "white",
       textAlign: "center",
+      fontWeight: "bold",
     },
     defaults: {
       fontSize: 12,
@@ -81,13 +86,28 @@ const theme = createTheme({
       color: "white",
     },
     secondary: {
-      backgroundColor: "buttonSecondaryBackground",
+      backgroundColor: "blue",
       color: "white",
     },
     tertiary: {
-      backgroundColor: "white",
+      backgroundColor: "secondary",
       color: "black",
-      borderColor: "buttonSecondaryBackground",
+      borderColor: "secondary",
+    },
+    buttonWithShadow: {
+      backgroundColor: "white",
+      width: "95%",
+      mx: "xs",
+      borderWidth: 1,
+      borderColor: "white",
+      shadowColor: "black",
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
     },
   },
 });

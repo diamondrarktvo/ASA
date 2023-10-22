@@ -12,11 +12,24 @@
           { "_navigations": "./src/navigations" },
           { "_services": "./src/services" },
           { "_shared": "./src/shared" },
+          { "_hooks": "./src/hooks" },
           { "_store": "./src/store" },
           { "_theme": "./src/theme" },
-          { "_utils": "./src/utils" }
+          { "_utils": "./src/utils" },
+          { "_config": "./src/config" }
         ],
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    ],
+    [
+      "module:react-native-dotenv",
+      {
+        "moduleName": "@env",
+        "path": ".env",
+        "blacklist": null,
+        "whitelist": null,
+        "safe": false,
+        "allowUndefined": true
       }
     ],
     "react-native-reanimated/plugin"

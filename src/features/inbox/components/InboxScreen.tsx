@@ -1,19 +1,21 @@
 import { StyleSheet } from "react-native";
+import { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { useTheme } from "@shopify/restyle";
 
 //IMPORT LOCAL
-import { MainScreen, Text } from "_shared";
+import { CheckUserConnected, MainScreen, Text } from "_shared";
 import { Size, Theme } from "_theme";
-import { TopParamList } from "_navigations";
+import { TopParamListInbox } from "_navigations";
 import MessageScreen from "./MessageScreen";
 import NotificationScreen from "./NotificationScreen";
+import { useAppSelector } from "_store";
 
 //top navigation is here because we only need it here
 //types
 interface TopTabRouteTypes {
-  name: keyof TopParamList;
+  name: keyof TopParamListInbox;
   topLabel: string;
   component: React.FC<unknown>;
 }
@@ -32,7 +34,7 @@ const TOPROUTES: TopTabRouteTypes[] = [
   },
 ];
 
-const Top = createMaterialTopTabNavigator<TopParamList>();
+const Top = createMaterialTopTabNavigator<TopParamListInbox>();
 
 const TopNavigation = () => {
   const theme = useTheme<Theme>();
@@ -70,10 +72,25 @@ const TopNavigation = () => {
 
 export default function InboxScreen() {
   //const navigation = useNavigation<>();
+  const isUserConnected = useAppSelector(
+    (state) => state.account.is_account_connected,
+  );
+  const [userMustLogin, setUserMustLogin] = useState<boolean>(!isUserConnected);
+
+  //effect
+  useEffect(() => {
+    setUserMustLogin(!isUserConnected);
+  }, [isUserConnected]);
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Boite de réception">
-      <TopNavigation />
+      <CheckUserConnected
+        userMustLogin={userMustLogin}
+        setUserMustLogin={setUserMustLogin}
+        subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
+      >
+        <TopNavigation />
+      </CheckUserConnected>
     </MainScreen>
   );
 }

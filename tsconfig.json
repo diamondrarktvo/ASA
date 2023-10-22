@@ -4,6 +4,7 @@
   "compilerOptions": {
     "jsx": "react-native",
     "strict": true,
+    "module": "esnext",
      "baseUrl": ".",
      "paths": {
          "_shared": ["src/shared"],
@@ -13,8 +14,10 @@
          "_utils": ["src/utils"],
          "_services": ["src/services"],
          "_i18n": ["src/i18n"],
+         "_hooks": ["src/hooks"],
          "_store": ["src/store"],
          "_navigations": ["src/navigations"],
+         "_config": ["src/config"],
       }
   }
 }

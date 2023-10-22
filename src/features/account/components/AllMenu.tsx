@@ -1,94 +1,112 @@
-import { Button, Row, Text, TouchableOpacity } from "_shared";
-import { Size, Theme } from "_theme";
+import { Row, Text, TouchableOpacity } from "_shared";
 import { UnitItemSectionLink } from "./UnitItemSectionLink";
 import { Alert } from "react-native";
-import { useTheme } from "@shopify/restyle";
+import { useNavigation } from "@react-navigation/native";
+import {
+  favoriteNavigationTypes,
+  PersonnalInformationNavigationTypes,
+} from "../types";
+import { useAppSelector } from "_store";
 
 type Props = {
-  isUserConnected: boolean;
-  loggedIn?: () => void;
-  loggedOut?: () => void;
+  is_account_connected: boolean;
+  action?: () => void;
 };
 
-export const AllMenu = ({ isUserConnected, loggedIn, loggedOut }: Props) => {
-  return isUserConnected ? (
+export const AllMenu = ({ is_account_connected, action }: Props) => {
+  const navigation = useNavigation();
+
+  return (
     <>
       {/**Actions */}
-      <Row marginVertical="s">
-        <Text variant="bigTitle">Actions</Text>
-      </Row>
-      <UnitItemSectionLink
-        iconLeft="campaign"
-        label="Mes annonces"
-        onPress={() => Alert.alert("Menu cliqué!")}
-      />
-      <UnitItemSectionLink
-        iconLeft="favorite"
-        label="Favoris"
-        onPress={() => Alert.alert("Menu cliqué!")}
-      />
-      <UnitItemSectionLink
-        iconLeft="redeem"
-        label="Colis"
-        onPress={() => Alert.alert("Menu cliqué!")}
-      />
-      <UnitItemSectionLink
-        iconLeft="trending-up"
-        label="Transaction"
-        onPress={() => Alert.alert("Menu cliqué!")}
-      />
-      <UnitItemSectionLink
-        iconLeft="person-outline"
-        label="Informations personnelles"
-        onPress={() => Alert.alert("Menu cliqué!")}
-      />
+      {is_account_connected ? (
+        <>
+          <Row marginVertical="s">
+            <Text variant="bigTitle" color="text">
+              Actions
+            </Text>
+          </Row>
+          <UnitItemSectionLink
+            iconLeft="campaign"
+            label="Mes annonces"
+            onPress={() => Alert.alert("Menu cliqué!")}
+          />
+          <UnitItemSectionLink
+            iconLeft="favorite"
+            label="Favoris"
+            onPress={() =>
+              navigation.navigate("main_tab", { screen: "favorite_screen" })
+            }
+          />
+          <UnitItemSectionLink
+            iconLeft="redeem"
+            label="Colis"
+            onPress={() => Alert.alert("Menu cliqué!")}
+          />
+          <UnitItemSectionLink
+            iconLeft="trending-up"
+            label="Transaction"
+            onPress={() => Alert.alert("Menu cliqué!")}
+          />
+          <UnitItemSectionLink
+            iconLeft="person-outline"
+            label="Mon profil"
+            onPress={() => navigation.navigate("personnal_information")}
+          />
 
-      {/**Parametre */}
-      <Row marginTop="m">
-        <Text variant="bigTitle">Paramètre</Text>
-      </Row>
+          {/**Parametre */}
+          <Row marginTop="m">
+            <Text variant="bigTitle" color="text">
+              Paramètre
+            </Text>
+          </Row>
 
-      <UnitItemSectionLink
-        iconLeft="payment"
-        label="Payement"
-        onPress={() => Alert.alert("Menu cliqué!")}
-      />
-      <UnitItemSectionLink
-        iconLeft="online-prediction"
-        label="Connection"
-        onPress={() => Alert.alert("Menu cliqué!")}
-      />
+          <UnitItemSectionLink
+            iconLeft="payment"
+            label="Payement"
+            onPress={() => navigation.navigate("manage_payment")}
+          />
+          <UnitItemSectionLink
+            iconLeft="online-prediction"
+            label="Connection"
+            onPress={() => Alert.alert("Menu cliqué!")}
+          />
+          <Row marginTop="l">
+            <TouchableOpacity onPress={action}>
+              <Text variant="link" color="text">
+                {is_account_connected ? "Deconnexion" : "Connexion"}
+              </Text>
+            </TouchableOpacity>
+          </Row>
+        </>
+      ) : (
+        <>
+          {/**Assistance */}
+          <Row marginTop="m">
+            <Text variant="bigTitle" color="text">
+              Assistance
+            </Text>
+          </Row>
 
-      {/**Assistance */}
-      <Row marginTop="m">
-        <Text variant="bigTitle">Assistance</Text>
-      </Row>
-
-      <UnitItemSectionLink
-        iconLeft="help"
-        label="Centre d'aide"
-        onPress={() => Alert.alert("Menu cliqué!")}
-      />
-      <UnitItemSectionLink
-        iconLeft="menu-book"
-        label="Les conditions"
-        onPress={() => Alert.alert("Menu cliqué!")}
-      />
-      <Row marginTop="l">
-        <TouchableOpacity onPress={loggedOut}>
-          <Text variant="link">Deconnexion</Text>
-        </TouchableOpacity>
-      </Row>
-    </>
-  ) : (
-    <>
-      <Button label="Connexion" onPress={loggedIn} />
-      <Row marginVertical="s">
-        <Text variant="tertiary">Vous n'avez pas de compte ?</Text>
-        <TouchableOpacity>
-          <Text variant="link">Inscription</Text>
-        </TouchableOpacity>
-      </Row>
+          <UnitItemSectionLink
+            iconLeft="help"
+            label="Centre d'aide"
+            onPress={() => Alert.alert("Menu cliqué!")}
+          />
+          <UnitItemSectionLink
+            iconLeft="menu-book"
+            label="Les conditions"
+            onPress={() => Alert.alert("Menu cliqué!")}
+          />
+          <Row marginTop="l">
+            <TouchableOpacity onPress={action}>
+              <Text variant="link" color="text">
+                Connexion
+              </Text>
+            </TouchableOpacity>
+          </Row>
+        </>
+      )}
     </>
   );
 };

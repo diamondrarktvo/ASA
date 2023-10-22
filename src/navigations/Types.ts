@@ -1,3 +1,4 @@
+import { NavigatorScreenParams } from "@react-navigation/native";
 import { StackNavigationOptions } from "@react-navigation/stack";
 
 export interface StackNavigationConfig {
@@ -6,8 +7,29 @@ export interface StackNavigationConfig {
 }
 
 export type StackParamList = {
-  main_tabs: undefined;
-  details_book: undefined;
+  main_tab: NavigatorScreenParams<TabParamList>;
+  manage_profil: undefined;
+  personnal_information: undefined;
+  manage_payment: undefined;
+  create_account_screen: undefined;
+  manage_message: {
+    emetteur: {
+      nickName: string;
+      id_seller: number;
+      id_conversation: number | null;
+    };
+  };
+  //stepper screens
+  stepper_screen_1: undefined;
+  stepper_screen_2: undefined;
+  stepper_screen_3: undefined;
+  stepper_screen_4: undefined;
+  stepper_screen_5: undefined;
+  stepper_screen_6: undefined;
+  stepper_screen_7: undefined;
+  //end of stepper screens
+  search_item: undefined;
+  product_detail_screen: { idOfProduct: number };
 };
 
 export type TabParamList = {
@@ -18,7 +40,20 @@ export type TabParamList = {
   account_screen: undefined;
 };
 
-export type TopParamList = {
+export type TopParamListInbox = {
   message_screen: undefined;
   notification_screen: undefined;
 };
+
+export type TopParamListFavourite = {
+  announcement_screen: undefined;
+  announcer_screen: undefined;
+  search_favourite_screen: undefined;
+};
+
+// To type the navigation object obtained from useNavigation
+declare global {
+  namespace ReactNavigation {
+    interface RootParamList extends StackParamList {}
+  }
+}

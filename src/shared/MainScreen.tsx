@@ -15,7 +15,9 @@ type HeaderProps = {
 const HeaderTabTitle = ({ title }: HeaderProps) => {
   return title ? (
     <Box paddingVertical="m" backgroundColor="mainBackground">
-      <Text variant="headerNavigation">{title}</Text>
+      <Text variant="headerNavigation" color="text">
+        {title}
+      </Text>
     </Box>
   ) : null;
 };
@@ -30,7 +32,7 @@ const MainScreen: React.FC<Props> = ({
     <Box
       flex={1}
       paddingHorizontal="s"
-      paddingVertical="m"
+      paddingVertical="s"
       backgroundColor="mainBackground"
       {...props}
     >

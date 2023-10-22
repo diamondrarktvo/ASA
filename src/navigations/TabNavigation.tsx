@@ -42,7 +42,7 @@ const TABROUTES: TabRouteTypes[] = [
     name: "publish_screen",
     component: PublishScreen,
     tabLabel: "Publier",
-    icon: "public",
+    icon: "control-point",
   },
   {
     name: "inbox_screen",
