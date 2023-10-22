@@ -29,6 +29,7 @@ import {
 } from "../paymentMethodApi";
 import { paymentMethodState, setPaymentMethod } from "../paymentMethodeSlice";
 import { useNavigation } from "@react-navigation/native";
+import { removeAccount } from "../accountSlice";
 
 export default function ManagePayment() {
   const theme = useTheme<Theme>();
@@ -68,6 +69,12 @@ export default function ManagePayment() {
     error: errorGetAllPaymentMethod,
   } = useGetAllPaymentMethodQuery(token);
 
+  const handleFetchError = (error: any) => {
+    if (error.detail?.includes("Invalid token")) {
+      return dispatch(removeAccount());
+    }
+  };
+
   //all logic
   const handleAddPaymentMethod = async () => {
     addPaymentMethod(valueForMobileMoney)
@@ -83,6 +90,7 @@ export default function ManagePayment() {
         setMessageForSnackbar("Le numéro de téléphone a été enregistré");
       })
       .catch((e) => {
+        handleFetchError(e);
         setMessageForSnackbar(e.data?.detail);
         console.log("e for method payment : ", e);
         setVisibleSnackbar(true);

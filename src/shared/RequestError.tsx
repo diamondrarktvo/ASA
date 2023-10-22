@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Dimensions } from "react-native";
 import Text from "./Text";
 import Button from "./Button";
+import { useNavigation } from "@react-navigation/native";
 
 type Props = {
   children: React.ReactNode;
@@ -20,6 +21,7 @@ const RequestError: React.FC<Props> = ({
   ...props
 }) => {
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const navigation = useNavigation();
 
   useEffect(() => {
     switch (errorStatus) {
@@ -56,6 +58,12 @@ const RequestError: React.FC<Props> = ({
             variant={"primary"}
             label="Réessayer"
             onPress={onRefresh}
+            mt={"xs"}
+          />
+          <Button
+            variant={"tertiary"}
+            label="Retour"
+            onPress={() => navigation.goBack()}
             mt={"xs"}
           />
         </Box>

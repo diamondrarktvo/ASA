@@ -19,4 +19,9 @@ export {
 } from "./Storage";
 
 //function utils
-export { formatDate, formatDateToString, getFirstCharactere } from "./layout";
+export {
+  formatDate,
+  formatDateToString,
+  getFirstCharactere,
+  pushNotification,
+} from "./layout";

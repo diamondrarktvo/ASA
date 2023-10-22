@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { useCallback, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import {
   Icon,
@@ -9,45 +10,74 @@ import {
   Image,
   Column,
   TouchableOpacity,
+  EmptyList,
+  RequestError,
+  RequestLoader,
 } from "_shared";
 import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import { useTheme } from "@shopify/restyle";
 import { Size, Theme } from "_theme";
-import { messageTypes, manageMessageNavigationTypes } from "../types";
-
-const allMessages: messageTypes[] = [
-  {
-    id: 1,
-    emetteur: "Rakoto",
-    read: false,
-    message: "Votre commande a été livré.",
-    date: "12 juil.",
-  },
-  {
-    id: 2,
-    emetteur: "Mety Amiko",
-    read: false,
-    message: "Votre commande a été livré.",
-    date: "17 Sept 2022",
-  },
-];
+import { manageMessageNavigationTypes, conversationTypes } from "../types";
+import { RefreshControl } from "react-native-gesture-handler";
+import { useGetAllConversationsQuery } from "../chatApi";
+import { useAppDispatch, useAppSelector } from "_store";
+import { removeAccount } from "../../account/accountSlice";
+import { formatDate } from "_utils";
 
 export default function MessageScreen() {
   const navigation = useNavigation<manageMessageNavigationTypes>();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
+  const accountUser = useAppSelector((state) => state.account);
+  const dispatch = useAppDispatch();
+
+  const {
+    data: allConversation,
+    isError: isConversationError,
+    isLoading: isConversationLoading,
+    isFetching: isConversationFetching,
+    refetch: refetchConversation,
+    error: errorConversation,
+  } = useGetAllConversationsQuery(
+    accountUser.token ? accountUser.token : undefined,
+    {
+      skip: !accountUser.token,
+      pollingInterval: 2000,
+    },
+  );
+
+  const handleFetchError = (error: any) => {
+    if (error?.data?.detail?.includes("Invalid token")) {
+      return dispatch(removeAccount());
+    }
+  };
+
+  //all effects
+  useEffect(() => {
+    handleFetchError(errorConversation);
+  }, [errorConversation]);
 
   //components
-  const renderItemMessage: ListRenderItem<messageTypes> = ({ item }) => {
+  const renderItemMessage: ListRenderItem<conversationTypes> = ({ item }) => {
     return (
       <TouchableOpacity
         onPress={() =>
-          navigation.navigate("manage_message", { emetteur: item.emetteur })
+          navigation.navigate("manage_message", {
+            emetteur: {
+              nickName: item.participants[0].nickname,
+              id_seller: item.participants[0].id,
+              id_conversation: item.id,
+            },
+          })
         }
       >
         <Row alignItems="center" paddingVertical="xs">
           <Image
-            source={require("_images/logoASA.jpeg")}
+            source={
+              item.participants[0]?.image
+                ? { uri: item.participants[0].image }
+                : require("_images/logoASA.jpeg")
+            }
             style={{
               width: Size.IMAGE_SMALL,
               height: Size.IMAGE_SMALL,
@@ -57,22 +87,8 @@ export default function MessageScreen() {
           <Column marginLeft="xs" width="75%">
             <Row justifyContent="space-between" width="100%">
               <Text variant="primaryBold" color="text">
-                {item.emetteur}
+                {item.participants[0].nickname}
               </Text>
-              {!item.read && (
-                <Text
-                  variant="tertiary"
-                  style={{
-                    backgroundColor: colors.primary,
-                    paddingVertical: 4,
-                    paddingHorizontal: 8,
-                    borderRadius: borderRadii.lg,
-                  }}
-                  color="white"
-                >
-                  1
-                </Text>
-              )}
             </Row>
             <Row justifyContent="space-between" width="100%">
               <Text
@@ -81,10 +97,11 @@ export default function MessageScreen() {
                 numberOfLines={1}
                 style={{ width: "65%" }}
               >
-                {item.message}
+                {item.latest_message?.text || "Commencez à discuter"}
               </Text>
               <Text variant="secondary" color="secondary">
-                {item.date}
+                {item.latest_message &&
+                  formatDate(item.latest_message.createAt)}
               </Text>
             </Row>
           </Column>
@@ -95,23 +112,29 @@ export default function MessageScreen() {
 
   return (
     <MainScreen typeOfScreen="stack">
-      <FlashList
-        data={allMessages}
-        renderItem={renderItemMessage}
-        estimatedItemSize={200}
-        extraData={allMessages}
-        ListEmptyComponent={
-          <Box>
-            <Text variant={"bigTitle"} color="text">
-              Vous n'avez aucun message non lu.
-            </Text>
-            <Text variant={"primary"} color="text">
-              Lorsque vous communiquez avec un annonceurs, les messages
-              apparaissent ici.
-            </Text>
-          </Box>
-        }
-      />
+      <RequestLoader isLoading={isConversationLoading}>
+        <RequestError
+          isError={isConversationError}
+          errorStatus={errorConversation?.status}
+          onRefresh={() => refetchConversation()}
+        >
+          <FlashList
+            data={allConversation}
+            renderItem={renderItemMessage}
+            estimatedItemSize={200}
+            extraData={allConversation}
+            refreshControl={
+              <RefreshControl
+                refreshing={isConversationLoading}
+                onRefresh={() => refetchConversation()}
+              />
+            }
+            ListEmptyComponent={
+              <EmptyList textToShow="Vous n'avez aucun message." />
+            }
+          />
+        </RequestError>
+      </RequestLoader>
     </MainScreen>
   );
 }

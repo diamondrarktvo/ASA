@@ -39,4 +39,11 @@ export default {
   /**======FAVORITE ===== */
   FAVORITE_SELLER_URL: "/favorite/seller",
   FAVORITE_PRODUCT_URL: "/favorite/product",
+
+  /*******NOTIFICATION*** */
+  GET_ALL_NOTIFICATION_BY_USER_URL: "/notification",
+
+  /*******CONVERSATION*** */
+  GET_CONVERSATION_URL: "/conversation",
+  POST_MESSAGE: "/send_message",
 };

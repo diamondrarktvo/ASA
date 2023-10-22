@@ -11,7 +11,7 @@
 
 ## User
 
-### Create User
+### Create User ["check"]
 
 - **URL**: `/user`
 - **Method**: POST
@@ -58,7 +58,7 @@
 }
 ```
 
-### Update User
+### Update User ["check"]
 
 - **URL**: `/user`
 - **Method**: PUT
@@ -111,7 +111,7 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 }
 ```
 
-### Get User
+### Get User ["check"]
 
 - **URL**: `/user/<int:pk>`
 - **Method**: GET
@@ -151,7 +151,7 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 
 ## Authentication
 
-### User Authentication Token
+### User Authentication Token ["check"]
 
 - **URL**: `/user/auth`
 - **Method**: POST
@@ -175,7 +175,7 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 
 ## Category
 
-### List Categories
+### List Categories ["check"]
 
 - **URL**: `/category`
 - **Method**: GET
@@ -198,7 +198,7 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 
 ## SubCategory
 
-### List SubCategories
+### List SubCategories ["check"]
 
 - **URL**: `/subcategory/<int:id_category>`
 - **Method**: GET
@@ -309,7 +309,7 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 
 ## Vendeur Favoris
 
-### Add new Favoris
+### Add new Favoris ["check"]
 
 - **URL**: `/follow/seller`
 - **Method**: Post
@@ -337,7 +337,7 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 }
 ```
 
-### List all follow
+### List all follow ["check"]
 
 - **URL**: `/follow/seller`
 - **Method**: Get
@@ -360,7 +360,7 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 ]
 ```
 
-### Delete favoris
+### Delete favoris ["check"]
 
 - **URL**: `/follow/seller/<int:pk>`
 - **Method**: Delete
@@ -504,7 +504,7 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 }
 ```
 
-### Get Product
+### Get Product ["check"]
 
 - **URL**: `/product/<int:pk>`
 - **Method**: GET
@@ -548,7 +548,7 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 }
 ```
 
-### Get All Product
+### Get All Product ["check"]
 
 - **URL**: `/product`
 - **Method**: GET
@@ -609,7 +609,7 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 
 ## PayementMethod
 
-### Create PayementMethod
+### Create PayementMethod ["check"]
 
 - **URL**: `/payementmethod`
 - **Method**: POST
@@ -671,7 +671,7 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 }
 ```
 
-### Get PayementMethod
+### Get PayementMethod ["check"]
 
 - **URL**: `/payementmethod/<int:pk>`
 - **Method**: GET
@@ -689,7 +689,7 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 }
 ```
 
-### Get All PayementMethod
+### Get All PayementMethod ["check"]
 
 - **URL**: `/payementmethod`
 - **Method**: GET
@@ -719,7 +719,7 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 
 ## Notification
 
-### List Notification
+### List Notification ["check"]
 
 - **URL**: `/notification`
 - **Method**: GET
@@ -748,12 +748,12 @@ Authorization: token 0cb6a0cc962b5211960676ae9a20ad650c206db2
 - **Need Authentication**:
 - **Response**: `Nocontent 204`
 
-## RealTime Notification with websocket
+## RealTime Notification with websocket ["check"]
 
 ```js
 // notificaiton/<nickname>
 const chatSocket = new WebSocket(
-  "ws://localhost:8000/ws/notificaiton/<nickname>",
+  "ws://localhost:8000/ws/notification/<nickname>",
   ["access_token", "<Token>"],
 );
 

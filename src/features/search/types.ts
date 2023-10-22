@@ -37,6 +37,7 @@ export type annonceType = {
     id: number;
     nickname: string;
     is_followed: boolean;
+    id_conversation: undefined | number;
   };
 };
 

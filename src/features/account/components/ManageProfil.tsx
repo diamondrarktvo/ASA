@@ -13,6 +13,7 @@ import {
   RequestLoader,
 } from "_shared";
 import { useMemo, useRef, useCallback, useState, useEffect } from "react";
+import * as ImagePicker from "expo-image-picker";
 import { Theme, Size } from "_theme";
 import { useTheme } from "@shopify/restyle";
 import { StyleSheet, ScrollView } from "react-native";
@@ -24,6 +25,7 @@ import { formatDate, storeObjectDataToAsyncStorage } from "_utils";
 import { useUpdateMutation } from "../authApi";
 import { ERROR_REGISTER, parseErrorMessage } from "../utilsAuth";
 import { RadioButton, Snackbar } from "react-native-paper";
+import { removeAccount, setAccount } from "../accountSlice";
 
 export default function ManageProfil() {
   const theme = useTheme<Theme>();
@@ -33,7 +35,7 @@ export default function ManageProfil() {
   const token = useAppSelector((state) => state.account.token);
   const [update, { isError, isLoading, status, error }] = useUpdateMutation();
   const [visibleSnackbar, setVisibleSnackbar] = useState(false);
-  const [checked, setChecked] = useState("yes");
+  const [imageImported, setImageImported] = useState<string[]>([]);
   const [valueForUpdate, setValueForUpdate] = useState({
     first_name: accountUser.first_name,
     last_name: accountUser.last_name,
@@ -45,6 +47,7 @@ export default function ManageProfil() {
     company_name: accountUser.company_name,
     unique_company_number: accountUser.unique_company_number,
     token: token,
+    image: accountUser.image,
   });
 
   //state data
@@ -75,27 +78,69 @@ export default function ManageProfil() {
     return;
   };
 
+  const pickImages = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      let newImageImportedArray = [...imageImported];
+      newImageImportedArray.push(result.assets[0].uri);
+      setImageImported(newImageImportedArray);
+    }
+  };
+
+  const removeThisImage = () => {
+    setImageImported([]);
+  };
+
   const handleSubmit = () => {
     update(valueForUpdate)
       .unwrap()
       .then((res) => {
         console.log("resAPI : ", res);
-        //dispatch(setAccount(res));
-        storeObjectDataToAsyncStorage("current_account", res.user);
+        dispatch(setAccount(res));
+        //storeObjectDataToAsyncStorage("current_account", res.user);
         closeBottomSheet();
       })
       .catch((e) => {
+        handleFetchError(e);
         setVisibleSnackbar(true);
       });
   };
 
+  const handleFetchError = (error: any) => {
+    if (error.detail?.includes("Invalid token")) {
+      return dispatch(removeAccount());
+    }
+  };
+
   //effect
-  useEffect(() => {
+
+  const handleChangeIsProfessionnal = () => {
     setValueForUpdate((prevState) => ({
       ...prevState,
-      is_professional: checked === "yes" ? true : false,
+      is_professional: !prevState.is_professional,
     }));
-  }, [checked]);
+  };
+
+  useEffect(() => {
+    if (imageImported.length !== 0) {
+      setValueForUpdate((prevState) => ({
+        ...prevState,
+        image: imageImported[0],
+      }));
+    } else {
+      setValueForUpdate((prevState) => ({
+        ...prevState,
+        image: accountUser.image || "",
+      }));
+    }
+  }, [imageImported]);
 
   return (
     <MainScreen typeOfScreen="stack">
@@ -115,7 +160,11 @@ export default function ManageProfil() {
             style={styles.box_with_shadow}
           >
             <Image
-              source={require("_images/logoASA.jpeg")}
+              source={
+                valueForUpdate.image
+                  ? { uri: valueForUpdate.image }
+                  : require("_images/logoASA.jpeg")
+              }
               style={{
                 width: Size.IMAGE_MEDIUM,
                 height: Size.IMAGE_MEDIUM,
@@ -260,19 +309,85 @@ export default function ManageProfil() {
                 value="yes"
                 color={colors.primary}
                 disabled={true}
-                status={checked === "yes" ? "checked" : "unchecked"}
-                onPress={() => setChecked("yes")}
+                status={
+                  valueForUpdate.is_professional === true
+                    ? "checked"
+                    : "unchecked"
+                }
+                onPress={() => handleChangeIsProfessionnal()}
               />
               <Text variant="tertiary">Oui</Text>
               <RadioButton
                 value="no"
                 color={colors.primary}
                 disabled={true}
-                status={checked === "no" ? "checked" : "unchecked"}
-                onPress={() => setChecked("no")}
+                status={
+                  valueForUpdate.is_professional === false
+                    ? "checked"
+                    : "unchecked"
+                }
+                onPress={() => handleChangeIsProfessionnal()}
               />
               <Text variant="tertiary">Non</Text>
             </Row>
+
+            {/**Company name */}
+            {valueForUpdate.is_professional && (
+              <>
+                <Text
+                  variant="primary"
+                  color="text"
+                  fontWeight="bold"
+                  marginLeft="xs"
+                  textDecorationLine="underline"
+                >
+                  Nom de la société:
+                </Text>
+                <Input
+                  placeholder="Nom de la société"
+                  editable={false}
+                  value={
+                    valueForUpdate.company_name
+                      ? valueForUpdate.company_name
+                      : ""
+                  }
+                  iconLeft={{
+                    name: "mail",
+                    size: Size.ICON_SMALL,
+                    color: colors.text,
+                  }}
+                />
+              </>
+            )}
+
+            {/**Unique company number */}
+            {valueForUpdate.is_professional && (
+              <>
+                <Text
+                  variant="primary"
+                  color="text"
+                  fontWeight="bold"
+                  marginLeft="xs"
+                  textDecorationLine="underline"
+                >
+                  Numéro unique de la société:
+                </Text>
+                <Input
+                  placeholder="Numéro unique de la société"
+                  editable={false}
+                  value={
+                    valueForUpdate.unique_company_number
+                      ? valueForUpdate.unique_company_number
+                      : ""
+                  }
+                  iconLeft={{
+                    name: "mail",
+                    size: Size.ICON_SMALL,
+                    color: colors.text,
+                  }}
+                />
+              </>
+            )}
 
             {/**Numéro téléphone */}
             <Text
@@ -330,7 +445,13 @@ export default function ManageProfil() {
               style={styles.box_with_shadow}
             >
               <Image
-                source={require("_images/logoASA.jpeg")}
+                source={
+                  imageImported.length !== 0
+                    ? { uri: imageImported[0] }
+                    : valueForUpdate.image
+                    ? { uri: valueForUpdate.image }
+                    : require("_images/logoASA.jpeg")
+                }
                 style={{
                   width: Size.IMAGE_LARGE,
                   height: Size.IMAGE_LARGE,
@@ -338,7 +459,23 @@ export default function ManageProfil() {
                   marginBottom: spacing.s,
                 }}
               />
-              <TouchableOpacity>
+              {imageImported.length !== 0 && (
+                <Box
+                  position={"absolute"}
+                  bottom={70}
+                  right={95}
+                  backgroundColor={"primary"}
+                  borderRadius={"hg"}
+                >
+                  <Icon
+                    name="close"
+                    size={Size.ICON_LARGE}
+                    color={colors.black}
+                    onPress={() => removeThisImage()}
+                  />
+                </Box>
+              )}
+              <TouchableOpacity onPress={pickImages}>
                 <Row
                   alignItems="center"
                   backgroundColor="mainBackground"
@@ -508,18 +645,107 @@ export default function ManageProfil() {
                 <RadioButton
                   value="yes"
                   color={colors.primary}
-                  status={checked === "yes" ? "checked" : "unchecked"}
-                  onPress={() => setChecked("yes")}
+                  status={
+                    valueForUpdate.is_professional === true
+                      ? "checked"
+                      : "unchecked"
+                  }
+                  onPress={() => handleChangeIsProfessionnal()}
                 />
                 <Text variant="tertiary">Oui</Text>
                 <RadioButton
                   value="no"
                   color={colors.primary}
-                  status={checked === "no" ? "checked" : "unchecked"}
-                  onPress={() => setChecked("no")}
+                  status={
+                    valueForUpdate.is_professional === false
+                      ? "checked"
+                      : "unchecked"
+                  }
+                  onPress={() => handleChangeIsProfessionnal()}
                 />
                 <Text variant="tertiary">Non</Text>
               </Row>
+
+              {/**Company name */}
+              {valueForUpdate.is_professional && (
+                <>
+                  <Text
+                    variant="primary"
+                    color="text"
+                    fontWeight="bold"
+                    marginLeft="xs"
+                    textDecorationLine="underline"
+                  >
+                    Nom de la société:
+                  </Text>
+                  <Input
+                    placeholder="Nom de la société"
+                    value={
+                      valueForUpdate.company_name
+                        ? valueForUpdate.company_name
+                        : ""
+                    }
+                    onChangeText={(text) =>
+                      setValueForUpdate((prevState) => ({
+                        ...prevState,
+                        company_name: text,
+                      }))
+                    }
+                    iconLeft={{
+                      name: "mail",
+                      size: Size.ICON_SMALL,
+                      color: colors.text,
+                    }}
+                    errorMessage={
+                      valueForUpdate.company_name === "" ||
+                      valueForUpdate.company_name === null
+                        ? "Nom de la société requis."
+                        : ""
+                    }
+                  />
+                </>
+              )}
+
+              {/**Unique company number */}
+              {valueForUpdate.is_professional && (
+                <>
+                  <Text
+                    variant="primary"
+                    color="text"
+                    fontWeight="bold"
+                    marginLeft="xs"
+                    textDecorationLine="underline"
+                  >
+                    Numéro unique de la société:
+                  </Text>
+                  <Input
+                    placeholder="Numéro unique de la société"
+                    inputMode="numeric"
+                    value={
+                      valueForUpdate.unique_company_number
+                        ? valueForUpdate.unique_company_number
+                        : ""
+                    }
+                    onChangeText={(text) =>
+                      setValueForUpdate((prevState) => ({
+                        ...prevState,
+                        unique_company_number: text,
+                      }))
+                    }
+                    iconLeft={{
+                      name: "mail",
+                      size: Size.ICON_SMALL,
+                      color: colors.text,
+                    }}
+                    errorMessage={
+                      valueForUpdate.unique_company_number === "" ||
+                      valueForUpdate.unique_company_number === null
+                        ? "Numéro de la société requis."
+                        : ""
+                    }
+                  />
+                </>
+              )}
 
               {/**Numéro téléphone */}
               <Text

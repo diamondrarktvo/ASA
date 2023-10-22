@@ -26,7 +26,7 @@ const CheckUserConnected: React.FC<Props> = ({
     accountUser.is_account_connected,
   );
 
-  console.log("user mus login : ==========>", userMustLogin);
+  console.log("user must login : ==========>", userMustLogin);
 
   useEffect(() => {
     if (accountUser.is_account_connected) {

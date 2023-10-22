@@ -12,7 +12,13 @@ export type StackParamList = {
   personnal_information: undefined;
   manage_payment: undefined;
   create_account_screen: undefined;
-  manage_message: { emetteur: string };
+  manage_message: {
+    emetteur: {
+      nickName: string;
+      id_seller: number;
+      id_conversation: number | null;
+    };
+  };
   //stepper screens
   stepper_screen_1: undefined;
   stepper_screen_2: undefined;

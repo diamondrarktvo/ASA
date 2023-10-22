@@ -23,11 +23,13 @@ import {
   useGetAllFavoriteSellerByUserQuery,
   useDeleteFavoriteSellerMutation,
 } from "../favoriteApi";
-import { useAppSelector } from "_store";
+import { useAppDispatch, useAppSelector } from "_store";
 import { favoriteType } from "../types";
+import { removeAccount } from "../../account/accountSlice";
 
 export default function AnnouncerScreen() {
   const navigation = useNavigation<manageMessageNavigationTypes>();
+  const dispatch = useAppDispatch();
   const [visibleSnackbar, setVisibleSnackbar] = useState(false);
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
@@ -54,6 +56,12 @@ export default function AnnouncerScreen() {
     },
   ] = useDeleteFavoriteSellerMutation();
 
+  const handleFetchError = (error: any) => {
+    if (error.detail?.includes("Invalid token")) {
+      return dispatch(removeAccount());
+    }
+  };
+
   //all logics
   const handleDeleteFavorite = (id: number) => {
     deleteFavoriteSeller({ id, token })
@@ -65,6 +73,7 @@ export default function AnnouncerScreen() {
       .catch((error) => {
         setVisibleSnackbar(true);
         setMessageSnackBar(error.message);
+        handleFetchError(error);
       });
   };
 
@@ -93,7 +102,11 @@ export default function AnnouncerScreen() {
           <TouchableOpacity
             onPress={() =>
               navigation.navigate("manage_message", {
-                emetteur: item.seller.nickname,
+                emetteur: {
+                  nickName: item.seller.nickname,
+                  id_seller: item.seller.id,
+                  id_conversation: item.seller.id_conversation ?? null,
+                },
               })
             }
           >

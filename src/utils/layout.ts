@@ -1,3 +1,5 @@
+import * as Notifications from "expo-notifications";
+
 export function formatDate(dateString: string) {
   const date = new Date(dateString);
 
@@ -26,4 +28,19 @@ export function getFirstCharactere(text: string) {
     return "";
   }
   return text.charAt(0).toUpperCase();
+}
+
+export async function pushNotification(
+  title: string,
+  body: string,
+  data?: any,
+) {
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: title,
+      body: body,
+      data: { data: data && data },
+    },
+    trigger: { seconds: 2 },
+  });
 }
