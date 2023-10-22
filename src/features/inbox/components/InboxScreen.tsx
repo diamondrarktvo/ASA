@@ -82,9 +82,6 @@ export default function InboxScreen() {
     setUserMustLogin(!isUserConnected);
   }, [isUserConnected]);
 
-  console.log("userMustLogin inbox : ", userMustLogin);
-  console.log("isUserConnected inbox : ", isUserConnected);
-
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Boite de réception">
       <CheckUserConnected

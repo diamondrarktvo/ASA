@@ -1,11 +1,6 @@
 import { StyleSheet } from "react-native";
 import { useMemo, useRef, useCallback, useEffect, useState } from "react";
-import {
-  useRoute,
-  RouteProp,
-  useNavigation,
-  useFocusEffect,
-} from "@react-navigation/native";
+import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 import {
   MainScreen,
   Text,
@@ -211,15 +206,6 @@ export default function ManageMessageScreen() {
   useEffect(() => {
     handleFetchError(errorMessage);
   }, [errorMessage]);
-
-  useFocusEffect(
-    useCallback(() => {
-      if (isMessageLoading) {
-        refetchMessage();
-      }
-    }, [messages]),
-  );
-
   useEffect(() => {
     if (is_conversation_started) {
       setIsMessageAlreadyStart(true);
@@ -234,7 +220,7 @@ export default function ManageMessageScreen() {
     }
   }, [allMessage]);
 
-  console.log(errorMessage);
+  console.log("isMessageFetching : ", isMessageFetching);
 
   return (
     <MainScreen typeOfScreen="stack">

@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { useCallback, useEffect } from "react";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import {
   Icon,
   MainScreen,
@@ -55,14 +55,6 @@ export default function MessageScreen() {
   useEffect(() => {
     handleFetchError(errorConversation);
   }, [errorConversation]);
-
-  useFocusEffect(
-    useCallback(() => {
-      if (isConversationLoading) {
-        refetchConversation();
-      }
-    }, []),
-  );
 
   //components
   const renderItemMessage: ListRenderItem<conversationTypes> = ({ item }) => {

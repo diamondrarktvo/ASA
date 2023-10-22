@@ -6,6 +6,9 @@ export const BaseApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: Config.BASE_URL,
   }),
+  refetchOnReconnect: true,
+  refetchOnFocus: true,
+  refetchOnMountOrArgChange: true,
   tagTypes: [
     "Auth",
     "FavoriteSeller",
