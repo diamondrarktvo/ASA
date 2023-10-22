@@ -2,9 +2,12 @@ import config from "_config";
 import { BaseApi } from "_services";
 import {
   conversationTypes,
+  messageType,
   newConversationTypesAfterTransform,
   participantTypes,
 } from "./types";
+
+const SOCKET_URL = process.env.EXPO_PUBLIC_API_HOST || "";
 
 const chatApi = BaseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -56,7 +59,51 @@ const chatApi = BaseApi.injectEndpoints({
           Authorization: `token ${arg.token}`,
         },
       }),
-      providesTags: ["Conversation"],
+      async onCacheEntryAdded(
+        arg,
+        { updateCachedData, cacheDataLoaded, cacheEntryRemoved },
+      ) {
+        // create a websocket connection when the cache subscription starts
+        const ws = new WebSocket(
+          `${SOCKET_URL}/ws/conversation/${arg.id_conversation}`,
+          ["access_token", `${arg.token || ""}`],
+        );
+        ws.onopen = (e) => {
+          console.log("Connexion réussi sur le socket message!");
+        };
+
+        // verify error
+        ws.onclose = (e) => {
+          console.log("error ", e);
+          console.log("Connexion échoué sur le socket message!");
+        };
+        try {
+          // wait for the initial query to resolve before proceeding
+          await cacheDataLoaded;
+
+          // when data is received from the socket connection to the server,
+          // if it is a message and for the appropriate channel,
+          // update our query result with the received message
+          const listener = (event: MessageEvent) => {
+            const data = JSON.parse(event.data);
+            console.log("data : ", data.message);
+            if (!data) return;
+
+            updateCachedData((draft) => {
+              draft.unshift(data.message);
+            });
+          };
+
+          ws.addEventListener("message", listener);
+        } catch {
+          // no-op in case `cacheEntryRemoved` resolves before `cacheDataLoaded`,
+          // in which case `cacheDataLoaded` will throw
+        }
+        // cacheEntryRemoved will resolve when the cache subscription is no longer active
+        await cacheEntryRemoved;
+        // perform cleanup steps once the `cacheEntryRemoved` promise resolves
+        ws.close();
+      },
     }),
     startConversation: build.mutation<
       conversationTypes,

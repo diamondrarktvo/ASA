@@ -29,7 +29,6 @@ import {
 import { removeAccount } from "../../account/accountSlice";
 import { GiftedChat, Send } from "react-native-gifted-chat";
 import AnimatedLottieView from "lottie-react-native";
-import { useSocketMessage } from "../hooks/useSocketMessage";
 import { messageGiftedProps } from "../types";
 
 export default function ManageMessageScreen() {
@@ -42,10 +41,6 @@ export default function ManageMessageScreen() {
   const [isMessageAlreadyStart, setIsMessageAlreadyStart] = useState(false);
   const { nickName, id_seller, id_conversation } =
     useRoute<RouteProp<StackParamList, "manage_message">>()?.params.emetteur;
-  const { messageCurrent } = useSocketMessage({
-    id_conversation: id_conversation,
-    token: accountUser.token,
-  });
 
   const {
     data: allMessage,
@@ -141,9 +136,9 @@ export default function ManageMessageScreen() {
   };
 
   const onSend = useCallback((messages = []) => {
-    setMessages((previousMessages) =>
-      GiftedChat.append(previousMessages, messages),
-    );
+    setMessages((previousMessages) => {
+      return GiftedChat.append(previousMessages, messages);
+    });
   }, []);
 
   const handleStartConversation = () => {
