@@ -42,6 +42,7 @@ export default function MessageScreen() {
     accountUser.token ? accountUser.token : undefined,
     {
       skip: !accountUser.token,
+      pollingInterval: 2000,
     },
   );
 
@@ -111,9 +112,7 @@ export default function MessageScreen() {
 
   return (
     <MainScreen typeOfScreen="stack">
-      <RequestLoader
-        isLoading={isConversationLoading || isConversationFetching}
-      >
+      <RequestLoader isLoading={isConversationLoading}>
         <RequestError
           isError={isConversationError}
           errorStatus={errorConversation?.status}
@@ -126,7 +125,7 @@ export default function MessageScreen() {
             extraData={allConversation}
             refreshControl={
               <RefreshControl
-                refreshing={isConversationFetching}
+                refreshing={isConversationLoading}
                 onRefresh={() => refetchConversation()}
               />
             }

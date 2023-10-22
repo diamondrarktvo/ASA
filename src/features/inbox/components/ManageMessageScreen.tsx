@@ -57,7 +57,7 @@ export default function ManageMessageScreen() {
   } = useGetMessageInConversationQuery(
     {
       token: accountUser.token ? accountUser.token : undefined,
-      id_conversation: id_conversation ? id_conversation : null,
+      id_conversation: id_conversation ?? null,
     },
     {
       skip: !accountUser.token || !id_conversation,
