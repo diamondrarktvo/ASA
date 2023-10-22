@@ -1,11 +1,6 @@
 import config from "_config";
 import { BaseApi } from "_services";
-import {
-  conversationTypes,
-  messageType,
-  newConversationTypesAfterTransform,
-  participantTypes,
-} from "./types";
+import { conversationTypes } from "./types";
 
 const SOCKET_URL = process.env.EXPO_PUBLIC_API_HOST || "";
 
