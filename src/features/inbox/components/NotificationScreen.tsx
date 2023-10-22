@@ -36,6 +36,7 @@ export default function NotificationScreen() {
     error: errorNotification,
   } = useGetAllNotificationQuery(token, {
     skip: !token,
+    pollingInterval: 2000,
   });
 
   //all render
@@ -78,9 +79,7 @@ export default function NotificationScreen() {
 
   return (
     <MainScreen typeOfScreen="stack" paddingHorizontal="none">
-      <RequestLoader
-        isLoading={isNotificationLoading || isNotificationFetching}
-      >
+      <RequestLoader isLoading={isNotificationLoading}>
         <RequestError
           isError={isErrorNotification}
           errorStatus={errorNotification?.status}
@@ -93,7 +92,7 @@ export default function NotificationScreen() {
             estimatedItemSize={200}
             refreshControl={
               <RefreshControl
-                refreshing={isNotificationFetching}
+                refreshing={isNotificationLoading}
                 onRefresh={() => refetchNotificationSeller()}
               />
             }
