@@ -5,6 +5,7 @@ import { Size, Theme } from "_theme";
 import { useTheme } from "@shopify/restyle";
 import { stepper6NavigationTypes } from "../../types";
 import { CheckBox } from "@rneui/themed";
+import { RadioButton } from "react-native-paper";
 import { useState } from "react";
 
 export default function StepFive() {
@@ -12,6 +13,7 @@ export default function StepFive() {
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
   const [price, setPrice] = useState({ product: "0", livraison: "0" });
+  const [paymentPriceMethod, setPaymentPriceMethod] = useState("online");
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
@@ -25,7 +27,7 @@ export default function StepFive() {
           Etape 5:
         </Text>
         <Text variant={"title"} color="black">
-          Rensigner ici les prix de votre produit :
+          Renseigner ici les prix de votre produit :
         </Text>
         <Text variant={"tertiary"} color={"error"}>
           NB: Seulement le prix du produit est obligatoire (en Ariary)
@@ -33,7 +35,7 @@ export default function StepFive() {
         <Box marginVertical={"xs"}>
           <Input
             placeholder="Prix du produit"
-            value={price.product}
+            value={price.product !== "0" ? price.product : ""}
             onChangeText={(text) =>
               setPrice((prevState) => {
                 return {
@@ -50,7 +52,7 @@ export default function StepFive() {
           />
           <Input
             placeholder="Le prix de la livraison locale"
-            value={price.livraison}
+            value={price.livraison !== "0" ? price.livraison : ""}
             onChangeText={(text) =>
               setPrice((prevState) => {
                 return {
@@ -80,19 +82,29 @@ export default function StepFive() {
             editable={false}
           />
         </Box>
-        <Box flexDirection={"row"} flexWrap={"wrap"}>
-          <CheckBox
-            containerStyle={{ backgroundColor: colors.mainBackground }}
-            checkedColor={colors.primary}
-            checked={true}
-            title="Payement en ligne"
-          />
-          <CheckBox
-            containerStyle={{ backgroundColor: colors.mainBackground }}
-            checkedColor={colors.primary}
-            checked={false}
-            title="Payement après la livraison"
-          />
+        <Box flexDirection={"column"}>
+          <Box flexDirection={"row"} alignItems={"center"}>
+            <RadioButton
+              value="yes"
+              color={colors.primary}
+              status={paymentPriceMethod === "online" ? "checked" : "unchecked"}
+              onPress={() => setPaymentPriceMethod("online")}
+            />
+            <Text variant="tertiary">Payement en ligne</Text>
+          </Box>
+          <Box flexDirection={"row"} alignItems={"center"}>
+            <RadioButton
+              value="no"
+              color={colors.primary}
+              status={
+                paymentPriceMethod === "afterLivraison"
+                  ? "checked"
+                  : "unchecked"
+              }
+              onPress={() => setPaymentPriceMethod("afterLivraison")}
+            />
+            <Text variant="tertiary">Payement à la livraison</Text>
+          </Box>
         </Box>
         <Row alignItems={"center"} justifyContent="space-around">
           <Button

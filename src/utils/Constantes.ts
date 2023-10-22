@@ -3,7 +3,7 @@ import {
   announcerTypes,
   categorieTypes,
   searchTypes,
-  errorCodeTypes,
+  errorConstants,
 } from "./Types";
 
 const annonce: annonceTypes[] = [
@@ -43,22 +43,27 @@ const categorie: categorieTypes[] = [
   {
     id: 1,
     title: "Categorie 1",
+    image: require("_images/logo.jpg"),
   },
   {
     id: 2,
     title: "Categorie 2",
+    image: require("_images/logo.jpg"),
   },
   {
     id: 3,
     title: "Categorie 3",
+    image: require("_images/logo.jpg"),
   },
   {
     id: 4,
     title: "Categorie 4",
+    image: require("_images/logo.jpg"),
   },
   {
     id: 5,
     title: "Categorie 5",
+    image: require("_images/logo.jpg"),
   },
 ];
 
@@ -103,13 +108,16 @@ const search: searchTypes[] = [
   { id: 5, searchValue: "Pantalon jean bleue" },
 ];
 
-const ERROR_CODE: errorCodeTypes = {
+const ERROR_CONSTANT: errorConstants = {
   SUCCESS: 200,
   CREATED: 201,
   BAD_REQUEST: 400,
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,
-  NOT_FOUND: 404,
+  NOT_FOUND: {
+    status: 404,
+    message: "User matching query does not exist.",
+  },
   INTERNAL_SERVER_ERROR: 500,
 };
 
@@ -121,6 +129,6 @@ export const Constantes = {
     search,
   },
   error: {
-    ERROR_CODE,
+    ERROR_CONSTANT,
   },
 };

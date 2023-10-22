@@ -1,14 +1,27 @@
-import { Constantes } from "./Constantes";
+//constantes
+export { Constantes } from "./Constantes";
 
 //types
-import {
-  annonceTypes,
-  categorieTypes,
+export {
   announcerTypes,
   searchTypes,
+  SuccessHttpResponse,
+  ApiInformationType,
 } from "./Types";
 
-export { Constantes };
+//storage
+export {
+  storeDataToAsyncStorage,
+  getDataToAsyncStorage,
+  storeObjectDataToAsyncStorage,
+  getObjectDataToAsyncStorage,
+  removeDataToAsyncStorage,
+} from "./Storage";
 
-//types
-export { annonceTypes, categorieTypes, announcerTypes, searchTypes };
+//function utils
+export {
+  formatDate,
+  formatDateToString,
+  getFirstCharactere,
+  pushNotification,
+} from "./layout";

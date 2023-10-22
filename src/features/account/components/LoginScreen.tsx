@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 //FIXME: cette importation est un exception pour ne pas avoir le WARNING recycle
 import Text from "../../../shared/Text";
 import TouchableOpacity from "../../../shared/TouchableOpacity";
@@ -10,50 +10,94 @@ import Icon from "../../../shared/Icon";
 import Box from "../../../shared/Box";
 import RequestLoader from "../../../shared/RequestLoader";
 import RequestError from "../../../shared/RequestError";
-import { createAccountNavigationTypes, loginNavigationTypes } from "../types";
+import { loginValuesTypes } from "../types";
 import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "@shopify/restyle";
 import { Theme, Size } from "_theme";
 import { useLoginMutation } from "../authApi";
-import config from "_config";
+import { useAppDispatch } from "_store";
+import { setAccount } from "../accountSlice";
+import { Constantes, storeObjectDataToAsyncStorage } from "_utils";
+import { Snackbar } from "react-native-paper";
 
 type LoginScreenProps = {
   title?: string;
   subTitle: string;
+  setUserMustLogin?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const LoginScreen = ({ title, subTitle }: LoginScreenProps) => {
+const LoginScreen = ({
+  title,
+  subTitle,
+  setUserMustLogin,
+}: LoginScreenProps) => {
   const theme = useTheme<Theme>();
-  const { primary, secondary, white } = theme.colors;
+  const dispatch = useAppDispatch();
+  const { primary, secondary } = theme.colors;
   const [hidePassword, setHidePassword] = useState(true);
-  const navigation = useNavigation<createAccountNavigationTypes>();
-  const [loginValue, setLoginValue] = useState<loginNavigationTypes>({
+  const [visibleSnackbar, setVisibleSnackbar] = useState(false);
+  const navigation = useNavigation();
+  const [loginValue, setLoginValue] = useState<loginValuesTypes>({
     phone_number: "",
     password: "",
   });
-  //const [isLoading, setIsLoading] = useState(false);
-  //const [isError, setIsError] = useState(false);
-  const [login, { isError, isLoading, status, data, error }] =
-    useLoginMutation();
+  const [errorNotFound, setErrorNotFound] = useState<boolean>(false);
+  const [login, { isError, isLoading, status, error }] = useLoginMutation();
 
   //logic
   const handleSubmit = () => {
-    console.log("lasa ny call api login ..");
     login(loginValue)
       .unwrap()
       .then((res) => {
-        console.log("vita le api pr ..");
-        console.log("res : ", res);
+        if (res && res.token) {
+          setUserMustLogin && setUserMustLogin(false);
+          dispatch(setAccount(res));
+          storeObjectDataToAsyncStorage("token", res.token);
+          storeObjectDataToAsyncStorage("current_account", res.user);
+        }
+      })
+      .catch((e) => {
+        console.log("error login :", e);
+        if (e.status === Constantes.error.ERROR_CONSTANT.NOT_FOUND.status) {
+          setVisibleSnackbar(true);
+        }
       });
   };
+
+  const onDismissSnackBar = () => setVisibleSnackbar(false);
+
+  //components
+
+  //effects
+  useEffect(() => {
+    if (visibleSnackbar) {
+      setTimeout(() => {
+        setVisibleSnackbar(false);
+      }, 4000);
+    }
+  }, [visibleSnackbar]);
+
+  useEffect(() => {
+    if (
+      error &&
+      error.status === Constantes.error.ERROR_CONSTANT.NOT_FOUND.status
+    ) {
+      setErrorNotFound(true);
+    } else {
+      setErrorNotFound(false);
+    }
+  }, [error]);
 
   return (
     <Box paddingVertical="m" backgroundColor="mainBackground">
       <RequestLoader isLoading={isLoading}>
         <RequestError
-          isError={isError}
-          errorType={401}
-          errorMessage="Login erreur "
+          isError={
+            isError &&
+            error &&
+            error.status !== Constantes.error.ERROR_CONSTANT.NOT_FOUND.status
+          }
+          errorStatus={error?.status}
           onRefresh={() => console.log("onRefresh")}
         >
           <Box>
@@ -69,28 +113,37 @@ const LoginScreen = ({ title, subTitle }: LoginScreenProps) => {
             </Row>
             <Column>
               <Input
-                placeholder="Email*"
-                onChangeText={(text) =>
+                placeholder="Numéro télephone*"
+                errorMessage={
+                  errorNotFound ? "Numéro télephone incorrect" : undefined
+                }
+                onChangeText={(text) => {
                   setLoginValue((prevState) => ({
                     ...prevState,
                     phone_number: text,
-                  }))
-                }
+                  }));
+                  setErrorNotFound(false);
+                }}
               />
               <Input
                 placeholder="Mot de passe*"
+                errorMessage={
+                  errorNotFound ? "Mot de passe incorrect" : undefined
+                }
+                secureTextEntry={hidePassword}
                 iconRight={{
                   name: hidePassword ? "visibility" : "visibility-off",
                   size: 32,
                   color: secondary,
                   onPress: () => setHidePassword(!hidePassword),
                 }}
-                onChangeText={(text) =>
+                onChangeText={(text) => {
                   setLoginValue((prevState) => ({
                     ...prevState,
                     password: text,
-                  }))
-                }
+                  }));
+                  setErrorNotFound(false);
+                }}
               />
             </Column>
             <Row marginVertical="m">
@@ -105,6 +158,7 @@ const LoginScreen = ({ title, subTitle }: LoginScreenProps) => {
             <Button
               variant={"primary"}
               label="Se connecter"
+              bold="bold"
               onPress={() => handleSubmit()}
             />
           </Box>
@@ -129,8 +183,31 @@ const LoginScreen = ({ title, subTitle }: LoginScreenProps) => {
               />
             </TouchableOpacity>
           </Row>
+          <Row marginTop="xs">
+            <TouchableOpacity
+              onPress={() =>
+                setUserMustLogin ? setUserMustLogin(false) : null
+              }
+            >
+              <Text variant={"primary"} textDecorationLine={"underline"}>
+                Retour
+              </Text>
+            </TouchableOpacity>
+          </Row>
         </RequestError>
       </RequestLoader>
+      <Snackbar
+        visible={visibleSnackbar}
+        onDismiss={onDismissSnackBar}
+        action={{
+          label: "Ok",
+          onPress: () => {
+            // Do something
+          },
+        }}
+      >
+        Utilisateur non trouvé, veuillez vérifier vos identifiants!
+      </Snackbar>
     </Box>
   );
 };

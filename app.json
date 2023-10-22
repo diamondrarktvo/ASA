@@ -5,6 +5,7 @@
     "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "jsEngine": "hermes",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -30,9 +31,9 @@
       },
       "config": {
         "googleMaps": {
-           "apiKey": "AIzaSyCfeV-dI5JYOl39mJDqsyL8xtRykQHU29I"
+          "apiKey": "AIzaSyCfeV-dI5JYOl39mJDqsyL8xtRykQHU29I"
         }
-     },
+      },
       "package": "com.diamondrarktvo.asa"
     },
     "web": {

@@ -1,7 +1,7 @@
 import { TouchableHighlight, ActivityIndicator } from "react-native";
 import Text from "./Text";
 import Box from "./Box";
-import { Theme } from "_theme";
+import { Size, Theme, theme } from "_theme";
 import React from "react";
 import {
   border,
@@ -13,13 +13,19 @@ import {
   SpacingProps,
   VariantProps,
 } from "@shopify/restyle";
+import Icon from "./Icon";
+import Row from "./Row";
 
 type ButtonProps = {
   onPress?: () => void;
-  variant: "primary" | "secondary" | "tertiary";
+  variant: "primary" | "secondary" | "tertiary" | "buttonWithShadow";
   loading?: boolean;
   label: React.ReactNode;
+  iconRight?: string;
+  iconLeft?: string;
+  bold?: string | number | undefined;
   disabled?: boolean;
+  color?: string;
 } & Partial<BoxProps<Theme>>;
 
 type BoxButtonProps = SpacingProps<Theme> &
@@ -37,9 +43,15 @@ const Button: React.FC<ButtonProps> = ({
   variant,
   loading,
   label,
+  iconRight,
+  bold,
+  borderLeftColor,
+  iconLeft,
   disabled,
+  color = "white",
   ...rest
 }) => {
+  const { primary, secondary } = theme.colors;
   return (
     <TouchableHighlight
       onPress={onPress}
@@ -47,16 +59,33 @@ const Button: React.FC<ButtonProps> = ({
       disabled={disabled}
     >
       <BoxButton
-        variant={variant}
+        variant={disabled ? "tertiary" : variant}
         paddingVertical="s"
-        paddingHorizontal="s"
+        paddingHorizontal="xxs"
         borderRadius={"xs"}
         {...rest}
       >
         {loading ? (
           <ActivityIndicator color="white" />
         ) : (
-          <Text variant="button">{label}</Text>
+          <Row
+            alignItems="center"
+            justifyContent={iconLeft || iconRight ? "space-between" : "center"}
+          >
+            {iconLeft && (
+              <Icon name={iconLeft} size={Size.ICON_MEDIUM} color={secondary} />
+            )}
+            <Text variant="secondary" color={color} fontWeight={bold}>
+              {label}
+            </Text>
+            {iconRight && (
+              <Icon
+                name={iconRight}
+                size={Size.ICON_MEDIUM}
+                color={secondary}
+              />
+            )}
+          </Row>
         )}
       </BoxButton>
     </TouchableHighlight>

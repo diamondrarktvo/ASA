@@ -1,29 +1,49 @@
 import Box, { BoxProps } from "./Box";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import LoginScreen from "../features/account/components/LoginScreen";
+import { useAppSelector } from "_store";
 
 type Props = {
   children: React.ReactNode;
-  isUserLogged: boolean;
+  userMustLogin?: boolean;
+  setUserMustLogin?: React.Dispatch<React.SetStateAction<boolean>>;
   titleIfNotConnected?: string;
   subTitleIfNotConnected: string;
 } & Partial<BoxProps>;
 
 const CheckUserConnected: React.FC<Props> = ({
   children,
-  isUserLogged,
+  userMustLogin,
+  setUserMustLogin,
   titleIfNotConnected,
   subTitleIfNotConnected,
   ...props
 }) => {
+  const accountUser = useAppSelector((state) => state.account);
+
+  console.log(
+    "accountUser.is_account_connected ==================> : ",
+    accountUser.is_account_connected,
+  );
+
+  console.log("user must login : ==========>", userMustLogin);
+
+  useEffect(() => {
+    if (accountUser.is_account_connected) {
+      setUserMustLogin && setUserMustLogin(false);
+    }
+  }, [accountUser]);
+
   return (
     <Box flex={1} backgroundColor="mainBackground" {...props}>
-      {isUserLogged ? (
+      {(accountUser.is_account_connected && !userMustLogin) ||
+      (!accountUser.is_account_connected && !userMustLogin) ? (
         children
       ) : (
         <LoginScreen
           title={titleIfNotConnected}
           subTitle={subTitleIfNotConnected}
+          setUserMustLogin={setUserMustLogin}
         />
       )}
     </Box>

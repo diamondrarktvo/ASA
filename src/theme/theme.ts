@@ -16,6 +16,7 @@ const palette = {
   black: "#0B0B0B",
   offBlack: "#252525",
   blue: "#2652AA",
+  transparent: "transparent",
 };
 
 const theme = createTheme({
@@ -23,6 +24,7 @@ const theme = createTheme({
     mainBackground: palette.white,
     mainForeground: palette.black,
     primary: palette.orangePrimary,
+    primaryDark: palette.orangeDark,
     secondary: palette.grey, //grey
     orangeDark: palette.orangeDark,
     error: palette.redBordeaux,
@@ -33,9 +35,11 @@ const theme = createTheme({
     offBlack: palette.offBlack,
     text: palette.black,
     textPrimaryColor: palette.orangePrimary,
+    transparent: palette.transparent,
   },
   spacing: {
     none: "0%",
+    xxs: "1%",
     xs: "2%",
     s: "4%",
     m: "8%",
@@ -57,6 +61,7 @@ const theme = createTheme({
   },
   borderRadii: {
     none: 0,
+    xxs: 4,
     xs: 8,
     sm: 16,
     md: 24,
@@ -88,6 +93,21 @@ const theme = createTheme({
       backgroundColor: "secondary",
       color: "black",
       borderColor: "secondary",
+    },
+    buttonWithShadow: {
+      backgroundColor: "white",
+      width: "95%",
+      mx: "xs",
+      borderWidth: 1,
+      borderColor: "white",
+      shadowColor: "black",
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
     },
   },
 });

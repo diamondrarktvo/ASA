@@ -10,9 +10,11 @@ import AccountScreen from "./account/components/AccountScreen";
 import ManageMessageScreen from "./inbox/components/ManageMessageScreen";
 import CreateAccountScreen from "./account/components/CreateAccountScreen";
 import PersonnalInformation from "./account/components/PersonnalInformation";
+import ManagePayment from "./account/components/ManagePayment";
 
 //COMPONENTS REUSABLE
 import ManageProfil from "./account/components/ManageProfil";
+import ProductDetailScreen from "./search/components/ProductDetailScreen";
 
 //stepper
 import StepOne from "./publish/components/addPublishStep/stepOne";
@@ -37,7 +39,9 @@ export {
   ManageProfil,
   ManageMessageScreen,
   PersonnalInformation,
+  ManagePayment,
   SearchItem,
+  ProductDetailScreen,
   //stepper
   StepOne,
   StepTwo,

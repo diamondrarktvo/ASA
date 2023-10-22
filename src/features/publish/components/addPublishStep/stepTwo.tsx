@@ -13,15 +13,21 @@ import {
 import { Size, Theme } from "_theme";
 import { useTheme } from "@shopify/restyle";
 import { stepper3NavigationTypes } from "../../types";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { ScrollView } from "react-native-gesture-handler";
+import { useAppDispatch, useAppSelector } from "_store";
+import { selectors, setProduct } from "../../publishSlice";
 
 export default function StepTwo() {
   const navigation = useNavigation<stepper3NavigationTypes>();
+  const dispatch = useAppDispatch();
   const theme = useTheme<Theme>();
-  const [imageImported, setImageImported] = useState<boolean | string>(true);
+  const [imageImported, setImageImported] = useState<string[]>([]);
   const { borderRadii, colors } = theme;
+  const currentProduct = useAppSelector(selectors.selectProductToPublish);
+  const [valueForStepper, setValueForStepper] = useState(currentProduct);
+  const [disableButton, setDisableButton] = useState(true);
 
   //function
   const pickImages = async () => {
@@ -33,12 +39,37 @@ export default function StepTwo() {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
-      setImageImported(result.assets[0].uri);
+      let newImageImportedArray = [...imageImported];
+      newImageImportedArray.push(result.assets[0].uri);
+      setImageImported(newImageImportedArray);
     }
   };
+
+  const removeThisImage = (index: number) => {
+    let newImageImportedArray = [...imageImported];
+    newImageImportedArray.splice(index, 1);
+    setImageImported(newImageImportedArray);
+  };
+
+  const handleContinueStepper = () => {
+    if (imageImported.length !== 0) {
+      //console.log("valueForStepper step before dispatch : ", valueForStepper);
+      dispatch(setProduct(valueForStepper));
+      navigation.navigate("stepper_screen_3");
+    }
+  };
+
+  //all effects
+  useEffect(() => {
+    if (imageImported.length !== 0) {
+      setValueForStepper((prevState) => ({
+        ...prevState,
+        uploaded_images: imageImported,
+      }));
+      setDisableButton(false);
+    }
+  }, [imageImported]);
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
@@ -60,22 +91,24 @@ export default function StepTwo() {
           </Text>
           <Box marginVertical={"xs"}>
             <Box flexDirection={"column"} flex={1} alignItems={"center"}>
-              <Box
-                borderWidth={1}
-                height={100}
-                width={100}
-                justifyContent={"center"}
-                borderStyle={"dashed"}
-              >
-                <Icon
-                  name="image"
-                  size={Size.ICON_LARGE}
-                  color={colors.text}
-                  onPress={() => pickImages()}
-                />
-              </Box>
+              {imageImported.length < 3 ? (
+                <Box
+                  borderWidth={1}
+                  height={100}
+                  width={100}
+                  justifyContent={"center"}
+                  borderStyle={"dashed"}
+                >
+                  <Icon
+                    name="image"
+                    size={Size.ICON_LARGE}
+                    color={colors.text}
+                    onPress={() => pickImages()}
+                  />
+                </Box>
+              ) : null}
             </Box>
-            {imageImported && (
+            {imageImported.length !== 0 && (
               <Box
                 marginVertical={"s"}
                 flexDirection={"row"}
@@ -83,60 +116,27 @@ export default function StepTwo() {
                 justifyContent={"space-evenly"}
                 flexWrap={"wrap"}
               >
-                <Box>
-                  <Image
-                    source={require("_images/logoASA.jpeg")}
-                    style={{
-                      width: Size.IMAGE_MEDIUM,
-                      height: Size.IMAGE_MEDIUM,
-                      borderRadius: borderRadii.xs,
-                      marginVertical: 5,
-                    }}
-                  />
-                  <Box position={"absolute"} top={8} right={8}>
-                    <Icon
-                      name="close"
-                      size={Size.ICON_MEDIUM}
-                      color={colors.black}
+                {imageImported.map((uriImage, index) => (
+                  <Box key={index}>
+                    <Image
+                      source={{ uri: uriImage }}
+                      style={{
+                        width: Size.IMAGE_MEDIUM,
+                        height: Size.IMAGE_MEDIUM,
+                        borderRadius: borderRadii.xs,
+                        marginVertical: 5,
+                      }}
                     />
+                    <Box position={"absolute"} top={8} right={8}>
+                      <Icon
+                        name="close"
+                        size={Size.ICON_MEDIUM}
+                        color={colors.black}
+                        onPress={() => removeThisImage(index)}
+                      />
+                    </Box>
                   </Box>
-                </Box>
-                <Box>
-                  <Image
-                    source={require("_images/logoASA.jpeg")}
-                    style={{
-                      width: Size.IMAGE_MEDIUM,
-                      height: Size.IMAGE_MEDIUM,
-                      borderRadius: borderRadii.xs,
-                      marginVertical: 5,
-                    }}
-                  />
-                  <Box position={"absolute"} top={8} right={8}>
-                    <Icon
-                      name="close"
-                      size={Size.ICON_MEDIUM}
-                      color={colors.black}
-                    />
-                  </Box>
-                </Box>
-                <Box>
-                  <Image
-                    source={require("_images/logoASA.jpeg")}
-                    style={{
-                      width: Size.IMAGE_MEDIUM,
-                      height: Size.IMAGE_MEDIUM,
-                      borderRadius: borderRadii.xs,
-                      marginVertical: 5,
-                    }}
-                  />
-                  <Box position={"absolute"} top={8} right={8}>
-                    <Icon
-                      name="close"
-                      size={Size.ICON_MEDIUM}
-                      color={colors.black}
-                    />
-                  </Box>
-                </Box>
+                ))}
               </Box>
             )}
           </Box>
@@ -155,9 +155,10 @@ export default function StepTwo() {
               alignItems={"center"}
               justifyContent={"center"}
               width={150}
+              disabled={disableButton}
               variant={"secondary"}
               label="Continuer"
-              onPress={() => navigation.navigate("stepper_screen_3")}
+              onPress={() => handleContinueStepper()}
             />
           </Row>
         </Box>
