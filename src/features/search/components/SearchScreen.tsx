@@ -24,14 +24,16 @@ import { useGetCategoryQuery } from "../../sharedApi";
 import { CategoryType } from "../../types";
 import { useEffect, useState } from "react";
 import { useGetAllAnnonceQuery } from "../searchApi";
-import { useAppSelector } from "_store";
+import { useAppDispatch, useAppSelector } from "_store";
 import {
   useAddFavoriteAnnonceMutation,
   useDeleteFavoriteAnnonceMutation,
 } from "../../favorite/favoriteApi";
+import { removeAccount } from "../../account/accountSlice";
 
 export default function SearchScreen() {
   const navigation = useNavigation<searchItemNavigationTypes>();
+  const dispatch = useAppDispatch();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
   const accountUser = useAppSelector((state) => state.account);
@@ -117,7 +119,25 @@ export default function SearchScreen() {
       });
   };
 
-  //effect
+  const handleFetchError = (error: any) => {
+    if (error?.data?.detail?.includes("Invalid token")) {
+      return dispatch(removeAccount());
+    }
+  };
+
+  //all effects
+  useEffect(() => {
+    if (errorAnnonce) handleFetchError(errorAnnonce);
+    if (errorAddFavoriteAnnonce) handleFetchError(errorAddFavoriteAnnonce);
+    if (errorDeleteFavoriteAnnonce)
+      handleFetchError(errorDeleteFavoriteAnnonce);
+    if (errorCategory) handleFetchError(errorCategory);
+  }, [
+    errorAnnonce,
+    errorAddFavoriteAnnonce,
+    errorDeleteFavoriteAnnonce,
+    errorCategory,
+  ]);
 
   //components
   const renderItemCategorie: ListRenderItem<CategoryType> = ({ item }) => {
