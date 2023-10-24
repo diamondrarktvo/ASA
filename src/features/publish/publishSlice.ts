@@ -46,7 +46,24 @@ const publishSlice = createSlice({
       Object.assign(state, action.payload);
     },
     reinitializeProduct: (state) => {
-      state = initialState;
+      state = {
+        name: "",
+        description: "",
+        location: "",
+        price: 0,
+        sub_category_id: 0,
+        sub_category_name: "",
+        uploaded_images: [],
+        list_payement_method: [],
+        seller: 0,
+        phone_number_contact: "",
+        email_contact: "",
+        national_delivery_price: 0,
+        local_delivery_price: 0,
+        type: "",
+        quantity: 0,
+        payement_integrate: false,
+      };
     },
   },
   extraReducers: (builder) => {},

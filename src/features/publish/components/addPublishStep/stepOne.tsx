@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import {
   Box,
   Button,
-  Icon,
   Input,
   RequestError,
   RequestLoader,
@@ -15,7 +14,6 @@ import { RadioButton } from "react-native-paper";
 import { Size, Theme } from "_theme";
 import { Picker } from "@react-native-picker/picker";
 import { useTheme } from "@shopify/restyle";
-import { CheckBox } from "@rneui/themed";
 import { stepper2NavigationTypes } from "../../types";
 import {
   useGetCategoryQuery,
@@ -66,7 +64,7 @@ export default function StepOne() {
       ? allSubCategories[0]?.nom
       : "",
   );
-  const [productName, setProductName] = useState("");
+  const [productName, setProductName] = useState(currentProduct.name);
   const [disableButton, setDisableButton] = useState(true);
   const [typeProduct, setTypeProduct] = useState<"Offre" | "Recherche">(
     "Offre",
@@ -79,6 +77,8 @@ export default function StepOne() {
       navigation.navigate("stepper_screen_2");
     }
   };
+
+  console.log("currentProduct one: ", currentProduct);
 
   //all effects
   useEffect(() => {
