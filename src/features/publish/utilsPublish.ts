@@ -1,3 +1,6 @@
+import { criteriaType } from "../types";
+import { criteriaSelected } from "./types";
+
 export const isThisValueSelected = (
   criteriaSelected: { name: string; value: string | number }[] | [],
   value: string | number,
@@ -15,4 +18,20 @@ export const isThisValueSelected = (
   return !!valueFound; // si la valeur est trouvée dans valueFound donc ça retourne TRUE sinon si c'est undefined donc FALSE
 };
 
-export const isAllCriteria;
+export const isAllCriteriaRequiredSelected = (
+  allCriteria: criteriaType[],
+  criteriaSelected: criteriaSelected[],
+) => {
+  if (!allCriteria || allCriteria.length === 0) return false;
+  if (!criteriaSelected || criteriaSelected.length === 0) return false;
+
+  const criteriaSelectedNames = criteriaSelected.map((item) => item.name);
+
+  const criteriaNames = allCriteria.map((item) => item.name)?.slice(0, 3);
+
+  const isAllCriteriaSelected = criteriaNames.every((item) =>
+    criteriaSelectedNames.includes(item),
+  );
+
+  return isAllCriteriaSelected;
+};
