@@ -13,15 +13,14 @@ import {
 } from "_shared";
 import { Size, Theme } from "_theme";
 import { useTheme } from "@shopify/restyle";
-import { stepper4NavigationTypes } from "../../types";
-import { CheckBox } from "@rneui/themed";
+import { criteriaSelected, stepper4NavigationTypes } from "../../types";
 import { ScrollView } from "react-native-gesture-handler";
 import { useAppDispatch, useAppSelector } from "_store";
 import { selectors, setProduct } from "../../publishSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetCriteriaQuery } from "../../../sharedApi";
 import { RadioButton } from "react-native-paper";
-import { isThisValueSelected } from "../../utilsPublish";
+import { isAllCriteriaRequiredSelected } from "../../utilsPublish";
 
 export default function StepThree() {
   const navigation = useNavigation<stepper4NavigationTypes>();
@@ -34,9 +33,9 @@ export default function StepThree() {
     selectors.getCurrentSubCategorySelected,
   );
   const [disableButton, setDisableButton] = useState(true);
-  const [criteriaSelected, setCriteriaSelected] = useState<
-    { name: string; value: string | number }[]
-  >([]);
+  const [criteriaSelected, setCriteriaSelected] = useState<criteriaSelected[]>(
+    [],
+  );
 
   const {
     data: allCriteria,
@@ -50,7 +49,6 @@ export default function StepThree() {
   });
 
   console.log("criteriaSelected : ", criteriaSelected);
-  console.log("allCriteria : ", allCriteria.length);
 
   const handleContinueStepper = () => {
     if (true) {
@@ -84,6 +82,14 @@ export default function StepThree() {
       ]);
     }
   };
+
+  useEffect(() => {
+    if (allCriteria && allCriteria.length > 0) {
+      setDisableButton(
+        !isAllCriteriaRequiredSelected(allCriteria, criteriaSelected),
+      );
+    }
+  }, [allCriteria, criteriaSelected]);
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
