@@ -6,14 +6,41 @@ import { useTheme } from "@shopify/restyle";
 import { stepper6NavigationTypes } from "../../types";
 import { CheckBox } from "@rneui/themed";
 import { RadioButton } from "react-native-paper";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "_store";
+import { selectors, setProduct } from "../../publishSlice";
 
 export default function StepFive() {
   const navigation = useNavigation<stepper6NavigationTypes>();
+  const dispatch = useAppDispatch();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
+  const currentProduct = useAppSelector(selectors.selectProductToPublish);
+  const [valueForStepper, setValueForStepper] = useState(currentProduct);
+  const [disableButton, setDisableButton] = useState(true);
   const [price, setPrice] = useState({ product: "0", livraison: "0" });
   const [paymentPriceMethod, setPaymentPriceMethod] = useState("online");
+
+  const handleContinueStepper = () => {
+    //console.log("valueForStepper step before dispatch : ", valueForStepper);
+    dispatch(setProduct(valueForStepper));
+    navigation.navigate("stepper_screen_6");
+  };
+
+  //all effects
+  useEffect(() => {
+    setValueForStepper((prevState) => ({
+      ...prevState,
+      price: parseInt(price.product),
+      local_delivery_price: parseInt(price.livraison),
+      payement_integrate: paymentPriceMethod === "online" ? true : false,
+    }));
+    if (price.product) {
+      setDisableButton(false);
+    } else {
+      setDisableButton(true);
+    }
+  }, [price, paymentPriceMethod]);
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
@@ -36,14 +63,22 @@ export default function StepFive() {
           <Input
             placeholder="Prix du produit"
             value={price.product !== "0" ? price.product : ""}
-            onChangeText={(text) =>
-              setPrice((prevState) => {
-                return {
-                  ...prevState,
-                  product: text,
-                };
-              })
-            }
+            onChangeText={(text) => {
+              if (isNaN(text)) {
+                setPrice((prevState) => {
+                  return {
+                    ...prevState,
+                  };
+                });
+              } else {
+                setPrice((prevState) => {
+                  return {
+                    ...prevState,
+                    product: text,
+                  };
+                });
+              }
+            }}
             iconLeft={{
               name: "payment",
               size: Size.ICON_MEDIUM,
@@ -53,14 +88,22 @@ export default function StepFive() {
           <Input
             placeholder="Le prix de la livraison locale"
             value={price.livraison !== "0" ? price.livraison : ""}
-            onChangeText={(text) =>
-              setPrice((prevState) => {
-                return {
-                  ...prevState,
-                  livraison: text,
-                };
-              })
-            }
+            onChangeText={(text) => {
+              if (isNaN(text)) {
+                setPrice((prevState) => {
+                  return {
+                    ...prevState,
+                  };
+                });
+              } else {
+                setPrice((prevState) => {
+                  return {
+                    ...prevState,
+                    livraison: text,
+                  };
+                });
+              }
+            }}
             iconLeft={{
               name: "local-shipping",
               size: Size.ICON_MEDIUM,
@@ -70,8 +113,10 @@ export default function StepFive() {
           <Input
             placeholder="Le prix de la livraison nationale"
             value={
-              (
-                parseFloat(price.product) + parseFloat(price.livraison)
+              //vérifie si l'expression n'est pas NaN
+              (!isNaN(parseFloat(price.product) + parseFloat(price.livraison))
+                ? parseFloat(price.product) + parseFloat(price.livraison)
+                : 0
               ).toString() + " Ar"
             }
             iconLeft={{
@@ -121,9 +166,10 @@ export default function StepFive() {
             alignItems={"center"}
             justifyContent={"center"}
             width={150}
+            disabled={disableButton}
             variant={"secondary"}
             label="Continuer"
-            onPress={() => navigation.navigate("stepper_screen_6")}
+            onPress={() => handleContinueStepper()}
           />
         </Row>
       </Box>
