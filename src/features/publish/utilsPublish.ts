@@ -1,6 +1,12 @@
 import { criteriaType } from "../types";
 import { criteriaSelected } from "./types";
 
+/**
+ *
+ * @param criteriaSelected
+ * @param value
+ * @returns boolean
+ */
 export const isThisValueSelected = (
   criteriaSelected: { name: string; value: string | number }[] | [],
   value: string | number,
@@ -18,6 +24,12 @@ export const isThisValueSelected = (
   return !!valueFound; // si la valeur est trouvée dans valueFound donc ça retourne TRUE sinon si c'est undefined donc FALSE
 };
 
+/**
+ *
+ * @param allCriteria
+ * @param criteriaSelected
+ * @returns boolean
+ */
 export const isAllCriteriaRequiredSelected = (
   allCriteria: criteriaType[],
   criteriaSelected: criteriaSelected[],

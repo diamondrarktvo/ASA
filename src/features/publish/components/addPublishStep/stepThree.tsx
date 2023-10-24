@@ -58,6 +58,12 @@ export default function StepThree() {
     }
   };
 
+  /**
+   *
+   * @param criteriaName
+   * @param value
+   *
+   */
   const handleAddCriteriaForProduct = (
     criteriaName: string,
     value: string | number,
