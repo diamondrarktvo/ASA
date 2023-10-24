@@ -51,11 +51,9 @@ export default function StepThree() {
   console.log("criteriaSelected : ", criteriaSelected);
 
   const handleContinueStepper = () => {
-    if (true) {
-      //console.log("valueForStepper step before dispatch : ", valueForStepper);
-      dispatch(setProduct(valueForStepper));
-      navigation.navigate("stepper_screen_4");
-    }
+    //console.log("valueForStepper step before dispatch : ", valueForStepper);
+    dispatch(setProduct(valueForStepper));
+    navigation.navigate("stepper_screen_4");
   };
 
   /**
