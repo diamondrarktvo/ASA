@@ -58,31 +58,31 @@ export default function StepThree() {
 
   /**
    *
-   * @param criteriaName
+   * @param criteriaId
    * @param value
    *
    */
   const handleAddCriteriaForProduct = (
-    criteriaName: string,
+    criteriaId: number,
     value: string | number,
   ) => {
-    if (!criteriaName || !value) return;
+    if (!criteriaId || !value) return;
     let criteriaNameAlreadySelected =
       criteriaSelected.length > 0
-        ? criteriaSelected.map((criteria) => criteria.name)
+        ? criteriaSelected.map((criteriaItem) => criteriaItem.criteria)
         : [];
-    if (criteriaNameAlreadySelected.includes(criteriaName)) {
+    if (criteriaNameAlreadySelected.includes(criteriaId)) {
       let criteriaSelectedUpdated = criteriaSelected.filter(
-        (criteria) => criteria.name !== criteriaName,
+        (criteriaItem) => criteriaItem.criteria !== criteriaId,
       );
       setCriteriaSelected([
         ...criteriaSelectedUpdated,
-        { name: criteriaName, value: value },
+        { criteria: criteriaId, value: value },
       ]);
     } else {
       setCriteriaSelected([
         ...criteriaSelected,
-        { name: criteriaName, value: value },
+        { criteria: criteriaId, value: value },
       ]);
     }
   };
@@ -134,11 +134,12 @@ export default function StepThree() {
                             placeholder={criteria.name}
                             value={
                               criteriaSelected.find(
-                                (item) => item.name === criteria.name,
+                                (itemSelected) =>
+                                  itemSelected.criteria === criteria.id,
                               )?.value as string
                             }
                             onChangeText={(text) =>
-                              handleAddCriteriaForProduct(criteria.name, text)
+                              handleAddCriteriaForProduct(criteria.id, text)
                             }
                           />
                         )}
@@ -163,7 +164,7 @@ export default function StepThree() {
                                 }
                                 onPress={() =>
                                   handleAddCriteriaForProduct(
-                                    criteria.name,
+                                    criteria.id,
                                     response.value,
                                   )
                                 }

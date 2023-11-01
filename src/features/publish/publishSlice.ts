@@ -7,8 +7,9 @@ export interface publishStateType {
   price: number;
   sub_category_id: number;
   sub_category_name: string;
-  uploaded_images: string[] | [];
+  uploaded_images: { base64: string }[] | [];
   list_payement_method: string[] | [];
+  product_criteria: { criteria: number; value: string | number }[] | [];
   seller: number;
   phone_number_contact: string;
   email_contact: string;
@@ -28,6 +29,7 @@ const initialState: publishStateType = {
   sub_category_name: "",
   uploaded_images: [],
   list_payement_method: [],
+  product_criteria: [],
   seller: 0,
   phone_number_contact: "",
   email_contact: "",
@@ -55,6 +57,7 @@ const publishSlice = createSlice({
         sub_category_name: "",
         uploaded_images: [],
         list_payement_method: [],
+        product_criteria: [],
         seller: 0,
         phone_number_contact: "",
         email_contact: "",

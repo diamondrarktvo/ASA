@@ -18,12 +18,15 @@ import * as ImagePicker from "expo-image-picker";
 import { ScrollView } from "react-native-gesture-handler";
 import { useAppDispatch, useAppSelector } from "_store";
 import { selectors, setProduct } from "../../publishSlice";
+import { convertUriImageToBase64 } from "../../utilsPublish";
 
 export default function StepTwo() {
   const navigation = useNavigation<stepper3NavigationTypes>();
   const dispatch = useAppDispatch();
   const theme = useTheme<Theme>();
-  const [imageImported, setImageImported] = useState<string[]>([]);
+  const [imageImported, setImageImported] = useState<
+    { base64: string; uriDefault: string }[] | []
+  >([]);
   const { borderRadii, colors } = theme;
   const currentProduct = useAppSelector(selectors.selectProductToPublish);
   const [valueForStepper, setValueForStepper] = useState(currentProduct);
@@ -41,7 +44,10 @@ export default function StepTwo() {
 
     if (!result.canceled) {
       let newImageImportedArray = [...imageImported];
-      newImageImportedArray.push(result.assets[0].uri);
+      newImageImportedArray.push({
+        base64: convertUriImageToBase64(result.assets[0].uri),
+        uriDefault: result.assets[0].uri,
+      });
       setImageImported(newImageImportedArray);
     }
   };
@@ -63,9 +69,12 @@ export default function StepTwo() {
   //all effects
   useEffect(() => {
     if (imageImported.length !== 0) {
+      let imageImportedBase64 = imageImported.map((image) => ({
+        base64: image.base64,
+      }));
       setValueForStepper((prevState) => ({
         ...prevState,
-        uploaded_images: imageImported,
+        uploaded_images: imageImportedBase64,
       }));
       setDisableButton(false);
     }
@@ -116,10 +125,10 @@ export default function StepTwo() {
                 justifyContent={"space-evenly"}
                 flexWrap={"wrap"}
               >
-                {imageImported.map((uriImage, index) => (
+                {imageImported.map((image, index) => (
                   <Box key={index}>
                     <Image
-                      source={{ uri: uriImage }}
+                      source={{ uri: image.uriDefault }}
                       style={{
                         width: Size.IMAGE_MEDIUM,
                         height: Size.IMAGE_MEDIUM,
