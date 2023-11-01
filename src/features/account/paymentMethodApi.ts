@@ -11,6 +11,7 @@ const paymentMethodApi = BaseApi.injectEndpoints({
         headers: {
           Authorization: `token ${arg.token}`,
         },
+        invalidatesTags: ["paymentMethod"],
       }),
     }),
     getAllPaymentMethod: build.query({
@@ -20,6 +21,7 @@ const paymentMethodApi = BaseApi.injectEndpoints({
         headers: {
           Authorization: `token ${arg}`,
         },
+        providesTags: ["paymentMethod"],
       }),
     }),
   }),

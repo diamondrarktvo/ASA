@@ -127,22 +127,22 @@ export default function ManagePayment() {
 
   //effect
   //TODO: de-comment it if update is OK
-  /*useEffect(() => {
+  useEffect(() => {
     if (allPaymentMethod && allPaymentMethod.length !== 0) {
       allPaymentMethod.map((item: paymentMethodState) => {
-        if (item.name === "MobileMoney") {
+        if (item.type === "MobileMoney") {
           setCheckPayment((prevState) => ({
             ...prevState,
             mobileMoney: true,
           }));
         }
-        if (item.name === "Paypal") {
+        if (item.type === "Paypal") {
           setCheckPayment((prevState) => ({
             ...prevState,
             payPal: true,
           }));
         }
-        if (item.name === "VISA") {
+        if (item.type === "VISA") {
           setCheckPayment((prevState) => ({
             ...prevState,
             visa: true,
@@ -150,7 +150,7 @@ export default function ManagePayment() {
         }
       });
     }
-  }, [allPaymentMethod]);*/
+  }, [allPaymentMethod]);
 
   useEffect(() => {
     if (visibleSnackbar) {
@@ -240,6 +240,29 @@ export default function ManagePayment() {
                 }
                 mt={"s"}
               />
+              {allPaymentMethod &&
+                allPaymentMethod.length !== 0 &&
+                allPaymentMethod.map((item: paymentMethodState) => {
+                  if (item.type === "MobileMoney") {
+                    return (
+                      <Row
+                        key={item.id}
+                        justifyContent="space-between"
+                        alignItems="center"
+                        mt="s"
+                      >
+                        <Text variant="secondary">+ {item.phone}</Text>
+                        <TouchableOpacity
+                          onPress={() => console.log("remove payment")}
+                        >
+                          <Text variant="secondary" color={"error"} mr="s">
+                            Delete
+                          </Text>
+                        </TouchableOpacity>
+                      </Row>
+                    );
+                  }
+                })}
               <Button
                 variant={"primary"}
                 my={"s"}
