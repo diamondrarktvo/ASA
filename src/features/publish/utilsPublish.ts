@@ -1,3 +1,4 @@
+import { base64Func } from "_utils";
 import { criteriaType } from "../types";
 import { criteriaSelected } from "./types";
 
@@ -46,4 +47,10 @@ export const isAllCriteriaRequiredSelected = (
   );
 
   return isAllCriteriaSelected;
+};
+
+export const convertUriImageToBase64 = (uri: string) => {
+  if (!uri) return "";
+  let base64Image = base64Func.btoa(uri);
+  return base64Image;
 };

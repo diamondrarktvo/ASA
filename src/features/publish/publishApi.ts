@@ -17,6 +17,7 @@ const publishApi = BaseApi.injectEndpoints({
           list_payement_method: arg.list_payement_method,
           seller: arg.seller,
           payement_integrate: arg.payement_integrate,
+          product_criteria: arg.product_criteria,
           quantity: arg.quantity,
           type: arg.type,
           local_delivery_price: arg.local_delivery_price,
