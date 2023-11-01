@@ -95,6 +95,15 @@ export default function StepThree() {
     }
   }, [allCriteria, criteriaSelected]);
 
+  useEffect(() => {
+    if (criteriaSelected.length !== 0) {
+      setValueForStepper((prevState) => ({
+        ...prevState,
+        product_criteria: criteriaSelected,
+      }));
+    }
+  }, [criteriaSelected]);
+
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
       <RequestLoader isLoading={isCriteriaFetching || isCriteriaLoading}>

@@ -38,12 +38,12 @@ export const isAllCriteriaRequiredSelected = (
   if (!allCriteria || allCriteria.length === 0) return false;
   if (!criteriaSelected || criteriaSelected.length === 0) return false;
 
-  const criteriaSelectedNames = criteriaSelected.map((item) => item.name);
+  const criteriaSelectedIds = criteriaSelected.map((item) => item.criteria);
 
-  const criteriaNames = allCriteria.map((item) => item.name)?.slice(0, 3);
+  const criteriaIds = allCriteria.map((item) => item.id)?.slice(0, 3);
 
-  const isAllCriteriaSelected = criteriaNames.every((item) =>
-    criteriaSelectedNames.includes(item),
+  const isAllCriteriaSelected = criteriaIds.every((item) =>
+    criteriaSelectedIds.includes(item),
   );
 
   return isAllCriteriaSelected;
