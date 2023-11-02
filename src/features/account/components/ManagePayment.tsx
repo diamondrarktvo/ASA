@@ -73,10 +73,15 @@ export default function ManagePayment() {
   } = useGetAllPaymentMethodQuery(token);
 
   const handleFetchError = (error: any) => {
-    if (error.detail?.includes("Invalid token")) {
+    if (error.detail && error.detail.includes("Invalid token")) {
+      return dispatch(removeAccount());
+    }
+    if (error.data && error.data.detail?.includes("Invalid token")) {
       return dispatch(removeAccount());
     }
   };
+
+  console.log("errorGetAllPaymentMethod : ", errorGetAllPaymentMethod);
 
   //all logic
   const handleAddPaymentMethod = async () => {
@@ -160,6 +165,10 @@ export default function ManagePayment() {
     }
   }, [allPaymentMethod]);
 
+  useEffect(() => {
+    handleFetchError(errorGetAllPaymentMethod);
+  }, [isErrorGetAllPaymentMethod, errorGetAllPaymentMethod]);
+
   useFocusEffect(
     useCallback(() => {
       console.log("allPaymentMethod : ", allPaymentMethod);
@@ -187,7 +196,7 @@ export default function ManagePayment() {
         <RequestError
           isError={isMobileMoneyError || isErrorGetAllPaymentMethod}
           errorStatus={error?.status || errorGetAllPaymentMethod?.status}
-          onRefresh={() => navigation.goBack()}
+          onRefresh={() => refetchGetAllPaymentMethod()}
         >
           <HeaderStackNavNormal title={"Méthodes de paiement"} />
 

@@ -79,8 +79,8 @@ export default function StepFive() {
               style: "cancel",
             },
             {
-              text: "OK",
-              onPress: () => {},
+              text: "Ajouter",
+              onPress: () => navigation.navigate("manage_payment"),
             },
           ],
         );
@@ -134,8 +134,8 @@ export default function StepFive() {
               style: "cancel",
             },
             {
-              text: "OK",
-              onPress: () => {},
+              text: "Ajouter",
+              onPress: () => navigation.navigate("manage_payment"),
             },
           ],
         );
