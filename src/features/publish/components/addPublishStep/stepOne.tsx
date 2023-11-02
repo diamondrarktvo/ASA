@@ -79,8 +79,6 @@ export default function StepOne() {
     }
   };
 
-  console.log("currentProduct one: ", currentProduct);
-
   //all effects
   useEffect(() => {
     setValueForStepper((prevState) => ({
