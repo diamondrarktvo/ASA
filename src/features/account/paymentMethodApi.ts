@@ -7,12 +7,12 @@ const paymentMethodApi = BaseApi.injectEndpoints({
       query: (arg) => ({
         url: config.POST_PAYMENT_METHOD_URL,
         method: "POST",
-        body: { phone: arg.phone, name: arg.name },
+        body: { phone: arg.phone, type: arg.type },
         headers: {
           Authorization: `token ${arg.token}`,
         },
-        invalidatesTags: ["paymentMethod"],
       }),
+      invalidatesTags: ["paymentMethod"],
     }),
     getAllPaymentMethod: build.query({
       query: (arg) => ({
@@ -21,8 +21,8 @@ const paymentMethodApi = BaseApi.injectEndpoints({
         headers: {
           Authorization: `token ${arg}`,
         },
-        providesTags: ["paymentMethod"],
       }),
+      providesTags: [{ type: "paymentMethod", id: "LIST" }],
     }),
   }),
   overrideExisting: true,
