@@ -51,7 +51,7 @@ export default function StepFive() {
     refetch: refetchGetAllPaymentMethod,
     error: errorGetAllPaymentMethod,
   } = useGetAllPaymentMethodQuery(token, {
-    skip: !token || paymentPriceMethod === "afterLivraison",
+    skip: !token,
   });
 
   const [valueForStepper, setValueForStepper] = useState(currentProduct);
@@ -97,7 +97,7 @@ export default function StepFive() {
       price: parseInt(price.product),
       local_delivery_price: parseInt(price.livraison),
       payement_integrate: paymentPriceMethod === "online" ? true : false,
-      payement_method: allPaymentMethod,
+      payement_method: paymentPriceMethod === "online" ? allPaymentMethod : [],
     }));
     if (price.product) {
       setDisableButton(false);
@@ -143,7 +143,7 @@ export default function StepFive() {
     } else {
       setUserMustLogin(!isUserConnected);
     }
-  }, []);
+  }, [isUserConnected]);
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
