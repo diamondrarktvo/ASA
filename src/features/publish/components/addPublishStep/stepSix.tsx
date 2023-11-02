@@ -6,12 +6,38 @@ import { useTheme } from "@shopify/restyle";
 import { stepper7NavigationTypes } from "../../types";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { useGetLocation } from "_hooks";
+import { useAppDispatch, useAppSelector } from "_store";
+import { selectors, setProduct } from "../../publishSlice";
+import { useEffect, useState } from "react";
 
 export default function StepSix() {
   const navigation = useNavigation<stepper7NavigationTypes>();
+  const dispatch = useAppDispatch();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
   const { position, errorMsgLocation } = useGetLocation();
+  const [disableButton, setDisableButton] = useState(true);
+  const [cityName, setCityName] = useState("Antananarivo");
+  const currentProduct = useAppSelector(selectors.selectProductToPublish);
+  const [valueForStepper, setValueForStepper] = useState(currentProduct);
+
+  //all effects
+  useEffect(() => {
+    setValueForStepper((prevState) => ({
+      ...prevState,
+      location: cityName,
+    }));
+    if (cityName !== "") {
+      setDisableButton(false);
+    }
+  }, [cityName, currentProduct]);
+
+  const handleContinueStepper = () => {
+    if (cityName !== "") {
+      dispatch(setProduct(valueForStepper));
+      navigation.navigate("stepper_screen_7");
+    }
+  };
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
@@ -34,7 +60,8 @@ export default function StepSix() {
         <Box marginVertical={"xs"}>
           <Input
             placeholder="ex: Antananarivo"
-            value="Antananarivo"
+            value={cityName}
+            onChangeText={(text) => setCityName(text)}
             iconLeft={{
               name: "place",
               size: Size.ICON_MEDIUM,
@@ -77,10 +104,11 @@ export default function StepSix() {
             height={50}
             alignItems={"center"}
             justifyContent={"center"}
+            disabled={disableButton}
             width={150}
             variant={"secondary"}
             label="Continuer"
-            onPress={() => navigation.navigate("stepper_screen_7")}
+            onPress={() => handleContinueStepper()}
           />
         </Row>
       </Box>

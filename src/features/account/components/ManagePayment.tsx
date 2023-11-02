@@ -27,8 +27,11 @@ import {
   useAddPaymentMethodMutation,
   useGetAllPaymentMethodQuery,
 } from "../paymentMethodApi";
-import { paymentMethodState, setPaymentMethod } from "../paymentMethodeSlice";
-import { useNavigation } from "@react-navigation/native";
+import {
+  paymentMethodStateType,
+  setPaymentMethod,
+} from "../paymentMethodeSlice";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { removeAccount } from "../accountSlice";
 
 export default function ManagePayment() {
@@ -46,7 +49,7 @@ export default function ManagePayment() {
   }>({ mobileMoney: false, payPal: false, visa: false });
   const [valueForMobileMoney, setValueForMobileMoney] = useState({
     phone: "",
-    name: "MobileMoney",
+    type: "MobileMoney",
     token: token,
   });
 
@@ -86,6 +89,11 @@ export default function ManagePayment() {
           ...prevState,
           mobileMoney: true,
         }));
+        setValueForMobileMoney({
+          phone: "",
+          type: "MobileMoney",
+          token: token,
+        });
         setVisibleSnackbar(true);
         setMessageForSnackbar("Le numéro de téléphone a été enregistré");
       })
@@ -129,7 +137,7 @@ export default function ManagePayment() {
   //TODO: de-comment it if update is OK
   useEffect(() => {
     if (allPaymentMethod && allPaymentMethod.length !== 0) {
-      allPaymentMethod.map((item: paymentMethodState) => {
+      allPaymentMethod.map((item: paymentMethodStateType) => {
         if (item.type === "MobileMoney") {
           setCheckPayment((prevState) => ({
             ...prevState,
@@ -151,6 +159,13 @@ export default function ManagePayment() {
       });
     }
   }, [allPaymentMethod]);
+
+  useFocusEffect(
+    useCallback(() => {
+      console.log("allPaymentMethod : ", allPaymentMethod);
+      dispatch(setPaymentMethod(allPaymentMethod));
+    }, []),
+  );
 
   useEffect(() => {
     if (visibleSnackbar) {
@@ -242,7 +257,7 @@ export default function ManagePayment() {
               />
               {allPaymentMethod &&
                 allPaymentMethod.length !== 0 &&
-                allPaymentMethod.map((item: paymentMethodState) => {
+                allPaymentMethod.map((item: paymentMethodStateType) => {
                   if (item.type === "MobileMoney") {
                     return (
                       <Row

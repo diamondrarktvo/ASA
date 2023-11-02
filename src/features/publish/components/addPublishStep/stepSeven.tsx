@@ -6,15 +6,19 @@ import {
   CheckUserConnected,
   Input,
   MainScreen,
+  RequestError,
+  RequestLoader,
   Row,
   Text,
 } from "_shared";
 import { Size, Theme } from "_theme";
 import { useTheme } from "@shopify/restyle";
-import { RadioButton } from "react-native-paper";
+import { RadioButton, Snackbar } from "react-native-paper";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "_store";
 import { reinitializeProduct, selectors } from "../../publishSlice";
+import { usePublishProductMutation } from "../../publishApi";
+import { removeAccount } from "../../../account/accountSlice";
 
 export default function StepSeven() {
   const navigation = useNavigation();
@@ -23,7 +27,10 @@ export default function StepSeven() {
   const { borderRadii, colors } = theme;
   const currentProduct = useAppSelector(selectors.selectProductToPublish);
   const accountUser = useAppSelector((state) => state.account.user);
+  const token = useAppSelector((state) => state.account.token);
   const [valueForStepper, setValueForStepper] = useState(currentProduct);
+  const [visibleSnackbar, setVisibleSnackbar] = useState(false);
+  const [messageSnackBar, setMessageSnackBar] = useState("");
   const isUserConnected = useAppSelector(
     (state) => state.account.is_account_connected,
   );
@@ -41,11 +48,41 @@ export default function StepSeven() {
     email: accountUser.email ?? "",
   });
 
+  const [
+    publishProduct,
+    {
+      isError: isErrorPublish,
+      isLoading: isLoadingPublish,
+      error: errorPublish,
+    },
+  ] = usePublishProductMutation();
+
+  const handleFetchError = (error: any) => {
+    if (error.data.detail?.includes("Invalid token")) {
+      return dispatch(removeAccount());
+    }
+  };
+
+  console.log("errorPublish : ", errorPublish);
+
   const handlePublish = () => {
     if (isUserConnected) {
       //console.log("valueForStepper step before dispatch : ", valueForStepper);
-      dispatch(reinitializeProduct());
-      navigation.navigate("main_tab", { screen: "publish_screen" });
+      publishProduct({ valueForStepper, token })
+        .unwrap()
+        .then((result) => {
+          console.log("result pub : ", result);
+          //dispatch(reinitializeProduct());
+          //navigation.navigate("main_tab", { screen: "publish_screen" });
+        })
+        .catch((error) => {
+          if (error.message) {
+            setVisibleSnackbar(true);
+            setMessageSnackBar(error.message);
+          }
+          console.log("error pub : ", error);
+          handleFetchError(error);
+        });
     } else {
       setUserMustLogin(!isUserConnected);
     }
@@ -66,199 +103,232 @@ export default function StepSeven() {
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
-      <CheckUserConnected
-        userMustLogin={userMustLogin}
-        setUserMustLogin={setUserMustLogin}
-        subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
-      >
-        <Box marginTop={"m"}>
-          <Text
-            variant={"primary"}
-            color={"blue"}
-            textDecorationLine={"underline"}
-            marginBottom={"xs"}
+      <RequestLoader isLoading={isLoadingPublish}>
+        <RequestError
+          isError={isErrorPublish}
+          errorStatus={errorPublish?.status}
+          onRefresh={() => handlePublish()}
+        >
+          <CheckUserConnected
+            userMustLogin={userMustLogin}
+            setUserMustLogin={setUserMustLogin}
+            subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
           >
-            Etape finale:
-          </Text>
-          <Text variant={"title"} color="black">
-            Configuration de votre contact
-          </Text>
-          <Text variant={"tertiary"} color={"error"}>
-            NB: Vous pouvez ici afficher votre numéro, mail en cochant les cases
-          </Text>
-          <Box marginVertical={"xs"}>
-            <Input
-              placeholder="Votre numéro téléphone"
-              value={contactSeller.phone_number}
-              iconLeft={{
-                name: "call",
-                size: Size.ICON_MEDIUM,
-                color: colors.text,
-              }}
-            />
-            <Row justifyContent="space-around" alignItems={"center"}>
-              <Text variant={"secondary"}>Afficher le numéro : </Text>
-              <Box flexDirection={"row"} alignItems={"center"}>
-                <RadioButton
-                  value={"yes"}
-                  color={colors.primary}
-                  status={
-                    valueOfRadioButton.showNumber.value === "yes"
-                      ? "checked"
-                      : "unchecked"
-                  }
-                  onPress={() =>
-                    setValueOfRadioButton((prevState) => {
-                      return {
-                        ...prevState,
-                        showNumber: { label: "Oui", value: "yes" },
-                      };
-                    })
-                  }
+            <Box marginTop={"m"}>
+              <Text
+                variant={"primary"}
+                color={"blue"}
+                textDecorationLine={"underline"}
+                marginBottom={"xs"}
+              >
+                Etape finale:
+              </Text>
+              <Text variant={"title"} color="black">
+                Configuration de votre contact
+              </Text>
+              <Text variant={"tertiary"} color={"error"}>
+                NB: Vous pouvez ici afficher votre numéro, mail en cochant les
+                cases
+              </Text>
+              <Box marginVertical={"xs"}>
+                <Input
+                  placeholder="Votre numéro téléphone"
+                  value={contactSeller.phone_number}
+                  /*onChangeText={(text) =>
+                    setContactSeller((prevState) => ({
+                      ...prevState,
+                      phone_number: text,
+                    }))
+                  }*/
+                  iconLeft={{
+                    name: "call",
+                    size: Size.ICON_MEDIUM,
+                    color: colors.text,
+                  }}
                 />
-                <Text variant="tertiary">Oui</Text>
-              </Box>
-              <Box flexDirection={"row"} alignItems={"center"}>
-                <RadioButton
-                  value={"no"}
-                  color={colors.primary}
-                  status={
-                    valueOfRadioButton.showNumber.value === "no"
-                      ? "checked"
-                      : "unchecked"
-                  }
-                  onPress={() =>
-                    setValueOfRadioButton((prevState) => {
-                      return {
-                        ...prevState,
-                        showNumber: { label: "No", value: "no" },
-                      };
-                    })
-                  }
+                <Row justifyContent="space-around" alignItems={"center"}>
+                  <Text variant={"secondary"}>Afficher le numéro : </Text>
+                  <Box flexDirection={"row"} alignItems={"center"}>
+                    <RadioButton
+                      value={"yes"}
+                      color={colors.primary}
+                      status={
+                        valueOfRadioButton.showNumber.value === "yes"
+                          ? "checked"
+                          : "unchecked"
+                      }
+                      onPress={() =>
+                        setValueOfRadioButton((prevState) => {
+                          return {
+                            ...prevState,
+                            showNumber: { label: "Oui", value: "yes" },
+                          };
+                        })
+                      }
+                    />
+                    <Text variant="tertiary">Oui</Text>
+                  </Box>
+                  <Box flexDirection={"row"} alignItems={"center"}>
+                    <RadioButton
+                      value={"no"}
+                      color={colors.primary}
+                      status={
+                        valueOfRadioButton.showNumber.value === "no"
+                          ? "checked"
+                          : "unchecked"
+                      }
+                      onPress={() =>
+                        setValueOfRadioButton((prevState) => {
+                          return {
+                            ...prevState,
+                            showNumber: { label: "No", value: "no" },
+                          };
+                        })
+                      }
+                    />
+                    <Text variant="tertiary">Non</Text>
+                  </Box>
+                </Row>
+                <Input
+                  placeholder="Votre adresse email"
+                  value={contactSeller.email}
+                  /*onChangeText={(text) =>
+                    setContactSeller((prevState) => ({
+                      ...prevState,
+                      email: text,
+                    }))
+                  }*/
+                  iconLeft={{
+                    name: "mail",
+                    size: Size.ICON_MEDIUM,
+                    color: colors.text,
+                  }}
                 />
-                <Text variant="tertiary">Non</Text>
+                <Row justifyContent="space-around" alignItems={"center"}>
+                  <Text variant={"secondary"}>Afficher le mail : </Text>
+                  <Box flexDirection={"row"} alignItems={"center"}>
+                    <RadioButton
+                      value={"yes"}
+                      color={colors.primary}
+                      status={
+                        valueOfRadioButton.showMail.value === "yes"
+                          ? "checked"
+                          : "unchecked"
+                      }
+                      onPress={() =>
+                        setValueOfRadioButton((prevState) => {
+                          return {
+                            ...prevState,
+                            showMail: { label: "Oui", value: "yes" },
+                          };
+                        })
+                      }
+                    />
+                    <Text variant="tertiary">Oui</Text>
+                  </Box>
+                  <Box flexDirection={"row"} alignItems={"center"}>
+                    <RadioButton
+                      value={"no"}
+                      color={colors.primary}
+                      status={
+                        valueOfRadioButton.showMail.value === "no"
+                          ? "checked"
+                          : "unchecked"
+                      }
+                      onPress={() =>
+                        setValueOfRadioButton((prevState) => {
+                          return {
+                            ...prevState,
+                            showMail: { label: "No", value: "no" },
+                          };
+                        })
+                      }
+                    />
+                    <Text variant="tertiary">Non</Text>
+                  </Box>
+                </Row>
+                <Text variant={"primaryBold"}>
+                  * Accepter le démarche commercial ?{" "}
+                </Text>
+                <Row justifyContent="space-around" alignItems={"center"}>
+                  <Box flexDirection={"row"} alignItems={"center"}>
+                    <RadioButton
+                      value={"yes"}
+                      color={colors.primary}
+                      status={
+                        valueOfRadioButton.acceptSalesApproach.value === "yes"
+                          ? "checked"
+                          : "unchecked"
+                      }
+                      onPress={() =>
+                        setValueOfRadioButton((prevState) => {
+                          return {
+                            ...prevState,
+                            acceptSalesApproach: { label: "Oui", value: "yes" },
+                          };
+                        })
+                      }
+                    />
+                    <Text variant="tertiary">Oui</Text>
+                  </Box>
+                  <Box flexDirection={"row"} alignItems={"center"}>
+                    <RadioButton
+                      value={"no"}
+                      color={colors.primary}
+                      status={
+                        valueOfRadioButton.acceptSalesApproach.value === "no"
+                          ? "checked"
+                          : "unchecked"
+                      }
+                      onPress={() =>
+                        setValueOfRadioButton((prevState) => {
+                          return {
+                            ...prevState,
+                            acceptSalesApproach: { label: "No", value: "no" },
+                          };
+                        })
+                      }
+                    />
+                    <Text variant="tertiary">Non</Text>
+                  </Box>
+                </Row>
               </Box>
-            </Row>
-            <Input
-              placeholder="Votre adresse email"
-              value={contactSeller.email}
-              iconLeft={{
-                name: "mail",
-                size: Size.ICON_MEDIUM,
-                color: colors.text,
-              }}
-            />
-            <Row justifyContent="space-around" alignItems={"center"}>
-              <Text variant={"secondary"}>Afficher le mail : </Text>
-              <Box flexDirection={"row"} alignItems={"center"}>
-                <RadioButton
-                  value={"yes"}
-                  color={colors.primary}
-                  status={
-                    valueOfRadioButton.showMail.value === "yes"
-                      ? "checked"
-                      : "unchecked"
-                  }
-                  onPress={() =>
-                    setValueOfRadioButton((prevState) => {
-                      return {
-                        ...prevState,
-                        showMail: { label: "Oui", value: "yes" },
-                      };
-                    })
-                  }
+              <Row alignItems={"center"} justifyContent="space-around">
+                <Button
+                  height={50}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  width={150}
+                  variant={"tertiary"}
+                  label="Précédent"
+                  onPress={() => navigation.goBack()}
                 />
-                <Text variant="tertiary">Oui</Text>
-              </Box>
-              <Box flexDirection={"row"} alignItems={"center"}>
-                <RadioButton
-                  value={"no"}
-                  color={colors.primary}
-                  status={
-                    valueOfRadioButton.showMail.value === "no"
-                      ? "checked"
-                      : "unchecked"
-                  }
-                  onPress={() =>
-                    setValueOfRadioButton((prevState) => {
-                      return {
-                        ...prevState,
-                        showMail: { label: "No", value: "no" },
-                      };
-                    })
-                  }
+                <Button
+                  height={50}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  width={150}
+                  variant={"primary"}
+                  label="Publier"
+                  onPress={() => handlePublish()}
                 />
-                <Text variant="tertiary">Non</Text>
-              </Box>
-            </Row>
-            <Text variant={"primaryBold"}>
-              * Accepter le démarche commercial ?{" "}
-            </Text>
-            <Row justifyContent="space-around" alignItems={"center"}>
-              <Box flexDirection={"row"} alignItems={"center"}>
-                <RadioButton
-                  value={"yes"}
-                  color={colors.primary}
-                  status={
-                    valueOfRadioButton.acceptSalesApproach.value === "yes"
-                      ? "checked"
-                      : "unchecked"
-                  }
-                  onPress={() =>
-                    setValueOfRadioButton((prevState) => {
-                      return {
-                        ...prevState,
-                        acceptSalesApproach: { label: "Oui", value: "yes" },
-                      };
-                    })
-                  }
-                />
-                <Text variant="tertiary">Oui</Text>
-              </Box>
-              <Box flexDirection={"row"} alignItems={"center"}>
-                <RadioButton
-                  value={"no"}
-                  color={colors.primary}
-                  status={
-                    valueOfRadioButton.acceptSalesApproach.value === "no"
-                      ? "checked"
-                      : "unchecked"
-                  }
-                  onPress={() =>
-                    setValueOfRadioButton((prevState) => {
-                      return {
-                        ...prevState,
-                        acceptSalesApproach: { label: "No", value: "no" },
-                      };
-                    })
-                  }
-                />
-                <Text variant="tertiary">Non</Text>
-              </Box>
-            </Row>
-          </Box>
-          <Row alignItems={"center"} justifyContent="space-around">
-            <Button
-              height={50}
-              alignItems={"center"}
-              justifyContent={"center"}
-              width={150}
-              variant={"tertiary"}
-              label="Précédent"
-              onPress={() => navigation.goBack()}
-            />
-            <Button
-              height={50}
-              alignItems={"center"}
-              justifyContent={"center"}
-              width={150}
-              variant={"primary"}
-              label="Publier"
-              onPress={() => handlePublish()}
-            />
-          </Row>
-        </Box>
-      </CheckUserConnected>
+              </Row>
+            </Box>
+          </CheckUserConnected>
+        </RequestError>
+      </RequestLoader>
+      <Snackbar
+        visible={visibleSnackbar}
+        onDismiss={() => setVisibleSnackbar(false)}
+        action={{
+          label: "Ok",
+          onPress: () => {
+            // Do something
+          },
+        }}
+      >
+        {messageSnackBar}
+      </Snackbar>
     </MainScreen>
   );
 }
