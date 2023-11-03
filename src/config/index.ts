@@ -36,6 +36,9 @@ export default {
   //GET ALL
   GET_PAYMENT_METHOD_URL: "/payementmethod",
 
+  //DELETE
+  DELETE_PAYMENT_METHOD_URL: "/payementmethod",
+
   /**======FAVORITE ===== */
   FAVORITE_SELLER_URL: "/favorite/seller",
   FAVORITE_PRODUCT_URL: "/favorite/product",

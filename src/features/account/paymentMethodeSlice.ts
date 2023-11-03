@@ -24,7 +24,6 @@ const paymentMethodSlice = createSlice({
       state,
       action: PayloadAction<paymentMethodStateType>,
     ) => {
-      console.log("Action payload pay: ", action.payload);
       state = [...state, action.payload];
     },
   },

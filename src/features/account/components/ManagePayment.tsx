@@ -25,6 +25,7 @@ import { formatDate, storeObjectDataToAsyncStorage } from "_utils";
 import { RadioButton, Snackbar } from "react-native-paper";
 import {
   useAddPaymentMethodMutation,
+  useDeleteOnePaymentMethodMutation,
   useGetAllPaymentMethodQuery,
 } from "../paymentMethodApi";
 import {
@@ -58,10 +59,18 @@ export default function ManagePayment() {
     {
       isError: isMobileMoneyError,
       isLoading: isMobileMoneyLoading,
-      status,
-      error,
+      error: errorAddMobileMoney,
     },
   ] = useAddPaymentMethodMutation();
+
+  const [
+    deleteOnePaymentMethod,
+    {
+      isError: isDeleteMobileMoneyError,
+      isLoading: isDeleteMobileMoneyLoading,
+      error: errorDeleteMobileMoney,
+    },
+  ] = useDeleteOnePaymentMethodMutation();
 
   const {
     data: allPaymentMethod,
@@ -84,8 +93,6 @@ export default function ManagePayment() {
       return dispatch(removeAccount());
     }
   };
-
-  console.log("errorGetAllPaymentMethod : ", errorGetAllPaymentMethod);
 
   //all logic
   const handleAddPaymentMethod = async () => {
@@ -113,6 +120,23 @@ export default function ManagePayment() {
         setVisibleSnackbar(true);
       });
   };
+
+  const handleDeleteOnePaymentMethod = async (id: number) => {
+    deleteOnePaymentMethod({ id, token })
+      .unwrap()
+      .then((res) => {
+        console.log("res delete method : ", res);
+        setVisibleSnackbar(true);
+        setMessageForSnackbar("Le numéro de téléphone a été supprimé");
+      })
+      .catch((e) => {
+        handleFetchError(e);
+        setMessageForSnackbar(e.data?.detail);
+        setVisibleSnackbar(true);
+      });
+  };
+
+  console.log("errorDeleteMobileMoney : ", errorDeleteMobileMoney);
 
   //bottomsheet
   const snapPoints = useMemo(() => [1, "80%"], []);
@@ -145,7 +169,7 @@ export default function ManagePayment() {
   //effect
   //TODO: de-comment it if update is OK
   useEffect(() => {
-    if (allPaymentMethod && allPaymentMethod.length !== 0) {
+    if (allPaymentMethod && allPaymentMethod.length > 0) {
       allPaymentMethod.map((item: paymentMethodStateType) => {
         if (item.type === "MobileMoney") {
           setCheckPayment((prevState) => ({
@@ -166,6 +190,8 @@ export default function ManagePayment() {
           }));
         }
       });
+    } else {
+      setCheckPayment({ mobileMoney: false, payPal: false, visa: false });
     }
   }, [allPaymentMethod]);
 
@@ -175,9 +201,9 @@ export default function ManagePayment() {
 
   useFocusEffect(
     useCallback(() => {
-      console.log("allPaymentMethod : ", allPaymentMethod);
+      console.log("allPaymentMethod e: ", allPaymentMethod);
       dispatch(setPaymentMethod(allPaymentMethod));
-    }, []),
+    }, [allPaymentMethod]),
   );
 
   useEffect(() => {
@@ -198,8 +224,16 @@ export default function ManagePayment() {
         }
       >
         <RequestError
-          isError={isMobileMoneyError || isErrorGetAllPaymentMethod}
-          errorStatus={error?.status || errorGetAllPaymentMethod?.status}
+          isError={
+            isMobileMoneyError ||
+            isErrorGetAllPaymentMethod ||
+            isDeleteMobileMoneyError
+          }
+          errorStatus={
+            errorGetAllPaymentMethod?.status ||
+            errorDeleteMobileMoney?.status ||
+            errorAddMobileMoney?.status
+          }
           onRefresh={() => refetchGetAllPaymentMethod()}
         >
           <HeaderStackNavNormal title={"Méthodes de paiement"} />
@@ -281,10 +315,14 @@ export default function ManagePayment() {
                       >
                         <Text variant="secondary">+ {item.phone}</Text>
                         <TouchableOpacity
-                          onPress={() => console.log("remove payment")}
+                          onPress={() => {
+                            if (item.id) {
+                              handleDeleteOnePaymentMethod(item.id);
+                            }
+                          }}
                         >
                           <Text variant="secondary" color={"error"} mr="s">
-                            Delete
+                            Supprimer
                           </Text>
                         </TouchableOpacity>
                       </Row>
