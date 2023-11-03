@@ -15,6 +15,7 @@ import {
   Text,
   TouchableOpacity,
 } from "_shared";
+import { useRoute } from "@react-navigation/native";
 import { ActivityIndicator, Snackbar } from "react-native-paper";
 import { useTheme } from "@shopify/restyle";
 import { Size, Theme } from "_theme";
@@ -33,14 +34,15 @@ import { removeAccount } from "../../account/accountSlice";
 
 export default function SearchScreen() {
   const navigation = useNavigation<searchItemNavigationTypes>();
+
   const dispatch = useAppDispatch();
   const theme = useTheme<Theme>();
+  const route = useRoute();
   const { borderRadii, colors } = theme;
   const accountUser = useAppSelector((state) => state.account);
   const [visibleSnackbar, setVisibleSnackbar] = useState(false);
   const [messageSnackBar, setMessageSnackBar] = useState("");
   const [userMustLogin, setUserMustLogin] = useState<boolean>(false);
-
   const {
     data: allCategories,
     isError: isErrorCategory,
@@ -268,6 +270,7 @@ export default function SearchScreen() {
             errorAddFavoriteAnnonce?.status
           }
           onRefresh={() => handleRefetch()}
+          isSearchScreen={route.name === "search_screen"}
         >
           <CheckUserConnected
             userMustLogin={userMustLogin}
