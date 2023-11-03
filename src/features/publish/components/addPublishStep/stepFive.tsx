@@ -164,7 +164,7 @@ export default function StepFive() {
           color={colors.black}
           containerStyle={{
             position: "relative",
-            right: -140,
+            right: -160,
           }}
           onPress={() => cancelPublish()}
         />
