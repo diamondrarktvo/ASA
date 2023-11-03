@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   CheckUserConnected,
+  Icon,
   Input,
   MainScreen,
   RequestError,
@@ -72,8 +73,8 @@ export default function StepSeven() {
         .unwrap()
         .then((result) => {
           console.log("result pub : ", result);
-          //dispatch(reinitializeProduct());
-          //navigation.navigate("main_tab", { screen: "publish_screen" });
+          dispatch(reinitializeProduct());
+          navigation.navigate("main_tab", { screen: "publish_screen" });
         })
         .catch((error) => {
           if (error.message) {
@@ -86,6 +87,11 @@ export default function StepSeven() {
     } else {
       setUserMustLogin(!isUserConnected);
     }
+  };
+
+  const cancelPublish = () => {
+    dispatch(reinitializeProduct());
+    navigation.navigate("main_tab", { screen: "publish_screen" });
   };
 
   //all effects
@@ -103,6 +109,18 @@ export default function StepSeven() {
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
+      <Box width={"100%"}>
+        <Icon
+          name="close"
+          size={Size.ICON_LARGE}
+          color={colors.black}
+          containerStyle={{
+            position: "relative",
+            right: -140,
+          }}
+          onPress={() => cancelPublish()}
+        />
+      </Box>
       <RequestLoader isLoading={isLoadingPublish}>
         <RequestError
           isError={isErrorPublish}

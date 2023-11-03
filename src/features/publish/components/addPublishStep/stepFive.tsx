@@ -20,6 +20,7 @@ import { RadioButton } from "react-native-paper";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "_store";
 import {
+  reinitializeProduct,
   selectors as selectorsProductToPublish,
   setProduct,
 } from "../../publishSlice";
@@ -27,7 +28,7 @@ import { useGetAllPaymentMethodQuery } from "../../../account/paymentMethodApi";
 import { paymentMethodStateType } from "../../../account/paymentMethodeSlice";
 
 export default function StepFive() {
-  const navigation = useNavigation<stepper6NavigationTypes>();
+  const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
@@ -90,6 +91,11 @@ export default function StepFive() {
     }
   };
 
+  const cancelPublish = () => {
+    dispatch(reinitializeProduct());
+    navigation.navigate("main_tab", { screen: "publish_screen" });
+  };
+
   //all effects
   useEffect(() => {
     setValueForStepper((prevState) => ({
@@ -147,6 +153,18 @@ export default function StepFive() {
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
+      <Box width={"100%"}>
+        <Icon
+          name="close"
+          size={Size.ICON_LARGE}
+          color={colors.black}
+          containerStyle={{
+            position: "relative",
+            right: -140,
+          }}
+          onPress={() => cancelPublish()}
+        />
+      </Box>
       <RequestLoader isLoading={isGetAllPaymentMethodLoading}>
         <RequestError
           isError={isErrorGetAllPaymentMethod}

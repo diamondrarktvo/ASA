@@ -3,15 +3,15 @@ import { useNavigation } from "@react-navigation/native";
 import { Box, Button, Icon, Input, MainScreen, Row, Text } from "_shared";
 import { Size, Theme } from "_theme";
 import { useTheme } from "@shopify/restyle";
-import { stepper7NavigationTypes } from "../../types";
+import { stepper2NavigationTypes, stepper7NavigationTypes } from "../../types";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { useGetLocation } from "_hooks";
 import { useAppDispatch, useAppSelector } from "_store";
-import { selectors, setProduct } from "../../publishSlice";
+import { reinitializeProduct, selectors, setProduct } from "../../publishSlice";
 import { useEffect, useState } from "react";
 
 export default function StepSix() {
-  const navigation = useNavigation<stepper7NavigationTypes>();
+  const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
@@ -39,8 +39,25 @@ export default function StepSix() {
     }
   };
 
+  const cancelPublish = () => {
+    dispatch(reinitializeProduct());
+    navigation.navigate("main_tab", { screen: "publish_screen" });
+  };
+
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
+      <Box width={"100%"}>
+        <Icon
+          name="close"
+          size={Size.ICON_LARGE}
+          color={colors.black}
+          containerStyle={{
+            position: "relative",
+            right: -140,
+          }}
+          onPress={() => cancelPublish()}
+        />
+      </Box>
       <Box marginTop={"m"}>
         <Text
           variant={"primary"}

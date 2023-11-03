@@ -1,6 +1,6 @@
 import { base64Func } from "_utils";
 import { criteriaType } from "../types";
-import { criteriaSelected } from "./types";
+import { criteriaSelected, stepper2NavigationTypes } from "./types";
 
 /**
  *

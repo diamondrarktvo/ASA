@@ -6,10 +6,10 @@ import { useTheme } from "@shopify/restyle";
 import { stepper5NavigationTypes } from "../../types";
 import { useAppDispatch, useAppSelector } from "_store";
 import { useEffect, useState } from "react";
-import { selectors, setProduct } from "../../publishSlice";
+import { reinitializeProduct, selectors, setProduct } from "../../publishSlice";
 
 export default function StepFour() {
-  const navigation = useNavigation<stepper5NavigationTypes>();
+  const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
@@ -24,6 +24,11 @@ export default function StepFour() {
       dispatch(setProduct(valueForStepper));
       navigation.navigate("stepper_screen_5");
     }
+  };
+
+  const cancelPublish = () => {
+    dispatch(reinitializeProduct());
+    navigation.navigate("main_tab", { screen: "publish_screen" });
   };
 
   //all effects
@@ -41,6 +46,18 @@ export default function StepFour() {
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
+      <Box width={"100%"}>
+        <Icon
+          name="close"
+          size={Size.ICON_LARGE}
+          color={colors.black}
+          containerStyle={{
+            position: "relative",
+            right: -140,
+          }}
+          onPress={() => cancelPublish()}
+        />
+      </Box>
       <Box marginTop={"m"}>
         <Text
           variant={"primary"}
