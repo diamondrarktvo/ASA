@@ -146,7 +146,12 @@ export default function SearchScreen() {
     return (
       <TouchableOpacity
         key={item.id}
-        onPress={() => navigation.navigate("search_item", { id_catg: item.id })}
+        onPress={() =>
+          navigation.navigate("search_item", {
+            id_catg: item.id,
+            typeOfSearch: "category",
+          })
+        }
       >
         <Box
           marginRight={"xs"}
