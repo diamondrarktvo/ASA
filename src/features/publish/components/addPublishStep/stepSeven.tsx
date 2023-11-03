@@ -59,7 +59,7 @@ export default function StepSeven() {
   ] = usePublishProductMutation();
 
   const handleFetchError = (error: any) => {
-    if (error.data.detail?.includes("Invalid token")) {
+    if (error && error.data && error.data.detail?.includes("Invalid token")) {
       return dispatch(removeAccount());
     }
   };

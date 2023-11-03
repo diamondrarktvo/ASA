@@ -98,33 +98,6 @@ export default function StepFive() {
 
   //all effects
   useEffect(() => {
-    setValueForStepper((prevState) => ({
-      ...prevState,
-      price: parseInt(price.product),
-      local_delivery_price: parseInt(price.livraison),
-      payement_integrate: paymentPriceMethod === "online" ? true : false,
-      payement_method: paymentPriceMethod === "online" ? allPaymentMethod : [],
-    }));
-    if (price.product) {
-      setDisableButton(false);
-    } else {
-      setDisableButton(true);
-    }
-  }, [price, paymentPriceMethod, allPaymentMethod]);
-
-  useEffect(() => {
-    if (paymentPriceMethod === "online" && allPaymentMethodFromApi) {
-      setAllPaymentMethod(
-        allPaymentMethodFromApi.map((item: paymentMethodStateType) => ({
-          id: item.id,
-        })),
-      );
-    } else if (paymentPriceMethod === "afterLivraison") {
-      setAllPaymentMethod([]);
-    }
-  }, [allPaymentMethodFromApi, paymentPriceMethod]);
-
-  useEffect(() => {
     if (isUserConnected) {
       if (allPaymentMethodFromApi && allPaymentMethodFromApi.length > 0) {
         setPaymentPriceMethod("online");
@@ -150,6 +123,37 @@ export default function StepFive() {
       setUserMustLogin(!isUserConnected);
     }
   }, [isUserConnected]);
+
+  useEffect(() => {
+    setValueForStepper((prevState) => ({
+      ...prevState,
+      price: parseInt(price.product),
+      local_delivery_price: parseInt(price.livraison),
+      payement_integrate: paymentPriceMethod === "online" ? true : false,
+      payement_method: paymentPriceMethod === "online" ? allPaymentMethod : [],
+    }));
+    if (price.product) {
+      setDisableButton(false);
+    } else {
+      setDisableButton(true);
+    }
+  }, [price, paymentPriceMethod, allPaymentMethod]);
+
+  useEffect(() => {
+    if (
+      paymentPriceMethod === "online" &&
+      allPaymentMethodFromApi &&
+      allPaymentMethodFromApi.length > 0
+    ) {
+      setAllPaymentMethod(
+        allPaymentMethodFromApi.map((item: paymentMethodStateType) => ({
+          id: item.id,
+        })),
+      );
+    } else if (paymentPriceMethod === "afterLivraison") {
+      setAllPaymentMethod([]);
+    }
+  }, [allPaymentMethodFromApi, paymentPriceMethod]);
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
