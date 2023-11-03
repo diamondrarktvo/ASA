@@ -16,14 +16,14 @@ import { useTheme } from "@shopify/restyle";
 import { criteriaSelected, stepper4NavigationTypes } from "../../types";
 import { ScrollView } from "react-native-gesture-handler";
 import { useAppDispatch, useAppSelector } from "_store";
-import { selectors, setProduct } from "../../publishSlice";
+import { reinitializeProduct, selectors, setProduct } from "../../publishSlice";
 import { useEffect, useState } from "react";
 import { useGetCriteriaQuery } from "../../../sharedApi";
 import { RadioButton } from "react-native-paper";
 import { isAllCriteriaRequiredSelected } from "../../utilsPublish";
 
 export default function StepThree() {
-  const navigation = useNavigation<stepper4NavigationTypes>();
+  const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
@@ -87,6 +87,11 @@ export default function StepThree() {
     }
   };
 
+  const cancelPublish = () => {
+    dispatch(reinitializeProduct());
+    navigation.navigate("main_tab", { screen: "publish_screen" });
+  };
+
   useEffect(() => {
     if (allCriteria && allCriteria.length > 0) {
       setDisableButton(
@@ -106,6 +111,18 @@ export default function StepThree() {
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
+      <Box width={"100%"}>
+        <Icon
+          name="close"
+          size={Size.ICON_LARGE}
+          color={colors.black}
+          containerStyle={{
+            position: "relative",
+            right: -140,
+          }}
+          onPress={() => cancelPublish()}
+        />
+      </Box>
       <RequestLoader isLoading={isCriteriaFetching || isCriteriaLoading}>
         <RequestError
           isError={isErrorCriteria}

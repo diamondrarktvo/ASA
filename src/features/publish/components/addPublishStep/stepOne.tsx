@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import { Dispatch, useCallback, useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import {
   Box,
   Button,
+  Icon,
   Input,
   RequestError,
   RequestLoader,
@@ -20,11 +21,11 @@ import {
   useGetSubCategoryQuery,
 } from "../../../sharedApi";
 import { useAppDispatch, useAppSelector } from "_store";
-import { selectors, setProduct } from "../../publishSlice";
+import { reinitializeProduct, selectors, setProduct } from "../../publishSlice";
 import { ScrollView } from "react-native-gesture-handler";
 
 export default function StepOne() {
-  const navigation = useNavigation<stepper2NavigationTypes>();
+  const navigation = useNavigation();
   const currentProduct = useAppSelector(selectors.selectProductToPublish);
   const dispatch = useAppDispatch();
   const theme = useTheme<Theme>();
@@ -79,6 +80,11 @@ export default function StepOne() {
     }
   };
 
+  const cancelPublish = () => {
+    dispatch(reinitializeProduct());
+    navigation.navigate("main_tab", { screen: "publish_screen" });
+  };
+
   //all effects
   useEffect(() => {
     setValueForStepper((prevState) => ({
@@ -114,6 +120,18 @@ export default function StepOne() {
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
+      <Box width={"100%"}>
+        <Icon
+          name="close"
+          size={Size.ICON_LARGE}
+          color={colors.black}
+          containerStyle={{
+            position: "relative",
+            right: -140,
+          }}
+          onPress={() => cancelPublish()}
+        />
+      </Box>
       <RequestLoader
         isLoading={
           isCategoriesFetching ||

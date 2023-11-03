@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Alert, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import {
   Box,
@@ -17,11 +17,10 @@ import { useState, useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { ScrollView } from "react-native-gesture-handler";
 import { useAppDispatch, useAppSelector } from "_store";
-import { selectors, setProduct } from "../../publishSlice";
-import { convertUriImageToBase64 } from "../../utilsPublish";
+import { reinitializeProduct, selectors, setProduct } from "../../publishSlice";
 
 export default function StepTwo() {
-  const navigation = useNavigation<stepper3NavigationTypes>();
+  const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const theme = useTheme<Theme>();
   const [imageImported, setImageImported] = useState<
@@ -38,17 +37,25 @@ export default function StepTwo() {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
+      base64: true,
       aspect: [4, 3],
       quality: 1,
     });
 
     if (!result.canceled) {
       let newImageImportedArray = [...imageImported];
-      newImageImportedArray.push({
-        base64: convertUriImageToBase64(result.assets[0].uri),
-        uriDefault: result.assets[0].uri,
-      });
-      setImageImported(newImageImportedArray);
+      if (result.assets[0].base64 && result.assets[0].uri) {
+        newImageImportedArray.push({
+          base64: result.assets[0].base64,
+          uriDefault: result.assets[0].uri,
+        });
+        setImageImported(newImageImportedArray);
+      }
+    } else {
+      Alert.alert(
+        "Erreur",
+        "Une erreur est survenue lors de l'importation de l'image",
+      );
     }
   };
 
@@ -64,6 +71,11 @@ export default function StepTwo() {
       dispatch(setProduct(valueForStepper));
       navigation.navigate("stepper_screen_3");
     }
+  };
+
+  const cancelPublish = () => {
+    dispatch(reinitializeProduct());
+    navigation.navigate("main_tab", { screen: "publish_screen" });
   };
 
   //all effects
@@ -82,6 +94,18 @@ export default function StepTwo() {
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
+      <Box width={"100%"}>
+        <Icon
+          name="close"
+          size={Size.ICON_LARGE}
+          color={colors.black}
+          containerStyle={{
+            position: "relative",
+            right: -140,
+          }}
+          onPress={() => cancelPublish()}
+        />
+      </Box>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Box marginTop={"m"}>
           <Text
