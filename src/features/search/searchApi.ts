@@ -9,7 +9,10 @@ import { ApiInformationType } from "_utils";
 
 const searchApi = BaseApi.injectEndpoints({
   endpoints: (build) => ({
-    getAllAnnonce: build.query<annonceType[], string | undefined>({
+    getAllAnnonce: build.query<
+      { annonces: annonceType[]; apiInformation: ApiInformationType },
+      string | undefined
+    >({
       query: (token) => ({
         url: config.GET_PRODUCT_URL,
         method: "GET",
@@ -47,10 +50,32 @@ const searchApi = BaseApi.injectEndpoints({
           ? [{ type: "Announce", id: result.id }]
           : [{ type: "Announce", id: "LIST" }],
     }),
+    getAnnonceByCategory: build.query<
+      annonceType[],
+      { id_catg: number; token: string | undefined }
+    >({
+      query: (arg) => ({
+        url: `${config.GET_PRODUCT_URL}/${arg.id_catg}`,
+        method: "GET",
+        headers: {
+          Authorization: arg.token ? `token ${arg.token}` : undefined,
+        },
+      }),
+      transformResponse: (resp: annonceType) => {
+        let allAnnonceByCatg: annonceType[] = [];
+        allAnnonceByCatg.push(resp);
+        return allAnnonceByCatg;
+      },
+      providesTags: [{ type: "Announce", id: "LIST" }],
+    }),
   }),
   overrideExisting: true,
 });
 
-export const { useGetAllAnnonceQuery, useGetOneAnnonceQuery } = searchApi;
+export const {
+  useGetAllAnnonceQuery,
+  useGetOneAnnonceQuery,
+  useGetAnnonceByCategoryQuery,
+} = searchApi;
 
 export default searchApi;
