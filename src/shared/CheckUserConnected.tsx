@@ -10,6 +10,7 @@ type Props = {
   titleIfNotConnected?: string;
   subTitleIfNotConnected: string;
   needPadding?: boolean;
+  needCancelButton?: boolean;
 } & Partial<BoxProps>;
 
 const CheckUserConnected: React.FC<Props> = ({
@@ -19,6 +20,7 @@ const CheckUserConnected: React.FC<Props> = ({
   titleIfNotConnected,
   subTitleIfNotConnected,
   needPadding,
+  needCancelButton,
   ...props
 }) => {
   const accountUser = useAppSelector((state) => state.account);
@@ -52,6 +54,7 @@ const CheckUserConnected: React.FC<Props> = ({
           title={titleIfNotConnected}
           subTitle={subTitleIfNotConnected}
           setUserMustLogin={setUserMustLogin}
+          needCancelButton={needCancelButton}
         />
       )}
     </Box>

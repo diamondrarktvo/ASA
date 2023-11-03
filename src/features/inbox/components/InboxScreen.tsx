@@ -88,6 +88,7 @@ export default function InboxScreen() {
         userMustLogin={userMustLogin}
         setUserMustLogin={setUserMustLogin}
         subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
+        needCancelButton={false}
       >
         <TopNavigation />
       </CheckUserConnected>
