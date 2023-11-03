@@ -358,7 +358,7 @@ const styles = StyleSheet.create({
   imageAnnonce: {
     borderRadius: 4,
     height: 180,
-    width: 170,
+    width: 165,
   },
   maskImageCatg: {
     backgroundColor: "rgba(0, 0, 0, 0.5)",
