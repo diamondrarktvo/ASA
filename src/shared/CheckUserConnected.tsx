@@ -9,6 +9,7 @@ type Props = {
   setUserMustLogin?: React.Dispatch<React.SetStateAction<boolean>>;
   titleIfNotConnected?: string;
   subTitleIfNotConnected: string;
+  needPadding?: boolean;
 } & Partial<BoxProps>;
 
 const CheckUserConnected: React.FC<Props> = ({
@@ -17,6 +18,7 @@ const CheckUserConnected: React.FC<Props> = ({
   setUserMustLogin,
   titleIfNotConnected,
   subTitleIfNotConnected,
+  needPadding,
   ...props
 }) => {
   const accountUser = useAppSelector((state) => state.account);
@@ -35,7 +37,13 @@ const CheckUserConnected: React.FC<Props> = ({
   }, [accountUser]);
 
   return (
-    <Box flex={1} backgroundColor="mainBackground" {...props}>
+    <Box
+      flex={1}
+      backgroundColor="mainBackground"
+      {...props}
+      paddingHorizontal={needPadding ? "s" : "none"}
+      paddingVertical={needPadding ? "l" : "none"}
+    >
       {(accountUser.is_account_connected && !userMustLogin) ||
       (!accountUser.is_account_connected && !userMustLogin) ? (
         children
