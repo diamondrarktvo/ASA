@@ -313,10 +313,9 @@ export default function ProductDetailScreen() {
             <Box>
               <Image
                 source={
-                  /*
-              item.pictures[0]
-                ? { uri: item.pictures[0] }
-                : */ require("_images/logo.jpg")
+                  annonce?.pictures[0]
+                    ? { uri: annonce?.pictures[0] }
+                    : require("_images/logo.jpg")
                 }
                 containerStyle={styles.imageAnnonce}
                 PlaceholderContent={
@@ -383,21 +382,23 @@ export default function ProductDetailScreen() {
                     {annonce?.seller &&
                       getFirstCharactere(annonce.seller.nickname)}
                   </Text>
-                  <Button
-                    variant={
-                      annonce?.seller.is_followed ? "secondary" : "tertiary"
-                    }
-                    label={annonce?.seller.is_followed ? "Suivi" : "Suivre"}
-                    loading={isLoadingAddFavorite || isLoadingDeleteFavorite}
-                    onPress={() => {
-                      if (accountUser.is_account_connected) {
-                        handleChangeFavoriteSeller();
-                      } else {
-                        setUserMustLogin(true);
+                  {annonce?.seller.id !== accountUser.user.id && (
+                    <Button
+                      variant={
+                        annonce?.seller.is_followed ? "secondary" : "tertiary"
                       }
-                    }}
-                    paddingVertical={"l"}
-                  />
+                      label={annonce?.seller.is_followed ? "Suivi" : "Suivre"}
+                      loading={isLoadingAddFavorite || isLoadingDeleteFavorite}
+                      onPress={() => {
+                        if (accountUser.is_account_connected) {
+                          handleChangeFavoriteSeller();
+                        } else {
+                          setUserMustLogin(true);
+                        }
+                      }}
+                      paddingVertical={"l"}
+                    />
+                  )}
                 </Row>
                 <Text variant={"tertiary"} fontWeight={"500"} mt={"xs"}>
                   {annonce?.seller.nickname}
@@ -408,7 +409,7 @@ export default function ProductDetailScreen() {
               </Column>
             </MainScreen>
           </ScrollView>
-          {annonce?.seller && (
+          {annonce?.seller && annonce?.seller.id !== accountUser.user.id && (
             <Button
               variant={"primary"}
               color="white"
@@ -463,7 +464,7 @@ const styles = StyleSheet.create({
     width: 130,
   },
   spinnerAnnonce: {
-    height: 100,
+    height: 280,
     width: 100,
     display: "flex",
     justifyContent: "center",
