@@ -55,17 +55,12 @@ const searchApi = BaseApi.injectEndpoints({
       { id_catg: number; token: string | undefined }
     >({
       query: (arg) => ({
-        url: `${config.GET_PRODUCT_URL}/${arg.id_catg}`,
+        url: `${config.GET_PRODUCT_URL}/category/${arg.id_catg}`,
         method: "GET",
         headers: {
           Authorization: arg.token ? `token ${arg.token}` : undefined,
         },
       }),
-      transformResponse: (resp: annonceType) => {
-        let allAnnonceByCatg: annonceType[] = [];
-        allAnnonceByCatg.push(resp);
-        return allAnnonceByCatg;
-      },
       providesTags: [{ type: "Announce", id: "LIST" }],
     }),
   }),
