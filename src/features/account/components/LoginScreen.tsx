@@ -24,12 +24,14 @@ type LoginScreenProps = {
   title?: string;
   subTitle: string;
   setUserMustLogin?: React.Dispatch<React.SetStateAction<boolean>>;
+  needCancelButton?: boolean;
 };
 
 const LoginScreen = ({
   title,
   subTitle,
   setUserMustLogin,
+  needCancelButton = true,
 }: LoginScreenProps) => {
   const theme = useTheme<Theme>();
   const dispatch = useAppDispatch();
@@ -183,17 +185,19 @@ const LoginScreen = ({
               />
             </TouchableOpacity>
           </Row>
-          <Row marginTop="xs">
-            <TouchableOpacity
-              onPress={() =>
-                setUserMustLogin ? setUserMustLogin(false) : null
-              }
-            >
-              <Text variant={"primary"} textDecorationLine={"underline"}>
-                Retour
-              </Text>
-            </TouchableOpacity>
-          </Row>
+          {needCancelButton && (
+            <Row marginTop="xs">
+              <TouchableOpacity
+                onPress={() =>
+                  setUserMustLogin ? setUserMustLogin(false) : null
+                }
+              >
+                <Text variant={"primary"} textDecorationLine={"underline"}>
+                  Retour
+                </Text>
+              </TouchableOpacity>
+            </Row>
+          )}
         </RequestError>
       </RequestLoader>
       <Snackbar

@@ -97,6 +97,7 @@ export default function FavoriteScreen() {
         userMustLogin={userMustLogin}
         setUserMustLogin={setUserMustLogin}
         subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
+        needCancelButton={false}
       >
         <TopNavigation />
       </CheckUserConnected>
