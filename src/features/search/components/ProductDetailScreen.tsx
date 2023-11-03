@@ -1,6 +1,6 @@
 import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { ImageBackground, StyleSheet } from "react-native";
+import { ImageBackground, Platform, StyleSheet } from "react-native";
 import {
   Box,
   Button,
@@ -270,13 +270,14 @@ export default function ProductDetailScreen() {
           userMustLogin={userMustLogin}
           setUserMustLogin={setUserMustLogin}
           subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
+          needPadding={userMustLogin}
         >
           <Row
             style={{ position: "absolute", zIndex: 10, top: 0 }}
             justifyContent="space-between"
             width="100%"
             paddingHorizontal="s"
-            paddingTop="s"
+            paddingTop={Platform.OS === "ios" ? "l" : "s"}
           >
             <Icon
               name="arrow-back"
@@ -417,7 +418,7 @@ export default function ProductDetailScreen() {
               width={"95%"}
               mx={"xs"}
               borderRadius={"md"}
-              marginVertical={"xs"}
+              marginVertical={Platform.OS === "ios" ? "s" : "xs"}
               onPress={() => {
                 if (accountUser.is_account_connected) {
                   navigation.navigate("manage_message", {
