@@ -40,6 +40,11 @@ export default function SearchItem() {
   const [visibleSnackbar, setVisibleSnackbar] = useState(false);
   const [messageSnackBar, setMessageSnackBar] = useState("");
   const [userMustLogin, setUserMustLogin] = useState<boolean>(false);
+  const [resultSearch, setResultSearch] = useState<annonceType[] | null>(null);
+  const [textSearch, setTextSearch] = useState<string>("");
+  const [typeOfSearch, setTypeOfSearch] = useState<
+    "category" | "free_search" | ""
+  >("");
 
   const {
     data: allAnnonceByCatg,
@@ -54,7 +59,7 @@ export default function SearchItem() {
       id_catg: route.params && route.params?.id_catg,
     },
     {
-      skip: !route.params?.id_catg,
+      skip: !route.params?.id_catg || typeOfSearch === "free_search",
     },
   );
 
@@ -74,8 +79,6 @@ export default function SearchItem() {
       error: errorDeleteFavoriteAnnonce,
     },
   ] = useDeleteFavoriteAnnonceMutation();
-
-  console.log("errorAnnonceByCatg", errorAnnonceByCatg);
 
   //logics
   const handleFetchError = (error: any) => {
@@ -133,6 +136,18 @@ export default function SearchItem() {
     if (errorDeleteFavoriteAnnonce)
       handleFetchError(errorDeleteFavoriteAnnonce);
   }, [isErrorAnnonceByCatg]);
+
+  useEffect(() => {
+    if (route.params && route.params.typeOfSearch === "category") {
+      setTypeOfSearch("category");
+    }
+  }, [route]);
+
+  useEffect(() => {
+    if (allAnnonceByCatg) {
+      setResultSearch(allAnnonceByCatg);
+    }
+  }, [allAnnonceByCatg]);
 
   //components
   const renderItemAnnonce: ListRenderItem<annonceType> = ({ item }) => {
@@ -215,6 +230,12 @@ export default function SearchItem() {
               />
               <Input
                 placeholder="Entrez le mot-clé ..."
+                value={textSearch}
+                onChangeText={(text) => {
+                  setTypeOfSearch("free_search");
+                  setTextSearch(text);
+                  //setResultSearch([]);
+                }}
                 iconRight={{
                   name: "search",
                   size: 32,
@@ -225,17 +246,17 @@ export default function SearchItem() {
             </Row>
             <Box flexDirection="column" flex={1} alignItems="center">
               <Text variant="tertiary" color="text">
-                {allAnnonceByCatg &&
-                  allAnnonceByCatg.length > 0 &&
-                  `${allAnnonceByCatg.length} résultats trouvés`}
+                {resultSearch &&
+                  resultSearch.length > 0 &&
+                  `${resultSearch.length} résultats trouvés`}
               </Text>
               <Box flex={1} width="100%" marginTop="xs">
                 <FlashList
                   keyExtractor={(item, index) => item.id.toString()}
                   estimatedItemSize={200}
-                  data={allAnnonceByCatg}
+                  data={resultSearch}
                   renderItem={renderItemAnnonce}
-                  extraData={allAnnonceByCatg}
+                  extraData={resultSearch}
                   showsVerticalScrollIndicator={false}
                   refreshControl={
                     <RefreshControl
