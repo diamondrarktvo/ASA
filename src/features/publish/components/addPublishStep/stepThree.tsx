@@ -48,8 +48,6 @@ export default function StepThree() {
     skip: currentSubCategorySelected === 0,
   });
 
-  console.log("criteriaSelected : ", criteriaSelected);
-
   const handleContinueStepper = () => {
     //console.log("valueForStepper step before dispatch : ", valueForStepper);
     dispatch(setProduct(valueForStepper));
