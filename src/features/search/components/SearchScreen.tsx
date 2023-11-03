@@ -144,49 +144,53 @@ export default function SearchScreen() {
   //components
   const renderItemCategorie: ListRenderItem<CategoryType> = ({ item }) => {
     return (
-      <Box
+      <TouchableOpacity
         key={item.id}
-        marginRight={"xs"}
-        height={80}
-        width={130}
-        borderRadius={"xxs"}
-        alignItems={"flex-start"}
-        justifyContent={"flex-end"}
+        onPress={() => navigation.navigate("search_item", { id_catg: item.id })}
       >
-        <ImageBackground
-          source={
-            item.image ? { uri: item.image } : require("_images/logo.jpg")
-          }
-          blurRadius={8}
-          style={{
-            marginHorizontal: 4,
-            height: 80,
-            width: 130,
-          }}
-          imageStyle={{
-            resizeMode: "cover",
-            borderRadius: 6,
-          }}
+        <Box
+          marginRight={"xs"}
+          height={80}
+          width={130}
+          borderRadius={"xxs"}
+          alignItems={"flex-start"}
+          justifyContent={"flex-end"}
         >
-          <Box
-            style={[StyleSheet.absoluteFillObject, styles.maskImageCatg]}
-          ></Box>
-          <Text
-            variant={"tertiary"}
-            fontWeight={"bold"}
-            color={"white"}
-            paddingLeft={"m"}
-            paddingBottom={"s"}
+          <ImageBackground
+            source={
+              item.image ? { uri: item.image } : require("_images/logo.jpg")
+            }
+            blurRadius={8}
             style={{
-              position: "absolute",
-              bottom: 3,
-              left: 3,
+              marginHorizontal: 4,
+              height: 80,
+              width: 130,
+            }}
+            imageStyle={{
+              resizeMode: "cover",
+              borderRadius: 6,
             }}
           >
-            {item.name}
-          </Text>
-        </ImageBackground>
-      </Box>
+            <Box
+              style={[StyleSheet.absoluteFillObject, styles.maskImageCatg]}
+            ></Box>
+            <Text
+              variant={"tertiary"}
+              fontWeight={"bold"}
+              color={"white"}
+              paddingLeft={"m"}
+              paddingBottom={"s"}
+              style={{
+                position: "absolute",
+                bottom: 3,
+                left: 3,
+              }}
+            >
+              {item.name}
+            </Text>
+          </ImageBackground>
+        </Box>
+      </TouchableOpacity>
     );
   };
 
@@ -289,7 +293,7 @@ export default function SearchScreen() {
                 label="Recherchez partout à Madagascar"
                 marginTop={"xs"}
                 marginBottom={"m"}
-                onPress={() => navigation.navigate("search_item")}
+                onPress={() => navigation.navigate("search_item", {})}
               />
               <Column marginTop="xs">
                 <Text variant="primaryBold">Catégorie les plus visités</Text>
