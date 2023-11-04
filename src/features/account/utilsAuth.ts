@@ -1,10 +1,13 @@
 export type errorAuthTypes = {
-  MUST_UNIQUE: {
+  E400: {
     status: number;
     message: {
-      phone_number: string;
-      email: string;
-      nickname: string;
+      phone_numberAlreadyUsed: string;
+      emailAlreadyUsed: string;
+      nicknameAlreadyUsed: string;
+      phone_number_not_valid: string;
+      email_not_valid: string;
+      nickname_not_valid: string;
     };
   };
 };
@@ -15,12 +18,15 @@ export type errorNoAuthTypes = {
 };
 
 export const ERROR_REGISTER: errorAuthTypes = {
-  MUST_UNIQUE: {
+  E400: {
     status: 400,
     message: {
-      phone_number: "user with this phone number already exists.",
-      email: "user with this email address already exists.",
-      nickname: "A user with that nickname already exists.",
+      phone_numberAlreadyUsed: "user with this phone number already exists.",
+      emailAlreadyUsed: "user with this email address already exists.",
+      nicknameAlreadyUsed: "A user with that nickname already exists.",
+      phone_number_not_valid: "Enter a valid phone number.",
+      email_not_valid: "Enter a valid email address.",
+      nickname_not_valid: "Enter a valid nickname.",
     },
   },
 };
@@ -30,29 +36,63 @@ export const ERROR_NO_AUTH: errorNoAuthTypes = {
   message: "Authentication credentials were not provided.",
 };
 
-export const parseErrorMessage = (error) => {
+export const parseErrorMessage = (error: any): string => {
   let errorMessage = "Une erreur est survenue. Veuillez réessayer.";
 
   if (!error) {
-    return;
+    return errorMessage;
   }
 
-  if (error?.status === ERROR_REGISTER.MUST_UNIQUE.status) {
-    if (
-      ERROR_REGISTER.MUST_UNIQUE.message.phone_number ===
-      error?.data?.phone_number[0]
-    ) {
-      return (errorMessage =
-        "Un utilisateur avec ce numéro de téléphone existe déjà.");
-    }
-    if (ERROR_REGISTER.MUST_UNIQUE.message.email === error?.data?.email[0]) {
-      return (errorMessage =
-        "Un utilisateur avec cette adresse email existe déjà.");
-    }
-    if (
-      ERROR_REGISTER.MUST_UNIQUE.message.nickname === error?.data?.nickname[0]
-    ) {
-      return (errorMessage = "Un utilisateur avec ce pseudo existe déjà.");
+  console.log("error?.data e: ", error?.data);
+
+  if (error.status && error.status === ERROR_REGISTER.E400.status) {
+    if (error.data) {
+      if (error.data.phone_number) {
+        if (
+          error.data.phone_number[0] ===
+          ERROR_REGISTER.E400.message.phone_numberAlreadyUsed
+        ) {
+          return (errorMessage =
+            "Un utilisateur avec ce numéro de téléphone existe déjà.");
+        }
+        if (
+          error.data.phone_number[0] ===
+          ERROR_REGISTER.E400.message.phone_number_not_valid
+        ) {
+          return (errorMessage =
+            "Veuillez entrer un numéro de téléphone valide.");
+        }
+      }
+      if (error.data.email) {
+        if (
+          error.data.email[0] === ERROR_REGISTER.E400.message.emailAlreadyUsed
+        ) {
+          return (errorMessage =
+            "Un utilisateur avec cette adresse email existe déjà.");
+        }
+        if (
+          error.data.email[0] === ERROR_REGISTER.E400.message.email_not_valid
+        ) {
+          return (errorMessage = "Veuillez entrer une adresse email valide.");
+        }
+      }
+
+      if (error.data.nickname) {
+        if (
+          error.data.nickname[0] ===
+          ERROR_REGISTER.E400.message.nicknameAlreadyUsed
+        ) {
+          return (errorMessage = "Un utilisateur avec ce pseudo existe déjà.");
+        }
+        if (
+          error.data.nickname[0] ===
+          ERROR_REGISTER.E400.message.nickname_not_valid
+        ) {
+          return (errorMessage = "Veillez entrer un pseudo valide.");
+        }
+      }
+    } else {
+      return errorMessage;
     }
   }
 

@@ -116,6 +116,7 @@ const LoginScreen = ({
             <Column>
               <Input
                 placeholder="Numéro télephone*"
+                value={loginValue.phone_number ? loginValue.phone_number : ""}
                 errorMessage={
                   errorNotFound ? "Numéro télephone incorrect" : undefined
                 }
