@@ -16,11 +16,18 @@ export type imageAnnonceType = {
   image: ImageSourcePropType;
 };
 
+export type product_criteriaType = {
+  id: number;
+  criteria: number;
+  name: string;
+  value: string | number;
+};
+
 export type annonceType = {
   id: number;
   pictures: imageAnnonceType[];
   payement_method: payement_method_type[];
-  product_criteria: [];
+  product_criteria: product_criteriaType[];
   likes: [];
   is_favorite: boolean;
   views: [];

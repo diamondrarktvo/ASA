@@ -64,7 +64,7 @@ export default function StepThree() {
     criteriaId: number,
     value: string | number,
   ) => {
-    if (!criteriaId || !value) return;
+    if (!criteriaId) return;
     let criteriaNameAlreadySelected =
       criteriaSelected.length > 0
         ? criteriaSelected.map((criteriaItem) => criteriaItem.criteria)
@@ -73,10 +73,14 @@ export default function StepThree() {
       let criteriaSelectedUpdated = criteriaSelected.filter(
         (criteriaItem) => criteriaItem.criteria !== criteriaId,
       );
-      setCriteriaSelected([
-        ...criteriaSelectedUpdated,
-        { criteria: criteriaId, value: value },
-      ]);
+      if (value) {
+        setCriteriaSelected([
+          ...criteriaSelectedUpdated,
+          { criteria: criteriaId, value: value },
+        ]);
+      } else {
+        setCriteriaSelected([...criteriaSelectedUpdated]);
+      }
     } else {
       setCriteriaSelected([
         ...criteriaSelected,
@@ -84,6 +88,8 @@ export default function StepThree() {
       ]);
     }
   };
+
+  console.log("criteriaSelected : ", criteriaSelected);
 
   const cancelPublish = () => {
     dispatch(reinitializeProduct());

@@ -122,7 +122,7 @@ export default function StepFive() {
     } else {
       setUserMustLogin(!isUserConnected);
     }
-  }, [isUserConnected]);
+  }, [isUserConnected, allPaymentMethodFromApi]);
 
   useEffect(() => {
     setValueForStepper((prevState) => ({
