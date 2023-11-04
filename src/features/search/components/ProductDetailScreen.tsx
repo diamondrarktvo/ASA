@@ -61,7 +61,10 @@ export default function ProductDetailScreen() {
   );
 
   const handleFetchError = (error: any) => {
-    if (error.detail?.includes("Invalid token")) {
+    if (error.detail && error.detail?.includes("Invalid token")) {
+      return dispatch(removeAccount());
+    }
+    if (error.data && error.data.detail?.includes("Invalid token")) {
       return dispatch(removeAccount());
     }
   };
@@ -191,6 +194,11 @@ export default function ProductDetailScreen() {
     }
   };
 
+  //effects
+  useEffect(() => {
+    if (isErrorAnnonce) handleFetchError(errorAnnonce);
+  }, [isErrorAnnonce]);
+
   //components
   const renderItemCriteria: ListRenderItem<CategoryType> = ({ item }) => {
     return (
@@ -240,6 +248,7 @@ export default function ProductDetailScreen() {
     );
   };
 
+  console.log("errorAnnonce : ", errorAnnonce);
   return (
     <RequestLoader
       isLoading={
