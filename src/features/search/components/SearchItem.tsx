@@ -162,7 +162,7 @@ export default function SearchItem() {
           <Image
             source={
               item.pictures[0]
-                ? { uri: item.pictures[0] }
+                ? { uri: item.pictures[0].image }
                 : require("_images/logo.jpg")
             }
             containerStyle={styles.imageAnnonce}
@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
   },
   spinner: {
     height: 200,
-    width: 200,
+    width: "100%",
     display: "flex",
     justifyContent: "center",
     alignContent: "center",

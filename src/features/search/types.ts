@@ -10,9 +10,15 @@ export type searchItemNavigationTypes = StackNavigationProp<
   "search_item"
 >;
 
+export type imageAnnonceType = {
+  id: number;
+  user: string;
+  image: ImageSourcePropType;
+};
+
 export type annonceType = {
   id: number;
-  pictures: ImageSourcePropType[];
+  pictures: imageAnnonceType[];
   payement_method: payement_method_type[];
   product_criteria: [];
   likes: [];

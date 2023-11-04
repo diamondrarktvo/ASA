@@ -70,6 +70,10 @@ const CreateAccountScreen = () => {
   const [register, { isError, isLoading, status, error }] =
     useRegisterMutation();
 
+  console.log("checked : ", checked);
+
+  console.log("registerValue : ", registerValue);
+
   //logic
   const handleSubmit = () => {
     register(registerValue)
@@ -192,6 +196,28 @@ const CreateAccountScreen = () => {
                 />
                 <Text variant="tertiary">Non</Text>
               </Row>
+              {checked === "yes" && (
+                <>
+                  <Input
+                    placeholder="Nom de l'entreprise*"
+                    onChangeText={(text) =>
+                      setRegisterValue((prevState) => ({
+                        ...prevState,
+                        company_name: text,
+                      }))
+                    }
+                  />
+                  <Input
+                    placeholder="Numéro unique de l'entreprise*"
+                    onChangeText={(text) =>
+                      setRegisterValue((prevState) => ({
+                        ...prevState,
+                        unique_company_number: text,
+                      }))
+                    }
+                  />
+                </>
+              )}
               <Input
                 placeholder="Mot de passe*"
                 secureTextEntry={hidePassword}

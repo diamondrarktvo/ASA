@@ -211,7 +211,7 @@ export default function SearchScreen() {
           <Image
             source={
               item.pictures[0]
-                ? { uri: item.pictures[0] }
+                ? { uri: item.pictures[0].image }
                 : require("_images/logo.jpg")
             }
             containerStyle={styles.imageAnnonce}
@@ -376,8 +376,8 @@ const styles = StyleSheet.create({
     width: 130,
   },
   spinnerAnnonce: {
-    height: 100,
-    width: 100,
+    height: 180,
+    width: 165,
     display: "flex",
     justifyContent: "center",
     alignContent: "center",
