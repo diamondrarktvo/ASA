@@ -315,7 +315,7 @@ export default function ProductDetailScreen() {
               <Image
                 source={
                   annonce?.pictures[0]
-                    ? { uri: annonce?.pictures[0] }
+                    ? { uri: annonce?.pictures[0].image }
                     : require("_images/logo.jpg")
                 }
                 containerStyle={styles.imageAnnonce}
