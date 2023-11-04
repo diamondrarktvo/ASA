@@ -19,7 +19,7 @@ import { ActivityIndicator, Snackbar } from "react-native-paper";
 import { useTheme } from "@shopify/restyle";
 import { Size, Theme } from "_theme";
 import { ScrollView } from "react-native-gesture-handler";
-import { CategoryType } from "../../types";
+import { product_criteriaType } from "../types";
 import { useEffect, useState } from "react";
 import { useGetOneAnnonceQuery } from "../searchApi";
 import {
@@ -200,55 +200,22 @@ export default function ProductDetailScreen() {
   }, [isErrorAnnonce]);
 
   //components
-  const renderItemCriteria: ListRenderItem<CategoryType> = ({ item }) => {
+  const renderItemCriteria: ListRenderItem<product_criteriaType> = ({
+    item,
+  }) => {
     return (
-      <Box
-        key={item.id}
-        marginRight={"xs"}
-        height={80}
-        width={130}
-        borderRadius={"xxs"}
-        alignItems={"flex-start"}
-        justifyContent={"flex-end"}
-      >
-        <ImageBackground
-          source={
-            item.image ? { uri: item.image } : require("_images/logo.jpg")
-          }
-          blurRadius={8}
-          style={{
-            marginHorizontal: 4,
-            height: 80,
-            width: 130,
-          }}
-          imageStyle={{
-            resizeMode: "cover",
-            borderRadius: 6,
-          }}
-        >
-          <Box
-            style={[StyleSheet.absoluteFillObject, styles.maskImageCatg]}
-          ></Box>
-          <Text
-            variant={"tertiary"}
-            fontWeight={"bold"}
-            color={"white"}
-            paddingLeft={"m"}
-            paddingBottom={"s"}
-            style={{
-              position: "absolute",
-              bottom: 3,
-              left: 3,
-            }}
-          >
-            {item.name}
+      <Row key={item.id} mt={"xs"}>
+        <Column>
+          <Text variant={"tertiary"} fontWeight={"bold"}>
+            {/*item.name*/}Type
           </Text>
-        </ImageBackground>
-      </Box>
+          <Text variant={"tertiary"}>{item.value}</Text>
+        </Column>
+      </Row>
     );
   };
+  console.log("critère : ", annonce?.product_criteria);
 
-  console.log("errorAnnonce : ", errorAnnonce);
   return (
     <RequestLoader
       isLoading={
@@ -339,7 +306,11 @@ export default function ProductDetailScreen() {
 
             <MainScreen typeOfScreen="stack">
               <Text variant={"primaryBold"}>{annonce?.name}</Text>
-              <Text variant={"primary"}>{annonce?.price} Ar</Text>
+              {annonce?.price &&
+              typeof annonce?.price === "string" &&
+              parseFloat(annonce?.price) > 0 ? (
+                <Text variant={"primaryBold"}>{annonce?.price} Ar</Text>
+              ) : null}
               <Text variant={"tertiary"}>
                 {" "}
                 Publié le{" "}
@@ -351,6 +322,15 @@ export default function ProductDetailScreen() {
                 <Text variant={"secondary"} fontWeight={"600"}>
                   Critères
                 </Text>
+                <FlashList
+                  keyExtractor={(item, index) => item.id.toString()}
+                  estimatedItemSize={200}
+                  data={annonce?.product_criteria}
+                  renderItem={renderItemCriteria}
+                  numColumns={2}
+                  extraData={annonce?.product_criteria}
+                  showsVerticalScrollIndicator={false}
+                />
               </Box>
               <Box mt={"s"}>
                 <Text variant={"secondary"} fontWeight={"600"}>
@@ -366,12 +346,14 @@ export default function ProductDetailScreen() {
                 <Text variant={"tertiary"}>{annonce?.location}</Text>
               </Box>
 
-              <Box mt={"s"}>
-                <Text variant={"secondary"} fontWeight={"600"}>
-                  Quantité
-                </Text>
-                <Text variant={"tertiary"}>{annonce?.quantity}</Text>
-              </Box>
+              {annonce?.quantity && annonce?.quantity > 0 ? (
+                <Box mt={"s"}>
+                  <Text variant={"secondary"} fontWeight={"600"}>
+                    Quantité
+                  </Text>
+                  <Text variant={"tertiary"}>{annonce?.quantity}</Text>
+                </Box>
+              ) : null}
 
               <Column mt={"s"}>
                 <Text variant={"secondary"} fontWeight={"600"}>
