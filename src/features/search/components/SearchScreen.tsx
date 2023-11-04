@@ -34,7 +34,6 @@ import { removeAccount } from "../../account/accountSlice";
 
 export default function SearchScreen() {
   const navigation = useNavigation<searchItemNavigationTypes>();
-
   const dispatch = useAppDispatch();
   const theme = useTheme<Theme>();
   const route = useRoute();
@@ -225,8 +224,11 @@ export default function SearchScreen() {
           <Icon
             name={item.is_favorite ? "favorite" : "favorite-border"}
             size={Size.ICON_MEDIUM}
-            color={colors.black}
+            color={item.is_favorite ? colors.primary : colors.black}
             containerStyle={{
+              backgroundColor: colors.white,
+              padding: 2,
+              borderRadius: borderRadii.hg,
               position: "absolute",
               zIndex: 2,
               top: 10,
@@ -367,7 +369,7 @@ const styles = StyleSheet.create({
   imageAnnonce: {
     borderRadius: 4,
     height: 180,
-    width: 165,
+    width: Dimensions.get("window").width < 400 ? 165 : 180,
   },
   maskImageCatg: {
     backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -377,7 +379,7 @@ const styles = StyleSheet.create({
   },
   spinnerAnnonce: {
     height: 180,
-    width: 165,
+    width: Dimensions.get("window").width < 400 ? 165 : 180,
     display: "flex",
     justifyContent: "center",
     alignContent: "center",
