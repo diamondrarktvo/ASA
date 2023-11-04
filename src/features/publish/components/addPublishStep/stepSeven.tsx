@@ -74,7 +74,7 @@ export default function StepSeven() {
         .then((result) => {
           console.log("result pub : ", result);
           dispatch(reinitializeProduct());
-          navigation.navigate("main_tab", { screen: "publish_screen" });
+          navigation.navigate("main_tab", { screen: "search_screen" });
         })
         .catch((error) => {
           if (error.message) {
