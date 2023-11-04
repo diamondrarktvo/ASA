@@ -173,6 +173,35 @@ export default function StepThree() {
                             }
                           />
                         )}
+                        {criteria.type === "integer" && (
+                          <Input
+                            placeholder={criteria.name}
+                            keyboardType="numeric"
+                            value={
+                              criteriaSelected.find(
+                                (itemSelected) =>
+                                  itemSelected.criteria === criteria.id,
+                              )?.value as string
+                            }
+                            onChangeText={(text) =>
+                              handleAddCriteriaForProduct(criteria.id, text)
+                            }
+                          />
+                        )}
+                        {criteria.type === "date" && (
+                          <Input
+                            placeholder={criteria.name}
+                            value={
+                              criteriaSelected.find(
+                                (itemSelected) =>
+                                  itemSelected.criteria === criteria.id,
+                              )?.value as string
+                            }
+                            onChangeText={(text) =>
+                              handleAddCriteriaForProduct(criteria.id, text)
+                            }
+                          />
+                        )}
                         {criteria.type === "choice" &&
                           criteria.response?.length > 0 &&
                           criteria.response?.map((response, index) => (
