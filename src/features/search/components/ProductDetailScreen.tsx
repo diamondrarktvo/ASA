@@ -72,9 +72,9 @@ export default function ProductDetailScreen() {
   const [
     addFavoriteSeller,
     {
-      isError: isErrorAddFavorite,
-      isLoading: isLoadingAddFavorite,
-      error: errorAddFavorite,
+      isError: isErrorAddFavoriteSeller,
+      isLoading: isLoadingAddFavoriteSeller,
+      error: errorAddFavoriteSeller,
     },
   ] = useAddFavoriteSellerMutation();
   const [
@@ -187,7 +187,7 @@ export default function ProductDetailScreen() {
   const handleRefetch = () => {
     if (isErrorAnnonce) {
       refetchAnnonce();
-    } else if (isErrorAddFavorite && annonce?.seller.id) {
+    } else if (isErrorAddFavoriteSeller && annonce?.seller.id) {
       handleAddFavoriteSeller(annonce?.seller.id);
     } else if (isErrorAddFavoriteAnnonce && annonce?.id) {
       handleAddFavoriteAnnonce(annonce?.id);
@@ -221,14 +221,14 @@ export default function ProductDetailScreen() {
       <RequestError
         isError={
           isErrorAnnonce ||
-          isErrorAddFavorite ||
+          isErrorAddFavoriteSeller ||
           isErrorDeleteFavorite ||
           isErrorAddFavoriteAnnonce ||
           isErrorDeleteFavoriteAnnonce
         }
         errorStatus={
           errorAnnonce?.status ||
-          errorAddFavorite?.status ||
+          errorAddFavoriteSeller?.status ||
           errorDeleteFavorite?.status ||
           errorDeleteFavoriteAnnonce?.status ||
           errorAddFavoriteAnnonce?.status
@@ -266,7 +266,9 @@ export default function ProductDetailScreen() {
               size={Size.ICON_MEDIUM}
               color={colors.black}
               loading={
-                isLoadingAddFavoriteAnnonce || isLoadingDeleteFavoriteAnnonce
+                isLoadingAddFavoriteAnnonce ||
+                isLoadingDeleteFavoriteAnnonce ||
+                isAnnonceFetching
               }
               containerStyle={{
                 backgroundColor: "white",
@@ -376,7 +378,11 @@ export default function ProductDetailScreen() {
                         annonce?.seller.is_followed ? "secondary" : "tertiary"
                       }
                       label={annonce?.seller.is_followed ? "Suivi" : "Suivre"}
-                      loading={isLoadingAddFavorite || isLoadingDeleteFavorite}
+                      loading={
+                        isLoadingAddFavoriteSeller ||
+                        isLoadingDeleteFavorite ||
+                        isAnnonceFetching
+                      }
                       onPress={() => {
                         if (accountUser.is_account_connected) {
                           handleChangeFavoriteSeller();
