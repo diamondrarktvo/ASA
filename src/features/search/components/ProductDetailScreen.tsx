@@ -217,14 +217,7 @@ export default function ProductDetailScreen() {
   console.log("critère : ", annonce?.product_criteria);
 
   return (
-    <RequestLoader
-      isLoading={
-        isAnnonceLoading ||
-        isAnnonceFetching ||
-        isLoadingAddFavoriteAnnonce ||
-        isLoadingDeleteFavoriteAnnonce
-      }
-    >
+    <RequestLoader isLoading={isAnnonceLoading}>
       <RequestError
         isError={
           isErrorAnnonce ||
@@ -272,6 +265,9 @@ export default function ProductDetailScreen() {
               }
               size={Size.ICON_MEDIUM}
               color={colors.black}
+              loading={
+                isLoadingAddFavoriteAnnonce || isLoadingDeleteFavoriteAnnonce
+              }
               containerStyle={{
                 backgroundColor: "white",
                 borderRadius: 50,

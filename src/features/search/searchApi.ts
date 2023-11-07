@@ -63,6 +63,31 @@ const searchApi = BaseApi.injectEndpoints({
       }),
       providesTags: [{ type: "Announce", id: "LIST" }],
     }),
+    getAnnonceBySearching: build.query<
+      { annonces: annonceType[]; apiInformation: ApiInformationType },
+      { token: string | undefined; textToSearch: string }
+    >({
+      query: (arg) => ({
+        url: `${config.GET_PRODUCT_URL}?search=${arg.textToSearch}`,
+        method: "GET",
+        headers: {
+          Authorization: arg.token ? `token ${arg.token}` : undefined,
+        },
+      }),
+      transformResponse: (response: AnnoncesResponseType) => {
+        const annonces: annonceType[] = response.results || [];
+        const apiInformation: ApiInformationType = {
+          count: response.count,
+          next: response.next,
+          previous: response.previous,
+        };
+        return {
+          annonces,
+          apiInformation,
+        };
+      },
+      providesTags: [{ type: "Announce", id: "LIST" }],
+    }),
   }),
   overrideExisting: true,
 });
@@ -71,6 +96,7 @@ export const {
   useGetAllAnnonceQuery,
   useGetOneAnnonceQuery,
   useGetAnnonceByCategoryQuery,
+  useGetAnnonceBySearchingQuery,
 } = searchApi;
 
 export default searchApi;

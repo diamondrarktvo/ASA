@@ -71,3 +71,8 @@ export type AnnoncesResponseType = ApiInformationType & {
 export type AnnonceResponseType = {
   annonces: annonceType[];
 };
+
+export interface RouteSearchParams {
+  typeOfSearch?: string;
+  id_catg?: number;
+}

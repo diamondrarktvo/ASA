@@ -15,11 +15,15 @@ import {
   RequestError,
   TouchableOpacity,
   CheckUserConnected,
+  EmptyList,
 } from "_shared";
 import { ActivityIndicator, Snackbar } from "react-native-paper";
 import { useTheme } from "@shopify/restyle";
 import { Size, Theme } from "_theme";
-import { useGetAnnonceByCategoryQuery } from "../searchApi";
+import {
+  useGetAnnonceByCategoryQuery,
+  useGetAnnonceBySearchingQuery,
+} from "../searchApi";
 import { useAppDispatch, useAppSelector } from "_store";
 import { removeAccount } from "../../account/accountSlice";
 import { useEffect, useState } from "react";
@@ -27,7 +31,7 @@ import {
   useAddFavoriteAnnonceMutation,
   useDeleteFavoriteAnnonceMutation,
 } from "../../favorite/favoriteApi";
-import { annonceType } from "../types";
+import { RouteSearchParams, annonceType } from "../types";
 import { RefreshControl } from "react-native-gesture-handler";
 
 export default function SearchItem() {
@@ -42,6 +46,7 @@ export default function SearchItem() {
   const [userMustLogin, setUserMustLogin] = useState<boolean>(false);
   const [resultSearch, setResultSearch] = useState<annonceType[] | null>(null);
   const [textSearch, setTextSearch] = useState<string>("");
+  const [showEmptyComponent, setShowEmptyComponent] = useState<boolean>(false);
   const [typeOfSearch, setTypeOfSearch] = useState<
     "category" | "free_search" | ""
   >("");
@@ -60,6 +65,23 @@ export default function SearchItem() {
     },
     {
       skip: !route.params?.id_catg || typeOfSearch === "free_search",
+    },
+  );
+
+  const {
+    data: allAnnonceBySearch,
+    isError: isErrorSearch,
+    isLoading: isSearchLoading,
+    isFetching: isSearchFetching,
+    refetch: refetchSearch,
+    error: errorSearch,
+  } = useGetAnnonceBySearchingQuery(
+    {
+      token: accountUser.token ? accountUser.token : undefined,
+      textToSearch: textSearch,
+    },
+    {
+      skip: !textSearch || typeOfSearch === "category",
     },
   );
 
@@ -93,6 +115,9 @@ export default function SearchItem() {
   const handleRefetch = () => {
     if (isErrorAnnonceByCatg) {
       refetchAnnoncesByCatg();
+    }
+    if (isErrorSearch) {
+      refetchSearch();
     }
   };
 
@@ -132,22 +157,37 @@ export default function SearchItem() {
   //effect
   useEffect(() => {
     if (isErrorAnnonceByCatg) handleFetchError(errorAnnonceByCatg);
-    if (errorAddFavoriteAnnonce) handleFetchError(errorAddFavoriteAnnonce);
-    if (errorDeleteFavoriteAnnonce)
+    if (isErrorAddFavoriteAnnonce) handleFetchError(errorAddFavoriteAnnonce);
+    if (isErrorDeleteFavoriteAnnonce)
       handleFetchError(errorDeleteFavoriteAnnonce);
+    if (isErrorSearch) handleFetchError(errorSearch);
   }, [isErrorAnnonceByCatg]);
 
   useEffect(() => {
-    if (route.params && route.params.typeOfSearch === "category") {
+    if (
+      route.params &&
+      (route.params as RouteSearchParams)?.typeOfSearch === "category"
+    ) {
       setTypeOfSearch("category");
     }
   }, [route]);
 
+  //set result search by category or by search
   useEffect(() => {
-    if (allAnnonceByCatg) {
+    if (allAnnonceByCatg && typeOfSearch === "category") {
       setResultSearch(allAnnonceByCatg);
     }
-  }, [allAnnonceByCatg]);
+  }, [allAnnonceByCatg, typeOfSearch]);
+
+  useEffect(() => {
+    if (allAnnonceBySearch && typeOfSearch === "free_search") {
+      setShowEmptyComponent(false);
+      setResultSearch(allAnnonceBySearch.annonces);
+    }
+    if (allAnnonceBySearch && allAnnonceBySearch.annonces.length === 0) {
+      setShowEmptyComponent(true);
+    }
+  }, [allAnnonceBySearch, typeOfSearch]);
 
   //components
   const renderItemAnnonce: ListRenderItem<annonceType> = ({ item }) => {
@@ -205,45 +245,54 @@ export default function SearchItem() {
 
   return (
     <MainScreen typeOfScreen="tab">
-      <RequestLoader
-        isLoading={isAnnonceLoadingByCatg || isAnnonceFetchingByCatg}
+      <CheckUserConnected
+        userMustLogin={userMustLogin}
+        setUserMustLogin={setUserMustLogin}
+        subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
       >
-        <RequestError
-          isError={isErrorAnnonceByCatg}
-          errorStatus={errorAnnonceByCatg?.status}
-          onRefresh={() => handleRefetch()}
+        <Row alignItems="center" width="90%" justifyContent="space-between">
+          <Icon
+            name="arrow-back"
+            size={Size.ICON_MEDIUM}
+            color={colors.black}
+            containerStyle={{
+              marginRight: 8,
+            }}
+            onPress={() => navigation.goBack()}
+          />
+          <Input
+            placeholder="Entrez le mot-clé ..."
+            value={textSearch}
+            onChangeText={(text) => {
+              setTypeOfSearch("free_search");
+              setTextSearch(text);
+            }}
+            iconRight={{
+              name: textSearch ? "close" : "",
+              size: 20,
+              color: colors.secondary,
+              onPress: () => {
+                if (textSearch) {
+                  setTextSearch("");
+                  setShowEmptyComponent(false);
+                }
+              },
+            }}
+          />
+        </Row>
+        <RequestLoader
+          isLoading={
+            isAnnonceLoadingByCatg ||
+            isAnnonceFetchingByCatg ||
+            isSearchLoading ||
+            isSearchFetching
+          }
         >
-          <CheckUserConnected
-            userMustLogin={userMustLogin}
-            setUserMustLogin={setUserMustLogin}
-            subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
+          <RequestError
+            isError={isErrorAnnonceByCatg || isErrorSearch}
+            errorStatus={errorAnnonceByCatg?.status || errorSearch?.status}
+            onRefresh={() => handleRefetch()}
           >
-            <Row alignItems="center" width="90%" justifyContent="space-between">
-              <Icon
-                name="arrow-back"
-                size={Size.ICON_MEDIUM}
-                color={colors.black}
-                containerStyle={{
-                  marginRight: 8,
-                }}
-                onPress={() => navigation.goBack()}
-              />
-              <Input
-                placeholder="Entrez le mot-clé ..."
-                value={textSearch}
-                onChangeText={(text) => {
-                  setTypeOfSearch("free_search");
-                  setTextSearch(text);
-                  //setResultSearch([]);
-                }}
-                iconRight={{
-                  name: "search",
-                  size: 32,
-                  color: colors.secondary,
-                  onPress: () => console.log("test"),
-                }}
-              />
-            </Row>
             <Box flexDirection="column" flex={1} alignItems="center">
               <Text variant="tertiary" color="text">
                 {resultSearch &&
@@ -264,12 +313,17 @@ export default function SearchItem() {
                       onRefresh={() => refetchAnnoncesByCatg()}
                     />
                   }
+                  ListEmptyComponent={
+                    showEmptyComponent ? (
+                      <EmptyList textToShow="Désolé, nous n'avons pas ça sous la main!" />
+                    ) : null
+                  }
                 />
               </Box>
             </Box>
-          </CheckUserConnected>
-        </RequestError>
-      </RequestLoader>
+          </RequestError>
+        </RequestLoader>
+      </CheckUserConnected>
       <Snackbar
         visible={visibleSnackbar}
         onDismiss={() => setVisibleSnackbar(false)}
