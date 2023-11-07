@@ -25,4 +25,5 @@ export {
   getFirstCharactere,
   pushNotification,
   base64Func,
+  verifyText,
 } from "./layout";

@@ -93,3 +93,11 @@ export const base64Func = {
     return output;
   },
 };
+
+export const verifyText = (text: string): boolean => {
+  //pour vérifier si le texte est un chiffre
+  if (/^\d*$/.test(text)) {
+    return true;
+  }
+  return false;
+};
