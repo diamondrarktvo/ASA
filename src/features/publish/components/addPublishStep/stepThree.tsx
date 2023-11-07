@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import {
   Box,
@@ -22,6 +22,7 @@ import { useGetCriteriaQuery } from "../../../sharedApi";
 import { RadioButton } from "react-native-paper";
 import { isAllCriteriaRequiredSelected } from "../../utilsPublish";
 import { verifyText } from "_utils";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 export default function StepThree() {
   const navigation = useNavigation();
@@ -63,7 +64,7 @@ export default function StepThree() {
    */
   const handleAddCriteriaForProduct = (
     criteriaId: number,
-    value: string | number,
+    value: string | number | Date,
     isNumberOnly?: boolean,
   ) => {
     if (!criteriaId) return;
@@ -202,17 +203,33 @@ export default function StepThree() {
                           />
                         )}
                         {criteria.type === "date" && (
-                          <Input
-                            placeholder={criteria.name}
+                          <DateTimePicker
+                            testID="dateTimePicker"
                             value={
                               criteriaSelected.find(
                                 (itemSelected) =>
                                   itemSelected.criteria === criteria.id,
-                              )?.value as string
+                              )?.value
+                                ? (criteriaSelected.find(
+                                    (itemSelected) =>
+                                      itemSelected.criteria === criteria.id,
+                                  )?.value as Date)
+                                : new Date()
                             }
-                            onChangeText={(text) =>
-                              handleAddCriteriaForProduct(criteria.id, text)
+                            mode="date"
+                            display="default"
+                            onChange={(event, selectedDate) =>
+                              handleAddCriteriaForProduct(
+                                criteria.id,
+                                selectedDate ? selectedDate : "",
+                              )
                             }
+                            style={{
+                              width: 200,
+                              position: "relative",
+                              left: -75,
+                              marginVertical: 5,
+                            }}
                           />
                         )}
                         {criteria.type === "choice" &&

@@ -9,7 +9,7 @@ export interface publishStateType {
   sub_category_name: string;
   uploaded_images: { base64: string }[] | [];
   payement_method: { id: string | number }[] | [];
-  product_criteria: { criteria: number; value: string | number }[] | [];
+  product_criteria: { criteria: number; value: string | number | Date }[] | [];
   seller: number;
   phone_number_contact: string;
   email_contact: string;
