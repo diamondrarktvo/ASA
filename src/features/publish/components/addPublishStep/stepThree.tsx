@@ -21,6 +21,7 @@ import { useEffect, useState } from "react";
 import { useGetCriteriaQuery } from "../../../sharedApi";
 import { RadioButton } from "react-native-paper";
 import { isAllCriteriaRequiredSelected } from "../../utilsPublish";
+import { verifyText } from "_utils";
 
 export default function StepThree() {
   const navigation = useNavigation();
@@ -63,6 +64,7 @@ export default function StepThree() {
   const handleAddCriteriaForProduct = (
     criteriaId: number,
     value: string | number,
+    isNumberOnly?: boolean,
   ) => {
     if (!criteriaId) return;
     let criteriaNameAlreadySelected =
@@ -74,10 +76,17 @@ export default function StepThree() {
         (criteriaItem) => criteriaItem.criteria !== criteriaId,
       );
       if (value) {
-        setCriteriaSelected([
-          ...criteriaSelectedUpdated,
-          { criteria: criteriaId, value: value },
-        ]);
+        if (!isNumberOnly) {
+          setCriteriaSelected([
+            ...criteriaSelectedUpdated,
+            { criteria: criteriaId, value: value },
+          ]);
+        } else {
+          setCriteriaSelected([
+            ...criteriaSelectedUpdated,
+            { criteria: criteriaId, value: verifyText(value) ? value : "" },
+          ]);
+        }
       } else {
         setCriteriaSelected([...criteriaSelectedUpdated]);
       }
@@ -184,7 +193,11 @@ export default function StepThree() {
                               )?.value as string
                             }
                             onChangeText={(text) =>
-                              handleAddCriteriaForProduct(criteria.id, text)
+                              handleAddCriteriaForProduct(
+                                criteria.id,
+                                text,
+                                true,
+                              )
                             }
                           />
                         )}
