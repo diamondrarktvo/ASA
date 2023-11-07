@@ -281,7 +281,7 @@ export default function SearchItem() {
             }}
             iconRight={{
               name: textSearch ? "close" : "",
-              size: 20,
+              size: 16,
               color: colors.secondary,
               onPress: () => {
                 if (textSearch) {
