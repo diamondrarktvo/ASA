@@ -30,6 +30,7 @@ export type StackParamList = {
   //end of stepper screens
   search_item: {
     id_catg?: number;
+    name_catg?: string;
     typeOfSearch?: string;
   };
   product_detail_screen: { idOfProduct: number };

@@ -148,6 +148,7 @@ export default function SearchScreen() {
         onPress={() =>
           navigation.navigate("search_item", {
             id_catg: item.id,
+            name_catg: item.name,
             typeOfSearch: "category",
           })
         }

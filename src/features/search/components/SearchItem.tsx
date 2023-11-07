@@ -50,6 +50,7 @@ export default function SearchItem() {
   const [typeOfSearch, setTypeOfSearch] = useState<
     "category" | "free_search" | ""
   >("");
+  const [categorieToSearch, setCategorieToSearch] = useState<string>("");
 
   const {
     data: allAnnonceByCatg,
@@ -189,6 +190,15 @@ export default function SearchItem() {
     }
   }, [allAnnonceBySearch, typeOfSearch]);
 
+  useEffect(() => {
+    if (route.params?.name_catg) {
+      setCategorieToSearch(route.params?.name_catg);
+    }
+    if (typeOfSearch === "free_search") {
+      setCategorieToSearch("");
+    }
+  }, [typeOfSearch]);
+
   //components
   const renderItemAnnonce: ListRenderItem<annonceType> = ({ item }) => {
     return (
@@ -243,6 +253,8 @@ export default function SearchItem() {
     );
   };
 
+  console.log("categorieToSearch", categorieToSearch);
+
   return (
     <MainScreen typeOfScreen="tab">
       <CheckUserConnected
@@ -275,11 +287,27 @@ export default function SearchItem() {
                 if (textSearch) {
                   setTextSearch("");
                   setShowEmptyComponent(false);
+                  setCategorieToSearch("");
                 }
               },
             }}
           />
         </Row>
+        <Box my={"xs"}>
+          {categorieToSearch && (
+            <Box
+              width={"40%"}
+              borderWidth={1}
+              borderStyle={"solid"}
+              borderColor={"primary"}
+              py={"xxs"}
+              px={"xs"}
+              borderRadius={"xs"}
+            >
+              <Text>Catégorie : {categorieToSearch}</Text>
+            </Box>
+          )}
+        </Box>
         <RequestLoader
           isLoading={
             isAnnonceLoadingByCatg ||
