@@ -35,5 +35,5 @@ export type stepper7NavigationTypes = StackNavigationProp<
 
 export type criteriaSelected = {
   criteria: number;
-  value: string | number;
+  value: string | number | Date;
 };
