@@ -21,7 +21,7 @@ import { ScrollView as ScrollViewBottomSheet } from "react-native-gesture-handle
 import { BottomSheetModal, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types";
 import { useAppDispatch, useAppSelector } from "_store";
-import { formatDate, storeObjectDataToAsyncStorage } from "_utils";
+import { formatDate, storeObjectDataToAsyncStorage, verifyText } from "_utils";
 import { RadioButton, Snackbar } from "react-native-paper";
 import {
   useAddPaymentMethodMutation,
@@ -135,8 +135,6 @@ export default function ManagePayment() {
         setVisibleSnackbar(true);
       });
   };
-
-  console.log("errorDeleteMobileMoney : ", errorDeleteMobileMoney);
 
   //bottomsheet
   const snapPoints = useMemo(() => [1, "80%"], []);
@@ -297,7 +295,7 @@ export default function ManagePayment() {
                 onChangeText={(text) =>
                   setValueForMobileMoney((prevState) => ({
                     ...prevState,
-                    phone: text,
+                    phone: verifyText(text) ? text : "",
                   }))
                 }
                 mt={"s"}

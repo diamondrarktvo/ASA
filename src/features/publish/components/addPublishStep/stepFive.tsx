@@ -26,6 +26,7 @@ import {
 } from "../../publishSlice";
 import { useGetAllPaymentMethodQuery } from "../../../account/paymentMethodApi";
 import { paymentMethodStateType } from "../../../account/paymentMethodeSlice";
+import { verifyText } from "_utils";
 
 export default function StepFive() {
   const navigation = useNavigation();
@@ -199,22 +200,14 @@ export default function StepFive() {
                 <Input
                   placeholder="Prix du produit"
                   value={price.product !== "0" ? price.product : ""}
-                  onChangeText={(text) => {
-                    if (isNaN(text)) {
-                      setPrice((prevState) => {
-                        return {
-                          ...prevState,
-                        };
-                      });
-                    } else {
-                      setPrice((prevState) => {
-                        return {
-                          ...prevState,
-                          product: text,
-                        };
-                      });
-                    }
-                  }}
+                  onChangeText={(text) =>
+                    setPrice((prevState) => {
+                      return {
+                        ...prevState,
+                        product: verifyText(text) ? text : "",
+                      };
+                    })
+                  }
                   iconLeft={{
                     name: "payment",
                     size: Size.ICON_MEDIUM,
@@ -224,22 +217,14 @@ export default function StepFive() {
                 <Input
                   placeholder="Le prix de la livraison locale"
                   value={price.livraison !== "0" ? price.livraison : ""}
-                  onChangeText={(text) => {
-                    if (isNaN(text)) {
-                      setPrice((prevState) => {
-                        return {
-                          ...prevState,
-                        };
-                      });
-                    } else {
-                      setPrice((prevState) => {
-                        return {
-                          ...prevState,
-                          livraison: text,
-                        };
-                      });
-                    }
-                  }}
+                  onChangeText={(text) =>
+                    setPrice((prevState) => {
+                      return {
+                        ...prevState,
+                        livraison: verifyText(text) ? text : "",
+                      };
+                    })
+                  }
                   iconLeft={{
                     name: "local-shipping",
                     size: Size.ICON_MEDIUM,
