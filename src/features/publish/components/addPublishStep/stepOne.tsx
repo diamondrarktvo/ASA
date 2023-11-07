@@ -118,6 +118,13 @@ export default function StepOne() {
     }
   }, [selectCategorie, allSubCategories]);
 
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(reinitializeProduct());
+      setProductName("");
+    }, []),
+  );
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <Box width={"100%"}>
