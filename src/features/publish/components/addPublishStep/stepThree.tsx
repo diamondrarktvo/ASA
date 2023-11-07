@@ -38,6 +38,8 @@ export default function StepThree() {
   const [criteriaSelected, setCriteriaSelected] = useState<criteriaSelected[]>(
     [],
   );
+  const [show, setShow] = useState<boolean>(false);
+  const [currentIdOfInputDate, setCurrentIdOfInputDate] = useState(0);
 
   const {
     data: allCriteria,
@@ -82,11 +84,15 @@ export default function StepThree() {
             ...criteriaSelectedUpdated,
             { criteria: criteriaId, value: value },
           ]);
+          setCurrentIdOfInputDate(0);
+          setShow(false);
         } else {
           setCriteriaSelected([
             ...criteriaSelectedUpdated,
             { criteria: criteriaId, value: verifyText(value) ? value : "" },
           ]);
+          setCurrentIdOfInputDate(0);
+          setShow(false);
         }
       } else {
         setCriteriaSelected([...criteriaSelectedUpdated]);
@@ -96,14 +102,18 @@ export default function StepThree() {
         ...criteriaSelected,
         { criteria: criteriaId, value: value },
       ]);
+      setCurrentIdOfInputDate(0);
+      setShow(false);
     }
   };
-
-  console.log("criteriaSelected : ", criteriaSelected);
 
   const cancelPublish = () => {
     dispatch(reinitializeProduct());
     navigation.navigate("main_tab", { screen: "publish_screen" });
+  };
+
+  const showDatepicker = (id: number) => {
+    setShow(currentIdOfInputDate === id ? true : false);
   };
 
   useEffect(() => {
@@ -122,6 +132,12 @@ export default function StepThree() {
       }));
     }
   }, [criteriaSelected]);
+
+  useEffect(() => {
+    if (currentIdOfInputDate) {
+      setShow(true);
+    }
+  }, [currentIdOfInputDate]);
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
@@ -203,34 +219,93 @@ export default function StepThree() {
                           />
                         )}
                         {criteria.type === "date" && (
-                          <DateTimePicker
-                            testID="dateTimePicker"
-                            value={
-                              criteriaSelected.find(
-                                (itemSelected) =>
-                                  itemSelected.criteria === criteria.id,
-                              )?.value
-                                ? (criteriaSelected.find(
+                          <>
+                            <Button
+                              height={50}
+                              alignItems={"center"}
+                              justifyContent={"center"}
+                              width={150}
+                              variant={"secondary"}
+                              label={
+                                criteriaSelected.find(
+                                  (itemSelected) =>
+                                    itemSelected.criteria === criteria.id,
+                                )?.value
+                                  ? criteriaSelected
+                                      .find(
+                                        (itemSelected) =>
+                                          itemSelected.criteria === criteria.id,
+                                      )
+                                      ?.value?.toString()
+                                      .slice(0, 10)
+                                  : "Choisir une date"
+                              }
+                              onPress={() => {
+                                setCurrentIdOfInputDate(criteria.id);
+                              }}
+                            />
+                            {show && Platform.OS === "android" && (
+                              <DateTimePicker
+                                testID={criteria.name}
+                                value={
+                                  criteriaSelected.find(
                                     (itemSelected) =>
                                       itemSelected.criteria === criteria.id,
-                                  )?.value as Date)
-                                : new Date()
-                            }
-                            mode="date"
-                            display="default"
-                            onChange={(event, selectedDate) =>
-                              handleAddCriteriaForProduct(
-                                criteria.id,
-                                selectedDate ? selectedDate : "",
-                              )
-                            }
-                            style={{
-                              width: 200,
-                              position: "relative",
-                              left: -75,
-                              marginVertical: 5,
-                            }}
-                          />
+                                  )?.value
+                                    ? (criteriaSelected.find(
+                                        (itemSelected) =>
+                                          itemSelected.criteria === criteria.id,
+                                      )?.value as Date)
+                                    : new Date()
+                                }
+                                mode="date"
+                                display="default"
+                                onChange={(event, selectedDate) => {
+                                  handleAddCriteriaForProduct(
+                                    criteria.id,
+                                    selectedDate ? selectedDate : "",
+                                  );
+                                  setShow(false);
+                                }}
+                                style={{
+                                  width: 200,
+                                  position: "relative",
+                                  left: -75,
+                                  marginVertical: 5,
+                                }}
+                              />
+                            )}
+                            {Platform.OS === "ios" && (
+                              <DateTimePicker
+                                testID={criteria.name}
+                                value={
+                                  criteriaSelected.find(
+                                    (itemSelected) =>
+                                      itemSelected.criteria === criteria.id,
+                                  )?.value
+                                    ? (criteriaSelected.find(
+                                        (itemSelected) =>
+                                          itemSelected.criteria === criteria.id,
+                                      )?.value as Date)
+                                    : new Date()
+                                }
+                                mode="date"
+                                display="default"
+                                onChange={(event, selectedDate) => {
+                                  handleAddCriteriaForProduct(
+                                    criteria.id,
+                                    selectedDate ? selectedDate : "",
+                                  );
+                                }}
+                                style={{
+                                  width: 200,
+                                  position: "relative",
+                                  left: -75,
+                                  marginVertical: 5,
+                                }}
+                              />
+                            )}
+                          </>
                         )}
                         {criteria.type === "choice" &&
                           criteria.response?.length > 0 &&
