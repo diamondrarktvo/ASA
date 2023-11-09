@@ -24,5 +24,5 @@ export const useGetLocation = () => {
       });
     })();
   }, []);
-  return { position, errorMsgLocation };
+  return { position, setPosition, errorMsgLocation };
 };

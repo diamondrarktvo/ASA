@@ -21,7 +21,7 @@ export default function StepSix() {
   const dispatch = useAppDispatch();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
-  const { position, errorMsgLocation } = useGetLocation();
+  const { position, setPosition, errorMsgLocation } = useGetLocation();
   const [disableButton, setDisableButton] = useState(true);
   const [cityName, setCityName] = useState("Antananarivo");
   const currentProduct = useAppSelector(selectors.selectProductToPublish);
@@ -118,9 +118,11 @@ export default function StepSix() {
                 followsUserLocation={true}
               >
                 <Marker
+                  draggable
                   key={"Vous êtes ici	"}
                   coordinate={position}
                   title={"Vous êtes ici	"}
+                  onDragEnd={(e) => setPosition(e.nativeEvent.coordinate)}
                 />
               </MapView>
             ) : null}
