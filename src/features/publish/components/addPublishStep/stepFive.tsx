@@ -121,6 +121,7 @@ export default function StepFive() {
         );
       }
     } else {
+      setPaymentPriceMethod("afterLivraison");
       setUserMustLogin(!isUserConnected);
     }
   }, [isUserConnected, allPaymentMethodFromApi]);

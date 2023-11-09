@@ -16,7 +16,7 @@ export const useGetLocation = () => {
         );
       }
       let location = await Location.getCurrentPositionAsync();
-      console.log("location : ", location);
+
       setPosition({
         ...position,
         latitude: location.coords.latitude,
