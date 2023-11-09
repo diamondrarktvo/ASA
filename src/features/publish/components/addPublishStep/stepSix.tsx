@@ -18,7 +18,7 @@ export default function StepSix() {
   const dispatch = useAppDispatch();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
-  const { data, errorMsgLocation } = useGetLocation();
+  const { position, setPosition, errorMsgLocation } = useGetLocation();
   const [disableButton, setDisableButton] = useState(true);
   const [cityName, setCityName] = useState("Antananarivo");
   const currentProduct = useAppSelector(selectors.selectProductToPublish);
@@ -26,7 +26,6 @@ export default function StepSix() {
   const [isSearchingName, setIsSearchingName] = useState(false);
   const [visibleSnackbar, setVisibleSnackbar] = useState(false);
   const [messageSnackBar, setMessageSnackBar] = useState("");
-  const [position, setPosition] = useState({ longitude: 0.0, latitude: 0.0 });
 
   //all effects
   useEffect(() => {
@@ -39,10 +38,6 @@ export default function StepSix() {
     }
   }, [cityName, currentProduct]);
 
-  useEffect(() => {
-    if (data) setPosition(data);
-  }, []);
-
   const handleContinueStepper = () => {
     if (cityName !== "") {
       dispatch(setProduct(valueForStepper));
@@ -54,8 +49,6 @@ export default function StepSix() {
     dispatch(reinitializeProduct());
     navigation.navigate("main_tab", { screen: "publish_screen" });
   };
-
-  console.log("position", position);
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
@@ -108,12 +101,7 @@ export default function StepSix() {
                     transformNameToGeocode(cityName)
                       .then((data) => {
                         setIsSearchingName(false);
-                        setPosition((prevState) => ({
-                          ...prevState,
-                          latitude: data.latitude,
-                          longitude: data.longitude,
-                        }));
-                        console.log("data", data);
+                        setPosition(data);
                       })
                       .catch((error) => {
                         setIsSearchingName(false);
