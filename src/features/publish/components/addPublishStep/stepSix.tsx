@@ -10,8 +10,13 @@ import { useAppDispatch, useAppSelector } from "_store";
 import { reinitializeProduct, selectors, setProduct } from "../../publishSlice";
 import { useEffect, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
+import { transformNameToGeocode } from "../../utilsPublish";
+import Geocoder from "react-native-geocoding";
 
 export default function StepSix() {
+  Geocoder.init(
+    process.env.EXPO_API_KEY_MAP ? process.env.EXPO_API_KEY_MAP : "",
+  );
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const theme = useTheme<Theme>();
@@ -85,6 +90,12 @@ export default function StepSix() {
                 name: "place",
                 size: Size.ICON_MEDIUM,
                 color: colors.text,
+              }}
+              iconRight={{
+                name: "search",
+                size: Size.ICON_MEDIUM,
+                color: colors.text,
+                onPress: () => transformNameToGeocode(cityName),
               }}
             />
           </Box>
