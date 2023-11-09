@@ -9,6 +9,7 @@ import { useGetLocation } from "_hooks";
 import { useAppDispatch, useAppSelector } from "_store";
 import { reinitializeProduct, selectors, setProduct } from "../../publishSlice";
 import { useEffect, useState } from "react";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default function StepSix() {
   const navigation = useNavigation();
@@ -46,89 +47,96 @@ export default function StepSix() {
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
-      <Box width={"100%"}>
-        <Icon
-          name="close"
-          size={Size.ICON_LARGE}
-          color={colors.black}
-          containerStyle={{
-            position: "relative",
-            right: -160,
-          }}
-          onPress={() => cancelPublish()}
-        />
-      </Box>
-      <Box marginTop={"m"}>
-        <Text
-          variant={"primary"}
-          color={"blue"}
-          textDecorationLine={"underline"}
-          marginBottom={"xs"}
-        >
-          Etape 6:
-        </Text>
-        <Text variant={"title"} color="black">
-          Où les clients peuvent-ils vous trouver?
-        </Text>
-        <Text variant={"tertiary"} color={"error"}>
-          NB: Vous pouvez entrer dans la barre de recherche le nom de votre
-          ville
-        </Text>
-        <Box marginVertical={"xs"}>
-          <Input
-            placeholder="ex: Antananarivo"
-            value={cityName}
-            onChangeText={(text) => setCityName(text)}
-            iconLeft={{
-              name: "place",
-              size: Size.ICON_MEDIUM,
-              color: colors.text,
+      <ScrollView>
+        <Box width={"100%"}>
+          <Icon
+            name="close"
+            size={Size.ICON_LARGE}
+            color={colors.black}
+            containerStyle={{
+              position: "relative",
+              right: -160,
             }}
+            onPress={() => cancelPublish()}
           />
         </Box>
-        <Box height={250} width={"100%"} marginBottom={"s"}>
-          <MapView
-            provider={PROVIDER_GOOGLE}
-            style={[StyleSheet.absoluteFillObject]}
-            initialRegion={{
-              latitude: position.latitude,
-              longitude: position.longitude,
-              latitudeDelta: 0.0222,
-              longitudeDelta: 0.0021,
-            }}
-            showsUserLocation={true}
-            userLocationAnnotationTitle="Vous êtes ici"
-            followsUserLocation={true}
+        <Box marginTop={"m"}>
+          <Text
+            variant={"primary"}
+            color={"blue"}
+            textDecorationLine={"underline"}
+            marginBottom={"xs"}
           >
-            <Marker
-              key={"Vous êtes ici	"}
-              coordinate={position}
-              title={"Vous êtes ici	"}
+            Etape 6:
+          </Text>
+          <Text variant={"title"} color="black">
+            Où les clients peuvent-ils vous trouver?
+          </Text>
+          <Text variant={"tertiary"} color={"error"}>
+            NB: Vous pouvez entrer dans la barre de recherche le nom de votre
+            ville
+          </Text>
+          <Box marginVertical={"xs"}>
+            <Input
+              placeholder="ex: Antananarivo"
+              value={cityName}
+              onChangeText={(text) => setCityName(text)}
+              iconLeft={{
+                name: "place",
+                size: Size.ICON_MEDIUM,
+                color: colors.text,
+              }}
             />
-          </MapView>
+          </Box>
+          <Box height={300} width={"100%"} marginBottom={"s"}>
+            {position.longitude && position.latitude ? (
+              <MapView
+                provider={PROVIDER_GOOGLE}
+                style={[
+                  StyleSheet.absoluteFillObject,
+                  { width: "100%", height: 300 },
+                ]}
+                initialRegion={{
+                  latitude: position.latitude,
+                  longitude: position.longitude,
+                  latitudeDelta: 0.04,
+                  longitudeDelta: 0.05,
+                }}
+                showsUserLocation={true}
+                userLocationAnnotationTitle="Vous êtes ici"
+                followsUserLocation={true}
+              >
+                <Marker
+                  key={"Vous êtes ici	"}
+                  coordinate={position}
+                  title={"Vous êtes ici	"}
+                />
+              </MapView>
+            ) : null}
+          </Box>
+          <Row alignItems={"center"} justifyContent="space-around">
+            <Button
+              height={50}
+              alignItems={"center"}
+              justifyContent={"center"}
+              width={150}
+              variant={"tertiary"}
+              label="Précédent"
+              onPress={() => navigation.goBack()}
+            />
+            <Button
+              height={50}
+              alignItems={"center"}
+              justifyContent={"center"}
+              disabled={disableButton}
+              width={150}
+              variant={"secondary"}
+              label="Continuer"
+              onPress={() => handleContinueStepper()}
+            />
+          </Row>
         </Box>
-        <Row alignItems={"center"} justifyContent="space-around">
-          <Button
-            height={50}
-            alignItems={"center"}
-            justifyContent={"center"}
-            width={150}
-            variant={"tertiary"}
-            label="Précédent"
-            onPress={() => navigation.goBack()}
-          />
-          <Button
-            height={50}
-            alignItems={"center"}
-            justifyContent={"center"}
-            disabled={disableButton}
-            width={150}
-            variant={"secondary"}
-            label="Continuer"
-            onPress={() => handleContinueStepper()}
-          />
-        </Row>
-      </Box>
+      </ScrollView>
     </MainScreen>
   );
 }
