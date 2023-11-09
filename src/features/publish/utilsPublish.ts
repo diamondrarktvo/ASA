@@ -1,7 +1,6 @@
 import { base64Func } from "_utils";
 import { criteriaType } from "../types";
 import { criteriaSelected, stepper2NavigationTypes } from "./types";
-import Geocoder from "react-native-geocoding";
 
 /**
  *
@@ -57,6 +56,14 @@ export const convertUriImageToBase64 = (uri: string) => {
 };
 
 export const transformNameToGeocode = async (name: string) => {
-  let location = await Geocoder.from(name);
-  console.log("lelena ", location);
+  const response = await fetch(
+    `http://api.openweathermap.org/geo/1.0/direct?q=${name}&limit=1&appid=${process.env.EXPO_API_KEY_GEOCODING}`,
+  );
+  if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+  const data = await response.json();
+  return {
+    longitude: data[0].lon,
+    latitude: data[0].lat,
+  };
 };

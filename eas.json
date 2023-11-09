@@ -10,7 +10,7 @@
     "preview_weekly": {
       "env": {
         "EXPO_PUBLIC_API_HOST": "https://metyamikoservice-api.onrender.com",
-        "EXPO_API_KEY_MAP": "AIzaSyCfeV-dI5JYOl39mJDqsyL8xtRykQHU29I"
+        "EXPO_API_KEY_GEOCODING": "669899203c2d6e4b34da4c70c4961cd6"
       },
       "android": {
         "buildType": "apk"
