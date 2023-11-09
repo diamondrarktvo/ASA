@@ -11,12 +11,8 @@ import { reinitializeProduct, selectors, setProduct } from "../../publishSlice";
 import { useEffect, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import { transformNameToGeocode } from "../../utilsPublish";
-import Geocoder from "react-native-geocoding";
 
 export default function StepSix() {
-  Geocoder.init(
-    process.env.EXPO_API_KEY_MAP ? process.env.EXPO_API_KEY_MAP : "",
-  );
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const theme = useTheme<Theme>();
@@ -26,6 +22,7 @@ export default function StepSix() {
   const [cityName, setCityName] = useState("Antananarivo");
   const currentProduct = useAppSelector(selectors.selectProductToPublish);
   const [valueForStepper, setValueForStepper] = useState(currentProduct);
+  const [isSearchingName, setIsSearchingName] = useState(false);
 
   //all effects
   useEffect(() => {
@@ -49,6 +46,8 @@ export default function StepSix() {
     dispatch(reinitializeProduct());
     navigation.navigate("main_tab", { screen: "publish_screen" });
   };
+
+  console.log("searchin ", isSearchingName);
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
@@ -95,12 +94,32 @@ export default function StepSix() {
                 name: "search",
                 size: Size.ICON_MEDIUM,
                 color: colors.text,
-                onPress: () => transformNameToGeocode(cityName),
+                onPress: () => {
+                  if (cityName !== "") {
+                    setIsSearchingName(true);
+                    transformNameToGeocode(cityName)
+                      .then((data) => {
+                        setIsSearchingName(false);
+                        setPosition(data);
+                      })
+                      .catch((error) => {
+                        console.error("Error:", error);
+                        setIsSearchingName(false);
+                      });
+                  }
+                },
               }}
             />
           </Box>
-          <Box height={300} width={"100%"} marginBottom={"s"}>
-            {position.longitude && position.latitude ? (
+          <Box
+            height={300}
+            width={"100%"}
+            marginBottom={"s"}
+            flexDirection={"row"}
+            alignItems={"center"}
+            justifyContent={"center"}
+          >
+            {position.longitude && position.latitude && !isSearchingName ? (
               <MapView
                 provider={PROVIDER_GOOGLE}
                 style={[
@@ -125,7 +144,11 @@ export default function StepSix() {
                   onDragEnd={(e) => setPosition(e.nativeEvent.coordinate)}
                 />
               </MapView>
-            ) : null}
+            ) : (
+              <Text variant={"tertiary"} textAlign={"center"}>
+                Chargement de la carte du monde ...
+              </Text>
+            )}
           </Box>
           <Row alignItems={"center"} justifyContent="space-around">
             <Button
