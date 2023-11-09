@@ -3,8 +3,9 @@ import * as Location from "expo-location";
 
 export const useGetLocation = () => {
   //all states
+  const [position, setPosition] = useState({ longitude: 0.0, latitude: 0.0 });
   const [errorMsgLocation, setErrorMsgLocation] = useState<string>();
-  let data = null;
+
   //all effects
   useEffect(() => {
     (async () => {
@@ -15,11 +16,13 @@ export const useGetLocation = () => {
         );
       }
       let location = await Location.getCurrentPositionAsync();
-      data = {
+
+      setPosition({
+        ...position,
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
-      };
+      });
     })();
   }, []);
-  return { data, errorMsgLocation };
+  return { position, setPosition, errorMsgLocation };
 };
