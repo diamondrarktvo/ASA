@@ -1,6 +1,7 @@
 import { base64Func } from "_utils";
 import { criteriaType } from "../types";
 import { criteriaSelected, stepper2NavigationTypes } from "./types";
+import Geocoder from "react-native-geocoding";
 
 /**
  *
@@ -53,4 +54,9 @@ export const convertUriImageToBase64 = (uri: string) => {
   if (!uri) return "";
   let base64Image = base64Func.btoa(uri);
   return base64Image;
+};
+
+export const transformNameToGeocode = async (name: string) => {
+  let location = await Geocoder.from(name);
+  console.log("lelena ", location);
 };
