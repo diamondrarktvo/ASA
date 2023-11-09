@@ -8,7 +8,7 @@ import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { useGetLocation } from "_hooks";
 import { useAppDispatch, useAppSelector } from "_store";
 import { reinitializeProduct, selectors, setProduct } from "../../publishSlice";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import { transformNameToGeocode } from "../../utilsPublish";
 import { Snackbar } from "react-native-paper";
@@ -26,6 +26,9 @@ export default function StepSix() {
   const [isSearchingName, setIsSearchingName] = useState(false);
   const [visibleSnackbar, setVisibleSnackbar] = useState(false);
   const [messageSnackBar, setMessageSnackBar] = useState("");
+
+  //ref
+  const mapRef = useRef<MapView>(null);
 
   //all effects
   useEffect(() => {
@@ -48,6 +51,10 @@ export default function StepSix() {
   const cancelPublish = () => {
     dispatch(reinitializeProduct());
     navigation.navigate("main_tab", { screen: "publish_screen" });
+  };
+
+  const changeRegion = (newRegion: any) => {
+    mapRef.current?.animateToRegion(newRegion, 500);
   };
 
   return (
@@ -102,6 +109,7 @@ export default function StepSix() {
                       .then((data) => {
                         setIsSearchingName(false);
                         setPosition(data);
+                        changeRegion(data);
                       })
                       .catch((error) => {
                         setIsSearchingName(false);
