@@ -11,18 +11,22 @@ import { reinitializeProduct, selectors, setProduct } from "../../publishSlice";
 import { useEffect, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import { transformNameToGeocode } from "../../utilsPublish";
+import { Snackbar } from "react-native-paper";
 
 export default function StepSix() {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
-  const { position, setPosition, errorMsgLocation } = useGetLocation();
+  const { data, errorMsgLocation } = useGetLocation();
   const [disableButton, setDisableButton] = useState(true);
   const [cityName, setCityName] = useState("Antananarivo");
   const currentProduct = useAppSelector(selectors.selectProductToPublish);
   const [valueForStepper, setValueForStepper] = useState(currentProduct);
   const [isSearchingName, setIsSearchingName] = useState(false);
+  const [visibleSnackbar, setVisibleSnackbar] = useState(false);
+  const [messageSnackBar, setMessageSnackBar] = useState("");
+  const [position, setPosition] = useState({ longitude: 0.0, latitude: 0.0 });
 
   //all effects
   useEffect(() => {
@@ -34,6 +38,10 @@ export default function StepSix() {
       setDisableButton(false);
     }
   }, [cityName, currentProduct]);
+
+  useEffect(() => {
+    if (data) setPosition(data);
+  }, []);
 
   const handleContinueStepper = () => {
     if (cityName !== "") {
@@ -47,7 +55,7 @@ export default function StepSix() {
     navigation.navigate("main_tab", { screen: "publish_screen" });
   };
 
-  console.log("searchin ", isSearchingName);
+  console.log("position", position);
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
@@ -100,11 +108,19 @@ export default function StepSix() {
                     transformNameToGeocode(cityName)
                       .then((data) => {
                         setIsSearchingName(false);
-                        setPosition(data);
+                        setPosition((prevState) => ({
+                          ...prevState,
+                          latitude: data.latitude,
+                          longitude: data.longitude,
+                        }));
+                        console.log("data", data);
                       })
                       .catch((error) => {
-                        console.error("Error:", error);
                         setIsSearchingName(false);
+                        setVisibleSnackbar(true);
+                        setMessageSnackBar(
+                          "Une erreur est survenue lors de la recherche de votre ville",
+                        );
                       });
                   }
                 },
@@ -173,6 +189,18 @@ export default function StepSix() {
           </Row>
         </Box>
       </ScrollView>
+      <Snackbar
+        visible={visibleSnackbar}
+        onDismiss={() => setVisibleSnackbar(false)}
+        action={{
+          label: "Ok",
+          onPress: () => {
+            // Do something
+          },
+        }}
+      >
+        {messageSnackBar}
+      </Snackbar>
     </MainScreen>
   );
 }
