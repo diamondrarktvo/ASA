@@ -40,6 +40,7 @@ export default function StepThree() {
   );
   const [show, setShow] = useState<boolean>(false);
   const [currentIdOfInputDate, setCurrentIdOfInputDate] = useState(0);
+  const [dateCurrentSelected, setDateCurrentSelected] = useState<Date>();
 
   const {
     data: allCriteria,
@@ -84,15 +85,11 @@ export default function StepThree() {
             ...criteriaSelectedUpdated,
             { criteria: criteriaId, value: value },
           ]);
-          setCurrentIdOfInputDate(0);
-          setShow(false);
         } else {
           setCriteriaSelected([
             ...criteriaSelectedUpdated,
             { criteria: criteriaId, value: verifyText(value) ? value : "" },
           ]);
-          setCurrentIdOfInputDate(0);
-          setShow(false);
         }
       } else {
         setCriteriaSelected([...criteriaSelectedUpdated]);
@@ -102,15 +99,17 @@ export default function StepThree() {
         ...criteriaSelected,
         { criteria: criteriaId, value: value },
       ]);
-      setCurrentIdOfInputDate(0);
-      setShow(false);
     }
+    setCurrentIdOfInputDate(0);
+    setShow(false);
   };
 
   const cancelPublish = () => {
     dispatch(reinitializeProduct());
     navigation.navigate("main_tab", { screen: "publish_screen" });
   };
+
+  console.log("criteriaSelected : ", criteriaSelected);
 
   const showDatepicker = (id: number) => {
     setShow(currentIdOfInputDate === id ? true : false);
@@ -134,10 +133,11 @@ export default function StepThree() {
   }, [criteriaSelected]);
 
   useEffect(() => {
-    if (currentIdOfInputDate) {
-      setShow(true);
+    if (dateCurrentSelected) {
+      handleAddCriteriaForProduct(currentIdOfInputDate, dateCurrentSelected);
     }
-  }, [currentIdOfInputDate]);
+    setShow(false);
+  }, [dateCurrentSelected]);
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
@@ -185,7 +185,8 @@ export default function StepThree() {
                     <Box key={criteria.id}>
                       <Text variant={"tertiary"}>{criteria.name}</Text>
                       <Box flexDirection={"row"} flexWrap={"wrap"}>
-                        {criteria.type === "text" && (
+                        {(criteria.type === "text" ||
+                          criteria.type === "date") && (
                           <Input
                             placeholder={criteria.name}
                             value={
@@ -218,7 +219,7 @@ export default function StepThree() {
                             }
                           />
                         )}
-                        {criteria.type === "date" && (
+                        {/*criteria.type === "date" && (
                           <>
                             <Button
                               height={50}
@@ -241,12 +242,13 @@ export default function StepThree() {
                                   : "Choisir une date"
                               }
                               onPress={() => {
+                                setShow(true);
                                 setCurrentIdOfInputDate(criteria.id);
                               }}
                             />
                             {show && Platform.OS === "android" && (
                               <DateTimePicker
-                                testID={criteria.name}
+                                testID={criteria.id.toString()}
                                 value={
                                   criteriaSelected.find(
                                     (itemSelected) =>
@@ -261,10 +263,7 @@ export default function StepThree() {
                                 mode="date"
                                 display="default"
                                 onChange={(event, selectedDate) => {
-                                  handleAddCriteriaForProduct(
-                                    criteria.id,
-                                    selectedDate ? selectedDate : "",
-                                  );
+                                  setDateCurrentSelected(selectedDate);
                                   setShow(false);
                                 }}
                                 style={{
@@ -277,7 +276,7 @@ export default function StepThree() {
                             )}
                             {Platform.OS === "ios" && (
                               <DateTimePicker
-                                testID={criteria.name}
+                                testID={criteria.id.toString()}
                                 value={
                                   criteriaSelected.find(
                                     (itemSelected) =>
@@ -292,10 +291,7 @@ export default function StepThree() {
                                 mode="date"
                                 display="default"
                                 onChange={(event, selectedDate) => {
-                                  handleAddCriteriaForProduct(
-                                    criteria.id,
-                                    selectedDate ? selectedDate : "",
-                                  );
+                                  setDateCurrentSelected(selectedDate);
                                 }}
                                 style={{
                                   width: 200,
@@ -306,7 +302,7 @@ export default function StepThree() {
                               />
                             )}
                           </>
-                        )}
+                              )*/}
                         {criteria.type === "choice" &&
                           criteria.response?.length > 0 &&
                           criteria.response?.map((response, index) => (

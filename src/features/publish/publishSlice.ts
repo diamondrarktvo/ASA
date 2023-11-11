@@ -6,7 +6,7 @@ export interface publishStateType {
   location: {
     longitude: number;
     latitude: number;
-    //name?: string;
+    name?: string;
   };
   price: number;
   sub_category: number;
@@ -30,7 +30,7 @@ const initialState: publishStateType = {
   location: {
     longitude: 0,
     latitude: 0,
-    //name: "",
+    name: "",
   },
   price: 0,
   sub_category: 0,
@@ -62,7 +62,7 @@ const publishSlice = createSlice({
         location: {
           longitude: 0,
           latitude: 0,
-          //name: "",
+          name: "",
         },
         price: 0,
         sub_category: 0,

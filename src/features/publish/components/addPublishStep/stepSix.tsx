@@ -30,13 +30,15 @@ export default function StepSix() {
   //ref
   const mapRef = useRef<MapView>(null);
 
+  console.log("typeof : ", typeof position.longitude);
+
   //all effects
   useEffect(() => {
     setValueForStepper((prevState) => ({
       ...prevState,
       location: {
         ...prevState.location,
-        //name: cityName,
+        name: cityName,
         longitude: position.longitude,
         latitude: position.latitude,
       },
@@ -44,7 +46,7 @@ export default function StepSix() {
     if (cityName !== "") {
       setDisableButton(false);
     }
-  }, [cityName, currentProduct]);
+  }, [cityName, currentProduct, position]);
 
   const handleContinueStepper = () => {
     if (cityName !== "") {
