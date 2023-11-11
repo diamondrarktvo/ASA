@@ -35,6 +35,7 @@ import {
 } from "../../favorite/favoriteApi";
 import { useAppDispatch, useAppSelector } from "_store";
 import { removeAccount } from "../../account/accountSlice";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 
 export default function ProductDetailScreen() {
   const navigation = useNavigation();
@@ -47,6 +48,7 @@ export default function ProductDetailScreen() {
   const [visibleSnackbar, setVisibleSnackbar] = useState(false);
   const [messageSnackBar, setMessageSnackBar] = useState("");
   const [userMustLogin, setUserMustLogin] = useState<boolean>(false);
+  const [onTapCityName, setOnTapCityName] = useState(false);
 
   const {
     data: annonce,
@@ -223,7 +225,6 @@ export default function ProductDetailScreen() {
       </Row>
     );
   };
-  console.log("critère : ", annonce?.product_criteria);
 
   return (
     <RequestLoader isLoading={isAnnonceLoading}>
@@ -350,7 +351,43 @@ export default function ProductDetailScreen() {
                 <Text variant={"secondary"} fontWeight={"600"}>
                   Localisation
                 </Text>
-                <Text variant={"tertiary"}>{annonce?.location}</Text>
+                <Box
+                  height={200}
+                  width={"100%"}
+                  marginBottom={"s"}
+                  flexDirection={"row"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                >
+                  {annonce?.location.longitude && annonce?.location.latitude ? (
+                    <MapView
+                      provider={PROVIDER_GOOGLE}
+                      style={[
+                        StyleSheet.absoluteFillObject,
+                        { width: "100%", height: 300 },
+                      ]}
+                      initialRegion={{
+                        latitude: annonce?.location.latitude,
+                        longitude: annonce?.location.longitude,
+                        latitudeDelta: 0.04,
+                        longitudeDelta: 0.05,
+                      }}
+                      showsUserLocation={true}
+                      userLocationAnnotationTitle="Vous êtes ici"
+                      followsUserLocation={true}
+                    >
+                      <Marker
+                        key={"Vous êtes ici	"}
+                        coordinate={annonce?.location}
+                        title={"Le vendeur est ici."}
+                      />
+                    </MapView>
+                  ) : (
+                    <Text variant={"tertiary"} textAlign={"center"}>
+                      Chargement de la carte du monde ...
+                    </Text>
+                  )}
+                </Box>
               </Box>
 
               {annonce?.quantity && annonce?.quantity > 0 ? (

@@ -34,7 +34,12 @@ export default function StepSix() {
   useEffect(() => {
     setValueForStepper((prevState) => ({
       ...prevState,
-      location: cityName,
+      location: {
+        ...prevState.location,
+        //name: cityName,
+        longitude: position.longitude,
+        latitude: position.latitude,
+      },
     }));
     if (cityName !== "") {
       setDisableButton(false);

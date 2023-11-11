@@ -3,7 +3,11 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface publishStateType {
   name: string;
   description: string;
-  location: string;
+  location: {
+    longitude: number;
+    latitude: number;
+    //name?: string;
+  };
   price: number;
   sub_category: number;
   sub_category_name: string;
@@ -23,7 +27,11 @@ export interface publishStateType {
 const initialState: publishStateType = {
   name: "",
   description: "",
-  location: "",
+  location: {
+    longitude: 0,
+    latitude: 0,
+    //name: "",
+  },
   price: 0,
   sub_category: 0,
   sub_category_name: "",
@@ -51,7 +59,11 @@ const publishSlice = createSlice({
       state = {
         name: "",
         description: "",
-        location: "",
+        location: {
+          longitude: 0,
+          latitude: 0,
+          //name: "",
+        },
         price: 0,
         sub_category: 0,
         sub_category_name: "",

@@ -72,7 +72,7 @@ export default function StepSeven() {
     }
   };
 
-  console.log("errorPublish : ", errorPublish);
+  console.log("valueForStepper zz: ", valueForStepper.location);
 
   const handlePublish = () => {
     if (isUserConnected) {
