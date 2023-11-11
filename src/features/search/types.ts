@@ -35,9 +35,9 @@ export type annonceType = {
   publication_date: string;
   description: string | null;
   location: {
-    longitude: number;
-    latitude: number;
-    //name?: string;
+    longitude: string;
+    latitude: string;
+    name?: string;
   };
   price: string | number;
   local_delivery_price: string | number | null;

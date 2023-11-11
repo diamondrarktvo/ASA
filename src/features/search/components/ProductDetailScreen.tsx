@@ -13,6 +13,7 @@ import {
   RequestLoader,
   Row,
   Text,
+  TouchableOpacity,
 } from "_shared";
 import {
   Constantes,
@@ -49,6 +50,10 @@ export default function ProductDetailScreen() {
   const [messageSnackBar, setMessageSnackBar] = useState("");
   const [userMustLogin, setUserMustLogin] = useState<boolean>(false);
   const [onTapCityName, setOnTapCityName] = useState(false);
+  const [positionMap, setPositionMap] = useState({
+    latitude: 0,
+    longitude: 0,
+  });
 
   const {
     data: annonce,
@@ -210,6 +215,15 @@ export default function ProductDetailScreen() {
     if (isErrorAnnonce) handleFetchError(errorAnnonce);
   }, [isErrorAnnonce]);
 
+  useEffect(() => {
+    if (annonce && annonce.location.latitude && annonce.location.longitude) {
+      setPositionMap({
+        latitude: parseFloat(annonce.location.latitude),
+        longitude: parseFloat(annonce.location.longitude),
+      });
+    }
+  }, [annonce]);
+
   //components
   const renderItemCriteria: ListRenderItem<product_criteriaType> = ({
     item,
@@ -351,24 +365,34 @@ export default function ProductDetailScreen() {
                 <Text variant={"secondary"} fontWeight={"600"}>
                   Localisation
                 </Text>
-                <Box
-                  height={200}
-                  width={"100%"}
-                  marginBottom={"s"}
-                  flexDirection={"row"}
-                  alignItems={"center"}
-                  justifyContent={"center"}
+                <TouchableOpacity
+                  onPress={() => setOnTapCityName(!onTapCityName)}
                 >
-                  {annonce?.location.longitude && annonce?.location.latitude ? (
+                  <Text variant={"tertiary"}>{annonce?.location.name}</Text>
+                </TouchableOpacity>
+
+                {positionMap &&
+                positionMap.longitude !== 0 &&
+                positionMap.latitude !== 0 &&
+                onTapCityName ? (
+                  <Box
+                    height={160}
+                    width={"100%"}
+                    marginTop={"xs"}
+                    marginBottom={"s"}
+                    flexDirection={"row"}
+                    alignItems={"center"}
+                    justifyContent={"center"}
+                  >
                     <MapView
                       provider={PROVIDER_GOOGLE}
                       style={[
                         StyleSheet.absoluteFillObject,
-                        { width: "100%", height: 300 },
+                        { width: "100%", height: 160 },
                       ]}
                       initialRegion={{
-                        latitude: annonce?.location.latitude,
-                        longitude: annonce?.location.longitude,
+                        latitude: positionMap.latitude,
+                        longitude: positionMap.longitude,
                         latitudeDelta: 0.04,
                         longitudeDelta: 0.05,
                       }}
@@ -378,16 +402,12 @@ export default function ProductDetailScreen() {
                     >
                       <Marker
                         key={"Vous êtes ici	"}
-                        coordinate={annonce?.location}
+                        coordinate={positionMap}
                         title={"Le vendeur est ici."}
                       />
                     </MapView>
-                  ) : (
-                    <Text variant={"tertiary"} textAlign={"center"}>
-                      Chargement de la carte du monde ...
-                    </Text>
-                  )}
-                </Box>
+                  </Box>
+                ) : null}
               </Box>
 
               {annonce?.quantity && annonce?.quantity > 0 ? (
