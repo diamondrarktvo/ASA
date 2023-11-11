@@ -21,10 +21,14 @@ const SocketNotification = () => {
   );
 
   useEffect(() => {
-    getObjectDataToAsyncStorage("current_account").then((res) => {
-      console.log("res storage account e", res);
-      dispatch(setAccount(res));
-    });
+    getObjectDataToAsyncStorage("current_account")
+      .then((res) => {
+        console.log("res storage account e", res);
+        if (res) dispatch(setAccount(res));
+      })
+      .catch((err) => {
+        console.log("eeeee : ", err);
+      });
   }, []);
 
   useEffect(() => {
