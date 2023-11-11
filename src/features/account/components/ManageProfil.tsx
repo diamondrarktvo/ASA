@@ -175,7 +175,7 @@ export default function ManageProfil() {
                 width: Size.IMAGE_MEDIUM,
                 height: Size.IMAGE_MEDIUM,
                 borderRadius: borderRadii.lg,
-                marginBottom: spacing.s,
+                marginBottom: "4%",
               }}
             />
             <Text variant="bigTitle" color="text" textAlign={"center"}>
@@ -462,7 +462,7 @@ export default function ManageProfil() {
                   width: Size.IMAGE_LARGE,
                   height: Size.IMAGE_LARGE,
                   borderRadius: borderRadii.hg,
-                  marginBottom: spacing.s,
+                  marginBottom: "4%",
                 }}
               />
               {imageImported.length !== 0 && (
