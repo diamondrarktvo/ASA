@@ -65,6 +65,11 @@ export default function StepSeven() {
       removeDataToAsyncStorage("current_account");
       return dispatch(removeAccount());
     }
+    if (error.detail?.includes("Invalid token")) {
+      removeDataToAsyncStorage("token");
+      removeDataToAsyncStorage("current_account");
+      return dispatch(removeAccount());
+    }
   };
 
   console.log("errorPublish : ", errorPublish);

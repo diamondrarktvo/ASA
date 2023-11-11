@@ -59,6 +59,11 @@ export default function AnnouncementScreen() {
       removeDataToAsyncStorage("current_account");
       return dispatch(removeAccount());
     }
+    if (error.data?.detail?.includes("Invalid token")) {
+      removeDataToAsyncStorage("token");
+      removeDataToAsyncStorage("current_account");
+      return dispatch(removeAccount());
+    }
   };
 
   //all logics
