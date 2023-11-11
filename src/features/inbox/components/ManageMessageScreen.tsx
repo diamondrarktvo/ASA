@@ -30,6 +30,7 @@ import { removeAccount } from "../../account/accountSlice";
 import { GiftedChat, Send } from "react-native-gifted-chat";
 import AnimatedLottieView from "lottie-react-native";
 import { messageGiftedProps } from "../types";
+import { removeDataToAsyncStorage } from "_utils";
 
 export default function ManageMessageScreen() {
   const navigation = useNavigation();
@@ -131,6 +132,8 @@ export default function ManageMessageScreen() {
 
   const handleFetchError = (error: any) => {
     if (error?.data?.detail?.includes("Invalid token")) {
+      removeDataToAsyncStorage("token");
+      removeDataToAsyncStorage("current_account");
       return dispatch(removeAccount());
     }
   };

@@ -31,6 +31,7 @@ import {
   useDeleteFavoriteAnnonceMutation,
 } from "../../favorite/favoriteApi";
 import { removeAccount } from "../../account/accountSlice";
+import { removeDataToAsyncStorage } from "_utils";
 
 export default function SearchScreen() {
   const navigation = useNavigation<searchItemNavigationTypes>();
@@ -122,6 +123,8 @@ export default function SearchScreen() {
 
   const handleFetchError = (error: any) => {
     if (error?.data?.detail?.includes("Invalid token")) {
+      removeDataToAsyncStorage("token");
+      removeDataToAsyncStorage("current_account");
       return dispatch(removeAccount());
     }
   };

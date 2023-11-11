@@ -21,7 +21,11 @@ import { ScrollView as ScrollViewBottomSheet } from "react-native-gesture-handle
 import { BottomSheetModal, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types";
 import { useAppDispatch, useAppSelector } from "_store";
-import { formatDate, storeObjectDataToAsyncStorage } from "_utils";
+import {
+  formatDate,
+  removeDataToAsyncStorage,
+  storeObjectDataToAsyncStorage,
+} from "_utils";
 import { useUpdateMutation } from "../authApi";
 import { ERROR_REGISTER, parseErrorMessage } from "../utilsAuth";
 import { RadioButton, Snackbar } from "react-native-paper";
@@ -115,6 +119,8 @@ export default function PersonnalInformation() {
 
   const handleFetchError = (error: any) => {
     if (error.detail?.includes("Invalid token")) {
+      removeDataToAsyncStorage("token");
+      removeDataToAsyncStorage("current_account");
       return dispatch(removeAccount());
     }
   };

@@ -55,7 +55,7 @@ const LoginScreen = ({
           setUserMustLogin && setUserMustLogin(false);
           dispatch(setAccount(res));
           storeObjectDataToAsyncStorage("token", res.token);
-          storeObjectDataToAsyncStorage("current_account", res.user);
+          storeObjectDataToAsyncStorage("current_account", res);
         }
       })
       .catch((e) => {

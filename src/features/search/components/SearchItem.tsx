@@ -33,6 +33,7 @@ import {
 } from "../../favorite/favoriteApi";
 import { RouteSearchParams, annonceType } from "../types";
 import { RefreshControl } from "react-native-gesture-handler";
+import { removeDataToAsyncStorage } from "_utils";
 
 export default function SearchItem() {
   const navigation = useNavigation();
@@ -106,9 +107,13 @@ export default function SearchItem() {
   //logics
   const handleFetchError = (error: any) => {
     if (error && error.data && error.data.detail?.includes("Invalid token")) {
+      removeDataToAsyncStorage("token");
+      removeDataToAsyncStorage("current_account");
       return dispatch(removeAccount());
     }
     if (error && error.detail && error.detail?.includes("Invalid token")) {
+      removeDataToAsyncStorage("token");
+      removeDataToAsyncStorage("current_account");
       return dispatch(removeAccount());
     }
   };

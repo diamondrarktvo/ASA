@@ -22,7 +22,7 @@ import { RefreshControl } from "react-native-gesture-handler";
 import { useGetAllConversationsQuery } from "../chatApi";
 import { useAppDispatch, useAppSelector } from "_store";
 import { removeAccount } from "../../account/accountSlice";
-import { formatDate } from "_utils";
+import { formatDate, removeDataToAsyncStorage } from "_utils";
 
 export default function MessageScreen() {
   const navigation = useNavigation<manageMessageNavigationTypes>();
@@ -48,6 +48,8 @@ export default function MessageScreen() {
 
   const handleFetchError = (error: any) => {
     if (error?.data?.detail?.includes("Invalid token")) {
+      removeDataToAsyncStorage("token");
+      removeDataToAsyncStorage("current_account");
       return dispatch(removeAccount());
     }
   };
