@@ -1,18 +1,31 @@
-import { useAppSelector } from "_store";
+import { useAppDispatch, useAppSelector } from "_store";
 import { Text, View } from "react-native";
 import { useEffect, useState } from "react";
-import { formatDateToString, pushNotification } from "_utils";
+import {
+  formatDateToString,
+  getObjectDataToAsyncStorage,
+  pushNotification,
+} from "_utils";
+import { setAccount } from "./src/features/account/accountSlice";
 
 const SOCKET_URL = process.env.EXPO_PUBLIC_API_HOST || "";
 
 const SocketNotification = () => {
   const [connectedToSocket, setConnectedToSocket] = useState(false);
   const accountUser = useAppSelector((state) => state.account);
+  const dispatch = useAppDispatch();
 
   const socket = new WebSocket(
     `${SOCKET_URL}/ws/notification/${accountUser.user.nickname || ""}`,
     ["access_token", `${accountUser.token || ""}`],
   );
+
+  useEffect(() => {
+    getObjectDataToAsyncStorage("current_account").then((res) => {
+      console.log("res storage account e", res);
+      dispatch(setAccount(res));
+    });
+  }, []);
 
   useEffect(() => {
     // verify connection

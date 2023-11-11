@@ -14,7 +14,12 @@ import {
   Row,
   Text,
 } from "_shared";
-import { Constantes, formatDateToString, getFirstCharactere } from "_utils";
+import {
+  Constantes,
+  formatDateToString,
+  getFirstCharactere,
+  removeDataToAsyncStorage,
+} from "_utils";
 import { ActivityIndicator, Snackbar } from "react-native-paper";
 import { useTheme } from "@shopify/restyle";
 import { Size, Theme } from "_theme";
@@ -62,9 +67,13 @@ export default function ProductDetailScreen() {
 
   const handleFetchError = (error: any) => {
     if (error.detail && error.detail?.includes("Invalid token")) {
+      removeDataToAsyncStorage("token");
+      removeDataToAsyncStorage("current_account");
       return dispatch(removeAccount());
     }
     if (error.data && error.data.detail?.includes("Invalid token")) {
+      removeDataToAsyncStorage("token");
+      removeDataToAsyncStorage("current_account");
       return dispatch(removeAccount());
     }
   };

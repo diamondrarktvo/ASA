@@ -20,6 +20,7 @@ import { useAppDispatch, useAppSelector } from "_store";
 import { reinitializeProduct, selectors } from "../../publishSlice";
 import { usePublishProductMutation } from "../../publishApi";
 import { removeAccount } from "../../../account/accountSlice";
+import { removeDataToAsyncStorage } from "_utils";
 
 export default function StepSeven() {
   const navigation = useNavigation();
@@ -60,6 +61,8 @@ export default function StepSeven() {
 
   const handleFetchError = (error: any) => {
     if (error && error.data && error.data.detail?.includes("Invalid token")) {
+      removeDataToAsyncStorage("token");
+      removeDataToAsyncStorage("current_account");
       return dispatch(removeAccount());
     }
   };

@@ -82,7 +82,7 @@ const CreateAccountScreen = () => {
         console.log("resAPI : ", res);
         dispatch(setAccount(res));
         storeObjectDataToAsyncStorage("token", res.token);
-        storeObjectDataToAsyncStorage("current_account", res.user);
+        storeObjectDataToAsyncStorage("current_account", res);
         setRegisterValue({
           nickname: null,
           email: null,

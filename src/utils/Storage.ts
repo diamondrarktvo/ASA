@@ -37,6 +37,7 @@ const getObjectDataToAsyncStorage = async (key: string) => {
 const removeDataToAsyncStorage = async (key: string) => {
   try {
     await AsyncStorage.removeItem(key);
+    console.log(key + " removed from async storage");
   } catch (e) {
     console.log("error removing data from async storage : ", e);
   }

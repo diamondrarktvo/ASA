@@ -19,6 +19,7 @@ import { manageProfilNavigationTypes } from "../types";
 import { useCallback, useState } from "react";
 import { useAppDispatch, useAppSelector } from "_store";
 import { removeAccount } from "../accountSlice";
+import { removeDataToAsyncStorage } from "_utils";
 
 export default function AccountScreen() {
   const navigation = useNavigation<manageProfilNavigationTypes>();
@@ -44,6 +45,8 @@ export default function AccountScreen() {
           setTimeout(() => {
             setLoading(false);
             dispatch(removeAccount());
+            removeDataToAsyncStorage("token");
+            removeDataToAsyncStorage("current_account");
           }, 2000);
         },
       },
