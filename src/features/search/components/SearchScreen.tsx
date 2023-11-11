@@ -229,9 +229,6 @@ export default function SearchScreen() {
             name={item.is_favorite ? "favorite" : "favorite-border"}
             size={Size.ICON_MEDIUM}
             color={item.is_favorite ? colors.primary : colors.black}
-            loading={
-              isLoadingAddFavoriteAnnonce || isLoadingDeleteFavoriteAnnonce
-            }
             containerStyle={{
               backgroundColor: colors.white,
               padding: 2,
@@ -271,7 +268,9 @@ export default function SearchScreen() {
           isCategoriesFetching ||
           isCategoriesLoading ||
           isAnnonceLoading ||
-          isAnnonceFetching
+          isAnnonceFetching ||
+          isLoadingAddFavoriteAnnonce ||
+          isLoadingDeleteFavoriteAnnonce
         }
       >
         <RequestError
