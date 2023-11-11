@@ -127,6 +127,11 @@ export default function SearchScreen() {
       removeDataToAsyncStorage("current_account");
       return dispatch(removeAccount());
     }
+    if (error.detail?.includes("Invalid token")) {
+      removeDataToAsyncStorage("token");
+      removeDataToAsyncStorage("current_account");
+      return dispatch(removeAccount());
+    }
   };
 
   //all effects

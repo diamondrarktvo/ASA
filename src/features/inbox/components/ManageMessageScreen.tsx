@@ -136,6 +136,11 @@ export default function ManageMessageScreen() {
       removeDataToAsyncStorage("current_account");
       return dispatch(removeAccount());
     }
+    if (error.data?.detail?.includes("Invalid token")) {
+      removeDataToAsyncStorage("token");
+      removeDataToAsyncStorage("current_account");
+      return dispatch(removeAccount());
+    }
   };
 
   const onSend = useCallback((messages = []) => {

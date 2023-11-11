@@ -123,6 +123,11 @@ export default function PersonnalInformation() {
       removeDataToAsyncStorage("current_account");
       return dispatch(removeAccount());
     }
+    if (error.data?.detail?.includes("Invalid token")) {
+      removeDataToAsyncStorage("token");
+      removeDataToAsyncStorage("current_account");
+      return dispatch(removeAccount());
+    }
   };
 
   //effect
