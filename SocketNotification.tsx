@@ -41,6 +41,7 @@ const SocketNotification = () => {
     // verify error
     socket.onclose = (e) => {
       console.log("Connexion échoué sur le socket !");
+      console.log("error socket : ", e);
     };
 
     // receive notifs

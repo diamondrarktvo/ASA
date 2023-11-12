@@ -1,6 +1,7 @@
 import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { ImageBackground, Platform, StyleSheet } from "react-native";
+import { ImageBackground, Linking, Platform, StyleSheet } from "react-native";
+import { Button as RNEButton } from "@rneui/themed";
 import {
   Box,
   Button,
@@ -231,10 +232,12 @@ export default function ProductDetailScreen() {
     return (
       <Row key={item.id} mt={"xs"}>
         <Column>
-          <Text variant={"tertiary"} fontWeight={"bold"}>
-            {/*item.name*/}Type
+          <Text variant={"tertiary"} color={"secondary"}>
+            {item.name}
           </Text>
-          <Text variant={"tertiary"}>{item.value}</Text>
+          <Text variant={"tertiary"} fontWeight={"bold"}>
+            {item.value}
+          </Text>
         </Column>
       </Row>
     );
@@ -341,7 +344,7 @@ export default function ProductDetailScreen() {
               </Text>
 
               <Box mt={"s"}>
-                <Text variant={"secondary"} fontWeight={"600"}>
+                <Text variant={"primary"} fontWeight={"600"}>
                   Critères
                 </Text>
                 <FlashList
@@ -355,14 +358,14 @@ export default function ProductDetailScreen() {
                 />
               </Box>
               <Box mt={"s"}>
-                <Text variant={"secondary"} fontWeight={"600"}>
+                <Text variant={"primary"} fontWeight={"600"}>
                   Description
                 </Text>
                 <Text variant={"tertiary"}>{annonce?.description}</Text>
               </Box>
 
               <Box mt={"s"}>
-                <Text variant={"secondary"} fontWeight={"600"}>
+                <Text variant={"primary"} fontWeight={"600"}>
                   Localisation
                 </Text>
                 <TouchableOpacity
@@ -412,7 +415,7 @@ export default function ProductDetailScreen() {
 
               {annonce?.quantity && annonce?.quantity > 0 ? (
                 <Box mt={"s"}>
-                  <Text variant={"secondary"} fontWeight={"600"}>
+                  <Text variant={"primary"} fontWeight={"600"}>
                     Quantité
                   </Text>
                   <Text variant={"tertiary"}>{annonce?.quantity}</Text>
@@ -420,7 +423,7 @@ export default function ProductDetailScreen() {
               ) : null}
 
               <Column mt={"s"}>
-                <Text variant={"secondary"} fontWeight={"600"}>
+                <Text variant={"primary"} fontWeight={"600"}>
                   Vendeur
                 </Text>
                 <Row
@@ -463,35 +466,56 @@ export default function ProductDetailScreen() {
                 <Text variant={"tertiary"} fontWeight={"500"} mt={"xs"}>
                   {annonce?.seller.nickname}
                 </Text>
-                <Text variant={"tertiary"}>
-                  {annonce?.phone_number_contact}
-                </Text>
               </Column>
             </MainScreen>
           </ScrollView>
           {annonce?.seller && annonce?.seller.id !== accountUser.user.id && (
-            <Button
-              variant={"primary"}
-              color="white"
-              label="Message"
-              width={"95%"}
-              mx={"xs"}
-              borderRadius={"md"}
-              marginVertical={Platform.OS === "ios" ? "s" : "xs"}
-              onPress={() => {
-                if (accountUser.is_account_connected) {
-                  navigation.navigate("manage_message", {
-                    emetteur: {
-                      nickName: annonce.seller.nickname,
-                      id_seller: annonce.seller.id,
-                      id_conversation: annonce.seller.id_conversation ?? null,
-                    },
-                  });
-                } else {
-                  setUserMustLogin(true);
-                }
-              }}
-            />
+            <Row>
+              {annonce?.phone_number_contact && (
+                <RNEButton
+                  type={"solid"}
+                  color="#2652AA"
+                  title={`Appeler ${annonce?.seller.nickname}`}
+                  containerStyle={{
+                    marginHorizontal: 8,
+                    flex: 1,
+                    height: 32,
+                    borderRadius: 12,
+                    marginVertical: Platform.OS === "ios" ? 16 : 8,
+                  }}
+                  onPress={() => {
+                    if (annonce?.phone_number_contact) {
+                      Linking.openURL(`tel:${annonce?.phone_number_contact}`);
+                    }
+                  }}
+                />
+              )}
+              <RNEButton
+                type={"solid"}
+                color="#2652AA"
+                title="Message"
+                containerStyle={{
+                  marginHorizontal: 8,
+                  flex: 1,
+                  height: 32,
+                  borderRadius: 12,
+                  marginVertical: Platform.OS === "ios" ? 16 : 8,
+                }}
+                onPress={() => {
+                  if (accountUser.is_account_connected) {
+                    navigation.navigate("manage_message", {
+                      emetteur: {
+                        nickName: annonce.seller.nickname,
+                        id_seller: annonce.seller.id,
+                        id_conversation: annonce.seller.id_conversation ?? null,
+                      },
+                    });
+                  } else {
+                    setUserMustLogin(true);
+                  }
+                }}
+              />
+            </Row>
           )}
         </CheckUserConnected>
       </RequestError>
