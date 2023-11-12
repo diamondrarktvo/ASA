@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Alert, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Box, Button, Icon, Input, MainScreen, Row, Text } from "_shared";
 import { Size, Theme } from "_theme";
@@ -30,7 +30,7 @@ export default function StepSix() {
   //ref
   const mapRef = useRef<MapView>(null);
 
-  console.log("typeof : ", typeof position.longitude);
+  console.log("position : ", position);
 
   //all effects
   useEffect(() => {
@@ -95,6 +95,9 @@ export default function StepSix() {
             NB: Vous pouvez entrer dans la barre de recherche le nom de votre
             ville
           </Text>
+          <Text variant={"tertiary"}>
+            EXPO_API_KEY_GEOCODING : {process.env.EXPO_API_KEY_GEOCODING}
+          </Text>
           <Box marginVertical={"xs"}>
             <Input
               placeholder="ex: Antananarivo"
@@ -117,13 +120,23 @@ export default function StepSix() {
                         setIsSearchingName(false);
                         setPosition(data);
                         changeRegion(data);
+                        console.log("data : ", data);
                       })
                       .catch((error) => {
                         setIsSearchingName(false);
                         setVisibleSnackbar(true);
+                        console.log("error carte : ", error);
                         setMessageSnackBar(
                           "Une erreur est survenue lors de la recherche de votre ville",
                         );
+                        Alert.alert("Erreur map", error, [
+                          {
+                            text: "Ok",
+                            onPress: () => {
+                              // Do something
+                            },
+                          },
+                        ]);
                       });
                   }
                 },
