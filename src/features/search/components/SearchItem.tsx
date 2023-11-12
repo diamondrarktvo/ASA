@@ -106,12 +106,13 @@ export default function SearchItem() {
 
   //logics
   const handleFetchError = (error: any) => {
-    if (error && error.data && error.data.detail?.includes("Invalid token")) {
+    if (!error) return;
+    if (error.data && error.data.detail?.includes("Invalid token")) {
       removeDataToAsyncStorage("token");
       removeDataToAsyncStorage("current_account");
       return dispatch(removeAccount());
     }
-    if (error && error.detail && error.detail?.includes("Invalid token")) {
+    if (error.detail && error.detail?.includes("Invalid token")) {
       removeDataToAsyncStorage("token");
       removeDataToAsyncStorage("current_account");
       return dispatch(removeAccount());

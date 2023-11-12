@@ -87,14 +87,11 @@ export default function ManagePayment() {
   } = useGetAllPaymentMethodQuery(token);
 
   const handleFetchError = (error: any) => {
-    if (error && error.detail && error.detail.includes("Invalid token")) {
+    if (!error) return;
+    if (error.detail && error.detail.includes("Invalid token")) {
       return dispatch(removeAccount());
     }
-    if (
-      error &&
-      error.data.detail &&
-      error.data.detail.includes("Invalid token")
-    ) {
+    if (error.data.detail && error.data.detail.includes("Invalid token")) {
       removeDataToAsyncStorage("token");
       removeDataToAsyncStorage("current_account");
       return dispatch(removeAccount());

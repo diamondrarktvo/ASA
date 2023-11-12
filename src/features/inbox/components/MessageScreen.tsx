@@ -47,6 +47,7 @@ export default function MessageScreen() {
   );
 
   const handleFetchError = (error: any) => {
+    if (!error) return;
     if (error?.data?.detail?.includes("Invalid token")) {
       removeDataToAsyncStorage("token");
       removeDataToAsyncStorage("current_account");
