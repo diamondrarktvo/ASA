@@ -60,6 +60,7 @@ export default function StepSeven() {
   ] = usePublishProductMutation();
 
   const handleFetchError = (error: any) => {
+    if (!error) return;
     if (error && error.data && error.data.detail?.includes("Invalid token")) {
       removeDataToAsyncStorage("token");
       removeDataToAsyncStorage("current_account");

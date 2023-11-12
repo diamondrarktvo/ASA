@@ -74,6 +74,7 @@ export default function ProductDetailScreen() {
   );
 
   const handleFetchError = (error: any) => {
+    if (!error) return;
     if (error.detail && error.detail?.includes("Invalid token")) {
       removeDataToAsyncStorage("token");
       removeDataToAsyncStorage("current_account");

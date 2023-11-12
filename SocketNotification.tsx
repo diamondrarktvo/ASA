@@ -23,7 +23,6 @@ const SocketNotification = () => {
   useEffect(() => {
     getObjectDataToAsyncStorage("current_account")
       .then((res) => {
-        console.log("res storage account e", res);
         if (res) dispatch(setAccount(res));
       })
       .catch((err) => {
@@ -34,13 +33,13 @@ const SocketNotification = () => {
   useEffect(() => {
     // verify connection
     socket.onopen = (e) => {
-      console.log("Connexion réussi sur le socket !");
+      console.log("Connexion réussi sur le socket notification!");
       setConnectedToSocket(true);
     };
 
     // verify error
     socket.onclose = (e) => {
-      console.log("Connexion échoué sur le socket !");
+      console.log("Connexion échoué sur le socket notification!");
       console.log("error socket : ", e);
     };
 

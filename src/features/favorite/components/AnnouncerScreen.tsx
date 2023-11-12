@@ -58,6 +58,7 @@ export default function AnnouncerScreen() {
   ] = useDeleteFavoriteSellerMutation();
 
   const handleFetchError = (error: any) => {
+    if (!error) return;
     if (error.detail?.includes("Invalid token")) {
       removeDataToAsyncStorage("token");
       removeDataToAsyncStorage("current_account");
