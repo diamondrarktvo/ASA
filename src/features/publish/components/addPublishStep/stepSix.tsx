@@ -30,8 +30,6 @@ export default function StepSix() {
   //ref
   const mapRef = useRef<MapView>(null);
 
-  console.log("position : ", position);
-
   //all effects
   useEffect(() => {
     setValueForStepper((prevState) => ({
@@ -61,8 +59,15 @@ export default function StepSix() {
   };
 
   const changeRegion = (newRegion: any) => {
-    mapRef.current?.animateToRegion(newRegion, 500);
+    mapRef.current?.animateToRegion(newRegion, 3000);
   };
+
+  useEffect(() => {
+    mapRef.current?.animateToRegion(
+      { ...position, latitudeDelta: 0.04, longitudeDelta: 0.05 },
+      3000,
+    );
+  }, [position]);
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
@@ -116,8 +121,6 @@ export default function StepSix() {
                       .then((data) => {
                         setIsSearchingName(false);
                         setPosition(data);
-                        changeRegion(data);
-                        console.log("data : ", data);
                       })
                       .catch((error) => {
                         setIsSearchingName(false);
