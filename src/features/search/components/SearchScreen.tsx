@@ -329,7 +329,7 @@ export default function SearchScreen() {
                   />
                 </Box>
               </Column>
-              <Column marginTop="s">
+              <Column>
                 <Text variant="primaryBold">Annonces fraîchement publiées</Text>
                 {/*//FIXME: fix the height of the list*/}
                 <Box
@@ -354,6 +354,14 @@ export default function SearchScreen() {
                         onRefresh={() => refetchAnnonces()}
                       />
                     }
+                  />
+                  <Button
+                    variant={"primary"}
+                    color="white"
+                    label="Afficher plus d'annonces"
+                    marginTop={"xs"}
+                    marginBottom={"m"}
+                    onPress={() => navigation.navigate("search_item", {})}
                   />
                 </Box>
               </Column>

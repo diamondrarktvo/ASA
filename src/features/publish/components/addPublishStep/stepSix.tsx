@@ -95,9 +95,6 @@ export default function StepSix() {
             NB: Vous pouvez entrer dans la barre de recherche le nom de votre
             ville
           </Text>
-          <Text variant={"tertiary"}>
-            EXPO_API_KEY_GEOCODING : {process.env.EXPO_API_KEY_GEOCODING}
-          </Text>
           <Box marginVertical={"xs"}>
             <Input
               placeholder="ex: Antananarivo"
