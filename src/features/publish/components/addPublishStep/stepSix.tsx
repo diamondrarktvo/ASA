@@ -1,4 +1,4 @@
-import { Alert, StyleSheet } from "react-native";
+import { Alert, Platform, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Box, Button, Icon, Input, MainScreen, Row, Text } from "_shared";
 import { Size, Theme } from "_theme";
@@ -62,16 +62,9 @@ export default function StepSix() {
     mapRef.current?.animateToRegion(newRegion, 3000);
   };
 
-  useEffect(() => {
-    mapRef.current?.animateToRegion(
-      { ...position, latitudeDelta: 0.04, longitudeDelta: 0.05 },
-      3000,
-    );
-  }, [position]);
-
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <Box width={"100%"}>
           <Icon
             name="close"
@@ -151,7 +144,7 @@ export default function StepSix() {
             alignItems={"center"}
             justifyContent={"center"}
           >
-            {position.longitude && position.latitude && !isSearchingName ? (
+            {position.longitude && position.latitude ? (
               <MapView
                 provider={PROVIDER_GOOGLE}
                 style={[
@@ -170,6 +163,7 @@ export default function StepSix() {
               >
                 <Marker
                   draggable
+                  tracksViewChanges={Platform.OS == "android"}
                   key={"Vous êtes ici	"}
                   coordinate={position}
                   title={"Vous êtes ici	"}
@@ -178,7 +172,7 @@ export default function StepSix() {
               </MapView>
             ) : (
               <Text variant={"tertiary"} textAlign={"center"}>
-                Chargement de la carte du monde ...
+                Chargement de la carte du monde ...eee
               </Text>
             )}
           </Box>
