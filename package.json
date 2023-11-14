@@ -7,7 +7,8 @@
     "clean": "npx expo start -c",
     "android": "npx expo start --android",
     "ios": "npx expo start --ios",
-    "web": "npx expo start --web"
+    "web": "npx expo start --web",
+    "start-prod": "npx expo start --no-dev --minify"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4.4.7",
