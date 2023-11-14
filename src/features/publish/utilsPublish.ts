@@ -55,26 +55,19 @@ export const convertUriImageToBase64 = (uri: string) => {
   return base64Image;
 };
 
-export const transformNameToGeocode = (name: string) => {
-  fetch(
-    `http://api.openweathermap.org/geo/1.0/direct?q=${name}&limit=1&appid=${process.env.EXPO_API_KEY_GEOCODING}`,
-  )
-    .then((response) => {
-      console.log("response ifotony : ", response);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then((data) => {
-      console.log("data ifootony : ", JSON.stringify(data));
-      return {
-        longitude: data[0].lon,
-        latitude: data[0].lat,
-      };
-    })
-    .catch((error) => {
-      console.log("error ifotony : ", JSON.stringify(error));
-      throw new Error("Network error");
-    });
+export const transformNameToGeocode = async (name: string) => {
+  try {
+    const response = await fetch(
+      `http://api.openweathermap.org/geo/1.0/direct?q=${name}&limit=1&appid=${process.env.EXPO_API_KEY_GEOCODING}`,
+    );
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+    const data = await response.json();
+    return {
+      longitude: data[0].lon,
+      latitude: data[0].lat,
+    };
+  } catch (error) {
+    throw new Error("Network error");
+  }
 };
