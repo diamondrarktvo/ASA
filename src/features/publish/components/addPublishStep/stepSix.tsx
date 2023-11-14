@@ -59,7 +59,7 @@ export default function StepSix() {
   };
 
   const changeRegion = (newRegion: any) => {
-    mapRef.current?.animateToRegion(newRegion, 3000);
+    mapRef.current?.animateToRegion(newRegion, 1000);
   };
 
   return (
@@ -144,8 +144,9 @@ export default function StepSix() {
             alignItems={"center"}
             justifyContent={"center"}
           >
-            {position.longitude && position.latitude ? (
+            {position.longitude && position.latitude && !isSearchingName ? (
               <MapView
+                ref={mapRef}
                 provider={PROVIDER_GOOGLE}
                 style={[
                   StyleSheet.absoluteFillObject,
@@ -172,7 +173,7 @@ export default function StepSix() {
               </MapView>
             ) : (
               <Text variant={"tertiary"} textAlign={"center"}>
-                Chargement de la carte du monde ...eee
+                Chargement de la carte du monde ...
               </Text>
             )}
           </Box>
