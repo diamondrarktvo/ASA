@@ -15,7 +15,7 @@ const chatApi = BaseApi.injectEndpoints({
         },
       }),
       transformResponse: (resp: conversationTypes[]) => {
-        const allConversations: conversationTypes[] | [] = resp
+        const allConversations: conversationTypes[] = resp
           ? resp.map((conversation) => ({
               id: conversation.id,
               participants: conversation.participants.filter(
@@ -29,7 +29,7 @@ const chatApi = BaseApi.injectEndpoints({
       providesTags: [{ type: "Conversation", id: "LIST" }],
     }),
     getIfConversationStarted: build.query<
-      { is_started: boolean },
+      boolean,
       { token: string | undefined; id_seller: number }
     >({
       query: (arg) => ({

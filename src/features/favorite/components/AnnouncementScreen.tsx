@@ -13,7 +13,7 @@ import {
 } from "_shared";
 import { ActivityIndicator, Snackbar } from "react-native-paper";
 import { FlashList, ListRenderItem } from "@shopify/flash-list";
-import { Constantes } from "_utils";
+import { Constantes, removeDataToAsyncStorage } from "_utils";
 import { Size, Theme } from "_theme";
 import { useTheme } from "@shopify/restyle";
 import { favoriteAnnonceType } from "../types";
@@ -54,7 +54,15 @@ export default function AnnouncementScreen() {
   ] = useDeleteFavoriteAnnonceMutation();
 
   const handleFetchError = (error: any) => {
+    if (!error) return;
     if (error.detail?.includes("Invalid token")) {
+      removeDataToAsyncStorage("token");
+      removeDataToAsyncStorage("current_account");
+      return dispatch(removeAccount());
+    }
+    if (error.data?.detail?.includes("Invalid token")) {
+      removeDataToAsyncStorage("token");
+      removeDataToAsyncStorage("current_account");
       return dispatch(removeAccount());
     }
   };

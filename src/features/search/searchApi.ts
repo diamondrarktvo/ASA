@@ -9,7 +9,10 @@ import { ApiInformationType } from "_utils";
 
 const searchApi = BaseApi.injectEndpoints({
   endpoints: (build) => ({
-    getAllAnnonce: build.query<annonceType[], string | undefined>({
+    getAllAnnonce: build.query<
+      { annonces: annonceType[]; apiInformation: ApiInformationType },
+      string | undefined
+    >({
       query: (token) => ({
         url: config.GET_PRODUCT_URL,
         method: "GET",
@@ -47,10 +50,53 @@ const searchApi = BaseApi.injectEndpoints({
           ? [{ type: "Announce", id: result.id }]
           : [{ type: "Announce", id: "LIST" }],
     }),
+    getAnnonceByCategory: build.query<
+      annonceType[],
+      { id_catg: number; token: string | undefined }
+    >({
+      query: (arg) => ({
+        url: `${config.GET_PRODUCT_URL}/category/${arg.id_catg}`,
+        method: "GET",
+        headers: {
+          Authorization: arg.token ? `token ${arg.token}` : undefined,
+        },
+      }),
+      providesTags: [{ type: "Announce", id: "LIST" }],
+    }),
+    getAnnonceBySearching: build.query<
+      { annonces: annonceType[]; apiInformation: ApiInformationType },
+      { token: string | undefined; textToSearch: string }
+    >({
+      query: (arg) => ({
+        url: `${config.GET_PRODUCT_URL}?search=${arg.textToSearch}`,
+        method: "GET",
+        headers: {
+          Authorization: arg.token ? `token ${arg.token}` : undefined,
+        },
+      }),
+      transformResponse: (response: AnnoncesResponseType) => {
+        const annonces: annonceType[] = response.results || [];
+        const apiInformation: ApiInformationType = {
+          count: response.count,
+          next: response.next,
+          previous: response.previous,
+        };
+        return {
+          annonces,
+          apiInformation,
+        };
+      },
+      providesTags: [{ type: "Announce", id: "LIST" }],
+    }),
   }),
   overrideExisting: true,
 });
 
-export const { useGetAllAnnonceQuery, useGetOneAnnonceQuery } = searchApi;
+export const {
+  useGetAllAnnonceQuery,
+  useGetOneAnnonceQuery,
+  useGetAnnonceByCategoryQuery,
+  useGetAnnonceBySearchingQuery,
+} = searchApi;
 
 export default searchApi;

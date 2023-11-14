@@ -24,4 +24,6 @@ export {
   formatDateToString,
   getFirstCharactere,
   pushNotification,
+  base64Func,
+  verifyText,
 } from "./layout";

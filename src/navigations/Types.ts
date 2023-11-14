@@ -28,7 +28,11 @@ export type StackParamList = {
   stepper_screen_6: undefined;
   stepper_screen_7: undefined;
   //end of stepper screens
-  search_item: undefined;
+  search_item: {
+    id_catg?: number;
+    name_catg?: string;
+    typeOfSearch?: string;
+  };
   product_detail_screen: { idOfProduct: number };
 };
 

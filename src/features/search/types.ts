@@ -10,18 +10,35 @@ export type searchItemNavigationTypes = StackNavigationProp<
   "search_item"
 >;
 
+export type imageAnnonceType = {
+  id: number;
+  user: string;
+  image: ImageSourcePropType;
+};
+
+export type product_criteriaType = {
+  id: number;
+  criteria: number;
+  name: string;
+  value: string | number;
+};
+
 export type annonceType = {
   id: number;
-  pictures: ImageSourcePropType[];
+  pictures: imageAnnonceType[];
   payement_method: payement_method_type[];
-  product_criteria: [];
+  product_criteria: product_criteriaType[];
   likes: [];
   is_favorite: boolean;
   views: [];
   name: string;
   publication_date: string;
   description: string | null;
-  location: string | null;
+  location: {
+    longitude: string;
+    latitude: string;
+    name?: string;
+  };
   price: string | number;
   local_delivery_price: string | number | null;
   national_delivery_price: string | number | null;
@@ -58,3 +75,8 @@ export type AnnoncesResponseType = ApiInformationType & {
 export type AnnonceResponseType = {
   annonces: annonceType[];
 };
+
+export interface RouteSearchParams {
+  typeOfSearch?: string;
+  id_catg?: number;
+}

@@ -32,3 +32,8 @@ export type stepper7NavigationTypes = StackNavigationProp<
   StackParamList,
   "stepper_screen_7"
 >;
+
+export type criteriaSelected = {
+  criteria: number;
+  value: string | number | Date;
+};

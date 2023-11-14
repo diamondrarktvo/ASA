@@ -1,6 +1,7 @@
 import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { ImageBackground, StyleSheet } from "react-native";
+import { ImageBackground, Linking, Platform, StyleSheet } from "react-native";
+import { Button as RNEButton } from "@rneui/themed";
 import {
   Box,
   Button,
@@ -13,13 +14,19 @@ import {
   RequestLoader,
   Row,
   Text,
+  TouchableOpacity,
 } from "_shared";
-import { Constantes, formatDateToString, getFirstCharactere } from "_utils";
+import {
+  Constantes,
+  formatDateToString,
+  getFirstCharactere,
+  removeDataToAsyncStorage,
+} from "_utils";
 import { ActivityIndicator, Snackbar } from "react-native-paper";
 import { useTheme } from "@shopify/restyle";
 import { Size, Theme } from "_theme";
 import { ScrollView } from "react-native-gesture-handler";
-import { CategoryType } from "../../types";
+import { product_criteriaType } from "../types";
 import { useEffect, useState } from "react";
 import { useGetOneAnnonceQuery } from "../searchApi";
 import {
@@ -30,6 +37,7 @@ import {
 } from "../../favorite/favoriteApi";
 import { useAppDispatch, useAppSelector } from "_store";
 import { removeAccount } from "../../account/accountSlice";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 
 export default function ProductDetailScreen() {
   const navigation = useNavigation();
@@ -42,6 +50,11 @@ export default function ProductDetailScreen() {
   const [visibleSnackbar, setVisibleSnackbar] = useState(false);
   const [messageSnackBar, setMessageSnackBar] = useState("");
   const [userMustLogin, setUserMustLogin] = useState<boolean>(false);
+  const [onTapCityName, setOnTapCityName] = useState(false);
+  const [positionMap, setPositionMap] = useState({
+    latitude: 0,
+    longitude: 0,
+  });
 
   const {
     data: annonce,
@@ -61,7 +74,15 @@ export default function ProductDetailScreen() {
   );
 
   const handleFetchError = (error: any) => {
-    if (error.detail?.includes("Invalid token")) {
+    if (!error) return;
+    if (error.detail && error.detail?.includes("Invalid token")) {
+      removeDataToAsyncStorage("token");
+      removeDataToAsyncStorage("current_account");
+      return dispatch(removeAccount());
+    }
+    if (error.data && error.data.detail?.includes("Invalid token")) {
+      removeDataToAsyncStorage("token");
+      removeDataToAsyncStorage("current_account");
       return dispatch(removeAccount());
     }
   };
@@ -69,9 +90,9 @@ export default function ProductDetailScreen() {
   const [
     addFavoriteSeller,
     {
-      isError: isErrorAddFavorite,
-      isLoading: isLoadingAddFavorite,
-      error: errorAddFavorite,
+      isError: isErrorAddFavoriteSeller,
+      isLoading: isLoadingAddFavoriteSeller,
+      error: errorAddFavoriteSeller,
     },
   ] = useAddFavoriteSellerMutation();
   const [
@@ -184,82 +205,58 @@ export default function ProductDetailScreen() {
   const handleRefetch = () => {
     if (isErrorAnnonce) {
       refetchAnnonce();
-    } else if (isErrorAddFavorite && annonce?.seller.id) {
+    } else if (isErrorAddFavoriteSeller && annonce?.seller.id) {
       handleAddFavoriteSeller(annonce?.seller.id);
     } else if (isErrorAddFavoriteAnnonce && annonce?.id) {
       handleAddFavoriteAnnonce(annonce?.id);
     }
   };
 
+  //effects
+  useEffect(() => {
+    if (isErrorAnnonce) handleFetchError(errorAnnonce);
+  }, [isErrorAnnonce]);
+
+  useEffect(() => {
+    if (annonce && annonce.location.latitude && annonce.location.longitude) {
+      setPositionMap({
+        latitude: parseFloat(annonce.location.latitude),
+        longitude: parseFloat(annonce.location.longitude),
+      });
+    }
+  }, [annonce]);
+
   //components
-  const renderItemCriteria: ListRenderItem<CategoryType> = ({ item }) => {
+  const renderItemCriteria: ListRenderItem<product_criteriaType> = ({
+    item,
+  }) => {
     return (
-      <Box
-        key={item.id}
-        marginRight={"xs"}
-        height={80}
-        width={130}
-        borderRadius={"xxs"}
-        alignItems={"flex-start"}
-        justifyContent={"flex-end"}
-      >
-        <ImageBackground
-          source={
-            item.image ? { uri: item.image } : require("_images/logo.jpg")
-          }
-          blurRadius={8}
-          style={{
-            marginHorizontal: 4,
-            height: 80,
-            width: 130,
-          }}
-          imageStyle={{
-            resizeMode: "cover",
-            borderRadius: 6,
-          }}
-        >
-          <Box
-            style={[StyleSheet.absoluteFillObject, styles.maskImageCatg]}
-          ></Box>
-          <Text
-            variant={"tertiary"}
-            fontWeight={"bold"}
-            color={"white"}
-            paddingLeft={"m"}
-            paddingBottom={"s"}
-            style={{
-              position: "absolute",
-              bottom: 3,
-              left: 3,
-            }}
-          >
+      <Row key={item.id} mt={"xs"}>
+        <Column>
+          <Text variant={"tertiary"} color={"secondary"}>
             {item.name}
           </Text>
-        </ImageBackground>
-      </Box>
+          <Text variant={"tertiary"} fontWeight={"bold"}>
+            {item.value}
+          </Text>
+        </Column>
+      </Row>
     );
   };
 
   return (
-    <RequestLoader
-      isLoading={
-        isAnnonceLoading ||
-        isAnnonceFetching ||
-        isLoadingAddFavoriteAnnonce ||
-        isLoadingDeleteFavoriteAnnonce
-      }
-    >
+    <RequestLoader isLoading={isAnnonceLoading}>
       <RequestError
         isError={
           isErrorAnnonce ||
-          isErrorAddFavorite ||
+          isErrorAddFavoriteSeller ||
           isErrorDeleteFavorite ||
           isErrorAddFavoriteAnnonce ||
           isErrorDeleteFavoriteAnnonce
         }
         errorStatus={
           errorAnnonce?.status ||
-          errorAddFavorite?.status ||
+          errorAddFavoriteSeller?.status ||
           errorDeleteFavorite?.status ||
           errorDeleteFavoriteAnnonce?.status ||
           errorAddFavoriteAnnonce?.status
@@ -270,13 +267,14 @@ export default function ProductDetailScreen() {
           userMustLogin={userMustLogin}
           setUserMustLogin={setUserMustLogin}
           subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
+          needPadding={userMustLogin}
         >
           <Row
             style={{ position: "absolute", zIndex: 10, top: 0 }}
             justifyContent="space-between"
             width="100%"
             paddingHorizontal="s"
-            paddingTop="s"
+            paddingTop={Platform.OS === "ios" ? "l" : "s"}
           >
             <Icon
               name="arrow-back"
@@ -295,6 +293,11 @@ export default function ProductDetailScreen() {
               }
               size={Size.ICON_MEDIUM}
               color={colors.black}
+              loading={
+                isLoadingAddFavoriteAnnonce ||
+                isLoadingDeleteFavoriteAnnonce ||
+                isAnnonceFetching
+              }
               containerStyle={{
                 backgroundColor: "white",
                 borderRadius: 50,
@@ -313,10 +316,9 @@ export default function ProductDetailScreen() {
             <Box>
               <Image
                 source={
-                  /*
-              item.pictures[0]
-                ? { uri: item.pictures[0] }
-                : */ require("_images/logo.jpg")
+                  annonce?.pictures[0]
+                    ? { uri: annonce?.pictures[0].image }
+                    : require("_images/logo.jpg")
                 }
                 containerStyle={styles.imageAnnonce}
                 PlaceholderContent={
@@ -330,7 +332,11 @@ export default function ProductDetailScreen() {
 
             <MainScreen typeOfScreen="stack">
               <Text variant={"primaryBold"}>{annonce?.name}</Text>
-              <Text variant={"primary"}>{annonce?.price} Ar</Text>
+              {annonce?.price &&
+              typeof annonce?.price === "string" &&
+              parseFloat(annonce?.price) > 0 ? (
+                <Text variant={"primaryBold"}>{annonce?.price} Ar</Text>
+              ) : null}
               <Text variant={"tertiary"}>
                 {" "}
                 Publié le{" "}
@@ -339,33 +345,86 @@ export default function ProductDetailScreen() {
               </Text>
 
               <Box mt={"s"}>
-                <Text variant={"secondary"} fontWeight={"600"}>
+                <Text variant={"primary"} fontWeight={"600"}>
                   Critères
                 </Text>
+                <FlashList
+                  keyExtractor={(item, index) => item.id.toString()}
+                  estimatedItemSize={200}
+                  data={annonce?.product_criteria}
+                  renderItem={renderItemCriteria}
+                  numColumns={2}
+                  extraData={annonce?.product_criteria}
+                  showsVerticalScrollIndicator={false}
+                />
               </Box>
               <Box mt={"s"}>
-                <Text variant={"secondary"} fontWeight={"600"}>
+                <Text variant={"primary"} fontWeight={"600"}>
                   Description
                 </Text>
                 <Text variant={"tertiary"}>{annonce?.description}</Text>
               </Box>
 
               <Box mt={"s"}>
-                <Text variant={"secondary"} fontWeight={"600"}>
+                <Text variant={"primary"} fontWeight={"600"}>
                   Localisation
                 </Text>
-                <Text variant={"tertiary"}>{annonce?.location}</Text>
+                <TouchableOpacity
+                  onPress={() => setOnTapCityName(!onTapCityName)}
+                >
+                  <Text variant={"tertiary"}>{annonce?.location.name}</Text>
+                </TouchableOpacity>
+
+                {positionMap &&
+                positionMap.longitude !== 0 &&
+                positionMap.latitude !== 0 &&
+                onTapCityName ? (
+                  <Box
+                    height={160}
+                    width={"100%"}
+                    marginTop={"xs"}
+                    marginBottom={"s"}
+                    flexDirection={"row"}
+                    alignItems={"center"}
+                    justifyContent={"center"}
+                  >
+                    <MapView
+                      provider={PROVIDER_GOOGLE}
+                      style={[
+                        StyleSheet.absoluteFillObject,
+                        { width: "100%", height: 160 },
+                      ]}
+                      initialRegion={{
+                        latitude: positionMap.latitude,
+                        longitude: positionMap.longitude,
+                        latitudeDelta: 0.04,
+                        longitudeDelta: 0.05,
+                      }}
+                      showsUserLocation={true}
+                      userLocationAnnotationTitle="Vous êtes ici"
+                      followsUserLocation={true}
+                    >
+                      <Marker
+                        key={"Vous êtes ici	"}
+                        coordinate={positionMap}
+                        title={"Le vendeur est ici."}
+                      />
+                    </MapView>
+                  </Box>
+                ) : null}
               </Box>
 
-              <Box mt={"s"}>
-                <Text variant={"secondary"} fontWeight={"600"}>
-                  Quantité
-                </Text>
-                <Text variant={"tertiary"}>{annonce?.quantity}</Text>
-              </Box>
+              {annonce?.quantity && annonce?.quantity > 0 ? (
+                <Box mt={"s"}>
+                  <Text variant={"primary"} fontWeight={"600"}>
+                    Quantité
+                  </Text>
+                  <Text variant={"tertiary"}>{annonce?.quantity}</Text>
+                </Box>
+              ) : null}
 
               <Column mt={"s"}>
-                <Text variant={"secondary"} fontWeight={"600"}>
+                <Text variant={"primary"} fontWeight={"600"}>
                   Vendeur
                 </Text>
                 <Row
@@ -383,54 +442,81 @@ export default function ProductDetailScreen() {
                     {annonce?.seller &&
                       getFirstCharactere(annonce.seller.nickname)}
                   </Text>
-                  <Button
-                    variant={
-                      annonce?.seller.is_followed ? "secondary" : "tertiary"
-                    }
-                    label={annonce?.seller.is_followed ? "Suivi" : "Suivre"}
-                    loading={isLoadingAddFavorite || isLoadingDeleteFavorite}
-                    onPress={() => {
-                      if (accountUser.is_account_connected) {
-                        handleChangeFavoriteSeller();
-                      } else {
-                        setUserMustLogin(true);
+                  {annonce?.seller.id !== accountUser.user.id && (
+                    <Button
+                      variant={
+                        annonce?.seller.is_followed ? "secondary" : "tertiary"
                       }
-                    }}
-                    paddingVertical={"l"}
-                  />
+                      label={annonce?.seller.is_followed ? "Suivi" : "Suivre"}
+                      loading={
+                        isLoadingAddFavoriteSeller ||
+                        isLoadingDeleteFavorite ||
+                        isAnnonceFetching
+                      }
+                      onPress={() => {
+                        if (accountUser.is_account_connected) {
+                          handleChangeFavoriteSeller();
+                        } else {
+                          setUserMustLogin(true);
+                        }
+                      }}
+                      paddingVertical={"l"}
+                    />
+                  )}
                 </Row>
                 <Text variant={"tertiary"} fontWeight={"500"} mt={"xs"}>
                   {annonce?.seller.nickname}
                 </Text>
-                <Text variant={"tertiary"}>
-                  {annonce?.phone_number_contact}
-                </Text>
               </Column>
             </MainScreen>
           </ScrollView>
-          {annonce?.seller && (
-            <Button
-              variant={"primary"}
-              color="white"
-              label="Message"
-              width={"95%"}
-              mx={"xs"}
-              borderRadius={"md"}
-              marginVertical={"xs"}
-              onPress={() => {
-                if (accountUser.is_account_connected) {
-                  navigation.navigate("manage_message", {
-                    emetteur: {
-                      nickName: annonce.seller.nickname,
-                      id_seller: annonce.seller.id,
-                      id_conversation: annonce.seller.id_conversation ?? null,
-                    },
-                  });
-                } else {
-                  setUserMustLogin(true);
-                }
-              }}
-            />
+          {annonce?.seller && annonce?.seller.id !== accountUser.user.id && (
+            <Row>
+              {annonce?.phone_number_contact && (
+                <RNEButton
+                  type={"solid"}
+                  color="#2652AA"
+                  title={`Appeler ${annonce?.seller.nickname}`}
+                  containerStyle={{
+                    marginHorizontal: 8,
+                    flex: 1,
+                    height: 32,
+                    borderRadius: 12,
+                    marginVertical: Platform.OS === "ios" ? 16 : 8,
+                  }}
+                  onPress={() => {
+                    if (annonce?.phone_number_contact) {
+                      Linking.openURL(`tel:${annonce?.phone_number_contact}`);
+                    }
+                  }}
+                />
+              )}
+              <RNEButton
+                type={"solid"}
+                color="#2652AA"
+                title="Message"
+                containerStyle={{
+                  marginHorizontal: 8,
+                  flex: 1,
+                  height: 32,
+                  borderRadius: 12,
+                  marginVertical: Platform.OS === "ios" ? 16 : 8,
+                }}
+                onPress={() => {
+                  if (accountUser.is_account_connected) {
+                    navigation.navigate("manage_message", {
+                      emetteur: {
+                        nickName: annonce.seller.nickname,
+                        id_seller: annonce.seller.id,
+                        id_conversation: annonce.seller.id_conversation ?? null,
+                      },
+                    });
+                  } else {
+                    setUserMustLogin(true);
+                  }
+                }}
+              />
+            </Row>
           )}
         </CheckUserConnected>
       </RequestError>
@@ -463,7 +549,7 @@ const styles = StyleSheet.create({
     width: 130,
   },
   spinnerAnnonce: {
-    height: 100,
+    height: 280,
     width: 100,
     display: "flex",
     justifyContent: "center",

@@ -1,13 +1,19 @@
-import { useAppSelector } from "_store";
+import { useAppDispatch, useAppSelector } from "_store";
 import { Text, View } from "react-native";
 import { useEffect, useState } from "react";
-import { formatDateToString, pushNotification } from "_utils";
+import {
+  formatDateToString,
+  getObjectDataToAsyncStorage,
+  pushNotification,
+} from "_utils";
+import { setAccount } from "./src/features/account/accountSlice";
 
 const SOCKET_URL = process.env.EXPO_PUBLIC_API_HOST || "";
 
 const SocketNotification = () => {
   const [connectedToSocket, setConnectedToSocket] = useState(false);
   const accountUser = useAppSelector((state) => state.account);
+  const dispatch = useAppDispatch();
 
   const socket = new WebSocket(
     `${SOCKET_URL}/ws/notification/${accountUser.user.nickname || ""}`,
@@ -15,15 +21,26 @@ const SocketNotification = () => {
   );
 
   useEffect(() => {
+    getObjectDataToAsyncStorage("current_account")
+      .then((res) => {
+        if (res) dispatch(setAccount(res));
+      })
+      .catch((err) => {
+        console.log("eeeee : ", err);
+      });
+  }, []);
+
+  useEffect(() => {
     // verify connection
     socket.onopen = (e) => {
-      console.log("Connexion réussi sur le socket !");
+      console.log("Connexion réussi sur le socket notification!");
       setConnectedToSocket(true);
     };
 
     // verify error
     socket.onclose = (e) => {
-      console.log("Connexion échoué sur le socket !");
+      console.log("Connexion échoué sur le socket notification!");
+      console.log("error socket : ", e);
     };
 
     // receive notifs

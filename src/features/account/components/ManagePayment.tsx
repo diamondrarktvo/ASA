@@ -21,14 +21,23 @@ import { ScrollView as ScrollViewBottomSheet } from "react-native-gesture-handle
 import { BottomSheetModal, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types";
 import { useAppDispatch, useAppSelector } from "_store";
-import { formatDate, storeObjectDataToAsyncStorage } from "_utils";
+import {
+  formatDate,
+  removeDataToAsyncStorage,
+  storeObjectDataToAsyncStorage,
+  verifyText,
+} from "_utils";
 import { RadioButton, Snackbar } from "react-native-paper";
 import {
   useAddPaymentMethodMutation,
+  useDeleteOnePaymentMethodMutation,
   useGetAllPaymentMethodQuery,
 } from "../paymentMethodApi";
-import { paymentMethodState, setPaymentMethod } from "../paymentMethodeSlice";
-import { useNavigation } from "@react-navigation/native";
+import {
+  paymentMethodStateType,
+  setPaymentMethod,
+} from "../paymentMethodeSlice";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { removeAccount } from "../accountSlice";
 
 export default function ManagePayment() {
@@ -46,7 +55,7 @@ export default function ManagePayment() {
   }>({ mobileMoney: false, payPal: false, visa: false });
   const [valueForMobileMoney, setValueForMobileMoney] = useState({
     phone: "",
-    name: "MobileMoney",
+    type: "MobileMoney",
     token: token,
   });
 
@@ -55,10 +64,18 @@ export default function ManagePayment() {
     {
       isError: isMobileMoneyError,
       isLoading: isMobileMoneyLoading,
-      status,
-      error,
+      error: errorAddMobileMoney,
     },
   ] = useAddPaymentMethodMutation();
+
+  const [
+    deleteOnePaymentMethod,
+    {
+      isError: isDeleteMobileMoneyError,
+      isLoading: isDeleteMobileMoneyLoading,
+      error: errorDeleteMobileMoney,
+    },
+  ] = useDeleteOnePaymentMethodMutation();
 
   const {
     data: allPaymentMethod,
@@ -70,7 +87,13 @@ export default function ManagePayment() {
   } = useGetAllPaymentMethodQuery(token);
 
   const handleFetchError = (error: any) => {
-    if (error.detail?.includes("Invalid token")) {
+    if (!error) return;
+    if (error.detail && error.detail.includes("Invalid token")) {
+      return dispatch(removeAccount());
+    }
+    if (error.data.detail && error.data.detail.includes("Invalid token")) {
+      removeDataToAsyncStorage("token");
+      removeDataToAsyncStorage("current_account");
       return dispatch(removeAccount());
     }
   };
@@ -86,6 +109,11 @@ export default function ManagePayment() {
           ...prevState,
           mobileMoney: true,
         }));
+        setValueForMobileMoney({
+          phone: "",
+          type: "MobileMoney",
+          token: token,
+        });
         setVisibleSnackbar(true);
         setMessageForSnackbar("Le numéro de téléphone a été enregistré");
       })
@@ -93,6 +121,21 @@ export default function ManagePayment() {
         handleFetchError(e);
         setMessageForSnackbar(e.data?.detail);
         console.log("e for method payment : ", e);
+        setVisibleSnackbar(true);
+      });
+  };
+
+  const handleDeleteOnePaymentMethod = async (id: number) => {
+    deleteOnePaymentMethod({ id, token })
+      .unwrap()
+      .then((res) => {
+        console.log("res delete method : ", res);
+        setVisibleSnackbar(true);
+        setMessageForSnackbar("Le numéro de téléphone a été supprimé");
+      })
+      .catch((e) => {
+        handleFetchError(e);
+        setMessageForSnackbar(e.data?.detail);
         setVisibleSnackbar(true);
       });
   };
@@ -127,30 +170,43 @@ export default function ManagePayment() {
 
   //effect
   //TODO: de-comment it if update is OK
-  /*useEffect(() => {
-    if (allPaymentMethod && allPaymentMethod.length !== 0) {
-      allPaymentMethod.map((item: paymentMethodState) => {
-        if (item.name === "MobileMoney") {
+  useEffect(() => {
+    if (allPaymentMethod && allPaymentMethod.length > 0) {
+      allPaymentMethod.map((item: paymentMethodStateType) => {
+        if (item.type === "MobileMoney") {
           setCheckPayment((prevState) => ({
             ...prevState,
             mobileMoney: true,
           }));
         }
-        if (item.name === "Paypal") {
+        if (item.type === "Paypal") {
           setCheckPayment((prevState) => ({
             ...prevState,
             payPal: true,
           }));
         }
-        if (item.name === "VISA") {
+        if (item.type === "VISA") {
           setCheckPayment((prevState) => ({
             ...prevState,
             visa: true,
           }));
         }
       });
+    } else {
+      setCheckPayment({ mobileMoney: false, payPal: false, visa: false });
     }
-  }, [allPaymentMethod]);*/
+  }, [allPaymentMethod]);
+
+  useEffect(() => {
+    handleFetchError(errorGetAllPaymentMethod);
+  }, [isErrorGetAllPaymentMethod, errorGetAllPaymentMethod]);
+
+  useFocusEffect(
+    useCallback(() => {
+      console.log("allPaymentMethod e: ", allPaymentMethod);
+      dispatch(setPaymentMethod(allPaymentMethod));
+    }, [allPaymentMethod]),
+  );
 
   useEffect(() => {
     if (visibleSnackbar) {
@@ -170,9 +226,17 @@ export default function ManagePayment() {
         }
       >
         <RequestError
-          isError={isMobileMoneyError || isErrorGetAllPaymentMethod}
-          errorStatus={error?.status || errorGetAllPaymentMethod?.status}
-          onRefresh={() => navigation.goBack()}
+          isError={
+            isMobileMoneyError ||
+            isErrorGetAllPaymentMethod ||
+            isDeleteMobileMoneyError
+          }
+          errorStatus={
+            errorGetAllPaymentMethod?.status ||
+            errorDeleteMobileMoney?.status ||
+            errorAddMobileMoney?.status
+          }
+          onRefresh={() => refetchGetAllPaymentMethod()}
         >
           <HeaderStackNavNormal title={"Méthodes de paiement"} />
 
@@ -235,11 +299,38 @@ export default function ManagePayment() {
                 onChangeText={(text) =>
                   setValueForMobileMoney((prevState) => ({
                     ...prevState,
-                    phone: text,
+                    phone: verifyText(text) ? text : "",
                   }))
                 }
                 mt={"s"}
               />
+              {allPaymentMethod &&
+                allPaymentMethod.length !== 0 &&
+                allPaymentMethod.map((item: paymentMethodStateType) => {
+                  if (item.type === "MobileMoney") {
+                    return (
+                      <Row
+                        key={item.id}
+                        justifyContent="space-between"
+                        alignItems="center"
+                        mt="s"
+                      >
+                        <Text variant="secondary">+ {item.phone}</Text>
+                        <TouchableOpacity
+                          onPress={() => {
+                            if (item.id) {
+                              handleDeleteOnePaymentMethod(item.id);
+                            }
+                          }}
+                        >
+                          <Text variant="secondary" color={"error"} mr="s">
+                            Supprimer
+                          </Text>
+                        </TouchableOpacity>
+                      </Row>
+                    );
+                  }
+                })}
               <Button
                 variant={"primary"}
                 my={"s"}

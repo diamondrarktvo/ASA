@@ -11,6 +11,7 @@ type Props = {
   isError?: boolean;
   errorStatus: number;
   onRefresh: () => void;
+  isSearchScreen?: boolean;
 } & Partial<BoxProps>;
 
 const RequestError: React.FC<Props> = ({
@@ -18,6 +19,7 @@ const RequestError: React.FC<Props> = ({
   isError,
   errorStatus,
   onRefresh,
+  isSearchScreen = false,
   ...props
 }) => {
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -60,12 +62,14 @@ const RequestError: React.FC<Props> = ({
             onPress={onRefresh}
             mt={"xs"}
           />
-          <Button
-            variant={"tertiary"}
-            label="Retour"
-            onPress={() => navigation.goBack()}
-            mt={"xs"}
-          />
+          {!isSearchScreen && (
+            <Button
+              variant={"tertiary"}
+              label="Retour"
+              onPress={() => navigation.goBack()}
+              mt={"xs"}
+            />
+          )}
         </Box>
       ) : (
         children

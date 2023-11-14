@@ -4,18 +4,18 @@ import { removeDataToAsyncStorage } from "_utils";
 
 export interface authState {
   user: {
-    id: number | null;
-    nickname: string | null;
-    email: string | null;
-    phone_number: number | null;
-    first_name: string | null;
-    last_name: string | null;
-    date_joined: string | null;
-    age: number | null;
-    image: string | null;
+    id: number;
+    nickname: string;
+    email: string;
+    phone_number: string;
+    first_name: string;
+    last_name: string;
+    date_joined: string;
+    age: number;
+    image: string;
     is_professional: boolean;
-    company_name: string | null;
-    unique_company_number: string | null;
+    company_name: string;
+    unique_company_number: string;
   };
   token: string;
   is_account_connected: boolean;
@@ -23,18 +23,18 @@ export interface authState {
 
 const initialState: authState = {
   user: {
-    id: null,
-    nickname: null,
-    email: null,
-    phone_number: null,
-    first_name: null,
-    last_name: null,
-    date_joined: null,
-    age: null,
-    image: null,
+    id: 0,
+    nickname: "",
+    email: "",
+    phone_number: "",
+    first_name: "",
+    last_name: "",
+    date_joined: "",
+    age: 0,
+    image: "",
     is_professional: false,
-    company_name: null,
-    unique_company_number: null,
+    company_name: "",
+    unique_company_number: "",
   },
   token: "",
   is_account_connected: false,

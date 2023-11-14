@@ -26,6 +26,7 @@ import {
 import { useAppDispatch, useAppSelector } from "_store";
 import { favoriteType } from "../types";
 import { removeAccount } from "../../account/accountSlice";
+import { removeDataToAsyncStorage } from "_utils";
 
 export default function AnnouncerScreen() {
   const navigation = useNavigation<manageMessageNavigationTypes>();
@@ -57,7 +58,15 @@ export default function AnnouncerScreen() {
   ] = useDeleteFavoriteSellerMutation();
 
   const handleFetchError = (error: any) => {
+    if (!error) return;
     if (error.detail?.includes("Invalid token")) {
+      removeDataToAsyncStorage("token");
+      removeDataToAsyncStorage("current_account");
+      return dispatch(removeAccount());
+    }
+    if (error.data?.detail?.includes("Invalid token")) {
+      removeDataToAsyncStorage("token");
+      removeDataToAsyncStorage("current_account");
       return dispatch(removeAccount());
     }
   };

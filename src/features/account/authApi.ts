@@ -29,8 +29,8 @@ const AuthApi = BaseApi.injectEndpoints({
           email: arg.email,
           phone_number: arg.phone_number,
           is_professional: arg.is_professional,
-          company_name: arg.company_name,
-          unique_company_number: arg.unique_company_number,
+          company_name: arg.company_name ?? "",
+          unique_company_number: arg.unique_company_number ?? "",
         },
         headers: {
           Authorization: `token ${arg.token}`,

@@ -65,10 +65,14 @@ const CreateAccountScreen = () => {
     password: null,
   });
   const [checked, setChecked] = useState("yes");
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const theme = useTheme<Theme>();
   const { colors } = theme;
-  const [register, { isError, isLoading, status, error }] =
+  const [register, { isError, isLoading, status, error: errorRegister }] =
     useRegisterMutation();
+  const [disableButton, setDisableButton] = useState<boolean>(true);
+
+  //console.log("checked : ", checked);
 
   //logic
   const handleSubmit = () => {
@@ -78,13 +82,27 @@ const CreateAccountScreen = () => {
         console.log("resAPI : ", res);
         dispatch(setAccount(res));
         storeObjectDataToAsyncStorage("token", res.token);
-        storeObjectDataToAsyncStorage("current_account", res.user);
+        storeObjectDataToAsyncStorage("current_account", res);
+        setRegisterValue({
+          nickname: null,
+          email: null,
+          phone_number: null,
+          first_name: null,
+          last_name: null,
+          age: null,
+          image: null,
+          is_professional: false,
+          company_name: null,
+          unique_company_number: null,
+          password: null,
+        });
         navigateToAccountScreen.navigate("account_screen");
       })
       .catch((e) => {
-        if (e.status === ERROR_REGISTER.MUST_UNIQUE.status) {
+        if (e.status === ERROR_REGISTER.E400.status) {
           setVisibleSnackbar(true);
         }
+        console.log("eeeee : ", e);
       });
   };
 
@@ -95,8 +113,6 @@ const CreateAccountScreen = () => {
       is_professional: checked === "yes" ? true : false,
     }));
   }, [checked]);
-
-  //console.log("registerValue : ", registerValue);
 
   useEffect(() => {
     if (password.new_password === password.confirm_password) {
@@ -112,6 +128,31 @@ const CreateAccountScreen = () => {
     }
   }, [password]);
 
+  useEffect(() => {
+    setErrorMessage(parseErrorMessage(errorRegister));
+  }, [errorRegister]);
+
+  useEffect(() => {
+    if (
+      registerValue.first_name &&
+      registerValue.last_name &&
+      registerValue.nickname &&
+      registerValue.age &&
+      registerValue.phone_number &&
+      registerValue.password &&
+      (checked === "no" ||
+        (checked === "yes" &&
+          registerValue.company_name &&
+          registerValue.unique_company_number))
+    ) {
+      setDisableButton(false);
+    } else {
+      setDisableButton(true);
+    }
+  }, [registerValue]);
+
+  console.log("error Message : ", errorMessage);
+
   return (
     <MainScreen typeOfScreen="stack">
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -123,51 +164,72 @@ const CreateAccountScreen = () => {
             <Column>
               <Input
                 placeholder="Nom*"
+                value={registerValue.first_name ? registerValue.first_name : ""}
                 onChangeText={(text) =>
                   setRegisterValue((prevState) => ({
                     ...prevState,
                     first_name: text,
                   }))
                 }
+                errorMessage={
+                  !registerValue.first_name ? "Champs requis" : undefined
+                }
               />
               <Input
                 placeholder="Prénom*"
+                value={registerValue.last_name ? registerValue.last_name : ""}
                 onChangeText={(text) =>
                   setRegisterValue((prevState) => ({
                     ...prevState,
                     last_name: text,
                   }))
                 }
+                errorMessage={
+                  !registerValue.last_name ? "Champs requis" : undefined
+                }
               />
               <Input
                 placeholder="Pseudo*"
+                value={registerValue.nickname ? registerValue.nickname : ""}
                 onChangeText={(text) =>
                   setRegisterValue((prevState) => ({
                     ...prevState,
                     nickname: text,
                   }))
                 }
+                errorMessage={
+                  !registerValue.nickname ? "Champs requis" : undefined
+                }
               />
               <Input
                 placeholder="Age*"
+                value={registerValue.age ? registerValue.age : ""}
                 onChangeText={(text) =>
                   setRegisterValue((prevState) => ({
                     ...prevState,
                     age: text,
                   }))
                 }
+                errorMessage={!registerValue.age ? "Champs requis" : undefined}
               />
               <Input
                 placeholder="Numéro téléphone*"
+                value={
+                  registerValue.phone_number ? registerValue.phone_number : ""
+                }
                 onChangeText={(text) =>
                   setRegisterValue((prevState) => ({
                     ...prevState,
                     phone_number: text,
                   }))
                 }
+                errorMessage={
+                  !registerValue.phone_number ? "Champs requis" : undefined
+                }
               />
               <Input
                 placeholder="Email"
+                value={registerValue.email ? registerValue.email : ""}
                 onChangeText={(text) =>
                   setRegisterValue((prevState) => ({
                     ...prevState,
@@ -192,6 +254,48 @@ const CreateAccountScreen = () => {
                 />
                 <Text variant="tertiary">Non</Text>
               </Row>
+              {checked === "yes" && (
+                <>
+                  <Input
+                    placeholder="Nom de l'entreprise*"
+                    value={
+                      registerValue.company_name
+                        ? registerValue.company_name
+                        : ""
+                    }
+                    onChangeText={(text) =>
+                      setRegisterValue((prevState) => ({
+                        ...prevState,
+                        company_name: text,
+                      }))
+                    }
+                    errorMessage={
+                      checked === "yes" && !registerValue.company_name
+                        ? "Champs requis"
+                        : undefined
+                    }
+                  />
+                  <Input
+                    placeholder="Numéro unique de l'entreprise*"
+                    value={
+                      registerValue.unique_company_number
+                        ? registerValue.unique_company_number
+                        : ""
+                    }
+                    onChangeText={(text) =>
+                      setRegisterValue((prevState) => ({
+                        ...prevState,
+                        unique_company_number: text,
+                      }))
+                    }
+                    errorMessage={
+                      checked === "yes" && !registerValue.unique_company_number
+                        ? "Champs requis"
+                        : undefined
+                    }
+                  />
+                </>
+              )}
               <Input
                 placeholder="Mot de passe*"
                 secureTextEntry={hidePassword}
@@ -200,6 +304,9 @@ const CreateAccountScreen = () => {
                     ...prevState,
                     new_password: text,
                   }))
+                }
+                errorMessage={
+                  !registerValue.password ? "Champs requis" : undefined
                 }
                 iconRight={{
                   name: hidePassword ? "visibility" : "visibility-off",
@@ -217,6 +324,11 @@ const CreateAccountScreen = () => {
                     confirm_password: text,
                   }))
                 }
+                errorMessage={
+                  password.new_password !== password.confirm_password
+                    ? "Les mots de passe ne correspondent pas"
+                    : undefined
+                }
                 iconRight={{
                   name: hideConfirmPassword ? "visibility" : "visibility-off",
                   size: 32,
@@ -230,6 +342,7 @@ const CreateAccountScreen = () => {
               label="Creer mon compte"
               onPress={() => handleSubmit()}
               marginTop={"s"}
+              disabled={disableButton}
             />
             <Row
               alignItems="center"
@@ -263,7 +376,7 @@ const CreateAccountScreen = () => {
           },
         }}
       >
-        {parseErrorMessage(error)}
+        {errorMessage}
       </Snackbar>
     </MainScreen>
   );

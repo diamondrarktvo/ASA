@@ -9,6 +9,8 @@ type Props = {
   setUserMustLogin?: React.Dispatch<React.SetStateAction<boolean>>;
   titleIfNotConnected?: string;
   subTitleIfNotConnected: string;
+  needPadding?: boolean;
+  needCancelButton?: boolean;
 } & Partial<BoxProps>;
 
 const CheckUserConnected: React.FC<Props> = ({
@@ -17,16 +19,18 @@ const CheckUserConnected: React.FC<Props> = ({
   setUserMustLogin,
   titleIfNotConnected,
   subTitleIfNotConnected,
+  needPadding,
+  needCancelButton,
   ...props
 }) => {
   const accountUser = useAppSelector((state) => state.account);
 
-  console.log(
+  /*console.log(
     "accountUser.is_account_connected ==================> : ",
     accountUser.is_account_connected,
   );
 
-  console.log("user must login : ==========>", userMustLogin);
+  console.log("user must login : ==========>", userMustLogin);*/
 
   useEffect(() => {
     if (accountUser.is_account_connected) {
@@ -35,7 +39,13 @@ const CheckUserConnected: React.FC<Props> = ({
   }, [accountUser]);
 
   return (
-    <Box flex={1} backgroundColor="mainBackground" {...props}>
+    <Box
+      flex={1}
+      backgroundColor="mainBackground"
+      {...props}
+      paddingHorizontal={needPadding ? "s" : "none"}
+      paddingVertical={needPadding ? "l" : "none"}
+    >
       {(accountUser.is_account_connected && !userMustLogin) ||
       (!accountUser.is_account_connected && !userMustLogin) ? (
         children
@@ -44,6 +54,7 @@ const CheckUserConnected: React.FC<Props> = ({
           title={titleIfNotConnected}
           subTitle={subTitleIfNotConnected}
           setUserMustLogin={setUserMustLogin}
+          needCancelButton={needCancelButton}
         />
       )}
     </Box>
