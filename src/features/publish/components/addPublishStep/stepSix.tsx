@@ -28,7 +28,7 @@ export default function StepSix() {
   const [messageSnackBar, setMessageSnackBar] = useState("");
 
   //ref
-  const mapRef = useRef<MapView>(null);
+  const mapRef = useRef(null);
 
   //all effects
   useEffect(() => {
@@ -112,13 +112,21 @@ export default function StepSix() {
                     setIsSearchingName(true);
                     transformNameToGeocode(cityName)
                       .then((data) => {
-                        setIsSearchingName(false);
-                        setPosition(data);
+                        if (data.latitude && data.longitude) {
+                          setIsSearchingName(false);
+                          setPosition(data);
+                          changeRegion(data);
+                        } else {
+                          console.log("data pr fona : ", data);
+                        }
                       })
                       .catch((error) => {
+                        console.log(
+                          "Une erreur est survenue lors de la recherche de votre ville",
+                        );
+                        console.log("error carte search: ", error);
                         setIsSearchingName(false);
                         setVisibleSnackbar(true);
-                        console.log("error carte : ", error);
                         setMessageSnackBar(
                           "Une erreur est survenue lors de la recherche de votre ville",
                         );
