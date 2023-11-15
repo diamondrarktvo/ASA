@@ -22,14 +22,16 @@
       [
         "expo-location",
         {
-          "locationAlwaysAndWhenInUsePermission":
-            "Allow $(MetyAmiko) to use your location."
+          "locationAlwaysAndWhenInUsePermission": "Allow $(MetyAmiko) to use your location."
         }
       ]
     ],
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.diamondrarktvo.asa"
     },
     "android": {
       "adaptiveIcon": {
@@ -41,7 +43,13 @@
           "apiKey": "AIzaSyCfeV-dI5JYOl39mJDqsyL8xtRykQHU29I"
         }
       },
-      "package": "com.diamondrarktvo.asa"
+      "package": "com.diamondrarktvo.asa",
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.FOREGROUND_SERVICE"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"

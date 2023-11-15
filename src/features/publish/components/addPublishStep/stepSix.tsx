@@ -112,13 +112,9 @@ export default function StepSix() {
                     setIsSearchingName(true);
                     transformNameToGeocode(cityName)
                       .then((data) => {
-                        if (data.latitude && data.longitude) {
-                          setIsSearchingName(false);
-                          setPosition(data);
-                          changeRegion(data);
-                        } else {
-                          console.log("data pr fona : ", data);
-                        }
+                        setIsSearchingName(false);
+                        setPosition(data);
+                        changeRegion(data);
                       })
                       .catch((error) => {
                         console.log(
