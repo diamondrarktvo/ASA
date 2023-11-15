@@ -103,7 +103,7 @@ export default function StepSix() {
                 size: Size.ICON_MEDIUM,
                 color: colors.text,
               }}
-              iconRight={{
+              /*iconRight={{
                 name: "search",
                 size: Size.ICON_MEDIUM,
                 color: colors.text,
@@ -137,7 +137,7 @@ export default function StepSix() {
                       });
                   }
                 },
-              }}
+              }}*/
             />
           </Box>
           <Box
