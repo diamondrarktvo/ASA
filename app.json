@@ -54,11 +54,11 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "owner": "diamondrarktvo",
     "extra": {
       "eas": {
-        "projectId": "34686fb8-ad5d-4653-b677-ee1aebe3c7ea"
+        "projectId": "f5dc1b01-7776-4d14-82c7-1d00fdfe83da"
       }
-    },
-    "owner": "diamondrarktvo"
+    }
   }
 }
