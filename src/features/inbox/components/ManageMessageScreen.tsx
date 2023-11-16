@@ -286,7 +286,6 @@ export default function ManageMessageScreen() {
             <Box flex={1}>
               <GiftedChat
                 messages={messages}
-                extraData={messages}
                 placeholder="Ecrivez un message ici..."
                 onSend={(messages) => {
                   handleSendMessage(messages);
