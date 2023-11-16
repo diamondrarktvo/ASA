@@ -58,9 +58,9 @@ export default function StepSix() {
     navigation.navigate("main_tab", { screen: "publish_screen" });
   };
 
-  const changeRegion = (newRegion: any) => {
+  /*const changeRegion = (newRegion: any) => {
     mapRef.current?.animateToRegion(newRegion, 1000);
-  };
+  };*/
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">

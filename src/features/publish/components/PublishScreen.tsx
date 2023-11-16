@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { MainScreen } from "_shared";
+import { MainScreen, RequestConnection } from "_shared";
 import StepOne from "./addPublishStep/stepOne";
 
 export default function PublishScreen() {
@@ -8,7 +8,9 @@ export default function PublishScreen() {
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
-      <StepOne />
+      <RequestConnection>
+        <StepOne />
+      </RequestConnection>
     </MainScreen>
   );
 }

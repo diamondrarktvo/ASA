@@ -5,7 +5,12 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import { useTheme } from "@shopify/restyle";
 
 //IMPORT LOCAL
-import { CheckUserConnected, MainScreen, Text } from "_shared";
+import {
+  CheckUserConnected,
+  MainScreen,
+  RequestConnection,
+  Text,
+} from "_shared";
 import { Size, Theme } from "_theme";
 import { TopParamListFavourite } from "_navigations";
 import AnnouncementScreen from "./AnnouncementScreen";
@@ -93,14 +98,16 @@ export default function FavoriteScreen() {
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Favoris">
-      <CheckUserConnected
-        userMustLogin={userMustLogin}
-        setUserMustLogin={setUserMustLogin}
-        subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
-        needCancelButton={false}
-      >
-        <TopNavigation />
-      </CheckUserConnected>
+      <RequestConnection>
+        <CheckUserConnected
+          userMustLogin={userMustLogin}
+          setUserMustLogin={setUserMustLogin}
+          subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
+          needCancelButton={false}
+        >
+          <TopNavigation />
+        </CheckUserConnected>
+      </RequestConnection>
     </MainScreen>
   );
 }

@@ -16,6 +16,7 @@ import {
   TouchableOpacity,
   CheckUserConnected,
   EmptyList,
+  RequestConnection,
 } from "_shared";
 import { ActivityIndicator, Snackbar } from "react-native-paper";
 import { useTheme } from "@shopify/restyle";
@@ -263,113 +264,115 @@ export default function SearchItem() {
 
   return (
     <MainScreen typeOfScreen="tab">
-      <CheckUserConnected
-        userMustLogin={userMustLogin}
-        setUserMustLogin={setUserMustLogin}
-        subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
-      >
-        <Row alignItems="center" width="90%" justifyContent="space-between">
-          <Icon
-            name="arrow-back"
-            size={Size.ICON_MEDIUM}
-            color={colors.black}
-            containerStyle={{
-              marginRight: 8,
-            }}
-            onPress={() => navigation.goBack()}
-          />
-          <Input
-            placeholder="Entrez le mot-clé ..."
-            value={textSearch}
-            onChangeText={(text) => {
-              setTypeOfSearch("free_search");
-              setTextSearch(text);
-            }}
-            iconRight={{
-              name: textSearch ? "close" : "",
-              size: 16,
-              color: colors.secondary,
-              onPress: () => {
-                if (textSearch) {
-                  setTextSearch("");
-                  setShowEmptyComponent(false);
-                  setCategorieToSearch("");
-                }
-              },
-            }}
-          />
-        </Row>
-        <Box my={"xs"}>
-          {categorieToSearch && (
-            <Box
-              width={"40%"}
-              borderWidth={1}
-              borderStyle={"solid"}
-              borderColor={"primary"}
-              py={"xxs"}
-              px={"xs"}
-              borderRadius={"xs"}
-            >
-              <Text>Catégorie : {categorieToSearch}</Text>
-            </Box>
-          )}
-        </Box>
-        <RequestLoader
-          isLoading={
-            isAnnonceLoadingByCatg ||
-            isAnnonceFetchingByCatg ||
-            isSearchLoading ||
-            isSearchFetching
-          }
+      <RequestConnection>
+        <CheckUserConnected
+          userMustLogin={userMustLogin}
+          setUserMustLogin={setUserMustLogin}
+          subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
         >
-          <RequestError
-            isError={isErrorAnnonceByCatg || isErrorSearch}
-            errorStatus={errorAnnonceByCatg?.status || errorSearch?.status}
-            onRefresh={() => handleRefetch()}
-          >
-            <Box flexDirection="column" flex={1} alignItems="center">
-              <Text variant="tertiary" color="text">
-                {resultSearch &&
-                  resultSearch.length > 0 &&
-                  `${resultSearch.length} résultats trouvés`}
-              </Text>
-              <Box flex={1} width="100%" marginTop="xs">
-                <FlashList
-                  keyExtractor={(item, index) => item.id.toString()}
-                  estimatedItemSize={200}
-                  data={resultSearch}
-                  renderItem={renderItemAnnonce}
-                  extraData={resultSearch}
-                  showsVerticalScrollIndicator={false}
-                  refreshControl={
-                    <RefreshControl
-                      refreshing={isAnnonceFetchingByCatg}
-                      onRefresh={() => refetchAnnoncesByCatg()}
-                    />
+          <Row alignItems="center" width="90%" justifyContent="space-between">
+            <Icon
+              name="arrow-back"
+              size={Size.ICON_MEDIUM}
+              color={colors.black}
+              containerStyle={{
+                marginRight: 8,
+              }}
+              onPress={() => navigation.goBack()}
+            />
+            <Input
+              placeholder="Entrez le mot-clé ..."
+              value={textSearch}
+              onChangeText={(text) => {
+                setTypeOfSearch("free_search");
+                setTextSearch(text);
+              }}
+              iconRight={{
+                name: textSearch ? "close" : "",
+                size: 16,
+                color: colors.secondary,
+                onPress: () => {
+                  if (textSearch) {
+                    setTextSearch("");
+                    setShowEmptyComponent(false);
+                    setCategorieToSearch("");
                   }
-                  ListEmptyComponent={
-                    showEmptyComponent ? (
-                      <EmptyList textToShow="Désolé, nous n'avons pas ça sous la main!" />
-                    ) : null
-                  }
-                />
+                },
+              }}
+            />
+          </Row>
+          <Box my={"xs"}>
+            {categorieToSearch && (
+              <Box
+                width={"40%"}
+                borderWidth={1}
+                borderStyle={"solid"}
+                borderColor={"primary"}
+                py={"xxs"}
+                px={"xs"}
+                borderRadius={"xs"}
+              >
+                <Text>Catégorie : {categorieToSearch}</Text>
               </Box>
-            </Box>
-          </RequestError>
-        </RequestLoader>
-      </CheckUserConnected>
-      <Snackbar
-        visible={visibleSnackbar}
-        onDismiss={() => setVisibleSnackbar(false)}
-        action={{
-          label: "Ok",
-          onPress: () => {
-            // Do something
-          },
-        }}
-      >
-        {messageSnackBar}
-      </Snackbar>
+            )}
+          </Box>
+          <RequestLoader
+            isLoading={
+              isAnnonceLoadingByCatg ||
+              isAnnonceFetchingByCatg ||
+              isSearchLoading ||
+              isSearchFetching
+            }
+          >
+            <RequestError
+              isError={isErrorAnnonceByCatg || isErrorSearch}
+              errorStatus={errorAnnonceByCatg?.status || errorSearch?.status}
+              onRefresh={() => handleRefetch()}
+            >
+              <Box flexDirection="column" flex={1} alignItems="center">
+                <Text variant="tertiary" color="text">
+                  {resultSearch &&
+                    resultSearch.length > 0 &&
+                    `${resultSearch.length} résultats trouvés`}
+                </Text>
+                <Box flex={1} width="100%" marginTop="xs">
+                  <FlashList
+                    keyExtractor={(item, index) => item.id.toString()}
+                    estimatedItemSize={200}
+                    data={resultSearch}
+                    renderItem={renderItemAnnonce}
+                    extraData={resultSearch}
+                    showsVerticalScrollIndicator={false}
+                    refreshControl={
+                      <RefreshControl
+                        refreshing={isAnnonceFetchingByCatg}
+                        onRefresh={() => refetchAnnoncesByCatg()}
+                      />
+                    }
+                    ListEmptyComponent={
+                      showEmptyComponent ? (
+                        <EmptyList textToShow="Désolé, nous n'avons pas ça sous la main!" />
+                      ) : null
+                    }
+                  />
+                </Box>
+              </Box>
+            </RequestError>
+          </RequestLoader>
+        </CheckUserConnected>
+        <Snackbar
+          visible={visibleSnackbar}
+          onDismiss={() => setVisibleSnackbar(false)}
+          action={{
+            label: "Ok",
+            onPress: () => {
+              // Do something
+            },
+          }}
+        >
+          {messageSnackBar}
+        </Snackbar>
+      </RequestConnection>
     </MainScreen>
   );
 }

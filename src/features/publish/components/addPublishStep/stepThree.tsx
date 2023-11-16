@@ -6,6 +6,7 @@ import {
   Icon,
   Input,
   MainScreen,
+  RequestConnection,
   RequestError,
   RequestLoader,
   Row,
@@ -38,7 +39,6 @@ export default function StepThree() {
   const [criteriaSelected, setCriteriaSelected] = useState<criteriaSelected[]>(
     [],
   );
-  const [show, setShow] = useState<boolean>(false);
   const [currentIdOfInputDate, setCurrentIdOfInputDate] = useState(0);
   const [dateCurrentSelected, setDateCurrentSelected] = useState<Date>();
 
@@ -101,7 +101,6 @@ export default function StepThree() {
       ]);
     }
     setCurrentIdOfInputDate(0);
-    setShow(false);
   };
 
   const cancelPublish = () => {
@@ -110,10 +109,6 @@ export default function StepThree() {
   };
 
   console.log("criteriaSelected : ", criteriaSelected);
-
-  const showDatepicker = (id: number) => {
-    setShow(currentIdOfInputDate === id ? true : false);
-  };
 
   useEffect(() => {
     if (allCriteria && allCriteria.length > 0) {
@@ -136,90 +131,90 @@ export default function StepThree() {
     if (dateCurrentSelected) {
       handleAddCriteriaForProduct(currentIdOfInputDate, dateCurrentSelected);
     }
-    setShow(false);
   }, [dateCurrentSelected]);
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Publication">
-      <Box width={"100%"}>
-        <Icon
-          name="close"
-          size={Size.ICON_LARGE}
-          color={colors.black}
-          containerStyle={{
-            position: "relative",
-            right: -160,
-          }}
-          onPress={() => cancelPublish()}
-        />
-      </Box>
-      <RequestLoader isLoading={isCriteriaFetching || isCriteriaLoading}>
-        <RequestError
-          isError={isErrorCriteria}
-          errorStatus={errorCriteria?.status}
-          onRefresh={() => refetchCriteria()}
-        >
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <Box marginTop={"m"}>
-              <Text
-                variant={"primary"}
-                color={"blue"}
-                textDecorationLine={"underline"}
-                marginBottom={"xs"}
-              >
-                Etape 3:
-              </Text>
-              <Text variant={"title"} color="black">
-                Les critères de votre produit ?
-              </Text>
-              <Text variant={"tertiary"} color={"error"}>
-                NB: Veuillez cocher vos critères!
-              </Text>
-              <Box marginVertical={"s"}>
-                <Text variant={"primary"}>
-                  {valueForStepper.sub_category_name}
+      <RequestConnection>
+        <Box width={"100%"}>
+          <Icon
+            name="close"
+            size={Size.ICON_LARGE}
+            color={colors.black}
+            containerStyle={{
+              position: "relative",
+              right: -160,
+            }}
+            onPress={() => cancelPublish()}
+          />
+        </Box>
+        <RequestLoader isLoading={isCriteriaFetching || isCriteriaLoading}>
+          <RequestError
+            isError={isErrorCriteria}
+            errorStatus={errorCriteria?.status}
+            onRefresh={() => refetchCriteria()}
+          >
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <Box marginTop={"m"}>
+                <Text
+                  variant={"primary"}
+                  color={"blue"}
+                  textDecorationLine={"underline"}
+                  marginBottom={"xs"}
+                >
+                  Etape 3:
                 </Text>
-                {allCriteria &&
-                  allCriteria.length !== 0 &&
-                  allCriteria.map((criteria) => (
-                    <Box key={criteria.id}>
-                      <Text variant={"tertiary"}>{criteria.name}</Text>
-                      <Box flexDirection={"row"} flexWrap={"wrap"}>
-                        {(criteria.type === "text" ||
-                          criteria.type === "date") && (
-                          <Input
-                            placeholder={criteria.name}
-                            value={
-                              criteriaSelected.find(
-                                (itemSelected) =>
-                                  itemSelected.criteria === criteria.id,
-                              )?.value as string
-                            }
-                            onChangeText={(text) =>
-                              handleAddCriteriaForProduct(criteria.id, text)
-                            }
-                          />
-                        )}
-                        {criteria.type === "integer" && (
-                          <Input
-                            placeholder={criteria.name}
-                            keyboardType="numeric"
-                            value={
-                              criteriaSelected.find(
-                                (itemSelected) =>
-                                  itemSelected.criteria === criteria.id,
-                              )?.value as string
-                            }
-                            onChangeText={(text) =>
-                              handleAddCriteriaForProduct(
-                                criteria.id,
-                                text,
-                                true,
-                              )
-                            }
-                          />
-                        )}
-                        {/*criteria.type === "date" && (
+                <Text variant={"title"} color="black">
+                  Les critères de votre produit ?
+                </Text>
+                <Text variant={"tertiary"} color={"error"}>
+                  NB: Veuillez cocher vos critères!
+                </Text>
+                <Box marginVertical={"s"}>
+                  <Text variant={"primary"}>
+                    {valueForStepper.sub_category_name}
+                  </Text>
+                  {allCriteria &&
+                    allCriteria.length !== 0 &&
+                    allCriteria.map((criteria) => (
+                      <Box key={criteria.id}>
+                        <Text variant={"tertiary"}>{criteria.name}</Text>
+                        <Box flexDirection={"row"} flexWrap={"wrap"}>
+                          {(criteria.type === "text" ||
+                            criteria.type === "date") && (
+                            <Input
+                              placeholder={criteria.name}
+                              value={
+                                criteriaSelected.find(
+                                  (itemSelected) =>
+                                    itemSelected.criteria === criteria.id,
+                                )?.value as string
+                              }
+                              onChangeText={(text) =>
+                                handleAddCriteriaForProduct(criteria.id, text)
+                              }
+                            />
+                          )}
+                          {criteria.type === "integer" && (
+                            <Input
+                              placeholder={criteria.name}
+                              keyboardType="numeric"
+                              value={
+                                criteriaSelected.find(
+                                  (itemSelected) =>
+                                    itemSelected.criteria === criteria.id,
+                                )?.value as string
+                              }
+                              onChangeText={(text) =>
+                                handleAddCriteriaForProduct(
+                                  criteria.id,
+                                  text,
+                                  true,
+                                )
+                              }
+                            />
+                          )}
+                          {/*criteria.type === "date" && (
                           <>
                             <Button
                               height={50}
@@ -242,7 +237,6 @@ export default function StepThree() {
                                   : "Choisir une date"
                               }
                               onPress={() => {
-                                setShow(true);
                                 setCurrentIdOfInputDate(criteria.id);
                               }}
                             />
@@ -264,7 +258,6 @@ export default function StepThree() {
                                 display="default"
                                 onChange={(event, selectedDate) => {
                                   setDateCurrentSelected(selectedDate);
-                                  setShow(false);
                                 }}
                                 style={{
                                   width: 200,
@@ -303,65 +296,66 @@ export default function StepThree() {
                             )}
                           </>
                               )*/}
-                        {criteria.type === "choice" &&
-                          criteria.response?.length > 0 &&
-                          criteria.response?.map((response, index) => (
-                            <Box
-                              flexDirection={"row"}
-                              alignItems={"center"}
-                              key={index}
-                            >
-                              <RadioButton
-                                value={response.value}
-                                color={colors.primary}
-                                status={
-                                  //transform value found in criteriaSelected to boolean
-                                  !!criteriaSelected.find(
-                                    (item) => item.value === response.value,
-                                  )
-                                    ? "checked"
-                                    : "unchecked"
-                                }
-                                onPress={() =>
-                                  handleAddCriteriaForProduct(
-                                    criteria.id,
-                                    response.value,
-                                  )
-                                }
-                              />
-                              <Text variant="tertiary">{response.value}</Text>
-                            </Box>
-                          ))}
+                          {criteria.type === "choice" &&
+                            criteria.response?.length > 0 &&
+                            criteria.response?.map((response, index) => (
+                              <Box
+                                flexDirection={"row"}
+                                alignItems={"center"}
+                                key={index}
+                              >
+                                <RadioButton
+                                  value={response.value}
+                                  color={colors.primary}
+                                  status={
+                                    //transform value found in criteriaSelected to boolean
+                                    !!criteriaSelected.find(
+                                      (item) => item.value === response.value,
+                                    )
+                                      ? "checked"
+                                      : "unchecked"
+                                  }
+                                  onPress={() =>
+                                    handleAddCriteriaForProduct(
+                                      criteria.id,
+                                      response.value,
+                                    )
+                                  }
+                                />
+                                <Text variant="tertiary">{response.value}</Text>
+                              </Box>
+                            ))}
+                        </Box>
                       </Box>
-                    </Box>
-                  ))}
-              </Box>
+                    ))}
+                </Box>
 
-              <Row alignItems={"center"} justifyContent="space-around">
-                <Button
-                  height={50}
-                  alignItems={"center"}
-                  justifyContent={"center"}
-                  width={150}
-                  variant={"tertiary"}
-                  label="Précédent"
-                  onPress={() => navigation.goBack()}
-                />
-                <Button
-                  height={50}
-                  alignItems={"center"}
-                  justifyContent={"center"}
-                  width={150}
-                  variant={"secondary"}
-                  label="Continuer"
-                  disabled={disableButton}
-                  onPress={() => handleContinueStepper()}
-                />
-              </Row>
-            </Box>
-          </ScrollView>
-        </RequestError>
-      </RequestLoader>
+                <Row alignItems={"center"} justifyContent="space-around">
+                  <Button
+                    height={50}
+                    alignItems={"center"}
+                    justifyContent={"center"}
+                    width={150}
+                    variant={"tertiary"}
+                    label="Précédent"
+                    onPress={() => navigation.goBack()}
+                  />
+                  <Button
+                    height={50}
+                    alignItems={"center"}
+                    justifyContent={"center"}
+                    width={150}
+                    variant={"secondary"}
+                    label="Continuer"
+                    disabled={disableButton}
+                    onPress={() => handleContinueStepper()}
+                  />
+                </Row>
+              </Box>
+            </ScrollView>
+          </RequestError>
+        </RequestLoader>
+      </RequestConnection>
     </MainScreen>
   );
 }

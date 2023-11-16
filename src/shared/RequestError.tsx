@@ -5,6 +5,7 @@ import { Dimensions } from "react-native";
 import Text from "./Text";
 import Button from "./Button";
 import { useNavigation } from "@react-navigation/native";
+import NetInfo from "@react-native-community/netinfo";
 
 type Props = {
   children: React.ReactNode;
@@ -24,6 +25,9 @@ const RequestError: React.FC<Props> = ({
 }) => {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const navigation = useNavigation();
+  const [isConnected, setIsConnected] = useState<boolean>(false);
+  const [isUserHasAccessToInternet, setIsUserHasAccessToInternet] =
+    useState<boolean>(false);
 
   useEffect(() => {
     switch (errorStatus) {
@@ -40,6 +44,21 @@ const RequestError: React.FC<Props> = ({
         break;
     }
   }, [errorStatus]);
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      if (state.isConnected) {
+        setIsConnected(state.isConnected);
+      }
+      if (state.isInternetReachable) {
+        setIsUserHasAccessToInternet(state.isInternetReachable);
+      }
+      console.log("Is connected?", state.isConnected);
+      console.log("Is internet?", state.isInternetReachable);
+    });
+
+    return unsubscribe;
+  }, []);
 
   return (
     <>

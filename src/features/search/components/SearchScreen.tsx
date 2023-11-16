@@ -9,6 +9,7 @@ import {
   Icon,
   Image,
   MainScreen,
+  RequestConnection,
   RequestError,
   RequestLoader,
   Row,
@@ -269,118 +270,122 @@ export default function SearchScreen() {
 
   return (
     <MainScreen typeOfScreen="tab">
-      <RequestLoader
-        isLoading={
-          isCategoriesFetching ||
-          isCategoriesLoading ||
-          isAnnonceLoading ||
-          isAnnonceFetching ||
-          isLoadingAddFavoriteAnnonce ||
-          isLoadingDeleteFavoriteAnnonce
-        }
-      >
-        <RequestError
-          isError={
-            isErrorCategory ||
-            isErrorAnnonce ||
-            isErrorAddFavoriteAnnonce ||
-            isErrorDeleteFavoriteAnnonce
+      <RequestConnection>
+        <RequestLoader
+          isLoading={
+            isCategoriesFetching ||
+            isCategoriesLoading ||
+            isAnnonceLoading ||
+            isAnnonceFetching ||
+            isLoadingAddFavoriteAnnonce ||
+            isLoadingDeleteFavoriteAnnonce
           }
-          errorStatus={
-            errorCategory?.status ||
-            errorAnnonce?.status ||
-            errorDeleteFavoriteAnnonce?.status ||
-            errorAddFavoriteAnnonce?.status
-          }
-          onRefresh={() => handleRefetch()}
-          isSearchScreen={route.name === "search_screen"}
         >
-          <CheckUserConnected
-            userMustLogin={userMustLogin}
-            setUserMustLogin={setUserMustLogin}
-            subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
+          <RequestError
+            isError={
+              isErrorCategory ||
+              isErrorAnnonce ||
+              isErrorAddFavoriteAnnonce ||
+              isErrorDeleteFavoriteAnnonce
+            }
+            errorStatus={
+              errorCategory?.status ||
+              errorAnnonce?.status ||
+              errorDeleteFavoriteAnnonce?.status ||
+              errorAddFavoriteAnnonce?.status
+            }
+            onRefresh={() => handleRefetch()}
+            isSearchScreen={route.name === "search_screen"}
           >
-            <ScrollView showsVerticalScrollIndicator={false}>
-              <Text variant={"bigTitle"} color="primary" textAlign="center">
-                Mety Amiko
-              </Text>
-              <Button
-                variant={"buttonWithShadow"}
-                iconLeft="search"
-                iconRight="gps-fixed"
-                color="black"
-                label="Recherchez partout à Madagascar"
-                marginTop={"xs"}
-                marginBottom={"m"}
-                onPress={() => navigation.navigate("search_item", {})}
-              />
-              <Column marginTop="xs">
-                <Text variant="primaryBold">Catégorie les plus visités</Text>
-                <Box width={"100%"} height={80} marginTop="xs">
-                  <FlashList
-                    keyExtractor={(item, index) => item.id.toString()}
-                    estimatedItemSize={200}
-                    data={allCategories?.categories}
-                    renderItem={renderItemCategorie}
-                    horizontal={true}
-                    extraData={allCategories?.categories}
-                    showsHorizontalScrollIndicator={false}
-                    ListEmptyComponent={<Text>Catégorie indisponible</Text>}
-                  />
-                </Box>
-              </Column>
-              <Column>
-                <Text variant="primaryBold">Annonces fraîchement publiées</Text>
-                {/*//FIXME: fix the height of the list*/}
-                <Box
-                  style={{
-                    flex: 1,
-                    height: Dimensions.get("window").height,
-                  }}
-                  width={"100%"}
-                  marginTop="xs"
-                >
-                  <FlashList
-                    keyExtractor={(item, index) => item.id.toString()}
-                    estimatedItemSize={200}
-                    data={allAnnonces?.annonces?.slice(0, 6)}
-                    renderItem={renderItemAnnonce}
-                    numColumns={2}
-                    extraData={allAnnonces?.annonces?.slice(0, 6)}
-                    showsVerticalScrollIndicator={false}
-                    refreshControl={
-                      <RefreshControl
-                        refreshing={isAnnonceFetching}
-                        onRefresh={() => refetchAnnonces()}
-                      />
-                    }
-                  />
-                  <Button
-                    variant={"primary"}
-                    color="white"
-                    label="Afficher plus d'annonces"
-                    marginTop={"xs"}
-                    marginBottom={"m"}
-                    onPress={() => navigation.navigate("search_item", {})}
-                  />
-                </Box>
-              </Column>
-            </ScrollView>
-            <Snackbar
-              visible={visibleSnackbar}
-              onDismiss={() => setVisibleSnackbar(false)}
-              action={{
-                label: "Ok",
-                onPress: () => {
-                  // Do something
-                },
-              }}
+            <CheckUserConnected
+              userMustLogin={userMustLogin}
+              setUserMustLogin={setUserMustLogin}
+              subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
             >
-              {messageSnackBar}
-            </Snackbar>
-          </CheckUserConnected>
-        </RequestError>
-      </RequestLoader>
+              <ScrollView showsVerticalScrollIndicator={false}>
+                <Text variant={"bigTitle"} color="primary" textAlign="center">
+                  Mety Amiko
+                </Text>
+                <Button
+                  variant={"buttonWithShadow"}
+                  iconLeft="search"
+                  iconRight="gps-fixed"
+                  color="black"
+                  label="Recherchez partout à Madagascar"
+                  marginTop={"xs"}
+                  marginBottom={"m"}
+                  onPress={() => navigation.navigate("search_item", {})}
+                />
+                <Column marginTop="xs">
+                  <Text variant="primaryBold">Catégorie les plus visités</Text>
+                  <Box width={"100%"} height={80} marginTop="xs">
+                    <FlashList
+                      keyExtractor={(item, index) => item.id.toString()}
+                      estimatedItemSize={200}
+                      data={allCategories?.categories}
+                      renderItem={renderItemCategorie}
+                      horizontal={true}
+                      extraData={allCategories?.categories}
+                      showsHorizontalScrollIndicator={false}
+                      ListEmptyComponent={<Text>Catégorie indisponible</Text>}
+                    />
+                  </Box>
+                </Column>
+                <Column>
+                  <Text variant="primaryBold">
+                    Annonces fraîchement publiées
+                  </Text>
+                  {/*//FIXME: fix the height of the list*/}
+                  <Box
+                    style={{
+                      flex: 1,
+                      height: Dimensions.get("window").height,
+                    }}
+                    width={"100%"}
+                    marginTop="xs"
+                  >
+                    <FlashList
+                      keyExtractor={(item, index) => item.id.toString()}
+                      estimatedItemSize={200}
+                      data={allAnnonces?.annonces?.slice(0, 6)}
+                      renderItem={renderItemAnnonce}
+                      numColumns={2}
+                      extraData={allAnnonces?.annonces?.slice(0, 6)}
+                      showsVerticalScrollIndicator={false}
+                      refreshControl={
+                        <RefreshControl
+                          refreshing={isAnnonceFetching}
+                          onRefresh={() => refetchAnnonces()}
+                        />
+                      }
+                    />
+                    <Button
+                      variant={"primary"}
+                      color="white"
+                      label="Afficher plus d'annonces"
+                      marginTop={"xs"}
+                      marginBottom={"m"}
+                      onPress={() => navigation.navigate("search_item", {})}
+                    />
+                  </Box>
+                </Column>
+              </ScrollView>
+              <Snackbar
+                visible={visibleSnackbar}
+                onDismiss={() => setVisibleSnackbar(false)}
+                action={{
+                  label: "Ok",
+                  onPress: () => {
+                    // Do something
+                  },
+                }}
+              >
+                {messageSnackBar}
+              </Snackbar>
+            </CheckUserConnected>
+          </RequestError>
+        </RequestLoader>
+      </RequestConnection>
     </MainScreen>
   );
 }

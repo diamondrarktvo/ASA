@@ -5,7 +5,12 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import { useTheme } from "@shopify/restyle";
 
 //IMPORT LOCAL
-import { CheckUserConnected, MainScreen, Text } from "_shared";
+import {
+  CheckUserConnected,
+  MainScreen,
+  RequestConnection,
+  Text,
+} from "_shared";
 import { Size, Theme } from "_theme";
 import { TopParamListInbox } from "_navigations";
 import MessageScreen from "./MessageScreen";
@@ -84,14 +89,16 @@ export default function InboxScreen() {
 
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Boite de réception">
-      <CheckUserConnected
-        userMustLogin={userMustLogin}
-        setUserMustLogin={setUserMustLogin}
-        subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
-        needCancelButton={false}
-      >
-        <TopNavigation />
-      </CheckUserConnected>
+      <RequestConnection>
+        <CheckUserConnected
+          userMustLogin={userMustLogin}
+          setUserMustLogin={setUserMustLogin}
+          subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
+          needCancelButton={false}
+        >
+          <TopNavigation />
+        </CheckUserConnected>
+      </RequestConnection>
     </MainScreen>
   );
 }

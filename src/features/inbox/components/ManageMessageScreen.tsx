@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Alert } from "react-native";
 import { useMemo, useRef, useCallback, useEffect, useState } from "react";
 import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 import {
@@ -27,10 +27,11 @@ import {
   useStartConversationMutation,
 } from "../chatApi";
 import { removeAccount } from "../../account/accountSlice";
-import { GiftedChat, Send } from "react-native-gifted-chat";
+import { GiftedChat, IMessage, Send } from "react-native-gifted-chat";
 import AnimatedLottieView from "lottie-react-native";
 import { messageGiftedProps } from "../types";
 import { removeDataToAsyncStorage } from "_utils";
+import NetInfo from "@react-native-community/netinfo";
 
 export default function ManageMessageScreen() {
   const navigation = useNavigation();
@@ -42,6 +43,9 @@ export default function ManageMessageScreen() {
   const [isMessageAlreadyStart, setIsMessageAlreadyStart] = useState(false);
   const { nickName, id_seller, id_conversation } =
     useRoute<RouteProp<StackParamList, "manage_message">>()?.params.emetteur;
+  const [isConnected, setIsConnected] = useState<boolean>(false);
+  const [isUserHasAccessToInternet, setIsUserHasAccessToInternet] =
+    useState<boolean>(false);
 
   const {
     data: allMessage,
@@ -144,10 +148,12 @@ export default function ManageMessageScreen() {
     }
   };
 
-  const onSend = useCallback((messages = []) => {
-    setMessages((previousMessages) => {
-      return GiftedChat.append(previousMessages, messages);
-    });
+  const onSend = useCallback((messages: IMessage[] = []) => {
+    if (isConnected && isUserHasAccessToInternet) {
+      setMessages((previousMessages) => {
+        return GiftedChat.append(previousMessages, messages);
+      });
+    }
   }, []);
 
   const handleStartConversation = () => {
@@ -181,19 +187,24 @@ export default function ManageMessageScreen() {
       });
   };
 
-  const handleSendMessage = (messages: messageGiftedProps[]) => {
-    sendMessage({
-      token: accountUser.token ? accountUser.token : undefined,
-      id_conversation: id_conversation,
-      message: messages.length > 0 ? messages[0].text : "",
-    })
-      .unwrap()
-      .then((res) => {
-        console.log("send conv res", res);
+  const handleSendMessage = (messages: IMessage[]) => {
+    if (isConnected && isUserHasAccessToInternet) {
+      console.log("messages avant envoie : ", messages);
+      sendMessage({
+        token: accountUser.token ? accountUser.token : undefined,
+        id_conversation: id_conversation,
+        message: messages.length > 0 ? messages[0].text : "",
       })
-      .catch((e) => {
-        console.log("error send message :", e);
-      });
+        .unwrap()
+        .then((res) => {
+          console.log("send conv res", res);
+        })
+        .catch((e) => {
+          console.log("error send message :", e);
+        });
+    } else {
+      Alert.alert("Vous n'êtes pas connecté à internet");
+    }
   };
 
   const handleRefetch = () => {
@@ -227,6 +238,19 @@ export default function ManageMessageScreen() {
       setMessages([]);
     }
   }, [allMessage]);
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      if (state.isConnected) {
+        setIsConnected(state.isConnected);
+      }
+      if (state.isInternetReachable) {
+        setIsUserHasAccessToInternet(state.isInternetReachable);
+      }
+    });
+
+    return unsubscribe;
+  }, []);
 
   return (
     <MainScreen typeOfScreen="stack">
@@ -262,6 +286,7 @@ export default function ManageMessageScreen() {
             <Box flex={1}>
               <GiftedChat
                 messages={messages}
+                extraData={messages}
                 placeholder="Ecrivez un message ici..."
                 onSend={(messages) => {
                   handleSendMessage(messages);

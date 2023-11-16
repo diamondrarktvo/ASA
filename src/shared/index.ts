@@ -14,6 +14,7 @@ import Input from "./Input";
 import EmptyList from "./EmptyList";
 import RequestLoader from "./RequestLoader";
 import RequestError from "./RequestError";
+import RequestConnection from "./RequestConnection";
 
 export {
   Icon,
@@ -32,4 +33,5 @@ export {
   EmptyList,
   RequestLoader,
   RequestError,
+  RequestConnection,
 };

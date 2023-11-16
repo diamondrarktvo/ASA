@@ -11,6 +11,8 @@ import {
   TouchableOpacity,
   Icon,
   RequestLoader,
+  RequestError,
+  RequestConnection,
 } from "_shared";
 import { useMemo, useRef, useCallback, useState, useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
@@ -151,196 +153,66 @@ export default function ManageProfil() {
 
   return (
     <MainScreen typeOfScreen="stack">
-      <RequestLoader isLoading={isLoading}>
-        <HeaderStackNavStyled
-          titleRight="Modifier"
-          onPressTitle={() => openBottomSheet()}
-        />
-        {/**Banniere image profile */}
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Box
-            alignItems="center"
-            padding="m"
-            borderRadius="md"
-            marginVertical="m"
-            backgroundColor="mainBackground"
-            style={styles.box_with_shadow}
+      <RequestConnection>
+        <RequestLoader isLoading={isLoading}>
+          <RequestError
+            isError={isError}
+            errorStatus={error?.status}
+            onRefresh={() => handleSubmit()}
           >
-            <Image
-              source={
-                valueForUpdate.image
-                  ? { uri: valueForUpdate.image }
-                  : require("_images/logoASA.jpeg")
-              }
-              style={{
-                width: Size.IMAGE_MEDIUM,
-                height: Size.IMAGE_MEDIUM,
-                borderRadius: borderRadii.lg,
-                marginBottom: "4%",
-              }}
+            <HeaderStackNavStyled
+              titleRight="Modifier"
+              onPressTitle={() => openBottomSheet()}
             />
-            <Text variant="bigTitle" color="text" textAlign={"center"}>
-              {valueForUpdate.first_name} {valueForUpdate.last_name}
-            </Text>
-            {accountUser && accountUser.date_joined && (
-              <Text
-                variant={"tertiary"}
-                fontWeight={"400"}
-                color={"primaryDark"}
+            {/**Banniere image profile */}
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <Box
+                alignItems="center"
+                padding="m"
+                borderRadius="md"
+                marginVertical="m"
+                backgroundColor="mainBackground"
+                style={styles.box_with_shadow}
               >
-                Membre depuis :{formatDate(accountUser.date_joined)}
-              </Text>
-            )}
-          </Box>
+                <Image
+                  source={
+                    valueForUpdate.image
+                      ? { uri: valueForUpdate.image }
+                      : require("_images/logoASA.jpeg")
+                  }
+                  style={{
+                    width: Size.IMAGE_MEDIUM,
+                    height: Size.IMAGE_MEDIUM,
+                    borderRadius: borderRadii.lg,
+                    marginBottom: "4%",
+                  }}
+                />
+                <Text variant="bigTitle" color="text" textAlign={"center"}>
+                  {valueForUpdate.first_name} {valueForUpdate.last_name}
+                </Text>
+                {accountUser && accountUser.date_joined && (
+                  <Text
+                    variant={"tertiary"}
+                    fontWeight={"400"}
+                    color={"primaryDark"}
+                  >
+                    Membre depuis :{formatDate(accountUser.date_joined)}
+                  </Text>
+                )}
+              </Box>
 
-          {/**TODO: transform this to an array */}
-          <Column>
-            <Text variant="title" color="text">
-              Votre profile
-            </Text>
-            <Text variant="secondary" color="secondary" marginBottom="s">
-              Les informations que vous partagez seront utilisées dans
-              l'application Mety Amiko pour aider les autres utilisateurs et
-              administrateurs à vous connaitre.
-            </Text>
+              {/**TODO: transform this to an array */}
+              <Column>
+                <Text variant="title" color="text">
+                  Votre profile
+                </Text>
+                <Text variant="secondary" color="secondary" marginBottom="s">
+                  Les informations que vous partagez seront utilisées dans
+                  l'application Mety Amiko pour aider les autres utilisateurs et
+                  administrateurs à vous connaitre.
+                </Text>
 
-            {/**Nom */}
-            <Text
-              variant="primary"
-              color="text"
-              fontWeight="bold"
-              marginLeft="xs"
-              textDecorationLine="underline"
-            >
-              Nom:
-            </Text>
-            <Input
-              placeholder="Nom"
-              editable={false}
-              value={valueForUpdate.first_name ? valueForUpdate.first_name : ""}
-              iconLeft={{
-                name: "person",
-                size: Size.ICON_SMALL,
-                color: colors.text,
-              }}
-            />
-
-            {/**Prenom */}
-            <Text
-              variant="primary"
-              color="text"
-              fontWeight="bold"
-              marginLeft="xs"
-              textDecorationLine="underline"
-            >
-              Prénom:
-            </Text>
-            <Input
-              placeholder="Prenom"
-              editable={false}
-              value={valueForUpdate.last_name ? valueForUpdate.last_name : ""}
-              iconLeft={{
-                name: "person",
-                size: Size.ICON_SMALL,
-                color: colors.text,
-              }}
-            />
-
-            {/**Pseudo */}
-            <Text
-              variant="primary"
-              color="text"
-              fontWeight="bold"
-              marginLeft="xs"
-              textDecorationLine="underline"
-            >
-              Pseudo:
-            </Text>
-            <Input
-              placeholder="Pseudo"
-              editable={false}
-              value={valueForUpdate.nickname ? valueForUpdate.nickname : ""}
-              iconLeft={{
-                name: "person",
-                size: Size.ICON_SMALL,
-                color: colors.text,
-              }}
-            />
-
-            {/**Age */}
-            <Text
-              variant="primary"
-              color="text"
-              fontWeight="bold"
-              marginLeft="xs"
-              textDecorationLine="underline"
-            >
-              Age:
-            </Text>
-            <Input
-              placeholder="Age"
-              editable={false}
-              value={valueForUpdate.age ? valueForUpdate.age.toString() : ""}
-              iconLeft={{
-                name: "person",
-                size: Size.ICON_SMALL,
-                color: colors.text,
-              }}
-            />
-
-            {/**Email */}
-            <Text
-              variant="primary"
-              color="text"
-              fontWeight="bold"
-              marginLeft="xs"
-              textDecorationLine="underline"
-            >
-              Adresse email:
-            </Text>
-            <Input
-              placeholder="Adresse email"
-              editable={false}
-              value={valueForUpdate.email ? valueForUpdate.email : ""}
-              iconLeft={{
-                name: "mail",
-                size: Size.ICON_SMALL,
-                color: colors.text,
-              }}
-            />
-
-            {/**Is professional */}
-            <Row justifyContent="space-around" alignItems={"center"}>
-              <Text variant={"secondary"}>Vous êtes professionel ? </Text>
-              <RadioButton
-                value="yes"
-                color={colors.primary}
-                disabled={true}
-                status={
-                  valueForUpdate.is_professional === true
-                    ? "checked"
-                    : "unchecked"
-                }
-                onPress={() => handleChangeIsProfessionnal()}
-              />
-              <Text variant="tertiary">Oui</Text>
-              <RadioButton
-                value="no"
-                color={colors.primary}
-                disabled={true}
-                status={
-                  valueForUpdate.is_professional === false
-                    ? "checked"
-                    : "unchecked"
-                }
-                onPress={() => handleChangeIsProfessionnal()}
-              />
-              <Text variant="tertiary">Non</Text>
-            </Row>
-
-            {/**Company name */}
-            {valueForUpdate.is_professional && (
-              <>
+                {/**Nom */}
                 <Text
                   variant="primary"
                   color="text"
@@ -348,28 +220,22 @@ export default function ManageProfil() {
                   marginLeft="xs"
                   textDecorationLine="underline"
                 >
-                  Nom de la société:
+                  Nom:
                 </Text>
                 <Input
-                  placeholder="Nom de la société"
+                  placeholder="Nom"
                   editable={false}
                   value={
-                    valueForUpdate.company_name
-                      ? valueForUpdate.company_name
-                      : ""
+                    valueForUpdate.first_name ? valueForUpdate.first_name : ""
                   }
                   iconLeft={{
-                    name: "mail",
+                    name: "person",
                     size: Size.ICON_SMALL,
                     color: colors.text,
                   }}
                 />
-              </>
-            )}
 
-            {/**Unique company number */}
-            {valueForUpdate.is_professional && (
-              <>
+                {/**Prenom */}
                 <Text
                   variant="primary"
                   color="text"
@@ -377,305 +243,300 @@ export default function ManageProfil() {
                   marginLeft="xs"
                   textDecorationLine="underline"
                 >
-                  Numéro unique de la société:
+                  Prénom:
                 </Text>
                 <Input
-                  placeholder="Numéro unique de la société"
+                  placeholder="Prenom"
                   editable={false}
                   value={
-                    valueForUpdate.unique_company_number
-                      ? valueForUpdate.unique_company_number
-                      : ""
+                    valueForUpdate.last_name ? valueForUpdate.last_name : ""
                   }
+                  iconLeft={{
+                    name: "person",
+                    size: Size.ICON_SMALL,
+                    color: colors.text,
+                  }}
+                />
+
+                {/**Pseudo */}
+                <Text
+                  variant="primary"
+                  color="text"
+                  fontWeight="bold"
+                  marginLeft="xs"
+                  textDecorationLine="underline"
+                >
+                  Pseudo:
+                </Text>
+                <Input
+                  placeholder="Pseudo"
+                  editable={false}
+                  value={valueForUpdate.nickname ? valueForUpdate.nickname : ""}
+                  iconLeft={{
+                    name: "person",
+                    size: Size.ICON_SMALL,
+                    color: colors.text,
+                  }}
+                />
+
+                {/**Age */}
+                <Text
+                  variant="primary"
+                  color="text"
+                  fontWeight="bold"
+                  marginLeft="xs"
+                  textDecorationLine="underline"
+                >
+                  Age:
+                </Text>
+                <Input
+                  placeholder="Age"
+                  editable={false}
+                  value={
+                    valueForUpdate.age ? valueForUpdate.age.toString() : ""
+                  }
+                  iconLeft={{
+                    name: "person",
+                    size: Size.ICON_SMALL,
+                    color: colors.text,
+                  }}
+                />
+
+                {/**Email */}
+                <Text
+                  variant="primary"
+                  color="text"
+                  fontWeight="bold"
+                  marginLeft="xs"
+                  textDecorationLine="underline"
+                >
+                  Adresse email:
+                </Text>
+                <Input
+                  placeholder="Adresse email"
+                  editable={false}
+                  value={valueForUpdate.email ? valueForUpdate.email : ""}
                   iconLeft={{
                     name: "mail",
                     size: Size.ICON_SMALL,
                     color: colors.text,
                   }}
                 />
-              </>
-            )}
 
-            {/**Numéro téléphone */}
-            <Text
-              variant="primary"
-              color="text"
-              fontWeight="bold"
-              marginLeft="xs"
-              textDecorationLine="underline"
-            >
-              Numéro téléphone:
-            </Text>
-            <Input
-              placeholder="Numéro téléphone"
-              editable={false}
-              value={
-                valueForUpdate.phone_number
-                  ? valueForUpdate.phone_number.toString()
-                  : ""
-              }
-              iconLeft={{
-                name: "call",
-                size: Size.ICON_SMALL,
-                color: colors.text,
-              }}
-            />
-          </Column>
-        </ScrollView>
+                {/**Is professional */}
+                <Row justifyContent="space-around" alignItems={"center"}>
+                  <Text variant={"secondary"}>Vous êtes professionel ? </Text>
+                  <RadioButton
+                    value="yes"
+                    color={colors.primary}
+                    disabled={true}
+                    status={
+                      valueForUpdate.is_professional === true
+                        ? "checked"
+                        : "unchecked"
+                    }
+                    onPress={() => handleChangeIsProfessionnal()}
+                  />
+                  <Text variant="tertiary">Oui</Text>
+                  <RadioButton
+                    value="no"
+                    color={colors.primary}
+                    disabled={true}
+                    status={
+                      valueForUpdate.is_professional === false
+                        ? "checked"
+                        : "unchecked"
+                    }
+                    onPress={() => handleChangeIsProfessionnal()}
+                  />
+                  <Text variant="tertiary">Non</Text>
+                </Row>
 
-        <BottomSheetModal
-          backdropComponent={renderBackDrop}
-          ref={bottomSheetRef}
-          index={1}
-          snapPoints={snapPoints}
-          style={styles.bottomSheet_container}
-        >
-          <Row alignItems="center" width="67%" justifyContent="space-between">
-            <TouchableOpacity onPress={() => closeBottomSheet()}>
-              <Icon name="close" size={Size.ICON_MEDIUM} color={colors.text} />
-            </TouchableOpacity>
-            <Text
-              variant="primaryBold"
-              textAlign="center"
-              textDecorationLine="underline"
-            >
-              Modifier le compte
-            </Text>
-          </Row>
-          <ScrollViewBottomSheet showsVerticalScrollIndicator={false}>
-            <Box
-              alignItems="center"
-              padding="m"
-              borderRadius="md"
-              marginVertical="m"
-              backgroundColor="mainBackground"
-              style={styles.box_with_shadow}
-            >
-              <Image
-                source={
-                  imageImported.length !== 0
-                    ? { uri: imageImported[0] }
-                    : valueForUpdate.image
-                    ? { uri: valueForUpdate.image }
-                    : require("_images/logoASA.jpeg")
-                }
-                style={{
-                  width: Size.IMAGE_LARGE,
-                  height: Size.IMAGE_LARGE,
-                  borderRadius: borderRadii.hg,
-                  marginBottom: "4%",
-                }}
-              />
-              {imageImported.length !== 0 && (
-                <Box
-                  position={"absolute"}
-                  bottom={70}
-                  right={95}
-                  backgroundColor={"primary"}
-                  borderRadius={"hg"}
+                {/**Company name */}
+                {valueForUpdate.is_professional && (
+                  <>
+                    <Text
+                      variant="primary"
+                      color="text"
+                      fontWeight="bold"
+                      marginLeft="xs"
+                      textDecorationLine="underline"
+                    >
+                      Nom de la société:
+                    </Text>
+                    <Input
+                      placeholder="Nom de la société"
+                      editable={false}
+                      value={
+                        valueForUpdate.company_name
+                          ? valueForUpdate.company_name
+                          : ""
+                      }
+                      iconLeft={{
+                        name: "mail",
+                        size: Size.ICON_SMALL,
+                        color: colors.text,
+                      }}
+                    />
+                  </>
+                )}
+
+                {/**Unique company number */}
+                {valueForUpdate.is_professional && (
+                  <>
+                    <Text
+                      variant="primary"
+                      color="text"
+                      fontWeight="bold"
+                      marginLeft="xs"
+                      textDecorationLine="underline"
+                    >
+                      Numéro unique de la société:
+                    </Text>
+                    <Input
+                      placeholder="Numéro unique de la société"
+                      editable={false}
+                      value={
+                        valueForUpdate.unique_company_number
+                          ? valueForUpdate.unique_company_number
+                          : ""
+                      }
+                      iconLeft={{
+                        name: "mail",
+                        size: Size.ICON_SMALL,
+                        color: colors.text,
+                      }}
+                    />
+                  </>
+                )}
+
+                {/**Numéro téléphone */}
+                <Text
+                  variant="primary"
+                  color="text"
+                  fontWeight="bold"
+                  marginLeft="xs"
+                  textDecorationLine="underline"
                 >
+                  Numéro téléphone:
+                </Text>
+                <Input
+                  placeholder="Numéro téléphone"
+                  editable={false}
+                  value={
+                    valueForUpdate.phone_number
+                      ? valueForUpdate.phone_number.toString()
+                      : ""
+                  }
+                  iconLeft={{
+                    name: "call",
+                    size: Size.ICON_SMALL,
+                    color: colors.text,
+                  }}
+                />
+              </Column>
+            </ScrollView>
+
+            <BottomSheetModal
+              backdropComponent={renderBackDrop}
+              ref={bottomSheetRef}
+              index={1}
+              snapPoints={snapPoints}
+              style={styles.bottomSheet_container}
+            >
+              <Row
+                alignItems="center"
+                width="67%"
+                justifyContent="space-between"
+              >
+                <TouchableOpacity onPress={() => closeBottomSheet()}>
                   <Icon
                     name="close"
-                    size={Size.ICON_LARGE}
-                    color={colors.black}
-                    onPress={() => removeThisImage()}
-                  />
-                </Box>
-              )}
-              <TouchableOpacity onPress={pickImages}>
-                <Row
-                  alignItems="center"
-                  backgroundColor="mainBackground"
-                  style={[
-                    styles.button_add_image,
-                    {
-                      borderRadius: borderRadii.sm,
-                    },
-                  ]}
-                >
-                  <Icon
-                    name="photo-camera"
-                    size={Size.ICON_SMALL}
+                    size={Size.ICON_MEDIUM}
                     color={colors.text}
                   />
-                  <Text variant="secondary">Ajouter image</Text>
-                </Row>
-              </TouchableOpacity>
-            </Box>
-
-            {/**TODO: transform this to an array */}
-            <Column>
-              <Text variant="title" color="text">
-                Votre profile
-              </Text>
-              <Text variant="secondary" color="secondary" marginBottom="s">
-                Les informations que vous partagez seront utilisées dans
-                l'application Mety Amiko pour aider les autres utilisateurs et
-                administrateurs à vous connaitre.
-              </Text>
-
-              {/**Nom */}
-              <Text
-                variant="primary"
-                color="text"
-                fontWeight="bold"
-                marginLeft="xs"
-                textDecorationLine="underline"
-              >
-                Nom:
-              </Text>
-              <Input
-                placeholder="Nom"
-                value={
-                  valueForUpdate.first_name ? valueForUpdate.first_name : ""
-                }
-                onChangeText={(text) =>
-                  setValueForUpdate((prevState) => ({
-                    ...prevState,
-                    first_name: text,
-                  }))
-                }
-                iconLeft={{
-                  name: "person",
-                  size: Size.ICON_SMALL,
-                  color: colors.text,
-                }}
-              />
-
-              {/**Prenom */}
-              <Text
-                variant="primary"
-                color="text"
-                fontWeight="bold"
-                marginLeft="xs"
-                textDecorationLine="underline"
-              >
-                Prénom:
-              </Text>
-              <Input
-                placeholder="Prenom"
-                value={valueForUpdate.last_name ? valueForUpdate.last_name : ""}
-                onChangeText={(text) =>
-                  setValueForUpdate((prevState) => ({
-                    ...prevState,
-                    last_name: text,
-                  }))
-                }
-                iconLeft={{
-                  name: "person",
-                  size: Size.ICON_SMALL,
-                  color: colors.text,
-                }}
-              />
-
-              {/**Prenom */}
-              <Text
-                variant="primary"
-                color="text"
-                fontWeight="bold"
-                marginLeft="xs"
-                textDecorationLine="underline"
-              >
-                Pseudo:
-              </Text>
-              <Input
-                placeholder="Pseudo"
-                value={valueForUpdate.nickname ? valueForUpdate.nickname : ""}
-                onChangeText={(text) =>
-                  setValueForUpdate((prevState) => ({
-                    ...prevState,
-                    nickname: text,
-                  }))
-                }
-                iconLeft={{
-                  name: "person",
-                  size: Size.ICON_SMALL,
-                  color: colors.text,
-                }}
-              />
-
-              {/**Age */}
-              <Text
-                variant="primary"
-                color="text"
-                fontWeight="bold"
-                marginLeft="xs"
-                textDecorationLine="underline"
-              >
-                Age:
-              </Text>
-              <Input
-                placeholder="Age"
-                value={valueForUpdate.age ? valueForUpdate.age.toString() : ""}
-                onChangeText={(text) =>
-                  setValueForUpdate((prevState) => ({
-                    ...prevState,
-                    age: text,
-                  }))
-                }
-                iconLeft={{
-                  name: "person",
-                  size: Size.ICON_SMALL,
-                  color: colors.text,
-                }}
-              />
-
-              {/**Email */}
-              <Text
-                variant="primary"
-                color="text"
-                fontWeight="bold"
-                marginLeft="xs"
-                textDecorationLine="underline"
-              >
-                Adresse email:
-              </Text>
-              <Input
-                placeholder="Adresse email"
-                value={valueForUpdate.email ? valueForUpdate.email : ""}
-                onChangeText={(text) =>
-                  setValueForUpdate((prevState) => ({
-                    ...prevState,
-                    email: text,
-                  }))
-                }
-                iconLeft={{
-                  name: "mail",
-                  size: Size.ICON_SMALL,
-                  color: colors.text,
-                }}
-              />
-
-              {/**Is professional */}
-              <Row justifyContent="space-around" alignItems={"center"}>
-                <Text variant={"secondary"}>Vous êtes professionel ? </Text>
-                <RadioButton
-                  value="yes"
-                  color={colors.primary}
-                  status={
-                    valueForUpdate.is_professional === true
-                      ? "checked"
-                      : "unchecked"
-                  }
-                  onPress={() => handleChangeIsProfessionnal()}
-                />
-                <Text variant="tertiary">Oui</Text>
-                <RadioButton
-                  value="no"
-                  color={colors.primary}
-                  status={
-                    valueForUpdate.is_professional === false
-                      ? "checked"
-                      : "unchecked"
-                  }
-                  onPress={() => handleChangeIsProfessionnal()}
-                />
-                <Text variant="tertiary">Non</Text>
+                </TouchableOpacity>
+                <Text
+                  variant="primaryBold"
+                  textAlign="center"
+                  textDecorationLine="underline"
+                >
+                  Modifier le compte
+                </Text>
               </Row>
+              <ScrollViewBottomSheet showsVerticalScrollIndicator={false}>
+                <Box
+                  alignItems="center"
+                  padding="m"
+                  borderRadius="md"
+                  marginVertical="m"
+                  backgroundColor="mainBackground"
+                  style={styles.box_with_shadow}
+                >
+                  <Image
+                    source={
+                      imageImported.length !== 0
+                        ? { uri: imageImported[0] }
+                        : valueForUpdate.image
+                        ? { uri: valueForUpdate.image }
+                        : require("_images/logoASA.jpeg")
+                    }
+                    style={{
+                      width: Size.IMAGE_LARGE,
+                      height: Size.IMAGE_LARGE,
+                      borderRadius: borderRadii.hg,
+                      marginBottom: "4%",
+                    }}
+                  />
+                  {imageImported.length !== 0 && (
+                    <Box
+                      position={"absolute"}
+                      bottom={70}
+                      right={95}
+                      backgroundColor={"primary"}
+                      borderRadius={"hg"}
+                    >
+                      <Icon
+                        name="close"
+                        size={Size.ICON_LARGE}
+                        color={colors.black}
+                        onPress={() => removeThisImage()}
+                      />
+                    </Box>
+                  )}
+                  <TouchableOpacity onPress={pickImages}>
+                    <Row
+                      alignItems="center"
+                      backgroundColor="mainBackground"
+                      style={[
+                        styles.button_add_image,
+                        {
+                          borderRadius: borderRadii.sm,
+                        },
+                      ]}
+                    >
+                      <Icon
+                        name="photo-camera"
+                        size={Size.ICON_SMALL}
+                        color={colors.text}
+                      />
+                      <Text variant="secondary">Ajouter image</Text>
+                    </Row>
+                  </TouchableOpacity>
+                </Box>
 
-              {/**Company name */}
-              {valueForUpdate.is_professional && (
-                <>
+                {/**TODO: transform this to an array */}
+                <Column>
+                  <Text variant="title" color="text">
+                    Votre profile
+                  </Text>
+                  <Text variant="secondary" color="secondary" marginBottom="s">
+                    Les informations que vous partagez seront utilisées dans
+                    l'application Mety Amiko pour aider les autres utilisateurs
+                    et administrateurs à vous connaitre.
+                  </Text>
+
+                  {/**Nom */}
                   <Text
                     variant="primary"
                     color="text"
@@ -683,39 +544,27 @@ export default function ManageProfil() {
                     marginLeft="xs"
                     textDecorationLine="underline"
                   >
-                    Nom de la société:
+                    Nom:
                   </Text>
                   <Input
-                    placeholder="Nom de la société"
+                    placeholder="Nom"
                     value={
-                      valueForUpdate.company_name
-                        ? valueForUpdate.company_name
-                        : ""
+                      valueForUpdate.first_name ? valueForUpdate.first_name : ""
                     }
                     onChangeText={(text) =>
                       setValueForUpdate((prevState) => ({
                         ...prevState,
-                        company_name: text,
+                        first_name: text,
                       }))
                     }
                     iconLeft={{
-                      name: "mail",
+                      name: "person",
                       size: Size.ICON_SMALL,
                       color: colors.text,
                     }}
-                    errorMessage={
-                      valueForUpdate.company_name === "" ||
-                      valueForUpdate.company_name === null
-                        ? "Nom de la société requis."
-                        : ""
-                    }
                   />
-                </>
-              )}
 
-              {/**Unique company number */}
-              {valueForUpdate.is_professional && (
-                <>
+                  {/**Prenom */}
                   <Text
                     variant="primary"
                     color="text"
@@ -723,20 +572,99 @@ export default function ManageProfil() {
                     marginLeft="xs"
                     textDecorationLine="underline"
                   >
-                    Numéro unique de la société:
+                    Prénom:
                   </Text>
                   <Input
-                    placeholder="Numéro unique de la société"
-                    inputMode="numeric"
+                    placeholder="Prenom"
                     value={
-                      valueForUpdate.unique_company_number
-                        ? valueForUpdate.unique_company_number
-                        : ""
+                      valueForUpdate.last_name ? valueForUpdate.last_name : ""
                     }
                     onChangeText={(text) =>
                       setValueForUpdate((prevState) => ({
                         ...prevState,
-                        unique_company_number: text,
+                        last_name: text,
+                      }))
+                    }
+                    iconLeft={{
+                      name: "person",
+                      size: Size.ICON_SMALL,
+                      color: colors.text,
+                    }}
+                  />
+
+                  {/**Prenom */}
+                  <Text
+                    variant="primary"
+                    color="text"
+                    fontWeight="bold"
+                    marginLeft="xs"
+                    textDecorationLine="underline"
+                  >
+                    Pseudo:
+                  </Text>
+                  <Input
+                    placeholder="Pseudo"
+                    value={
+                      valueForUpdate.nickname ? valueForUpdate.nickname : ""
+                    }
+                    onChangeText={(text) =>
+                      setValueForUpdate((prevState) => ({
+                        ...prevState,
+                        nickname: text,
+                      }))
+                    }
+                    iconLeft={{
+                      name: "person",
+                      size: Size.ICON_SMALL,
+                      color: colors.text,
+                    }}
+                  />
+
+                  {/**Age */}
+                  <Text
+                    variant="primary"
+                    color="text"
+                    fontWeight="bold"
+                    marginLeft="xs"
+                    textDecorationLine="underline"
+                  >
+                    Age:
+                  </Text>
+                  <Input
+                    placeholder="Age"
+                    value={
+                      valueForUpdate.age ? valueForUpdate.age.toString() : ""
+                    }
+                    onChangeText={(text) =>
+                      setValueForUpdate((prevState) => ({
+                        ...prevState,
+                        age: text,
+                      }))
+                    }
+                    iconLeft={{
+                      name: "person",
+                      size: Size.ICON_SMALL,
+                      color: colors.text,
+                    }}
+                  />
+
+                  {/**Email */}
+                  <Text
+                    variant="primary"
+                    color="text"
+                    fontWeight="bold"
+                    marginLeft="xs"
+                    textDecorationLine="underline"
+                  >
+                    Adresse email:
+                  </Text>
+                  <Input
+                    placeholder="Adresse email"
+                    value={valueForUpdate.email ? valueForUpdate.email : ""}
+                    onChangeText={(text) =>
+                      setValueForUpdate((prevState) => ({
+                        ...prevState,
+                        email: text,
                       }))
                     }
                     iconLeft={{
@@ -744,68 +672,170 @@ export default function ManageProfil() {
                       size: Size.ICON_SMALL,
                       color: colors.text,
                     }}
-                    errorMessage={
-                      valueForUpdate.unique_company_number === "" ||
-                      valueForUpdate.unique_company_number === null
-                        ? "Numéro de la société requis."
+                  />
+
+                  {/**Is professional */}
+                  <Row justifyContent="space-around" alignItems={"center"}>
+                    <Text variant={"secondary"}>Vous êtes professionel ? </Text>
+                    <RadioButton
+                      value="yes"
+                      color={colors.primary}
+                      status={
+                        valueForUpdate.is_professional === true
+                          ? "checked"
+                          : "unchecked"
+                      }
+                      onPress={() => handleChangeIsProfessionnal()}
+                    />
+                    <Text variant="tertiary">Oui</Text>
+                    <RadioButton
+                      value="no"
+                      color={colors.primary}
+                      status={
+                        valueForUpdate.is_professional === false
+                          ? "checked"
+                          : "unchecked"
+                      }
+                      onPress={() => handleChangeIsProfessionnal()}
+                    />
+                    <Text variant="tertiary">Non</Text>
+                  </Row>
+
+                  {/**Company name */}
+                  {valueForUpdate.is_professional && (
+                    <>
+                      <Text
+                        variant="primary"
+                        color="text"
+                        fontWeight="bold"
+                        marginLeft="xs"
+                        textDecorationLine="underline"
+                      >
+                        Nom de la société:
+                      </Text>
+                      <Input
+                        placeholder="Nom de la société"
+                        value={
+                          valueForUpdate.company_name
+                            ? valueForUpdate.company_name
+                            : ""
+                        }
+                        onChangeText={(text) =>
+                          setValueForUpdate((prevState) => ({
+                            ...prevState,
+                            company_name: text,
+                          }))
+                        }
+                        iconLeft={{
+                          name: "mail",
+                          size: Size.ICON_SMALL,
+                          color: colors.text,
+                        }}
+                        errorMessage={
+                          valueForUpdate.company_name === "" ||
+                          valueForUpdate.company_name === null
+                            ? "Nom de la société requis."
+                            : ""
+                        }
+                      />
+                    </>
+                  )}
+
+                  {/**Unique company number */}
+                  {valueForUpdate.is_professional && (
+                    <>
+                      <Text
+                        variant="primary"
+                        color="text"
+                        fontWeight="bold"
+                        marginLeft="xs"
+                        textDecorationLine="underline"
+                      >
+                        Numéro unique de la société:
+                      </Text>
+                      <Input
+                        placeholder="Numéro unique de la société"
+                        inputMode="numeric"
+                        value={
+                          valueForUpdate.unique_company_number
+                            ? valueForUpdate.unique_company_number
+                            : ""
+                        }
+                        onChangeText={(text) =>
+                          setValueForUpdate((prevState) => ({
+                            ...prevState,
+                            unique_company_number: text,
+                          }))
+                        }
+                        iconLeft={{
+                          name: "mail",
+                          size: Size.ICON_SMALL,
+                          color: colors.text,
+                        }}
+                        errorMessage={
+                          valueForUpdate.unique_company_number === "" ||
+                          valueForUpdate.unique_company_number === null
+                            ? "Numéro de la société requis."
+                            : ""
+                        }
+                      />
+                    </>
+                  )}
+
+                  {/**Numéro téléphone */}
+                  <Text
+                    variant="primary"
+                    color="text"
+                    fontWeight="bold"
+                    marginLeft="xs"
+                    textDecorationLine="underline"
+                  >
+                    Numéro téléphone:
+                  </Text>
+                  <Input
+                    placeholder="Adresse email"
+                    value={
+                      valueForUpdate.phone_number
+                        ? valueForUpdate.phone_number.toString()
                         : ""
                     }
+                    onChangeText={(text) =>
+                      setValueForUpdate((prevState) => ({
+                        ...prevState,
+                        phone_number: text,
+                      }))
+                    }
+                    iconLeft={{
+                      name: "call",
+                      size: Size.ICON_SMALL,
+                      color: colors.text,
+                    }}
                   />
-                </>
-              )}
-
-              {/**Numéro téléphone */}
-              <Text
-                variant="primary"
-                color="text"
-                fontWeight="bold"
-                marginLeft="xs"
-                textDecorationLine="underline"
-              >
-                Numéro téléphone:
-              </Text>
-              <Input
-                placeholder="Adresse email"
-                value={
-                  valueForUpdate.phone_number
-                    ? valueForUpdate.phone_number.toString()
-                    : ""
-                }
-                onChangeText={(text) =>
-                  setValueForUpdate((prevState) => ({
-                    ...prevState,
-                    phone_number: text,
-                  }))
-                }
-                iconLeft={{
-                  name: "call",
-                  size: Size.ICON_SMALL,
-                  color: colors.text,
-                }}
-              />
-            </Column>
-          </ScrollViewBottomSheet>
-          <Box paddingVertical="s">
-            <Button
-              variant={"primary"}
-              label="Enregistrer"
-              onPress={() => handleSubmit()}
-            />
-          </Box>
-        </BottomSheetModal>
-        <Snackbar
-          visible={visibleSnackbar}
-          onDismiss={() => setVisibleSnackbar(false)}
-          action={{
-            label: "Ok",
-            onPress: () => {
-              // Do something
-            },
-          }}
-        >
-          {parseErrorMessage(error)}
-        </Snackbar>
-      </RequestLoader>
+                </Column>
+              </ScrollViewBottomSheet>
+              <Box paddingVertical="s">
+                <Button
+                  variant={"primary"}
+                  label="Enregistrer"
+                  onPress={() => handleSubmit()}
+                />
+              </Box>
+            </BottomSheetModal>
+            <Snackbar
+              visible={visibleSnackbar}
+              onDismiss={() => setVisibleSnackbar(false)}
+              action={{
+                label: "Ok",
+                onPress: () => {
+                  // Do something
+                },
+              }}
+            >
+              {parseErrorMessage(error)}
+            </Snackbar>
+          </RequestError>
+        </RequestLoader>
+      </RequestConnection>
     </MainScreen>
   );
 }

@@ -10,6 +10,7 @@ import {
   Icon,
   Image,
   MainScreen,
+  RequestConnection,
   RequestError,
   RequestLoader,
   Row,
@@ -245,238 +246,262 @@ export default function ProductDetailScreen() {
   };
 
   return (
-    <RequestLoader isLoading={isAnnonceLoading}>
-      <RequestError
-        isError={
-          isErrorAnnonce ||
-          isErrorAddFavoriteSeller ||
-          isErrorDeleteFavorite ||
-          isErrorAddFavoriteAnnonce ||
-          isErrorDeleteFavoriteAnnonce
-        }
-        errorStatus={
-          errorAnnonce?.status ||
-          errorAddFavoriteSeller?.status ||
-          errorDeleteFavorite?.status ||
-          errorDeleteFavoriteAnnonce?.status ||
-          errorAddFavoriteAnnonce?.status
-        }
-        onRefresh={() => handleRefetch()}
-      >
-        <CheckUserConnected
-          userMustLogin={userMustLogin}
-          setUserMustLogin={setUserMustLogin}
-          subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
-          needPadding={userMustLogin}
+    <RequestConnection>
+      <RequestLoader isLoading={isAnnonceLoading}>
+        <RequestError
+          isError={
+            isErrorAnnonce ||
+            isErrorAddFavoriteSeller ||
+            isErrorDeleteFavorite ||
+            isErrorAddFavoriteAnnonce ||
+            isErrorDeleteFavoriteAnnonce
+          }
+          errorStatus={
+            errorAnnonce?.status ||
+            errorAddFavoriteSeller?.status ||
+            errorDeleteFavorite?.status ||
+            errorDeleteFavoriteAnnonce?.status ||
+            errorAddFavoriteAnnonce?.status
+          }
+          onRefresh={() => handleRefetch()}
         >
-          <Row
-            style={{ position: "absolute", zIndex: 10, top: 0 }}
-            justifyContent="space-between"
-            width="100%"
-            paddingHorizontal="s"
-            paddingTop={Platform.OS === "ios" ? "l" : "s"}
+          <CheckUserConnected
+            userMustLogin={userMustLogin}
+            setUserMustLogin={setUserMustLogin}
+            subTitleIfNotConnected="Connectez-vous pour découvrir toutes nos fonctionnalités"
+            needPadding={userMustLogin}
           >
-            <Icon
-              name="arrow-back"
-              size={Size.ICON_MEDIUM}
-              color={colors.black}
-              containerStyle={{
-                backgroundColor: "white",
-                borderRadius: 50,
-                padding: 6,
-              }}
-              onPress={() => navigation.goBack()}
-            />
-            <Icon
-              name={
-                annonce && annonce.is_favorite ? "favorite" : "favorite-border"
-              }
-              size={Size.ICON_MEDIUM}
-              color={colors.black}
-              loading={
-                isLoadingAddFavoriteAnnonce ||
-                isLoadingDeleteFavoriteAnnonce ||
-                isAnnonceFetching
-              }
-              containerStyle={{
-                backgroundColor: "white",
-                borderRadius: 50,
-                padding: 6,
-              }}
-              onPress={() => {
-                if (accountUser.is_account_connected) {
-                  handleChangeFavoriteAnnonce();
-                } else {
-                  setUserMustLogin(true);
-                }
-              }}
-            />
-          </Row>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <Box>
-              <Image
-                source={
-                  annonce?.pictures[0]
-                    ? { uri: annonce?.pictures[0].image }
-                    : require("_images/logo.jpg")
-                }
-                containerStyle={styles.imageAnnonce}
-                PlaceholderContent={
-                  <ActivityIndicator
-                    color="#2652AA"
-                    style={styles.spinnerAnnonce}
-                  />
-                }
+            <Row
+              style={{ position: "absolute", zIndex: 10, top: 0 }}
+              justifyContent="space-between"
+              width="100%"
+              paddingHorizontal="s"
+              paddingTop={Platform.OS === "ios" ? "l" : "s"}
+            >
+              <Icon
+                name="arrow-back"
+                size={Size.ICON_MEDIUM}
+                color={colors.black}
+                containerStyle={{
+                  backgroundColor: "white",
+                  borderRadius: 50,
+                  padding: 6,
+                }}
+                onPress={() => navigation.goBack()}
               />
-            </Box>
-
-            <MainScreen typeOfScreen="stack">
-              <Text variant={"primaryBold"}>{annonce?.name}</Text>
-              {annonce?.price &&
-              typeof annonce?.price === "string" &&
-              parseFloat(annonce?.price) > 0 ? (
-                <Text variant={"primaryBold"}>{annonce?.price} Ar</Text>
-              ) : null}
-              <Text variant={"tertiary"}>
-                {" "}
-                Publié le{" "}
-                {annonce?.publication_date &&
-                  formatDateToString(annonce?.publication_date)}
-              </Text>
-
-              <Box mt={"s"}>
-                <Text variant={"primary"} fontWeight={"600"}>
-                  Critères
-                </Text>
-                <FlashList
-                  keyExtractor={(item, index) => item.id.toString()}
-                  estimatedItemSize={200}
-                  data={annonce?.product_criteria}
-                  renderItem={renderItemCriteria}
-                  numColumns={2}
-                  extraData={annonce?.product_criteria}
-                  showsVerticalScrollIndicator={false}
+              <Icon
+                name={
+                  annonce && annonce.is_favorite
+                    ? "favorite"
+                    : "favorite-border"
+                }
+                size={Size.ICON_MEDIUM}
+                color={colors.black}
+                loading={
+                  isLoadingAddFavoriteAnnonce ||
+                  isLoadingDeleteFavoriteAnnonce ||
+                  isAnnonceFetching
+                }
+                containerStyle={{
+                  backgroundColor: "white",
+                  borderRadius: 50,
+                  padding: 6,
+                }}
+                onPress={() => {
+                  if (accountUser.is_account_connected) {
+                    handleChangeFavoriteAnnonce();
+                  } else {
+                    setUserMustLogin(true);
+                  }
+                }}
+              />
+            </Row>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <Box>
+                <Image
+                  source={
+                    annonce?.pictures[0]
+                      ? { uri: annonce?.pictures[0].image }
+                      : require("_images/logo.jpg")
+                  }
+                  containerStyle={styles.imageAnnonce}
+                  PlaceholderContent={
+                    <ActivityIndicator
+                      color="#2652AA"
+                      style={styles.spinnerAnnonce}
+                    />
+                  }
                 />
               </Box>
-              <Box mt={"s"}>
-                <Text variant={"primary"} fontWeight={"600"}>
-                  Description
-                </Text>
-                <Text variant={"tertiary"}>{annonce?.description}</Text>
-              </Box>
 
-              <Box mt={"s"}>
-                <Text variant={"primary"} fontWeight={"600"}>
-                  Localisation
-                </Text>
-                <TouchableOpacity
-                  onPress={() => setOnTapCityName(!onTapCityName)}
-                >
-                  <Text variant={"tertiary"}>{annonce?.location.name}</Text>
-                </TouchableOpacity>
-
-                {positionMap &&
-                positionMap.longitude !== 0 &&
-                positionMap.latitude !== 0 &&
-                onTapCityName ? (
-                  <Box
-                    height={160}
-                    width={"100%"}
-                    marginTop={"xs"}
-                    marginBottom={"s"}
-                    flexDirection={"row"}
-                    alignItems={"center"}
-                    justifyContent={"center"}
-                  >
-                    <MapView
-                      provider={PROVIDER_GOOGLE}
-                      style={[
-                        StyleSheet.absoluteFillObject,
-                        { width: "100%", height: 160 },
-                      ]}
-                      initialRegion={{
-                        latitude: positionMap.latitude,
-                        longitude: positionMap.longitude,
-                        latitudeDelta: 0.04,
-                        longitudeDelta: 0.05,
-                      }}
-                      showsUserLocation={true}
-                      userLocationAnnotationTitle="Vous êtes ici"
-                      followsUserLocation={true}
-                    >
-                      <Marker
-                        key={"Vous êtes ici	"}
-                        coordinate={positionMap}
-                        title={"Le vendeur est ici."}
-                      />
-                    </MapView>
-                  </Box>
+              <MainScreen typeOfScreen="stack">
+                <Text variant={"primaryBold"}>{annonce?.name}</Text>
+                {annonce?.price &&
+                typeof annonce?.price === "string" &&
+                parseFloat(annonce?.price) > 0 ? (
+                  <Text variant={"primaryBold"}>{annonce?.price} Ar</Text>
                 ) : null}
-              </Box>
+                <Text variant={"tertiary"}>
+                  {" "}
+                  Publié le{" "}
+                  {annonce?.publication_date &&
+                    formatDateToString(annonce?.publication_date)}
+                </Text>
 
-              {annonce?.quantity && annonce?.quantity > 0 ? (
                 <Box mt={"s"}>
                   <Text variant={"primary"} fontWeight={"600"}>
-                    Quantité
+                    Critères
                   </Text>
-                  <Text variant={"tertiary"}>{annonce?.quantity}</Text>
+                  <FlashList
+                    keyExtractor={(item, index) => item.id.toString()}
+                    estimatedItemSize={200}
+                    data={annonce?.product_criteria}
+                    renderItem={renderItemCriteria}
+                    numColumns={2}
+                    extraData={annonce?.product_criteria}
+                    showsVerticalScrollIndicator={false}
+                  />
                 </Box>
-              ) : null}
-
-              <Column mt={"s"}>
-                <Text variant={"primary"} fontWeight={"600"}>
-                  Vendeur
-                </Text>
-                <Row
-                  width={"100%"}
-                  alignItems="center"
-                  justifyContent="space-between"
-                  my={"xs"}
-                >
-                  <Text
-                    style={[
-                      styles.firstCharacter,
-                      { backgroundColor: colors.offBlack, color: colors.white },
-                    ]}
-                  >
-                    {annonce?.seller &&
-                      getFirstCharactere(annonce.seller.nickname)}
+                <Box mt={"s"}>
+                  <Text variant={"primary"} fontWeight={"600"}>
+                    Description
                   </Text>
-                  {annonce?.seller.id !== accountUser.user.id && (
-                    <Button
-                      variant={
-                        annonce?.seller.is_followed ? "secondary" : "tertiary"
-                      }
-                      label={annonce?.seller.is_followed ? "Suivi" : "Suivre"}
-                      loading={
-                        isLoadingAddFavoriteSeller ||
-                        isLoadingDeleteFavorite ||
-                        isAnnonceFetching
-                      }
-                      onPress={() => {
-                        if (accountUser.is_account_connected) {
-                          handleChangeFavoriteSeller();
-                        } else {
-                          setUserMustLogin(true);
+                  <Text variant={"tertiary"}>{annonce?.description}</Text>
+                </Box>
+
+                <Box mt={"s"}>
+                  <Text variant={"primary"} fontWeight={"600"}>
+                    Localisation
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => setOnTapCityName(!onTapCityName)}
+                  >
+                    <Text variant={"tertiary"}>{annonce?.location.name}</Text>
+                  </TouchableOpacity>
+
+                  {positionMap &&
+                  positionMap.longitude !== 0 &&
+                  positionMap.latitude !== 0 &&
+                  onTapCityName ? (
+                    <Box
+                      height={160}
+                      width={"100%"}
+                      marginTop={"xs"}
+                      marginBottom={"s"}
+                      flexDirection={"row"}
+                      alignItems={"center"}
+                      justifyContent={"center"}
+                    >
+                      <MapView
+                        provider={PROVIDER_GOOGLE}
+                        style={[
+                          StyleSheet.absoluteFillObject,
+                          { width: "100%", height: 160 },
+                        ]}
+                        initialRegion={{
+                          latitude: positionMap.latitude,
+                          longitude: positionMap.longitude,
+                          latitudeDelta: 0.04,
+                          longitudeDelta: 0.05,
+                        }}
+                        showsUserLocation={true}
+                        userLocationAnnotationTitle="Vous êtes ici"
+                        followsUserLocation={true}
+                      >
+                        <Marker
+                          key={"Vous êtes ici	"}
+                          coordinate={positionMap}
+                          title={"Le vendeur est ici."}
+                        />
+                      </MapView>
+                    </Box>
+                  ) : null}
+                </Box>
+
+                {annonce?.quantity && annonce?.quantity > 0 ? (
+                  <Box mt={"s"}>
+                    <Text variant={"primary"} fontWeight={"600"}>
+                      Quantité
+                    </Text>
+                    <Text variant={"tertiary"}>{annonce?.quantity}</Text>
+                  </Box>
+                ) : null}
+
+                <Column mt={"s"}>
+                  <Text variant={"primary"} fontWeight={"600"}>
+                    Vendeur
+                  </Text>
+                  <Row
+                    width={"100%"}
+                    alignItems="center"
+                    justifyContent="space-between"
+                    my={"xs"}
+                  >
+                    <Text
+                      style={[
+                        styles.firstCharacter,
+                        {
+                          backgroundColor: colors.offBlack,
+                          color: colors.white,
+                        },
+                      ]}
+                    >
+                      {annonce?.seller &&
+                        getFirstCharactere(annonce.seller.nickname)}
+                    </Text>
+                    {annonce?.seller.id !== accountUser.user.id && (
+                      <Button
+                        variant={
+                          annonce?.seller.is_followed ? "secondary" : "tertiary"
                         }
-                      }}
-                      paddingVertical={"l"}
-                    />
-                  )}
-                </Row>
-                <Text variant={"tertiary"} fontWeight={"500"} mt={"xs"}>
-                  {annonce?.seller.nickname}
-                </Text>
-              </Column>
-            </MainScreen>
-          </ScrollView>
-          {annonce?.seller && annonce?.seller.id !== accountUser.user.id && (
-            <Row>
-              {annonce?.phone_number_contact && (
+                        label={annonce?.seller.is_followed ? "Suivi" : "Suivre"}
+                        loading={
+                          isLoadingAddFavoriteSeller ||
+                          isLoadingDeleteFavorite ||
+                          isAnnonceFetching
+                        }
+                        onPress={() => {
+                          if (accountUser.is_account_connected) {
+                            handleChangeFavoriteSeller();
+                          } else {
+                            setUserMustLogin(true);
+                          }
+                        }}
+                        paddingVertical={"l"}
+                      />
+                    )}
+                  </Row>
+                  <Text variant={"tertiary"} fontWeight={"500"} mt={"xs"}>
+                    {annonce?.seller.nickname}
+                  </Text>
+                </Column>
+              </MainScreen>
+            </ScrollView>
+            {annonce?.seller && annonce?.seller.id !== accountUser.user.id && (
+              <Row>
+                {annonce?.phone_number_contact && (
+                  <RNEButton
+                    type={"solid"}
+                    color="#2652AA"
+                    title={`Appeler ${annonce?.seller.nickname}`}
+                    containerStyle={{
+                      marginHorizontal: 8,
+                      flex: 1,
+                      height: 32,
+                      borderRadius: 12,
+                      marginVertical: Platform.OS === "ios" ? 16 : 8,
+                    }}
+                    onPress={() => {
+                      if (annonce?.phone_number_contact) {
+                        Linking.openURL(`tel:${annonce?.phone_number_contact}`);
+                      }
+                    }}
+                  />
+                )}
                 <RNEButton
                   type={"solid"}
                   color="#2652AA"
-                  title={`Appeler ${annonce?.seller.nickname}`}
+                  title="Message"
                   containerStyle={{
                     marginHorizontal: 8,
                     flex: 1,
@@ -485,54 +510,38 @@ export default function ProductDetailScreen() {
                     marginVertical: Platform.OS === "ios" ? 16 : 8,
                   }}
                   onPress={() => {
-                    if (annonce?.phone_number_contact) {
-                      Linking.openURL(`tel:${annonce?.phone_number_contact}`);
+                    if (accountUser.is_account_connected) {
+                      navigation.navigate("manage_message", {
+                        emetteur: {
+                          nickName: annonce.seller.nickname,
+                          id_seller: annonce.seller.id,
+                          id_conversation:
+                            annonce.seller.id_conversation ?? null,
+                        },
+                      });
+                    } else {
+                      setUserMustLogin(true);
                     }
                   }}
                 />
-              )}
-              <RNEButton
-                type={"solid"}
-                color="#2652AA"
-                title="Message"
-                containerStyle={{
-                  marginHorizontal: 8,
-                  flex: 1,
-                  height: 32,
-                  borderRadius: 12,
-                  marginVertical: Platform.OS === "ios" ? 16 : 8,
-                }}
-                onPress={() => {
-                  if (accountUser.is_account_connected) {
-                    navigation.navigate("manage_message", {
-                      emetteur: {
-                        nickName: annonce.seller.nickname,
-                        id_seller: annonce.seller.id,
-                        id_conversation: annonce.seller.id_conversation ?? null,
-                      },
-                    });
-                  } else {
-                    setUserMustLogin(true);
-                  }
-                }}
-              />
-            </Row>
-          )}
-        </CheckUserConnected>
-      </RequestError>
-      <Snackbar
-        visible={visibleSnackbar}
-        onDismiss={() => setVisibleSnackbar(false)}
-        action={{
-          label: "Ok",
-          onPress: () => {
-            // Do something
-          },
-        }}
-      >
-        {messageSnackBar}
-      </Snackbar>
-    </RequestLoader>
+              </Row>
+            )}
+          </CheckUserConnected>
+        </RequestError>
+        <Snackbar
+          visible={visibleSnackbar}
+          onDismiss={() => setVisibleSnackbar(false)}
+          action={{
+            label: "Ok",
+            onPress: () => {
+              // Do something
+            },
+          }}
+        >
+          {messageSnackBar}
+        </Snackbar>
+      </RequestLoader>
+    </RequestConnection>
   );
 }
 
