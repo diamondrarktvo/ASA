@@ -1,4 +1,4 @@
-package com.diamondrarktvo.asa;
+package com.diamondrarktvo.metyamiko;
 
 import android.app.Application;
 import android.content.res.Configuration;

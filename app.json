@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "asa",
-    "slug": "asa",
-    "version": "0.0.1",
+    "name": "metyamiko",
+    "slug": "metyamiko",
+    "version": "0.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "jsEngine": "hermes",
@@ -31,7 +31,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.diamondrarktvo.asa"
+      "bundleIdentifier": "com.diamondrarktvo.metyamiko"
     },
     "android": {
       "adaptiveIcon": {
@@ -43,7 +43,7 @@
           "apiKey": "AIzaSyCfeV-dI5JYOl39mJDqsyL8xtRykQHU29I"
         }
       },
-      "package": "com.diamondrarktvo.asa",
+      "package": "com.diamondrarktvo.metyamiko",
       "permissions": [
         "android.permission.RECORD_AUDIO",
         "android.permission.ACCESS_COARSE_LOCATION",
