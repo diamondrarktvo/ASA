@@ -53,8 +53,6 @@ const RequestError: React.FC<Props> = ({
       if (state.isInternetReachable) {
         setIsUserHasAccessToInternet(state.isInternetReachable);
       }
-      console.log("Is connected?", state.isConnected);
-      console.log("Is internet?", state.isInternetReachable);
     });
 
     return unsubscribe;
