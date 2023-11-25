@@ -232,7 +232,17 @@ export default function ProductDetailScreen() {
     item,
   }) => {
     return (
-      <Row key={item.id} mt={"xs"}>
+      <Row key={item.id} mt={"xs"} alignItems={"center"}>
+        <Image
+          source={
+            item.icon ? { uri: item.icon } : require("_images/criteria.png")
+          }
+          style={{
+            width: 20,
+            height: 20,
+            marginRight: 8,
+          }}
+        />
         <Column>
           <Text variant={"tertiary"} color={"secondary"}>
             {item.name}

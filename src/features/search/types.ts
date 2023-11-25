@@ -21,6 +21,7 @@ export type product_criteriaType = {
   criteria: number;
   name: string;
   value: string | number;
+  icon?: string;
 };
 
 export type annonceType = {
