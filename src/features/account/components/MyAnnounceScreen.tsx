@@ -131,17 +131,17 @@ export default function MyAnnounceScreen() {
               errorStatus={errorMyAnnonce?.status}
               onRefresh={() => handleRefetch()}
             >
+              <Row width="63%" justifyContent="space-between">
+                <Icon
+                  name="arrow-back"
+                  size={Size.ICON_SMALL}
+                  onPress={() => navigation.goBack()}
+                />
+                <Text variant={"primaryBold"} color="text">
+                  Mes annonces
+                </Text>
+              </Row>
               <Box flexDirection="column" flex={1} alignItems="center">
-                <Row width="100%" justifyContent="space-between">
-                  <Icon
-                    name="arrow-back"
-                    size={Size.ICON_SMALL}
-                    onPress={() => navigation.goBack()}
-                  />
-                  <Text variant={"primaryBold"} color="text">
-                    Mes annonces
-                  </Text>
-                </Row>
                 <Text variant="tertiary" color="text">
                   {myAllAnnonce &&
                     myAllAnnonce.length > 0 &&
