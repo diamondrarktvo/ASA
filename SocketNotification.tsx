@@ -48,7 +48,7 @@ const SocketNotification = () => {
       const data = JSON.parse(e.data);
       await pushNotification(
         data.message.title,
-        data.message.content,
+        `${data.message.nickname} ${data.message.content}`,
         formatDateToString(data.message.timestamp),
       );
       console.log(data.message);
