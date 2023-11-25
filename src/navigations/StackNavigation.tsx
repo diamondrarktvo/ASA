@@ -14,6 +14,7 @@ import {
   ManageProfil,
   ManageMessageScreen,
   CreateAccountScreen,
+  MyAnnounceScreen,
   PersonnalInformation,
   StepTwo,
   StepThree,
@@ -38,9 +39,14 @@ const StackNavigation = () => {
           <Stack.Screen name={"main_tab"} component={TabNavigation} />
           {/**Account screen */}
           <Stack.Screen name={"manage_profil"} component={ManageProfil} />
+
           <Stack.Screen
             name={"personnal_information"}
             component={PersonnalInformation}
+          />
+          <Stack.Screen
+            name={"my_annouce_screen"}
+            component={MyAnnounceScreen}
           />
           <Stack.Screen
             name={"create_account_screen"}
@@ -63,7 +69,9 @@ const StackNavigation = () => {
 
         {/**Stepper screens */}
         <Stack.Group
-          screenOptions={stackNavigationConfig.screenOptionsForDisplayedHeader}
+          screenOptions={
+            stackNavigationConfig.screenOptionsForCustomHiddenHeader
+          }
         >
           <Stack.Screen name={"stepper_screen_2"} component={StepTwo} />
           <Stack.Screen name={"stepper_screen_3"} component={StepThree} />

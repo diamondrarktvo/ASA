@@ -2,8 +2,9 @@ import { NavigatorScreenParams } from "@react-navigation/native";
 import { StackNavigationOptions } from "@react-navigation/stack";
 
 export interface StackNavigationConfig {
-  screenOptionsForDisplayedHeader: StackNavigationOptions;
+  screenOptionsForCustomHiddenHeader: StackNavigationOptions;
   screenOptionsForHiddenHeader: StackNavigationOptions;
+  screenOptionsForDisplayedHeader: StackNavigationOptions;
 }
 
 export type StackParamList = {
@@ -11,6 +12,7 @@ export type StackParamList = {
   manage_profil: undefined;
   personnal_information: undefined;
   manage_payment: undefined;
+  my_annouce_screen: undefined;
   create_account_screen: undefined;
   manage_message: {
     emetteur: {

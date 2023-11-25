@@ -29,7 +29,7 @@ export const AllMenu = ({ is_account_connected, action }: Props) => {
           <UnitItemSectionLink
             iconLeft="campaign"
             label="Mes annonces"
-            onPress={() => Alert.alert("Menu cliqué!")}
+            onPress={() => navigation.navigate("my_annouce_screen")}
           />
           <UnitItemSectionLink
             iconLeft="favorite"

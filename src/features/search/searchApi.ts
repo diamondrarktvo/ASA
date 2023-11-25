@@ -63,6 +63,16 @@ const searchApi = BaseApi.injectEndpoints({
       }),
       providesTags: [{ type: "Announce", id: "LIST" }],
     }),
+    getAllMyAnnonce: build.query<annonceType[], { token: string | undefined }>({
+      query: (arg) => ({
+        url: `${config.GET_PRODUCT_URL}/myproduct`,
+        method: "GET",
+        headers: {
+          Authorization: arg.token ? `token ${arg.token}` : undefined,
+        },
+      }),
+      providesTags: [{ type: "Announce", id: "LIST" }],
+    }),
     getAnnonceBySearching: build.query<
       { annonces: annonceType[]; apiInformation: ApiInformationType },
       { token: string | undefined; textToSearch: string }
@@ -96,6 +106,7 @@ export const {
   useGetAllAnnonceQuery,
   useGetOneAnnonceQuery,
   useGetAnnonceByCategoryQuery,
+  useGetAllMyAnnonceQuery,
   useGetAnnonceBySearchingQuery,
 } = searchApi;
 

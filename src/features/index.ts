@@ -15,6 +15,7 @@ import ManagePayment from "./account/components/ManagePayment";
 //COMPONENTS REUSABLE
 import ManageProfil from "./account/components/ManageProfil";
 import ProductDetailScreen from "./search/components/ProductDetailScreen";
+import MyAnnounceScreen from "./account/components/MyAnnounceScreen";
 
 //stepper
 import StepOne from "./publish/components/addPublishStep/stepOne";
@@ -37,6 +38,7 @@ export {
   CreateAccountScreen,
   //COMPONENT REUSABLE
   ManageProfil,
+  MyAnnounceScreen,
   ManageMessageScreen,
   PersonnalInformation,
   ManagePayment,

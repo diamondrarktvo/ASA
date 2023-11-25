@@ -14,7 +14,7 @@ const transitionConfig: TransitionSpec = {
 
 export const stackNavigationConfig: StackNavigationConfig = {
   /**stepper config */
-  screenOptionsForDisplayedHeader: {
+  screenOptionsForCustomHiddenHeader: {
     headerShown: false,
     gestureEnabled: true,
     //CardStyleInterpolators est utile pour regler la transition durant le changement de screen, gestureEnabled doit être activé | gestureDirection peut aussi le faire|
@@ -27,6 +27,9 @@ export const stackNavigationConfig: StackNavigationConfig = {
   },
   screenOptionsForHiddenHeader: {
     headerShown: false,
+  },
+  screenOptionsForDisplayedHeader: {
+    headerShown: true,
   },
   //screenOptionsTransparentHeader: {},
 };
