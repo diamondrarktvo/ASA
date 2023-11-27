@@ -21,6 +21,8 @@ export interface authState {
   is_account_connected: boolean;
 }
 
+type userType = authState["user"];
+
 const initialState: authState = {
   user: {
     id: 0,
@@ -51,9 +53,9 @@ const accountSlice = createSlice({
         state.is_account_connected = !state.is_account_connected;
       }
     },
-    setInformationUser: (state, action: PayloadAction<authState>) => {
-      if (action.payload.user) {
-        state.user = action.payload.user;
+    setInformationUser: (state, action: PayloadAction<userType>) => {
+      if (action.payload) {
+        state.user = action.payload;
       }
     },
     setToken: (state, action: PayloadAction<string>) => {

@@ -179,6 +179,21 @@ export default function ManageProfil() {
     }
   }, [error, isError]);
 
+  useEffect(() => {
+    setValueForUpdate({
+      first_name: accountUser.first_name,
+      last_name: accountUser.last_name,
+      nickname: accountUser.nickname,
+      age: accountUser.age?.toString(),
+      email: accountUser.email,
+      phone_number: accountUser.phone_number?.toString(),
+      is_professional: accountUser.is_professional,
+      company_name: accountUser.company_name,
+      unique_company_number: accountUser.unique_company_number,
+      image: accountUser.image,
+    });
+  }, [accountUser]);
+
   return (
     <MainScreen typeOfScreen="stack">
       <RequestConnection>

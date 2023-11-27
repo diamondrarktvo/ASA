@@ -18,6 +18,7 @@ export const BaseApi = createApi({
     "Conversation",
     "Message",
     "paymentMethod",
+    "account",
   ],
   endpoints: () => ({}),
 });

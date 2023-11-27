@@ -18,17 +18,15 @@ const AuthApi = BaseApi.injectEndpoints({
       }),
     }),
     update: build.mutation({
-      query: (arg) => {
-        console.log("arg : ", arg.body);
-        return {
-          url: config.GET_USER_URL,
-          method: "PUT",
-          body: arg.body,
-          headers: {
-            Authorization: `token ${arg.token}`,
-          },
-        };
-      },
+      query: (arg) => ({
+        url: config.GET_USER_URL,
+        method: "PUT",
+        body: arg.body,
+        headers: {
+          Authorization: `token ${arg.token}`,
+        },
+      }),
+      invalidatesTags: [{ type: "account" }],
     }),
     getUser: build.query({
       query: (arg) => ({
@@ -38,6 +36,7 @@ const AuthApi = BaseApi.injectEndpoints({
           Authorization: `token ${arg.token}`,
         },
       }),
+      providesTags: [{ type: "account" }],
     }),
   }),
   overrideExisting: true,

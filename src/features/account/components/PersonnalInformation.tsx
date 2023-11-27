@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   Icon,
   RequestLoader,
+  RequestError,
   RequestConnection,
 } from "_shared";
 import { useMemo, useRef, useCallback, useState, useEffect } from "react";
@@ -28,21 +29,17 @@ import {
   storeObjectDataToAsyncStorage,
 } from "_utils";
 import { useUpdateMutation } from "../authApi";
-import {
-  ERROR_REGISTER,
-  parseErrorMessage,
-  transformDataToFormData,
-} from "../utilsAuth";
+import { parseErrorMessage, transformDataToFormData } from "../utilsAuth";
 import { RadioButton, Snackbar } from "react-native-paper";
-import { removeAccount, setAccount } from "../accountSlice";
+import { removeAccount, setAccount, setInformationUser } from "../accountSlice";
 
 export default function PersonnalInformation() {
+  //state data
   const theme = useTheme<Theme>();
   const dispatch = useAppDispatch();
   const { borderRadii, colors, spacing } = theme;
   const accountUser = useAppSelector((state) => state.account.user);
   const token = useAppSelector((state) => state.account.token);
-  const [update, { isError, isLoading, status, error }] = useUpdateMutation();
   const [visibleSnackbar, setVisibleSnackbar] = useState(false);
   const [imageImported, setImageImported] = useState<string[]>([]);
   const [valueForUpdate, setValueForUpdate] = useState({
@@ -58,7 +55,7 @@ export default function PersonnalInformation() {
     image: accountUser.image,
   });
 
-  //state data
+  const [update, { isError, isLoading, status, error }] = useUpdateMutation();
 
   //bottomsheet
   const snapPoints = useMemo(() => [1, "97%"], []);
@@ -134,7 +131,7 @@ export default function PersonnalInformation() {
     update({ body: transformDataToFormData(valueFormData), token: token })
       .unwrap()
       .then((res) => {
-        dispatch(setAccount(res));
+        dispatch(setInformationUser(res));
         storeObjectDataToAsyncStorage("current_account", res.user);
         closeBottomSheet();
       })
@@ -147,11 +144,6 @@ export default function PersonnalInformation() {
   const handleFetchError = (error: any) => {
     if (!error) return;
     if (error.detail?.includes("Invalid token")) {
-      removeDataToAsyncStorage("token");
-      removeDataToAsyncStorage("current_account");
-      return dispatch(removeAccount());
-    }
-    if (error.data?.detail?.includes("Invalid token")) {
       removeDataToAsyncStorage("token");
       removeDataToAsyncStorage("current_account");
       return dispatch(removeAccount());
@@ -171,7 +163,7 @@ export default function PersonnalInformation() {
     if (imageImported.length !== 0) {
       setValueForUpdate((prevState) => ({
         ...prevState,
-        image: imageImported[0],
+        image: imageImported[0] || "",
       }));
     } else {
       setValueForUpdate((prevState) => ({
@@ -180,6 +172,27 @@ export default function PersonnalInformation() {
       }));
     }
   }, [imageImported]);
+
+  useEffect(() => {
+    if (isError) {
+      handleFetchError(error);
+    }
+  }, [error, isError]);
+
+  useEffect(() => {
+    setValueForUpdate({
+      first_name: accountUser.first_name,
+      last_name: accountUser.last_name,
+      nickname: accountUser.nickname,
+      age: accountUser.age?.toString(),
+      email: accountUser.email,
+      phone_number: accountUser.phone_number?.toString(),
+      is_professional: accountUser.is_professional,
+      company_name: accountUser.company_name,
+      unique_company_number: accountUser.unique_company_number,
+      image: accountUser.image,
+    });
+  }, [accountUser]);
 
   return (
     <MainScreen typeOfScreen="stack">
@@ -209,7 +222,7 @@ export default function PersonnalInformation() {
                   width: Size.IMAGE_MEDIUM,
                   height: Size.IMAGE_MEDIUM,
                   borderRadius: borderRadii.lg,
-                  marginBottom: spacing.s,
+                  marginBottom: "4%",
                 }}
               />
               <Text variant="bigTitle" color="text" textAlign={"center"}>
@@ -502,7 +515,7 @@ export default function PersonnalInformation() {
                     width: Size.IMAGE_LARGE,
                     height: Size.IMAGE_LARGE,
                     borderRadius: borderRadii.hg,
-                    marginBottom: spacing.s,
+                    marginBottom: "4%",
                   }}
                 />
                 {imageImported.length !== 0 && (
