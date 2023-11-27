@@ -158,7 +158,11 @@ export default function AccountScreen() {
               </TouchableOpacity>
 
               <AllMenu
-                is_account_connected={accountUser.is_account_connected}
+                is_account_connected={
+                  accountUser.is_account_connected || accountUser.token
+                    ? true
+                    : false
+                }
                 action={() =>
                   accountUser.is_account_connected
                     ? handleLogout()
