@@ -22,6 +22,7 @@ import { ActivityIndicator, Snackbar } from "react-native-paper";
 import { useTheme } from "@shopify/restyle";
 import { Size, Theme } from "_theme";
 import {
+  useGetAllAnnonceQuery,
   useGetAnnonceByCategoryQuery,
   useGetAnnonceBySearchingQuery,
 } from "../searchApi";
@@ -50,9 +51,20 @@ export default function SearchItem() {
   const [textSearch, setTextSearch] = useState<string>("");
   const [showEmptyComponent, setShowEmptyComponent] = useState<boolean>(false);
   const [typeOfSearch, setTypeOfSearch] = useState<
-    "category" | "free_search" | ""
+    "category" | "free_search" | "" | "all_search"
   >("");
   const [categorieToSearch, setCategorieToSearch] = useState<string>("");
+
+  const {
+    data: allAnnonces,
+    isError: isErrorAnnonce,
+    isLoading: isAnnonceLoading,
+    isFetching: isAnnonceFetching,
+    refetch: refetchAnnonces,
+    error: errorAnnonce,
+  } = useGetAllAnnonceQuery(accountUser.token ? accountUser.token : undefined, {
+    skip: typeOfSearch !== "all_search",
+  });
 
   const {
     data: allAnnonceByCatg,
@@ -96,6 +108,7 @@ export default function SearchItem() {
       error: errorAddFavoriteAnnonce,
     },
   ] = useAddFavoriteAnnonceMutation();
+
   const [
     deleteFavoriteAnnonce,
     {
@@ -177,6 +190,11 @@ export default function SearchItem() {
       (route.params as RouteSearchParams)?.typeOfSearch === "category"
     ) {
       setTypeOfSearch("category");
+    } else if (
+      route.params &&
+      (route.params as RouteSearchParams)?.typeOfSearch === "all_search"
+    ) {
+      setTypeOfSearch("all_search");
     }
   }, [route]);
 
@@ -186,6 +204,12 @@ export default function SearchItem() {
       setResultSearch(allAnnonceByCatg);
     }
   }, [allAnnonceByCatg, typeOfSearch]);
+
+  useEffect(() => {
+    if (allAnnonces && typeOfSearch === "all_search") {
+      setResultSearch(allAnnonces.annonces);
+    }
+  }, [allAnnonces, typeOfSearch]);
 
   useEffect(() => {
     if (allAnnonceBySearch && typeOfSearch === "free_search") {
@@ -202,6 +226,9 @@ export default function SearchItem() {
       setCategorieToSearch(route.params?.name_catg);
     }
     if (typeOfSearch === "free_search") {
+      setCategorieToSearch("");
+    }
+    if (typeOfSearch === "all_search") {
       setCategorieToSearch("");
     }
   }, [typeOfSearch]);

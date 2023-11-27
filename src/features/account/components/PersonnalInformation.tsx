@@ -263,9 +263,7 @@ export default function PersonnalInformation() {
               <Input
                 placeholder="Nom"
                 editable={false}
-                value={
-                  valueForUpdate.first_name ? valueForUpdate.first_name : ""
-                }
+                value={valueForUpdate.last_name ? valueForUpdate.last_name : ""}
                 iconLeft={{
                   name: "person",
                   size: Size.ICON_SMALL,
@@ -286,7 +284,9 @@ export default function PersonnalInformation() {
               <Input
                 placeholder="Prenom"
                 editable={false}
-                value={valueForUpdate.last_name ? valueForUpdate.last_name : ""}
+                value={
+                  valueForUpdate.first_name ? valueForUpdate.first_name : ""
+                }
                 iconLeft={{
                   name: "person",
                   size: Size.ICON_SMALL,
