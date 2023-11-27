@@ -88,9 +88,9 @@ export default function AnnouncementScreen() {
       <Column key={item.id} marginBottom="s">
         <Image
           source={
-            item.product.pictures.length > 0
+            /*item.product.pictures.length > 0
               ? { uri: item.product.pictures[0] }
-              : require("_images/logoASA.jpeg")
+              :*/ require("_images/logoASA.jpeg")
           }
           containerStyle={styles.imageAnnonce}
           PlaceholderContent={

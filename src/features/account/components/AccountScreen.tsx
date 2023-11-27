@@ -19,8 +19,13 @@ import { AllMenu } from "./AllMenu";
 import { manageProfilNavigationTypes } from "../types";
 import { useCallback, useState } from "react";
 import { useAppDispatch, useAppSelector } from "_store";
-import { removeAccount } from "../accountSlice";
-import { removeDataToAsyncStorage } from "_utils";
+import { removeAccount, setAccount, setInformationUser } from "../accountSlice";
+import {
+  removeDataToAsyncStorage,
+  storeObjectDataToAsyncStorage,
+} from "_utils";
+import { RefreshControl } from "react-native-gesture-handler";
+import { useGetUserQuery } from "../authApi";
 
 export default function AccountScreen() {
   const navigation = useNavigation<manageProfilNavigationTypes>();
@@ -30,6 +35,20 @@ export default function AccountScreen() {
   const [userMustLogin, setUserMustLogin] = useState<boolean>(false);
   const accountUser = useAppSelector((state) => state.account);
   const [loading, setLoading] = useState(false);
+
+  const {
+    data: userInfo,
+    isError: isErrorUserInfo,
+    isLoading: isUserInfoLoading,
+    isFetching: isUserInfoFetching,
+    refetch: refetchUserInfo,
+    error: errorUserInfo,
+  } = useGetUserQuery(
+    { token: accountUser.token, id: accountUser.user.id },
+    {
+      skip: !accountUser.token || !accountUser.user.id,
+    },
+  );
 
   //all logics
   const handleLogout = () => {
@@ -54,20 +73,32 @@ export default function AccountScreen() {
     ]);
   };
 
-  console.log(
-    "accountUser.is_account_connected ==================> : ",
-    accountUser.is_account_connected,
-  );
+  const handleRefreshUserInfo = () => {
+    refetchUserInfo();
+    console.log("refreshing", userInfo);
+    dispatch(setInformationUser(userInfo));
+    storeObjectDataToAsyncStorage("current_account", userInfo);
+  };
 
   //all effects
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      refreshControl={
+        <RefreshControl
+          refreshing={isUserInfoLoading}
+          onRefresh={() => handleRefreshUserInfo()}
+        />
+      }
+    >
       <MainScreen
         typeOfScreen="tab"
         titleTabScreen={accountUser.is_account_connected ? "Menu" : "Bonjour"}
       >
-        <RequestLoader isLoading={loading}>
+        <RequestLoader
+          isLoading={loading || isUserInfoLoading || isUserInfoFetching}
+        >
           <CheckUserConnected
             userMustLogin={userMustLogin}
             setUserMustLogin={setUserMustLogin}

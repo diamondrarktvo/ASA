@@ -6,7 +6,11 @@ import {
   getObjectDataToAsyncStorage,
   pushNotification,
 } from "_utils";
-import { setAccount } from "./src/features/account/accountSlice";
+import {
+  setAccount,
+  setToken,
+  setIsConnected,
+} from "./src/features/account/accountSlice";
 
 const SOCKET_URL = process.env.EXPO_PUBLIC_API_HOST || "";
 
@@ -26,7 +30,15 @@ const SocketNotification = () => {
         if (res) dispatch(setAccount(res));
       })
       .catch((err) => {
-        console.log("eeeee : ", err);
+        console.log("eeeeeror local storage : ", err);
+      });
+    getObjectDataToAsyncStorage("token")
+      .then((res) => {
+        if (res) dispatch(setToken(res));
+        dispatch(setIsConnected(true));
+      })
+      .catch((err) => {
+        console.log("eeeee local storage : ", err);
       });
   }, []);
 

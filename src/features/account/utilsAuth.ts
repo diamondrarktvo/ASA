@@ -8,6 +8,7 @@ export type errorAuthTypes = {
       phone_number_not_valid: string;
       email_not_valid: string;
       nickname_not_valid: string;
+      noImage: string;
     };
   };
 };
@@ -27,6 +28,8 @@ export const ERROR_REGISTER: errorAuthTypes = {
       phone_number_not_valid: "Enter a valid phone number.",
       email_not_valid: "Enter a valid email address.",
       nickname_not_valid: "Enter a valid nickname.",
+      noImage:
+        "The submitted data was not a file. Check the encoding type on the form.",
     },
   },
 };
@@ -77,6 +80,12 @@ export const parseErrorMessage = (error: any): string => {
         }
       }
 
+      if (error.data.image) {
+        if (error.data.image[0] === ERROR_REGISTER.E400.message.noImage) {
+          return (errorMessage = "Veuillez entrer une image valide.");
+        }
+      }
+
       if (error.data.nickname) {
         if (
           error.data.nickname[0] ===
@@ -103,4 +112,24 @@ export const parseErrorMessage = (error: any): string => {
     }
   }
   return errorMessage;
+};
+
+export const transformDataToFormData = (data: any) => {
+  const formData = new FormData();
+
+  for (let key in data) {
+    if (key === "token" || (key === "image" && !data[key])) continue;
+    if (key === "image" && data[key]) {
+      formData.append("image", {
+        //@ts-ignore
+        uri: data[key],
+        type: "image/jpeg",
+        name: "image.jpg",
+      });
+      continue;
+    }
+    formData.append(key, data[key]?.toString());
+  }
+
+  return formData;
 };

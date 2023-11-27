@@ -51,6 +51,19 @@ const accountSlice = createSlice({
         state.is_account_connected = !state.is_account_connected;
       }
     },
+    setInformationUser: (state, action: PayloadAction<authState>) => {
+      if (action.payload.user) {
+        state.user = action.payload.user;
+      }
+    },
+    setToken: (state, action: PayloadAction<string>) => {
+      if (action.payload) {
+        state.token = action.payload;
+      }
+    },
+    setIsConnected: (state, action: PayloadAction<boolean>) => {
+      state.is_account_connected = action.payload;
+    },
     removeAccount: (state) => {
       state.user = initialState.user;
       state.token = initialState.token;
@@ -75,6 +88,12 @@ export const selectors = {
   selectCurrentAccount: (state: { account: authState }) => state.account.user,
 };
 
-export const { setAccount, removeAccount } = accountSlice.actions;
+export const {
+  setAccount,
+  setInformationUser,
+  setToken,
+  setIsConnected,
+  removeAccount,
+} = accountSlice.actions;
 
 export default accountSlice;

@@ -92,9 +92,9 @@ export default function AnnouncerScreen() {
       <Row key={item.id} marginBottom="s" width={"100%"}>
         <Image
           source={
-            item.seller.image
+            /*item.seller.image
               ? { uri: item.seller.image }
-              : require("_images/logoASA.jpeg")
+              : */ require("_images/logoASA.jpeg")
           }
           containerStyle={styles.imageProfil}
           PlaceholderContent={

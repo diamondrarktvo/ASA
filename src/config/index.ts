@@ -12,6 +12,9 @@ export default {
   //update
   UPDATE_URL: "/user",
 
+  //get user
+  GET_USER_URL: "/user",
+
   /*==== CATEGORY ===*/
   //GET
   GET_CATEGORY_URL: "/category",

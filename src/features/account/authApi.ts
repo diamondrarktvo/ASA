@@ -18,20 +18,22 @@ const AuthApi = BaseApi.injectEndpoints({
       }),
     }),
     update: build.mutation({
+      query: (arg) => {
+        console.log("arg : ", arg.body);
+        return {
+          url: config.GET_USER_URL,
+          method: "PUT",
+          body: arg.body,
+          headers: {
+            Authorization: `token ${arg.token}`,
+          },
+        };
+      },
+    }),
+    getUser: build.query({
       query: (arg) => ({
-        url: config.UPDATE_URL,
-        method: "PUT",
-        body: {
-          first_name: arg.first_name,
-          last_name: arg.last_name,
-          nickname: arg.nickname,
-          age: arg.age,
-          email: arg.email,
-          phone_number: arg.phone_number,
-          is_professional: arg.is_professional,
-          company_name: arg.company_name ?? "",
-          unique_company_number: arg.unique_company_number ?? "",
-        },
+        url: config.GET_USER_URL + "/" + arg.id,
+        method: "GET",
         headers: {
           Authorization: `token ${arg.token}`,
         },
@@ -41,7 +43,11 @@ const AuthApi = BaseApi.injectEndpoints({
   overrideExisting: true,
 });
 
-export const { useLoginMutation, useRegisterMutation, useUpdateMutation } =
-  AuthApi;
+export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useUpdateMutation,
+  useGetUserQuery,
+} = AuthApi;
 
 export default AuthApi;

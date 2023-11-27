@@ -28,7 +28,11 @@ import {
   storeObjectDataToAsyncStorage,
 } from "_utils";
 import { useUpdateMutation } from "../authApi";
-import { ERROR_REGISTER, parseErrorMessage } from "../utilsAuth";
+import {
+  ERROR_REGISTER,
+  parseErrorMessage,
+  transformDataToFormData,
+} from "../utilsAuth";
 import { RadioButton, Snackbar } from "react-native-paper";
 import { removeAccount, setAccount } from "../accountSlice";
 
@@ -78,6 +82,18 @@ export default function PersonnalInformation() {
 
   const closeBottomSheet = () => {
     if (bottomSheetRef !== null && bottomSheetRef.current !== null) {
+      setValueForUpdate({
+        first_name: accountUser.first_name,
+        last_name: accountUser.last_name,
+        nickname: accountUser.nickname,
+        age: accountUser.age?.toString(),
+        email: accountUser.email,
+        phone_number: accountUser.phone_number?.toString(),
+        is_professional: accountUser.is_professional,
+        company_name: accountUser.company_name,
+        unique_company_number: accountUser.unique_company_number,
+        image: accountUser.image,
+      });
       return bottomSheetRef.current.close();
     }
     return;
@@ -104,12 +120,24 @@ export default function PersonnalInformation() {
   };
 
   const handleSubmit = () => {
-    update(valueForUpdate)
+    let valueFormData = {
+      first_name: valueForUpdate.first_name,
+      last_name: valueForUpdate.last_name,
+      nickname: valueForUpdate.nickname,
+      age: valueForUpdate.age,
+      email: valueForUpdate.email,
+      phone_number: valueForUpdate.phone_number,
+      is_professional: valueForUpdate.is_professional,
+      company_name: valueForUpdate.company_name,
+      unique_company_number: valueForUpdate.unique_company_number,
+      image: imageImported.length !== 0 ? valueForUpdate.image : null,
+    };
+    update({ body: transformDataToFormData(valueFormData), token: token })
       .unwrap()
       .then((res) => {
         console.log("resAPI : ", res);
         dispatch(setAccount(res));
-        //storeObjectDataToAsyncStorage("current_account", res.user);
+        storeObjectDataToAsyncStorage("current_account", res.user);
         closeBottomSheet();
       })
       .catch((e) => {
