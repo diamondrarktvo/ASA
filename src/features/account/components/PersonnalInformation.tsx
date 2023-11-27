@@ -55,7 +55,6 @@ export default function PersonnalInformation() {
     is_professional: accountUser.is_professional,
     company_name: accountUser.company_name,
     unique_company_number: accountUser.unique_company_number,
-    token: token,
     image: accountUser.image,
   });
 
@@ -135,7 +134,6 @@ export default function PersonnalInformation() {
     update({ body: transformDataToFormData(valueFormData), token: token })
       .unwrap()
       .then((res) => {
-        console.log("resAPI : ", res);
         dispatch(setAccount(res));
         storeObjectDataToAsyncStorage("current_account", res.user);
         closeBottomSheet();

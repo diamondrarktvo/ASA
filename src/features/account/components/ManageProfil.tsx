@@ -131,7 +131,6 @@ export default function ManageProfil() {
     update({ body: transformDataToFormData(valueFormData), token: token })
       .unwrap()
       .then((res) => {
-        console.log("resAPI : ", res);
         dispatch(setInformationUser(res));
         storeObjectDataToAsyncStorage("current_account", res.user);
         closeBottomSheet();
