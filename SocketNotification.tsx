@@ -27,6 +27,7 @@ const SocketNotification = () => {
   useEffect(() => {
     getObjectDataToAsyncStorage("current_account")
       .then((res) => {
+        console.log("resss current tavany e, ", res);
         if (res) dispatch(setAccount(res));
       })
       .catch((err) => {
@@ -34,8 +35,11 @@ const SocketNotification = () => {
       });
     getObjectDataToAsyncStorage("token")
       .then((res) => {
-        if (res) dispatch(setToken(res));
-        dispatch(setIsConnected(true));
+        if (res) {
+          dispatch(setToken(res));
+          dispatch(setIsConnected(true));
+        }
+        console.log("resss token tavany e, ", res);
       })
       .catch((err) => {
         console.log("eeeee local storage : ", err);
@@ -51,8 +55,8 @@ const SocketNotification = () => {
 
     // verify error
     socket.onclose = (e) => {
-      console.log("Connexion échoué sur le socket notification!");
-      console.log("error socket : ", e);
+      //console.log("Connexion échoué sur le socket notification!");
+      //console.log("error socket : ", e);
     };
 
     // receive notifs

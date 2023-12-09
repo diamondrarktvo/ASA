@@ -64,13 +64,13 @@ const chatApi = BaseApi.injectEndpoints({
           ["access_token", `${arg.token || ""}`],
         );
         ws.onopen = (e) => {
-          console.log("Connexion réussi sur le socket message!");
+          //console.log("Connexion réussi sur le socket message!");
         };
 
         // verify error
         ws.onclose = (e) => {
-          console.log("error ", e);
-          console.log("Connexion échoué sur le socket message!");
+          //console.log("error ", e);
+          //console.log("Connexion échoué sur le socket message!");
         };
         try {
           // wait for the initial query to resolve before proceeding
