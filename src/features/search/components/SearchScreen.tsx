@@ -364,7 +364,6 @@ export default function SearchScreen() {
                       color="white"
                       label="Afficher plus d'annonces"
                       marginTop={"xs"}
-                      marginBottom={"m"}
                       onPress={() =>
                         navigation.navigate("search_item", {
                           typeOfSearch: "all_search",
