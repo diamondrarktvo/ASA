@@ -97,6 +97,8 @@ export default function CheckoutPageOne() {
               width={"100%"}
               alignItems={"center"}
               justifyContent={"space-between"}
+              borderBottomWidth={2}
+              borderColor={"secondary"}
             >
               <Row
                 width={"46%"}
@@ -147,37 +149,39 @@ export default function CheckoutPageOne() {
             </Box>
           </Box>
 
-          <Box style={[styles.box_with_shadow, { padding: 16 }]} my={"s"}>
-            <Text variant={"primaryBold"}>
-              Remise de l'achat en main propre
-            </Text>
-            <Text variant={"primary"} color={"secondary"}>
-              Les étapes de la remise en main propre :
-            </Text>
-            <Row alignItems={"center"} my={"xs"}>
-              <Text style={styles.stepNumber}>1</Text>
-              <Text variant={"secondary"} width={"80%"}>
-                Le vendeur vous confirme la disponibilité de la commande
+          {deliveryMode === "recover" && (
+            <Box style={[styles.box_with_shadow, { padding: 16 }]} my={"s"}>
+              <Text variant={"primaryBold"}>
+                Remise de l'achat en main propre
               </Text>
-            </Row>
+              <Text variant={"primary"} color={"secondary"}>
+                Les étapes de la remise en main propre :
+              </Text>
+              <Row alignItems={"center"} my={"xs"}>
+                <Text style={styles.stepNumber}>1</Text>
+                <Text variant={"secondary"} width={"80%"}>
+                  Le vendeur vous confirme la disponibilité de la commande
+                </Text>
+              </Row>
 
-            <Row alignItems={"center"} my={"xs"}>
-              <Text style={styles.stepNumber}>2</Text>
-              <Text variant={"secondary"} width={"80%"}>
-                Vous vous organisez avec le vendeur pour définir le lieu et la
-                date de votre rendez-vous
-              </Text>
-            </Row>
+              <Row alignItems={"center"} my={"xs"}>
+                <Text style={styles.stepNumber}>2</Text>
+                <Text variant={"secondary"} width={"80%"}>
+                  Vous vous organisez avec le vendeur pour définir le lieu et la
+                  date de votre rendez-vous
+                </Text>
+              </Row>
 
-            <Row alignItems={"center"}>
-              <Text style={styles.stepNumber}>3</Text>
-              <Text variant={"secondary"} width={"80%"}>
-                Pensez à prendre votre télephone portable pour déclencher le
-                paiement depuis votre messagerie MetyAmiko pendant le
-                rendez-vous
-              </Text>
-            </Row>
-          </Box>
+              <Row alignItems={"center"}>
+                <Text style={styles.stepNumber}>3</Text>
+                <Text variant={"secondary"} width={"80%"}>
+                  Pensez à prendre votre télephone portable pour déclencher le
+                  paiement depuis votre messagerie MetyAmiko pendant le
+                  rendez-vous
+                </Text>
+              </Row>
+            </Box>
+          )}
         </ScrollView>
         <Box height={90}>
           <Row width={"100%"} justifyContent={"space-between"} mb={"xs"}>
