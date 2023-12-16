@@ -359,6 +359,19 @@ export default function ProductDetailScreen() {
                 </Text>
 
                 <Box mt={"s"}>
+                  <RNEButton
+                    type={"solid"}
+                    color="#FF8323"
+                    title={`Acheter`}
+                    containerStyle={{
+                      flex: 1,
+                      borderRadius: 12,
+                    }}
+                    onPress={() => navigation.navigate("checkout_screen_1")}
+                  />
+                </Box>
+
+                <Box mt={"s"}>
                   <Text variant={"primary"} fontWeight={"600"}>
                     Critères
                   </Text>
@@ -497,7 +510,6 @@ export default function ProductDetailScreen() {
                     containerStyle={{
                       marginHorizontal: 8,
                       flex: 1,
-                      height: 32,
                       borderRadius: 12,
                       marginVertical: Platform.OS === "ios" ? 16 : 8,
                     }}
@@ -515,7 +527,6 @@ export default function ProductDetailScreen() {
                   containerStyle={{
                     marginHorizontal: 8,
                     flex: 1,
-                    height: 32,
                     borderRadius: 12,
                     marginVertical: Platform.OS === "ios" ? 16 : 8,
                   }}

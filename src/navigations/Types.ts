@@ -21,6 +21,9 @@ export type StackParamList = {
       id_conversation: number | null;
     };
   };
+  //checkout_screen
+  checkout_screen_1: undefined;
+  checkout_screen_2: undefined;
   //stepper screens
   stepper_screen_1: undefined;
   stepper_screen_2: undefined;

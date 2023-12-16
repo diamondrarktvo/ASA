@@ -25,6 +25,7 @@ import {
   SearchItem,
   ManagePayment,
   ProductDetailScreen,
+  CheckoutPageOne,
 } from "_features";
 
 const Stack = createStackNavigator<StackParamList>();
@@ -61,6 +62,13 @@ const StackNavigation = () => {
 
           {/**Search item */}
           <Stack.Screen name={"search_item"} component={SearchItem} />
+
+          {/**Checkout Screen */}
+          <Stack.Screen
+            name={"checkout_screen_1"}
+            component={CheckoutPageOne}
+          />
+
           <Stack.Screen
             name={"product_detail_screen"}
             component={ProductDetailScreen}
