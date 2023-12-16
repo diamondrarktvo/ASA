@@ -5,6 +5,7 @@ import { BaseApi } from "_services";
 import accountSlice from "../features/account/accountSlice";
 import publishSlice from "../features/publish/publishSlice";
 import paymentMethodSlice from "../features/account/paymentMethodeSlice";
+import checkoutSlice from "../features/search/checkoutSlice";
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     [accountSlice.name]: accountSlice.reducer,
     [publishSlice.name]: publishSlice.reducer,
     [paymentMethodSlice.name]: paymentMethodSlice.reducer,
+    [checkoutSlice.name]: checkoutSlice.reducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.

@@ -39,6 +39,7 @@ import {
 import { useAppDispatch, useAppSelector } from "_store";
 import { removeAccount } from "../../account/accountSlice";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import { setCart } from "../checkoutSlice";
 
 export default function ProductDetailScreen() {
   const navigation = useNavigation();
@@ -219,6 +220,12 @@ export default function ProductDetailScreen() {
   }, [isErrorAnnonce]);
 
   useEffect(() => {
+    if (annonce) {
+      dispatch(setCart(annonce));
+    }
+  }, [annonce]);
+
+  useEffect(() => {
     if (annonce && annonce.location.latitude && annonce.location.longitude) {
       setPositionMap({
         latitude: parseFloat(annonce.location.latitude),
@@ -367,7 +374,9 @@ export default function ProductDetailScreen() {
                       flex: 1,
                       borderRadius: 12,
                     }}
-                    onPress={() => navigation.navigate("checkout_screen_1")}
+                    onPress={() => {
+                      navigation.navigate("checkout_screen_1");
+                    }}
                   />
                 </Box>
 

@@ -19,11 +19,13 @@ import { Button as RNEButton } from "@rneui/themed";
 import { BottomSheetModal, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types";
 import { RadioButton } from "react-native-paper";
+import { useAppSelector } from "_store";
 
 export default function CheckoutPageOne() {
   const navigation = useNavigation();
   const theme = useTheme<Theme>();
   const { borderRadii, colors } = theme;
+  const cart = useAppSelector((state) => state.checkout);
   const [deliveryMode, setDeliveryMode] = useState<"recover" | "deliver">(
     "recover",
   );
@@ -66,6 +68,8 @@ export default function CheckoutPageOne() {
     [],
   );
 
+  console.log(cart);
+
   return (
     <RequestConnection>
       <MainScreen typeOfScreen="stack">
@@ -106,21 +110,25 @@ export default function CheckoutPageOne() {
                 alignItems={"center"}
               >
                 <Image
-                  source={require("_images/logoASA.jpeg")}
+                  source={
+                    /*cart?.pictures[0]
+                      ? { uri: cart?.pictures[0].image }
+                      : */ require("_images/logo.jpg")
+                  }
                   style={{
                     width: 96,
                     height: 96,
                     borderTopLeftRadius: borderRadii.sm,
                   }}
                 />
-                <Text variant={"primaryBold"}>Maison</Text>
+                <Text variant={"primaryBold"}>{cart.name}</Text>
               </Row>
               <Text
                 variant={"primaryBold"}
                 color={"primary"}
                 marginRight={"xs"}
               >
-                100 000 Ar
+                {cart.price} Ar
               </Text>
             </Row>
 
@@ -136,7 +144,7 @@ export default function CheckoutPageOne() {
                 </Text>
                 {deliveryMode === "deliver" && (
                   <Text variant="primaryBold" color={"secondary"}>
-                    3 000 Ar
+                    {cart.local_delivery_price} Ar
                   </Text>
                 )}
               </Row>
@@ -189,7 +197,12 @@ export default function CheckoutPageOne() {
               Total
             </Text>
             <Text variant={"primaryBold"} color={"primary"}>
-              10 000 Ar
+              {deliveryMode === "deliver"
+                ? `${
+                    parseInt(cart.price) + parseInt(cart.local_delivery_price)
+                  }`
+                : cart.price}{" "}
+              Ar
             </Text>
           </Row>
           <RNEButton
