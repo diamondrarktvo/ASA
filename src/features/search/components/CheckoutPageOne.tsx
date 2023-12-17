@@ -210,7 +210,16 @@ export default function CheckoutPageOne() {
             color="#FF8323"
             title={`Etape 2/2 : payer`}
             onPress={() => {
-              Alert.alert("Warning", "L'étape 2 n'est pas encore implémentée.");
+              navigation.navigate("checkout_screen_2", {
+                totalOfPrice:
+                  deliveryMode === "deliver"
+                    ? `${
+                        parseInt(cart.price) +
+                        parseInt(cart.local_delivery_price)
+                      }`
+                    : cart.price,
+                isProductDelivered: deliveryMode === "deliver",
+              });
             }}
           />
         </Box>

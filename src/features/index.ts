@@ -17,6 +17,7 @@ import ManageProfil from "./account/components/ManageProfil";
 import ProductDetailScreen from "./search/components/ProductDetailScreen";
 import MyAnnounceScreen from "./account/components/MyAnnounceScreen";
 import CheckoutPageOne from "./search/components/CheckoutPageOne";
+import CheckoutPageTwo from "./search/components/CheckoutPageTwo";
 
 //stepper
 import StepOne from "./publish/components/addPublishStep/stepOne";
@@ -46,6 +47,7 @@ export {
   SearchItem,
   ProductDetailScreen,
   CheckoutPageOne,
+  CheckoutPageTwo,
   //stepper
   StepOne,
   StepTwo,

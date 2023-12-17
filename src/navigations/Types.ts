@@ -23,7 +23,10 @@ export type StackParamList = {
   };
   //checkout_screen
   checkout_screen_1: undefined;
-  checkout_screen_2: undefined;
+  checkout_screen_2: {
+    totalOfPrice?: number;
+    isProductDelivered?: boolean;
+  };
   //stepper screens
   stepper_screen_1: undefined;
   stepper_screen_2: undefined;

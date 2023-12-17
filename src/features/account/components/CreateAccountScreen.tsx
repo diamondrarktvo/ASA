@@ -151,8 +151,6 @@ const CreateAccountScreen = () => {
     }
   }, [registerValue]);
 
-  console.log("error Message : ", errorMessage);
-
   return (
     <MainScreen typeOfScreen="stack">
       <ScrollView showsVerticalScrollIndicator={false}>

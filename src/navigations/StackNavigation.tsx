@@ -26,6 +26,7 @@ import {
   ManagePayment,
   ProductDetailScreen,
   CheckoutPageOne,
+  CheckoutPageTwo,
 } from "_features";
 
 const Stack = createStackNavigator<StackParamList>();
@@ -67,6 +68,10 @@ const StackNavigation = () => {
           <Stack.Screen
             name={"checkout_screen_1"}
             component={CheckoutPageOne}
+          />
+          <Stack.Screen
+            name={"checkout_screen_2"}
+            component={CheckoutPageTwo}
           />
 
           <Stack.Screen
