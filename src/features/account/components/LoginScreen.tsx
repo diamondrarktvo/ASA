@@ -59,7 +59,6 @@ const LoginScreen = ({
         }
       })
       .catch((e) => {
-        console.log("error login :", e);
         if (e.status === Constantes.error.ERROR_CONSTANT.NOT_FOUND.status) {
           setVisibleSnackbar(true);
         }

@@ -68,8 +68,6 @@ export default function CheckoutPageOne() {
     [],
   );
 
-  console.log(cart);
-
   return (
     <RequestConnection>
       <MainScreen typeOfScreen="stack">

@@ -79,7 +79,6 @@ const CreateAccountScreen = () => {
     register(registerValue)
       .unwrap()
       .then((res) => {
-        console.log("resAPI : ", res);
         dispatch(setAccount(res));
         storeObjectDataToAsyncStorage("token", res.token);
         storeObjectDataToAsyncStorage("current_account", res);
@@ -102,7 +101,6 @@ const CreateAccountScreen = () => {
         if (e.status === ERROR_REGISTER.E400.status) {
           setVisibleSnackbar(true);
         }
-        console.log("eeeee : ", e);
       });
   };
 

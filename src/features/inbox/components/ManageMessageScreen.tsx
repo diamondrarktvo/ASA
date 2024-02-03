@@ -163,7 +163,6 @@ export default function ManageMessageScreen() {
     })
       .unwrap()
       .then((res) => {
-        console.log("start conv res", res);
         setIsMessageAlreadyStart(true);
       })
       .catch((e) => {
@@ -179,7 +178,6 @@ export default function ManageMessageScreen() {
     })
       .unwrap()
       .then((res) => {
-        console.log("deelte conv res", res);
         navigation.goBack();
       })
       .catch((e) => {

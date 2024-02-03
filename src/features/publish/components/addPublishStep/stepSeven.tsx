@@ -74,15 +74,12 @@ export default function StepSeven() {
     }
   };
 
-  console.log("valueForStepper zz: ", valueForStepper.location);
-
   const handlePublish = () => {
     if (isUserConnected) {
       //console.log("valueForStepper step before dispatch : ", valueForStepper);
       publishProduct({ valueForStepper, token })
         .unwrap()
         .then((result) => {
-          console.log("result pub : ", result);
           dispatch(reinitializeProduct());
           navigation.navigate("main_tab", { screen: "search_screen" });
         })

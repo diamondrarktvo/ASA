@@ -81,7 +81,6 @@ const chatApi = BaseApi.injectEndpoints({
           // update our query result with the received message
           const listener = (event: MessageEvent) => {
             const data = JSON.parse(event.data);
-            console.log("data : ", data.message);
             if (!data) return;
 
             updateCachedData((draft) => {

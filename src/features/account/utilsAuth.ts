@@ -46,8 +46,6 @@ export const parseErrorMessage = (error: any): string => {
     return errorMessage;
   }
 
-  console.log("error?.data e: ", error?.data);
-
   if (error.status && error.status === ERROR_REGISTER.E400.status) {
     if (error.data) {
       if (error.data.phone_number) {

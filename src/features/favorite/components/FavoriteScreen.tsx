@@ -93,9 +93,6 @@ export default function FavoriteScreen() {
     setUserMustLogin(!isUserConnected);
   }, [isUserConnected]);
 
-  console.log("userMustLogin inbox : ", userMustLogin);
-  console.log("isUserConnected inbox : ", isUserConnected);
-
   return (
     <MainScreen typeOfScreen="tab" titleTabScreen="Favoris">
       <RequestConnection>

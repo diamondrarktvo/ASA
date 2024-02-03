@@ -103,41 +103,6 @@ export default function StepSix() {
                 size: Size.ICON_MEDIUM,
                 color: colors.text,
               }}
-              /*iconRight={{
-                name: "search",
-                size: Size.ICON_MEDIUM,
-                color: colors.text,
-                onPress: () => {
-                  if (cityName !== "") {
-                    setIsSearchingName(true);
-                    transformNameToGeocode(cityName)
-                      .then((data) => {
-                        setIsSearchingName(false);
-                        setPosition(data);
-                        changeRegion(data);
-                      })
-                      .catch((error) => {
-                        console.log(
-                          "Une erreur est survenue lors de la recherche de votre ville",
-                        );
-                        console.log("error carte search: ", error);
-                        setIsSearchingName(false);
-                        setVisibleSnackbar(true);
-                        setMessageSnackBar(
-                          "Une erreur est survenue lors de la recherche de votre ville",
-                        );
-                        Alert.alert("Erreur map", error, [
-                          {
-                            text: "Ok",
-                            onPress: () => {
-                              // Do something
-                            },
-                          },
-                        ]);
-                      });
-                  }
-                },
-              }}*/
             />
           </Box>
           <Box

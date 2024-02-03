@@ -130,7 +130,6 @@ export default function ManagePayment() {
     deleteOnePaymentMethod({ id, token })
       .unwrap()
       .then((res) => {
-        console.log("res delete method : ", res);
         setVisibleSnackbar(true);
         setMessageForSnackbar("Le numéro de téléphone a été supprimé");
       })
@@ -204,7 +203,6 @@ export default function ManagePayment() {
 
   useFocusEffect(
     useCallback(() => {
-      console.log("allPaymentMethod e: ", allPaymentMethod);
       dispatch(setPaymentMethod(allPaymentMethod));
     }, [allPaymentMethod]),
   );

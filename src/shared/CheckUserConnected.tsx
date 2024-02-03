@@ -25,13 +25,6 @@ const CheckUserConnected: React.FC<Props> = ({
 }) => {
   const accountUser = useAppSelector((state) => state.account);
 
-  console.log(
-    "accountUser.is_account_connected ==================> : ",
-    accountUser.is_account_connected,
-  );
-
-  console.log("user must login : ==========>", userMustLogin);
-
   useEffect(() => {
     if (accountUser.is_account_connected) {
       setUserMustLogin && setUserMustLogin(false);

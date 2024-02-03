@@ -27,7 +27,6 @@ const SocketNotification = () => {
   useEffect(() => {
     getObjectDataToAsyncStorage("current_account")
       .then((res) => {
-        console.log("resss current tavany e, ", res);
         if (res) dispatch(setAccount(res));
       })
       .catch((err) => {
@@ -39,7 +38,6 @@ const SocketNotification = () => {
           dispatch(setToken(res));
           dispatch(setIsConnected(true));
         }
-        console.log("resss token tavany e, ", res);
       })
       .catch((err) => {
         console.log("eeeee local storage : ", err);
@@ -67,7 +65,6 @@ const SocketNotification = () => {
         `${data.message.nickname} ${data.message.content}`,
         formatDateToString(data.message.timestamp),
       );
-      console.log(data.message);
     };
   }, [accountUser]);
 
