@@ -1,17 +1,14 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useTheme } from "@shopify/restyle";
-import { useRef, useCallback, useMemo, useState } from "react";
+import { useRef, useCallback, useMemo, useState, useEffect } from "react";
 import {
   Box,
   Icon,
-  Image,
   Input,
   MainScreen,
   RequestConnection,
-  RequestLoader,
   Row,
   Text,
-  TouchableOpacity,
 } from "_shared";
 import { Size, Theme } from "_theme";
 import { Alert, Platform, StyleSheet } from "react-native";
@@ -21,6 +18,7 @@ import { BottomSheetModal, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types";
 import { RadioButton } from "react-native-paper";
 import { useAppSelector } from "_store";
+import { useStripe } from "@stripe/stripe-react-native";
 
 export default function CheckoutPageTwo() {
   const navigation = useNavigation();
@@ -32,6 +30,8 @@ export default function CheckoutPageTwo() {
     "mobileMoney" | "paiementCard"
   >("mobileMoney");
   const [mobileNumber, setMobileNumber] = useState<string>("");
+  const { initPaymentSheet, presentPaymentSheet } = useStripe();
+  const [loading, setLoading] = useState(false);
 
   //snap points
   const snapPoints = useMemo(() => [1, "50%"], []);
@@ -59,6 +59,55 @@ export default function CheckoutPageTwo() {
     }
     return;
   };
+
+  const fetchPaymentSheetParams = async () => {
+    const response = await fetch(`${"https:domain.com"}/payment-sheet`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const { paymentIntent, ephemeralKey, customer } = await response.json();
+
+    return {
+      paymentIntent,
+      ephemeralKey,
+      customer,
+    };
+  };
+
+  const initializePaymentSheet = async () => {
+    const { paymentIntent, ephemeralKey, customer } =
+      await fetchPaymentSheetParams();
+
+    const { error } = await initPaymentSheet({
+      merchantDisplayName: "Mety Amiko",
+      customerId: customer,
+      customerEphemeralKeySecret: ephemeralKey,
+      paymentIntentClientSecret: paymentIntent,
+      allowsDelayedPaymentMethods: true,
+      defaultBillingDetails: {
+        name: "Toky",
+      },
+    });
+    if (!error) {
+      setLoading(true);
+    }
+  };
+
+  const openPaymentSheet = async () => {
+    const { error } = await presentPaymentSheet();
+
+    if (error) {
+      Alert.alert(`Error code: ${error.code}`, error.message);
+    } else {
+      Alert.alert("Success", "Your order is confirmed!");
+    }
+  };
+
+  /*useEffect(() => {
+    initializePaymentSheet();
+  }, []);*/
 
   //components
   const renderBackDrop = useCallback(
@@ -193,10 +242,19 @@ export default function CheckoutPageTwo() {
               borderRadius: borderRadii.xs,
             }}
             onPress={() => {
-              Alert.alert(
-                "Warning",
-                "Le paiement n'est pas encore implémentée.",
-              );
+              if (paiementMode === "mobileMoney") {
+                if (mobileNumber.length < 10) {
+                  return Alert.alert(
+                    "Erreur",
+                    "Veuillez entrer un numéro de téléphone valide",
+                  );
+                } else {
+                  Alert.alert("Mobile Money", "Coming soon");
+                }
+              }
+              if (paiementMode === "paiementCard") {
+                openPaymentSheet();
+              }
             }}
           />
         </Row>

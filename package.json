@@ -26,6 +26,7 @@
     "@rneui/themed": "^4.0.0-rc.7",
     "@shopify/flash-list": "1.4.3",
     "@shopify/restyle": "^2.4.2",
+    "@stripe/stripe-react-native": "^0.36.0",
     "babel-plugin-module-resolver": "^5.0.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "expo": "^49.0.0",

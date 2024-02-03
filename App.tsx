@@ -12,6 +12,7 @@ import { store } from "_store";
 import SocketNotification from "./SocketNotification";
 import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
+import { StripeProvider } from "@stripe/stripe-react-native";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -94,18 +95,24 @@ export default function App() {
   }, []);
 
   return (
-    <Provider store={store}>
-      <ThemeProvider theme={isDarkMode ? darkTheme : theme}>
-        <SafeAreaProvider>
-          <GestureHandlerRootView style={{ flex: 1 }}>
-            <BottomSheetModalProvider>
-              <StatusBar backgroundColor={theme.colors.primary} />
-              <SocketNotification />
-              <StackNavigation />
-            </BottomSheetModalProvider>
-          </GestureHandlerRootView>
-        </SafeAreaProvider>
-      </ThemeProvider>
-    </Provider>
+    <StripeProvider
+      publishableKey="pk_test_51O9OSIEF5jH1h0YLy8aTF9ZekjhgPPNiqMUsRXP1RhHAX6vOL8Kd6BP2Um4d0Y6CkZcEPanmODNWCJlS1FY0aKn800GgoMofmz"
+      //urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
+      //merchantIdentifier="merchant.com.{{YOUR_APP_NAME}}" // required for Apple Pay
+    >
+      <Provider store={store}>
+        <ThemeProvider theme={isDarkMode ? darkTheme : theme}>
+          <SafeAreaProvider>
+            <GestureHandlerRootView style={{ flex: 1 }}>
+              <BottomSheetModalProvider>
+                <StatusBar backgroundColor={theme.colors.primary} />
+                <SocketNotification />
+                <StackNavigation />
+              </BottomSheetModalProvider>
+            </GestureHandlerRootView>
+          </SafeAreaProvider>
+        </ThemeProvider>
+      </Provider>
+    </StripeProvider>
   );
 }
